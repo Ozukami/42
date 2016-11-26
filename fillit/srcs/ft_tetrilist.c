@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/19 14:58:58 by apoisson          #+#    #+#             */
-/*   Updated: 2016/11/23 13:24:45 by qumaujea         ###   ########.fr       */
+/*   Updated: 2016/11/26 12:16:12 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,18 @@ void	ft_tetriprint(t_tetri *tetri)
 	while (current)
 	{
 		ft_putstr(current->tetri);
+		current = current->next;
+	}
+}
+
+void	ft_tetriter(t_tetri **begin, char *(*f)(char *s))
+{
+	t_tetri	*current;
+
+	current = *begin;
+	while (current)
+	{
+		current->tetri = f(current->tetri);
 		current = current->next;
 	}
 }
