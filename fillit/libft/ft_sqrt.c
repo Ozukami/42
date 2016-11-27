@@ -6,15 +6,15 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/27 12:14:54 by qumaujea          #+#    #+#             */
-/*   Updated: 2016/11/27 12:16:49 by qumaujea         ###   ########.fr       */
+/*   Updated: 2016/11/27 12:36:00 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_sqrt(int	n)
+size_t	ft_sqrt(size_t n)
 {
-	int		sqrt;
+	size_t	sqrt;
 
 	sqrt = 0;
 	while (sqrt * sqrt <= n)

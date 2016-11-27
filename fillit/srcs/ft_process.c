@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/19 15:16:40 by apoisson          #+#    #+#             */
-/*   Updated: 2016/11/27 11:58:17 by qumaujea         ###   ########.fr       */
+/*   Updated: 2016/11/27 13:25:13 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@ int		ft_place_tracking(char ***tab, int i, t_tetri *tetri, int k)
 	int		j;
 
 	len = ft_strlen(tab[0][0]);
+	if (k > 0)
+		if (i % len == 0 && (tetri->tetri)[k - 1] != '\n'  && (tetri->tetri)[k] != '\n')
+			return (0);
 	while ((tetri->tetri)[k] == '.')
 	{
 		k++;
@@ -37,7 +40,19 @@ int		ft_place_tracking(char ***tab, int i, t_tetri *tetri, int k)
 		i = i + len - j;
 	}
 	if ((tetri->tetri)[k] == '\0')
+	{
+		printf("-- CURRENT %d --\n", len);
+		int	z = 0;
+		while (tab[0][z])
+		{
+			printf("%s\n", tab[0][z]);
+			z++;
+		}
+		printf("-- END CURRENT --\n");
 		return (1);
+	}
+	if (i >= len * len)
+		return (0);
 	if (tab[0][i / len][i % len] == '.')
 	{
 		if ((tetri->tetri)[k] != '\n')
@@ -49,26 +64,55 @@ int		ft_place_tracking(char ***tab, int i, t_tetri *tetri, int k)
 	return (0);
 }
 
-int		ft_place(char ***tab, t_tetri *tetrilist)
+int		ft_place(char ***tab, t_tetri *tetrilist, size_t opti_size)
 {
 	int		i;
 
 	while (tetrilist)
 	{
 		i = 0;
-		while (i < (int)((ft_tetrilen(tetrilist) * 4)
-					* (ft_tetrilen(tetrilist) * 4)))
+		while (i < (int)(opti_size * opti_size))
 		{
 			if (ft_place_tracking(tab, i, tetrilist, 0))
 				break ;
 			i++;
 		}
+		if (i == (int)(opti_size * opti_size))
+			return (0);
 		if (tetrilist->next)
 			tetrilist = tetrilist->next;
 		else
 			break ;
 	}
-	return (0);
+	return (1);
+}
+
+void	ft_process_2(t_tetri *tetrilist)
+{
+	char	**tab;
+	int		i;
+	size_t	opti_size;
+
+	i = 0;
+	while (!(opti_size = ft_sqrt(ft_tetrilen(tetrilist) * 4 + i)))
+		i++;
+	tab = ft_init(opti_size);
+	while (!ft_place(&tab, tetrilist, opti_size))
+	{
+		ft_tafritatoukompri(&tab);
+		opti_size++;
+		tab = ft_init(opti_size);
+	}
+	printf("{final size = %zu}\n", opti_size);
+	printf("-- FINAL --\n");
+	int	z = 0;
+	while (tab[z])
+	{
+		printf("%s\n", tab[z]);
+		z++;
+	}
+	printf("-- END --\n");
+	ft_tafritatoukompri(&tab);
 }
 
 void	ft_process(int fd)
@@ -77,7 +121,6 @@ void	ft_process(int fd)
 	char	buf[BUFSIZE + 1];
 	char	l;
 	int		r;
-	char	**tab;
 
 	l = 'A';
 	tetrilist = NULL;
@@ -95,14 +138,5 @@ void	ft_process(int fd)
 	ft_tetriter(&tetrilist, &ft_tetri_format);
 	ft_tetrirev(&tetrilist);
 	ft_tetriprint(tetrilist);
-	tab = ft_init(tetrilist);
-	ft_place(&tab, tetrilist);
-	int		i = 0;
-	printf("--------------\n");
-	while (tab[i])
-	{
-		printf("%s\n", tab[i]);
-		i++;
-	}
-	printf("--------------\n");
+	ft_process_2(tetrilist);
 }

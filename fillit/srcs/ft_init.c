@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/27 11:26:31 by qumaujea          #+#    #+#             */
-/*   Updated: 2016/11/27 11:43:44 by qumaujea         ###   ########.fr       */
+/*   Updated: 2016/11/27 12:25:28 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,12 @@ char	*ft_fillalloc(size_t size)
 	return (NULL);
 }
 
-char	**ft_init(t_tetri *tetrilist)
+char	**ft_init(size_t len)
 {
 	char	**tab;
-	size_t	len;
 	size_t	i;
 
 	i = 0;
-	len = ft_tetrilen(tetrilist) * 4;
 	if (!(tab = malloc((sizeof(char *)) * (len + 1))))
 		return (NULL);
 	while (i < len)

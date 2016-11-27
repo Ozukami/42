@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/19 14:12:43 by apoisson          #+#    #+#             */
-/*   Updated: 2016/11/27 11:46:22 by qumaujea         ###   ########.fr       */
+/*   Updated: 2016/11/27 12:41:44 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,9 @@ typedef struct		s_tetri
 
 void				ft_usage(void);
 void				ft_error(void);
+void				ft_tafritatoukompri(char ***tab);
 void				ft_process(int fd);
-char				**ft_init(t_tetri *tetrilist);
+char				**ft_init(size_t len);
 
 /*
 ** Fonctions permettant de formater les tetri
