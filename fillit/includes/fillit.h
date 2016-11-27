@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/19 14:12:43 by apoisson          #+#    #+#             */
-/*   Updated: 2016/11/26 12:13:13 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/11/27 11:46:22 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,31 @@
 
 # define BUFSIZE 21
 
+/*
+** Liste contenant les tetriminos
+*/
+
+typedef struct		s_tetri
+{
+	struct s_tetri	*next;
+	char			*tetri;
+}					t_tetri;
+
+/*
+** Fonctions generales
+*/
+
 void				ft_usage(void);
 void				ft_error(void);
 void				ft_process(int fd);
-char				*ft_fillalloc(size_t size);
-void				ft_bpoint(char *s, size_t n);
+char				**ft_init(t_tetri *tetrilist);
+
+/*
+** Fonctions permettant de formater les tetri
+*/
+
+char				*ft_tetri_format(char *s);
+char				*ft_str_replace(char *s, char c);
 
 /*
 ** Fonctions permettant de verifier le fichier
@@ -39,15 +59,6 @@ int					ft_verif_3(int a, int b, int c, int d);
 int					ft_check_1(int a, int b);
 int					ft_check_2(int a, int b, int c, int d);
 
-/*
-** Liste contenant les tetriminos
-*/
-
-typedef struct		s_tetri
-{
-	struct s_tetri	*next;
-	char			*tetri;
-}					t_tetri;
 
 /*
 ** Fonctions permettant de manipuler la liste de tetriminos

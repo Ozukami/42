@@ -6,114 +6,16 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/19 15:16:40 by apoisson          #+#    #+#             */
-/*   Updated: 2016/11/26 13:45:12 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/11/27 11:58:17 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-char	*ft_tetri_format(char *s)
-{
-	int		i;
-	int		j;
-	size_t	len;
-	char	*rep;
-
-	i = 0;
-	while (i < 16)
-	{
-		if (s[i] == '.' && s[i + 1] == '.'
-				&& s[i + 2] == '.' && s[i + 3] == '.')
-		{
-			s[i] = 'x';
-			s[i + 1] = 'x';
-			s[i + 2] = 'x';
-			s[i + 3] = 'x';
-			s[i + 4] = 'x';
-		}
-		i = i + 5;
-	}
-	i = 0;
-	while (i < 4)
-	{
-		if ((s[i] == '.' || s[i] == 'x')
-				&& (s[i + 5] == '.' || s[i + 5] == 'x')
-				&& (s[i + 10] == '.' || s[i + 10] == 'x')
-				&& (s[i + 15] == '.' || s[i + 15] == 'x'))
-		{
-			s[i] = 'x';
-			s[i + 5] = 'x';
-			s[i + 10] = 'x';
-			s[i + 15] = 'x';
-		}
-		i++;
-	}
-	len = ft_strlen(s);
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == 'x')
-			len--;
-		i++;
-	}
-	if (!(rep = ft_memalloc(len + 1)))
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (s[i])
-	{
-		while (s[i] == 'x')
-			i++;
-		rep[j] = s[i];
-		i++;
-		j++;
-	}
-	return (rep);
-}
-
-char	*ft_str_replace(char *s, char c)
-{
-	int		i;
-	char	*rep;
-
-	if (!(rep = ft_memalloc(ft_strlen(s) + 1)))
-		return (NULL);
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == '#')
-			rep[i] = c;
-		else
-			rep[i] = s[i];
-		i++;
-	}
-	return (rep);
-}
-
-char	**ft_init(t_tetri *tetrilist)
-{
-	char	**tab;
-	size_t	len;
-	size_t	i;
-
-	i = 0;
-	len = ft_tetrilen(tetrilist) * 4;
-	if (!(tab = malloc((sizeof(char *)) * (len + 1))))
-		return (NULL);
-	while (i < len)
-	{
-		if (!(tab[i] = ft_fillalloc((sizeof(char)) * (len + 1))))
-			return (NULL);
-		i++;
-	}
-	tab[len] = 0;
-	return (tab);
-}
-
 /*
- ** OK = 1
- ** NOK = 0
- */
+** OK = 1
+** NOK = 0
+*/
 
 int		ft_place_tracking(char ***tab, int i, t_tetri *tetri, int k)
 {
@@ -121,11 +23,14 @@ int		ft_place_tracking(char ***tab, int i, t_tetri *tetri, int k)
 	int		j;
 
 	len = ft_strlen(tab[0][0]);
-	j = 0;
 	while ((tetri->tetri)[k] == '.')
+	{
 		k++;
+		i++;
+	}
 	if ((tetri->tetri)[k] == '\n')
 	{
+		j = 0;
 		while ((tetri->tetri)[j] != '\n')
 			j++;
 		k++;
@@ -135,18 +40,8 @@ int		ft_place_tracking(char ***tab, int i, t_tetri *tetri, int k)
 		return (1);
 	if (tab[0][i / len][i % len] == '.')
 	{
-		if (k == 0)
-			printf("[ok]\n");
 		if ((tetri->tetri)[k] != '\n')
 			tab[0][i / len][i % len] = (tetri->tetri)[k];
-		int		a = 0;
-		printf("--------------\n");
-		while (tab[0][a])
-		{
-			ft_putendl(tab[0][a]);
-			a++;
-		}
-		printf("--------------\n");
 		if (ft_place_tracking(tab, i + 1, tetri, k + 1))
 			return (1);
 		tab[0][i / len][i % len] = '.';
@@ -161,9 +56,9 @@ int		ft_place(char ***tab, t_tetri *tetrilist)
 	while (tetrilist)
 	{
 		i = 0;
-		while (i < (int)((ft_tetrilen(tetrilist) * 4) * (ft_tetrilen(tetrilist) * 4)))
+		while (i < (int)((ft_tetrilen(tetrilist) * 4)
+					* (ft_tetrilen(tetrilist) * 4)))
 		{
-			printf("{%c|%d}\n", (tetrilist->tetri)[0], i);
 			if (ft_place_tracking(tab, i, tetrilist, 0))
 				break ;
 			i++;

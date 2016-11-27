@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_bpoint.c                                        :+:      :+:    :+:   */
+/*   ft_sqrt.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/23 13:06:13 by qumaujea          #+#    #+#             */
-/*   Updated: 2016/11/23 14:01:24 by qumaujea         ###   ########.fr       */
+/*   Created: 2016/11/27 12:14:54 by qumaujea          #+#    #+#             */
+/*   Updated: 2016/11/27 12:16:49 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fillit.h"
+#include "libft.h"
 
-void	ft_bpoint(char *s, size_t n)
+int		ft_sqrt(int	n)
 {
-	size_t	i;
+	int		sqrt;
 
-	i = 0;
-	if (n == 0)
-		return ;
-	while (i < n - 1)
+	sqrt = 0;
+	while (sqrt * sqrt <= n)
 	{
-		s[i] = '.';
-		i++;
+		if (sqrt * sqrt == n)
+			return (sqrt);
+		sqrt++;
 	}
-	s[i] = 0;
+	return (0);
 }
