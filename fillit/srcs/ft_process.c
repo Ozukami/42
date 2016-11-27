@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/19 15:16:40 by apoisson          #+#    #+#             */
-/*   Updated: 2016/11/27 13:25:13 by qumaujea         ###   ########.fr       */
+/*   Updated: 2016/11/27 15:32:57 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,22 +64,51 @@ int		ft_place_tracking(char ***tab, int i, t_tetri *tetri, int k)
 	return (0);
 }
 
-int		ft_place(char ***tab, t_tetri *tetrilist, size_t opti_size)
+void	ft_delete_tetri(char ***tab, t_tetri *tetri)
 {
 	int		i;
+	int		j;
 
+	i = 0;
+	while (tab[0][i])
+	{
+		j = 0;
+		while (tab[0][i][j])
+		{
+			if (tab[0][i][j] == tetri->l)
+				tab[0][i][j] = '.';
+			j++;
+		}
+		i++;
+	}
+}
+
+int		ft_place(char ***tab, t_tetri *tetrilist, size_t opti_size)
+{
 	while (tetrilist)
 	{
-		i = 0;
-		while (i < (int)(opti_size * opti_size))
+		while (tetrilist->i < (int)(opti_size * opti_size))
 		{
-			if (ft_place_tracking(tab, i, tetrilist, 0))
+			if (ft_place_tracking(tab, tetrilist->i, tetrilist, 0))
+			{
+				tetrilist->i = tetrilist->i;
 				break ;
-			i++;
+			}
+			tetrilist->i += 1;
 		}
-		if (i == (int)(opti_size * opti_size))
-			return (0);
-		if (tetrilist->next)
+		if (tetrilist->i == (int)(opti_size * opti_size))
+		{
+			tetrilist->i = 0;
+			if (tetrilist->prev)
+			{
+				ft_delete_tetri(tab, tetrilist);
+				tetrilist = tetrilist->prev;
+				printf("ok\n");
+			}
+			else
+				return (0);
+		}
+		else if (tetrilist->next)
 			tetrilist = tetrilist->next;
 		else
 			break ;
@@ -131,7 +160,8 @@ void	ft_process(int fd)
 		buf[r] = '\0';
 		if (!ft_verif(buf))
 			ft_error();
-		ft_tetriadd(&tetrilist, ft_tetrinew(ft_str_replace(buf, l++)));
+		ft_tetriadd(&tetrilist, ft_tetrinew(ft_str_replace(buf, l), l));
+		l++;
 	}
 	if (ft_strlen(tetrilist->tetri) != 20)
 		ft_error();

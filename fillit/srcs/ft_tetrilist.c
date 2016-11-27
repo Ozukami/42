@@ -6,13 +6,13 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/19 14:58:58 by apoisson          #+#    #+#             */
-/*   Updated: 2016/11/26 12:16:12 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/11/27 15:29:02 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-t_tetri	*ft_tetrinew(char *tetri)
+t_tetri	*ft_tetrinew(char *tetri, char l)
 {
 	t_tetri	*tetrinew;
 
@@ -26,12 +26,16 @@ t_tetri	*ft_tetrinew(char *tetri)
 		ft_memcpy(tetrinew->tetri, tetri, BUFSIZE + 1);
 	}
 	tetrinew->next = NULL;
+	tetrinew->prev = NULL;
+	tetrinew->l = l;
+	tetrinew->i = 0;
 	return (tetrinew);
 }
 
 void	ft_tetriadd(t_tetri **begin, t_tetri *new)
 {
 	new->next = *begin;
+	new->prev = NULL;
 	*begin = new;
 }
 
@@ -42,13 +46,14 @@ void	ft_tetrirev(t_tetri **begin)
 	t_tetri	*tmp2;
 
 	current = *begin;
-	tmp1 = 0;
-	tmp2 = 0;
+	tmp1 = NULL;
+	tmp2 = NULL;
 	while (current)
 	{
 		tmp1 = current;
 		current = current->next;
 		tmp1->next = tmp2;
+		tmp1->prev = current;
 		tmp2 = tmp1;
 	}
 	*begin = tmp1;

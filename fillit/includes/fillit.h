@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/19 14:12:43 by apoisson          #+#    #+#             */
-/*   Updated: 2016/11/27 12:41:44 by qumaujea         ###   ########.fr       */
+/*   Updated: 2016/11/27 15:28:45 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@
 typedef struct		s_tetri
 {
 	struct s_tetri	*next;
+	struct s_tetri	*prev;
 	char			*tetri;
+	char			l;
+	int				i;
 }					t_tetri;
 
 /*
@@ -60,12 +63,11 @@ int					ft_verif_3(int a, int b, int c, int d);
 int					ft_check_1(int a, int b);
 int					ft_check_2(int a, int b, int c, int d);
 
-
 /*
 ** Fonctions permettant de manipuler la liste de tetriminos
 */
 
-t_tetri				*ft_tetrinew(char *tetri);
+t_tetri				*ft_tetrinew(char *tetri, char l);
 void				ft_tetriadd(t_tetri **begin, t_tetri *new);
 void				ft_tetrirev(t_tetri **begin);
 void				ft_tetriprint(t_tetri *tetri);
