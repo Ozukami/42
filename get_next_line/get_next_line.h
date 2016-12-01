@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:02:16 by apoisson          #+#    #+#             */
-/*   Updated: 2016/11/21 08:25:34 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/01 13:51:52 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,17 @@
 # include <sys/uio.h>
 # include <unistd.h>
 
-# define BUFF_SIZE 8
+# define BUFF_SIZE 16
 
 int	get_next_line(const int fd, char **line);
+
+typedef struct		s_buff
+{
+	char			*buff;
+	int				mem;
+	int				fd;
+	int				eof;
+	struct s_buff	*next;
+}					t_buff;
 
 #endif

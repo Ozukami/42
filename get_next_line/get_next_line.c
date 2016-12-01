@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/20 09:00:25 by apoisson          #+#    #+#             */
-/*   Updated: 2016/11/23 09:48:44 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/01 13:51:12 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,51 +31,83 @@ char	*ft_stack(char *s1, const char *s2)
 		stack[i + j] = s2[j];
 		j++;
 	}
+	free(s1);
 	return (stack);
 }
 
-int		sub_ft(char *buff, char **line, int *mem)
+t_buff	*new_buff(int fd)
 {
-	int			i;
+	t_buff	*new;
 
-	i = -1;
-	while (buff[++i])
-	{
-		if (buff[i] == '\n')
-		{
-			*line = ft_stack(*line, ft_strsub(buff, 0, i));
-			if (buff[i + 1])
-				*mem = i;
-			return (1);
-		}
-	}
-	return (0);
+	if (!(new = malloc(sizeof(t_buff))))
+		return (NULL);
+	new->buff = malloc(BUFF_SIZE + 1);
+	new->mem = -1;
+	new->fd = fd;
+	new->eof = 0;
+	new->next = NULL;
+	return (new);
 }
 
 int		get_next_line(const int fd, char **line)
 {
-	static int	mem = -1;
-	int			verif;
-	int			r;
-	static char	buff[BUFF_SIZE + 1];
+	static t_buff	*buff;
+	int				r;
+	int				i;
+	int				verif;
 
+	if (!line)
+		return (-1);
+	if (!buff)
+		buff = new_buff(fd);
+	if (buff->eof)
+		return (0);
 	*line = ft_strdup("\0");
 	verif = 0;
-	if (mem != -1)
+	/*
+		ft_putchar('{');
+		ft_putstr(buff->buff);
+		ft_putstr("}\n");
+	*/
+	if (buff->mem != -1)
 	{
-		*line = ft_strdup(ft_strsub(buff, mem + 1, BUFF_SIZE - mem));
-		mem = -1;
+		i = buff->mem;
+		while ((buff->buff)[i])
+		{
+			if ((buff->buff)[i] == '\n')
+			{
+				*line = ft_stack(*line, ft_strsub(buff->buff, buff->mem, i - buff->mem));
+				if (i < BUFF_SIZE)
+					buff->mem = i + 1;
+				return (1);
+			}
+			i++;
+		}
+		*line = ft_stack(*line, ft_strsub(buff->buff, buff->mem, i - buff->mem));
+		buff->mem = -1;
+	}
+	while ((r = read(fd, buff->buff, BUFF_SIZE)) > 0)
+	{
+		buff->mem = -1;
+		(buff->buff)[r] = '\0';
+		i = 0;
+		while ((buff->buff)[i])
+		{
+			if ((buff->buff)[i] == '\n')
+			{
+				*line = ft_stack(*line, ft_strsub(buff->buff, 0, i));
+				if (i < BUFF_SIZE)
+					buff->mem = i + 1;
+				return (1);
+			}
+			i++;
+		}
+		*line = ft_stack(*line, buff->buff);
 		verif = 1;
 	}
-	while ((r = read(fd, buff, BUFF_SIZE)))
-	{
-		if (r == -1)
-			return (r);
-		buff[r] = '\0';
-		if (sub_ft(buff, line, &mem))
-			return (1);
-		*line = ft_stack(*line, ft_strdup(buff));
-	}
+	buff->eof = 1;
+	if (r == -1)
+		return (-1);
 	if (verif)
 		return (1);
 	return (0);
