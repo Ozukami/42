@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/19 14:12:43 by apoisson          #+#    #+#             */
-/*   Updated: 2016/11/27 15:28:45 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/11/29 10:47:04 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 # include <sys/types.h>
 # include <sys/uio.h>
 # include <fcntl.h>
-
-# include <stdio.h> // !
 
 # define BUFSIZE 21
 
@@ -46,6 +44,16 @@ void				ft_process(int fd);
 char				**ft_init(size_t len);
 
 /*
+** Back tracking
+*/
+
+int					ft_subtrack(int *i, t_tetri *tetri, int *k, int len);
+int					ft_place_tracking(char ***tab, int i, t_tetri *tetri,
+		int k);
+void				ft_delete_tetri(char ***tab, t_tetri *tetri);
+int					ft_place(char ***tab, t_tetri *tetrilist, size_t opti_size);
+
+/*
 ** Fonctions permettant de formater les tetri
 */
 
@@ -70,7 +78,6 @@ int					ft_check_2(int a, int b, int c, int d);
 t_tetri				*ft_tetrinew(char *tetri, char l);
 void				ft_tetriadd(t_tetri **begin, t_tetri *new);
 void				ft_tetrirev(t_tetri **begin);
-void				ft_tetriprint(t_tetri *tetri);
 size_t				ft_tetrilen(t_tetri *tetrilist);
 void				ft_tetriter(t_tetri **begin, char *(*f)(char *s));
 

@@ -6,21 +6,38 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/27 11:38:11 by qumaujea          #+#    #+#             */
-/*   Updated: 2016/11/27 11:38:17 by qumaujea         ###   ########.fr       */
+/*   Updated: 2016/11/29 10:24:59 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-void	ft_format_line(char **s)
+void	ft_format_end(char **s)
 {
 	int		i;
 
 	i = 0;
+	while (s[0][i])
+	{
+		if (s[0][i + 1])
+			if (s[0][i] == '\n' && s[0][i + 1] == '\n')
+				s[0][i + 1] = '\0';
+		i++;
+	}
+}
+
+void	ft_format_line(char **s)
+{
+	int		i;
+
+	ft_format_end(s);
+	i = 0;
 	while (i < 16)
 	{
-		if (s[0][i] == '.' && s[0][i + 1] == '.'
-				&& s[0][i + 2] == '.' && s[0][i + 3] == '.')
+		if ((s[0][i] == '.' || s[0][i] == 'x')
+				&& (s[0][i + 1] == '.' || s[0][i + 1] == 'x')
+				&& (s[0][i + 2] == '.' || s[0][i + 2] == 'x')
+				&& (s[0][i + 3] == '.' || s[0][i + 3] == 'x'))
 		{
 			s[0][i] = 'x';
 			s[0][i + 1] = 'x';

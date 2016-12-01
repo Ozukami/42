@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/19 14:58:58 by apoisson          #+#    #+#             */
-/*   Updated: 2016/11/27 15:29:02 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/11/29 10:27:14 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,18 +70,6 @@ size_t	ft_tetrilen(t_tetri *tetrilist)
 		i++;
 	}
 	return (i);
-}
-
-void	ft_tetriprint(t_tetri *tetri)
-{
-	t_tetri	*current;
-
-	current = tetri;
-	while (current)
-	{
-		ft_putstr(current->tetri);
-		current = current->next;
-	}
 }
 
 void	ft_tetriter(t_tetri **begin, char *(*f)(char *s))
