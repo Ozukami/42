@@ -1,35 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strjoinf.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/20 11:12:54 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/05 10:16:50 by apoisson         ###   ########.fr       */
+/*   Created: 2016/12/05 08:35:46 by apoisson          #+#    #+#             */
+/*   Updated: 2016/12/05 09:29:14 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-#include <stdio.h>
-#include <fcntl.h>
+#include "libft.h"
 
-int		main(int ac, char **av)
+char	*ft_strjoinf(char *s1, char *s2)
 {
-	char	*line;
-	int		fd;
+	char		*stack;
+	int			i;
+	int			j;
 
-	fd = 0;
-	if (ac == 1)
-	{
-		while (get_next_line(fd, &line) > 0)
-			ft_putendl(line);
-	}
-	else if (ac == 2)
-	{
-		fd = open(av[1], O_RDONLY);
-		while (get_next_line(fd, &line) > 0)
-			ft_putendl(line);
-	}
-	return (0);
+	if (!(stack = ft_memalloc(ft_strlen(s1) + ft_strlen(s2) + 1)))
+		return (NULL);
+	i = -1;
+	j = -1;
+	while (s1[++i])
+		stack[i] = s1[i];
+	while (s2[++j])
+		stack[i + j] = s2[j];
+	free(s1);
+	free(s2);
+	return (stack);
 }
