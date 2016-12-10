@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 23:45:58 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/10 07:24:58 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/10 10:07:20 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,6 @@ int		main(int ac, char **av)
 	printf(" %x \n", number);
 	printf("---%*d----\n", 2, number);
 */
-	ft_printf("  %    #0-+8.3hhd   %  -.5ld   ", 30, 512);
+	ft_printf("  %    #0-+8.3hhd   %  -.5ld   %x %X", 30, 512, 255, 255);
 	return (0);
 }

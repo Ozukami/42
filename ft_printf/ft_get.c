@@ -6,13 +6,13 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 07:11:20 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/10 07:34:44 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/10 09:24:25 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void		ft_get_flags(t_conv *new, char c)
+void	ft_get_flags(t_conv *new, char c)
 {
 	if (c == '#')
 		new->prefix = 1;
@@ -24,7 +24,7 @@ void		ft_get_flags(t_conv *new, char c)
 		new->zero = 1;
 }
 
-void		ft_get_field_prec(t_conv *new, char *s, int *i)
+void	ft_get_field_prec(t_conv *new, char *s, int *i)
 {
 	int		len;
 
@@ -44,7 +44,7 @@ void		ft_get_field_prec(t_conv *new, char *s, int *i)
 	}
 }
 
-void		ft_get_mod(t_conv *new, char *s, int *i)
+void	ft_get_mod(t_conv *new, char *s, int *i)
 {
 	if ((s[*i] == 'l' && s[*i + 1] == 'l')
 			|| (s[*i] == 'h' && s[*i + 1] == 'h'))

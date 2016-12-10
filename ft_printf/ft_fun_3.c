@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 09:10:17 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/10 09:10:24 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/10 10:05:30 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	ft_va_arg_x(va_list ap)
 {
-	printf("%x\n", va_arg(ap, int));
+	ft_putstr(ft_itoa_base(va_arg(ap, int), 16, 0));
 }
 
-void	ft_va_arg_X(va_list ap)
+void	ft_va_arg_xmaj(va_list ap)
 {
-	printf("%X\n", va_arg(ap, long));
+	ft_putstr(ft_itoa_base(va_arg(ap, int), 16, 1));
 }
 
 void	ft_va_arg_u(va_list ap)
@@ -27,7 +27,7 @@ void	ft_va_arg_u(va_list ap)
 	printf("%u\n", va_arg(ap, int));
 }
 
-void	ft_va_arg_U(va_list ap)
+void	ft_va_arg_umaj(va_list ap)
 {
-	printf("%U\n", va_arg(ap, long));
+	printf("%U\n", va_arg(ap, unsigned int));
 }

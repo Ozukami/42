@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/10 09:16:23 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/10 10:06:45 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "libft.h"
 # include <stdarg.h>
+# include <stdio.h> // !!!!!
 
 /*
 ** space = blank after %
@@ -83,6 +84,8 @@ void				ft_va_arg_u(va_list ap);
 void				ft_va_arg_umaj(va_list ap);
 void				ft_va_arg_x(va_list ap);
 void				ft_va_arg_xmaj(va_list ap);
+
+char				*ft_itoa_base(int value, int base, int maj);
 
 int					ft_printf(const char *restrict format, ...);
 
