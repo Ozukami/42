@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 09:10:17 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/10 10:05:30 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/11 06:10:19 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ void	ft_va_arg_xmaj(va_list ap)
 
 void	ft_va_arg_u(va_list ap)
 {
-	printf("%u\n", va_arg(ap, int));
+	ft_putnbr(ft_int_to_unsigned(va_arg(ap, int)));
 }
 
 void	ft_va_arg_umaj(va_list ap)
 {
-	printf("%U\n", va_arg(ap, unsigned int));
+	ft_putnbr(ft_int_to_unsigned(va_arg(ap, int)));
 }

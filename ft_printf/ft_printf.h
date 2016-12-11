@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/10 10:06:45 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/11 02:53:55 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,16 @@ void				ft_va_arg_u(va_list ap);
 void				ft_va_arg_umaj(va_list ap);
 void				ft_va_arg_x(va_list ap);
 void				ft_va_arg_xmaj(va_list ap);
+
+/*
+** ft_a_ranger.c
+*/
+
+void				ft_putchar_wchar_t(wchar_t c);
+void				ft_putstr_wchar_t(wchar_t *s);
+void				ft_putnbr_long(long nb);
+unsigned int		ft_int_to_unsigned(int nb);
+short				ft_int_to_short(int nb);
 
 char				*ft_itoa_base(int value, int base, int maj);
 
