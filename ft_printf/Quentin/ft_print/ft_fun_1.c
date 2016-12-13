@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 09:04:59 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/13 11:25:30 by qumaujea         ###   ########.fr       */
+/*   Updated: 2016/12/13 12:41:53 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,10 @@ size_t	ft_va_arg_s(va_list ap, t_conv *list)
 			i++;
 		}
 	}
-	i = 0;
+	if (list->p != -1 && list->p < len)
+		i = 0;
+	else
+		(!(list->left)) ? (i = (list->field - len)) : (i = 0);
 	if (list->space && !(list->zero))
 	{
 		cpy[i] = ' ';
