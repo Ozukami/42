@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/11 01:31:58 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/11 06:10:17 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/14 10:04:14 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ unsigned int	ft_int_to_unsigned(int nb)
 
 short			ft_int_to_short(int nb)
 {
-	return (0);
+	return ((short)nb);
 }
 
 void	ft_putnbr_long(long n)
@@ -69,5 +69,6 @@ void	ft_putnbr_long(long n)
 
 void	ft_putnbr_unsigned(unsigned int n)
 {
+	(void)n;
 	// TODO
 }

@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:29:40 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/13 08:45:33 by qumaujea         ###   ########.fr       */
+/*   Updated: 2016/12/14 09:29:37 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	ft_fun_init(t_fun **tab)
 
 void	ft_fun_init2(t_fun **tab)
 {
-	tab[0][7].f = &ft_va_arg_i;
+	tab[0][7].f = &ft_va_arg_d;
 	tab[0][7].type = 'i';
 	tab[0][8].f = &ft_va_arg_o;
 	tab[0][8].type = 'o';
@@ -55,8 +55,10 @@ int		ft_printf(const char *restrict format, ...)
 	t_conv	*list;
 	int		i;
 	t_fun	*tab;
+	size_t	len;
 
 	list = NULL;
+	len = 0;
 	if (!(tab = malloc(sizeof(t_fun) * 14)))
 		return (-1);
 	ft_fun_init(&tab);
@@ -69,13 +71,10 @@ int		ft_printf(const char *restrict format, ...)
 		while (i < 15)
 		{
 			if (list->type == tab[i].type)
-			{
-				tab[i].f(ap, list);
-				break ;
-			}
+				len += tab[i].f(ap, list);
 			i++;
 		}
 		list = list->next;
 	}
-	return (0);
+	return ((int)len);
 }

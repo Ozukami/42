@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 09:08:40 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/14 09:08:58 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/14 10:03:05 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ size_t	ft_va_arg_d(va_list ap, t_conv *list)
 	else
 	{
 		cpy = ft_memalloc((!(list->left) ? list->field : ft_strlen(cpy2)));
-		while (i < list->field - 1 && (!(list->left)))
+		while ((int)i < list->field - 1 && (!(list->left)))
 		{
 			cpy[i] = ' ';
 			if (list->zero)
@@ -68,19 +68,20 @@ size_t	ft_va_arg_d(va_list ap, t_conv *list)
 size_t	ft_va_arg_dmaj(va_list ap, t_conv *list)
 {
 	printf("%D\n", va_arg(ap, int));
-}
-
-size_t	ft_va_arg_i(va_list ap, t_conv *list)
-{
-	printf("%i\n", va_arg(ap, int));
+	(void)list;
+	return (0);
 }
 
 size_t	ft_va_arg_o(va_list ap, t_conv *list)
 {
 	printf("%o\n", va_arg(ap, int));
+	(void)list;
+	return (0);
 }
 
 size_t	ft_va_arg_omaj(va_list ap, t_conv *list)
 {
 	printf("%O\n", va_arg(ap, unsigned int));
+	(void)list;
+	return (0);
 }

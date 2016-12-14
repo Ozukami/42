@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 09:04:59 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/14 09:08:17 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/14 10:03:48 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,12 @@
 size_t	ft_va_arg_p(va_list ap, t_conv *list)
 {
 	printf("%p\n", va_arg(ap, size_t *));
+	(void)list;
+	return (0);
 }
 
 size_t	ft_va_arg_c(va_list ap, t_conv *list)
 {
-	char	c;
 	size_t	i;
 	char	*cpy;
 
@@ -29,7 +30,7 @@ size_t	ft_va_arg_c(va_list ap, t_conv *list)
 	{
 		free(cpy);
 		cpy = ft_memalloc(list->field);	
-		while (i < list->field)
+		while ((int)i < list->field)
 		{
 			cpy[i] = ' ';
 			if (list->zero)
@@ -39,7 +40,7 @@ size_t	ft_va_arg_c(va_list ap, t_conv *list)
 	}
 	if (i > 0)
 		i--;
-	cpy[i] = va_arg(ap, char);
+	cpy[i] = va_arg(ap, int);
 	ft_putendl(cpy);
 	return (ft_strlen(cpy));
 }
@@ -47,6 +48,8 @@ size_t	ft_va_arg_c(va_list ap, t_conv *list)
 size_t	ft_va_arg_cmaj(va_list ap, t_conv *list)
 {
 	printf("%C\n", va_arg(ap, wchar_t));
+	(void)list;
+	return (0);
 }
 
 size_t	ft_va_arg_s(va_list ap, t_conv *list)
@@ -66,7 +69,7 @@ size_t	ft_va_arg_s(va_list ap, t_conv *list)
 		list->zero = 0;
 	if (list->field > 0)
 	{
-		while (i < list->field)
+		while ((int)i < list->field)
 		{
 			cpy[i] = ' ';
 			if (list->zero)
@@ -74,10 +77,10 @@ size_t	ft_va_arg_s(va_list ap, t_conv *list)
 			i++;
 		}
 	}
-	if (list->p != -1 && list->p < len)
+	if (list->p != -1 && list->p < (int)len)
 		i = 0;
 	else
-		(!(list->left)) ? (i = (list->field - len)) : (i = 0);
+		(!(list->left)) ? (i = ((size_t)(list->field) - len)) : (i = 0);
 	if (list->space && !(list->zero))
 	{
 		cpy[i] = ' ';
@@ -86,9 +89,9 @@ size_t	ft_va_arg_s(va_list ap, t_conv *list)
 	if (list->p != 0)
 	{
 		if (list->p != -1)
-			while (i <= (list->field - list->p) && (list->field - list->p) > 0)
+			while ((int)i <= (list->field - list->p) && (list->field - list->p) > 0)
 				i++;
-		while (j < list->p && cpy2[j])
+		while ((int)j < list->p && cpy2[j])
 		{
 			cpy[i] = cpy2[j];
 			i++;
@@ -102,4 +105,6 @@ size_t	ft_va_arg_s(va_list ap, t_conv *list)
 size_t	ft_va_arg_smaj(va_list ap, t_conv *list)
 {
 	printf("%S\n", va_arg(ap, wchar_t *));
+	(void)list;
+	return (0);
 }
