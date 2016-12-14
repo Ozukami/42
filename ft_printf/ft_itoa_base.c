@@ -5,73 +5,59 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: exam <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/06 13:01:22 by exam              #+#    #+#             */
-/*   Updated: 2016/12/10 10:03:12 by apoisson         ###   ########.fr       */
+/*   Created: 2016/12/13 10:48:38 by exam              #+#    #+#             */
+/*   Updated: 2016/12/14 08:45:49 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 
-int		get_size(int value, int base)
+int		get_size(long value, long base)
 {
+	if (value > -base && value <= -1)
+		return (2);
 	if (value >= 0 && value < base)
 		return (1);
-	if (value > -base && value < -1)
-		return (1);
-	if (value < 0)
-		return (1 + get_size(-value / base, base));
+	if (value < -base)
+		return (2 + get_size(-value / base, base));
 	return (1 + get_size(value / base, base));
 }
 
-char	*ft_strdup(char *s)
+int		neg_case(long *nb, int base, char **itoa)
 {
-	char	*dup;
-	int		i;
-
-	i = 0;
-	while (s[i])
-		i++;
-	dup = malloc(i + 1);
-	dup[i] = '\0';
-	i = 0;
-	while (s[i])
+	if (*nb < 0 && base == 10)
 	{
-		dup[i] = s[i];
-		i++;
+		*nb = -(*nb);
+		itoa[0][0] = '-';
+		return (1);
 	}
-	return (dup);
+	return (0);
 }
 
 char	*ft_itoa_base(int value, int base, int maj)
 {
-	char	*rep;
+	char	*itoa;
 	int		size;
+	long	nb;
+	int		neg;
 
-	if (value == 0)
-		return (ft_strdup("0"));
-	if (value == -2147483648 && base == 10)
-		return (ft_strdup("-2147483648"));
-	size = get_size(value, base);
-	if (value < 0 && base == 10)
-		size++;
-	rep = malloc(size + 1);
-	rep[size] = '\0';
-	size--;
-	if (value < 0 && base == 10)
+	nb = (long)value;
+	if (nb < 0 && base != 10)
+		nb = -nb;
+	size = get_size(nb, (long)base);
+	if (!(itoa = malloc(sizeof(char) * (size + 1))))
+		return (NULL);
+	itoa[size--] = '\0';
+	neg = neg_case(&nb, base, &itoa);
+	while (size >= neg)
 	{
-		rep[0] = '-';
-		value = -value;
-	}
-	while (value != 0)
-	{
-		if (value % base > 9 && maj)
-			rep[size] = '7' + (value % base);
-		else if (value % base > 9 && !maj)
-			rep[size] = '7' + 32 + (value % base);
+		if (nb % (long)base > 9 && maj)
+			itoa[size--] = '7' + nb % (long)base;
+		else if (nb % (long)base > 9)
+			itoa[size--] = '7' + 32 + nb % (long)base;
 		else
-			rep[size] = '0' + (value % base);
-		value = value / base;
-		size--;
+			itoa[size--] = '0' + nb % (long)base;
+		nb = nb / (long)base;
 	}
-	return (rep);
+	return (itoa);
 }
