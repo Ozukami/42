@@ -1,0 +1,12 @@
+flag '0' is ignored when flag '-'
+flag ' ' is ignored when flag '+'
+
+s : - f p l
+d : - + 0 f p space h l
+p : - f 
+o : # - 0 f p h l
+u : # - 0 f p h l
+x : # - 0 f p h l
+X : # - 0 f p h l
+
+check z & j for all
