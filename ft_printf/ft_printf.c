@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:29:40 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/11 05:35:06 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/13 08:45:33 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,14 +69,12 @@ int		ft_printf(const char *restrict format, ...)
 		while (i < 15)
 		{
 			if (list->type == tab[i].type)
-				tab[i].f(ap);
+			{
+				tab[i].f(ap, list);
+				break ;
+			}
 			i++;
 		}
-		/*
-		printf("[%d | %d | %d | %d | %d | %d | %d | %s | %c]\n", list->space,
-				list->prefix, list->zero, list->left, list->sign,
-				list->field, list->p, list->mod, list->type);
-				*/
 		list = list->next;
 	}
 	return (0);

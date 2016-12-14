@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 07:09:07 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/10 07:26:56 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/13 11:25:50 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ t_conv	*ft_new_conv(char *s)
 			new->space = 1;
 			i++;
 		}
-		ft_get_flags(new, s[i]);
+		ft_get_flags(new, s[i], &i);
+		ft_get_flags(new, s[i], &i);
+		ft_get_flags(new, s[i], &i);
+		ft_get_flags(new, s[i], &i);
 		ft_get_field_prec(new, s, &i);
 		ft_get_mod(new, s, &i);
 		new->type = s[i];

@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/09 23:45:58 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/11 05:40:20 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/14 08:29:51 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,33 +15,20 @@
 
 int		main(int ac, char **av)
 {
+	int		i;
+	//int		number;
+	char	c;
+
+	c = '8';
+	i = -512;
+//	printf("%5.2d\n", 6);
 	if (ac < 1)
 	{
 		printf("%s", av[0]);
 		return (0);
 	}
-	/*
-	int		number;
-	int		i;
-	i = 512;
-	ft_printf("{%d %s %i %% %S}\n", 5, "Bonjour", 100, L"A");
-	ft_printf("[%p]\n", (void *)&i);
-	printf("[%p]\n", (void *)&i);
-	printf("[%ld]\n", 0x7fff50838b2c);
-	number = 1024;
-	printf(" %+d \n", 0);
-	printf(" %10d \n", number);
-	printf(" %10.3d \n", 1);
-	printf(" %0+5d \n", 1111);
-	printf(" %-#10x \n", number);  
-	printf(" %#x \n", number);
-	printf(" %x \n", number);
-	printf("---%*d----\n", 2, number);
-	ft_printf("  % # 0 - + 8.3hhd   %  -.5ld   %x %X", 30, 512, 255, 255);
-	*/
-
-	ft_printf("%u", -512);
-	printf("\n%u\n", -512);
-	
+//	printf("  %    #0-+8.3hhd   %  -.5ld   %x %X\n", 30, 512, 255, 255);
+	printf("%-010.2d\n", i);
+	ft_printf("%-010.2d", i);
 	return (0);
 }

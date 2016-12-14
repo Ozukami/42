@@ -6,33 +6,100 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 09:04:59 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/11 03:05:11 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/14 08:54:57 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	ft_va_arg_p(va_list ap)
+size_t	ft_va_arg_p(va_list ap)
 {
-	ft_putstr(ft_itoa_base((int)va_arg(ap, void *), 16, 0));
+	printf("%p\n", va_arg(ap, size_t *));
 }
 
-void	ft_va_arg_c(va_list ap)
+size_t	ft_va_arg_c(va_list ap, t_conv *list)
 {
-	ft_putchar(va_arg(ap, int));
+	char	c;
+	size_t	i;
+	char	*cpy;
+
+	i = 0;
+	cpy = ft_memalloc(sizeof(char));
+	if (list->field > 1)
+	{
+		free(cpy);
+		cpy = ft_memalloc(list->field);	
+		while (i < list->field)
+		{
+			cpy[i] = ' ';
+			if (list->zero)
+				cpy[i] = '0';
+			i++;
+		}
+	}
+	if (i > 0)
+		i--;
+	cpy[i] = va_arg(ap, char);
+	ft_putendl(cpy);
+	return (ft_strlen(cpy));
 }
 
-void	ft_va_arg_cmaj(va_list ap)
+size_t	ft_va_arg_cmaj(va_list ap)
 {
-	ft_putchar_wchar_t(va_arg(ap, wchar_t));
+	printf("%C\n", va_arg(ap, wchar_t));
 }
 
-void	ft_va_arg_s(va_list ap)
+size_t	ft_va_arg_s(va_list ap, t_conv *list)
 {
-	ft_putstr(va_arg(ap, char *));
+	char	*cpy;
+	char	*cpy2;
+	size_t	i;
+	size_t	j;
+	size_t	len;
+
+	cpy2 = va_arg(ap, char *);
+	len = ft_strlen(cpy2);
+	i = 0;
+	j = 0;
+	cpy = ft_memalloc(ft_max(list->field, len));
+	if (list->left)
+		list->zero = 0;
+	if (list->field > 0)
+	{
+		while (i < list->field)
+		{
+			cpy[i] = ' ';
+			if (list->zero)
+				cpy[i] = '0';
+			i++;
+		}
+	}
+	if (list->p != -1 && list->p < len)
+		i = 0;
+	else
+		(!(list->left)) ? (i = (list->field - len)) : (i = 0);
+	if (list->space && !(list->zero))
+	{
+		cpy[i] = ' ';
+		i++;
+	}
+	if (list->p != 0)
+	{
+		if (list->p != -1)
+			while (i <= (list->field - list->p) && (list->field - list->p) > 0)
+				i++;
+		while (j < list->p && cpy2[j])
+		{
+			cpy[i] = cpy2[j];
+			i++;
+			j++;
+		}
+	}
+	ft_putendl(cpy);
+	return (ft_strlen(cpy));
 }
 
-void	ft_va_arg_smaj(va_list ap)
+size_t	ft_va_arg_smaj(va_list ap)
 {
-	ft_putstr_wchar_t(va_arg(ap, wchar_t *));
+	printf("%S\n", va_arg(ap, wchar_t *));
 }

@@ -6,22 +6,27 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 07:11:20 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/10 09:24:25 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/13 11:25:44 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	ft_get_flags(t_conv *new, char c)
+void	ft_get_flags(t_conv *new, char c, int *i)
 {
 	if (c == '#')
 		new->prefix = 1;
 	if (c == '-')
+	{
 		new->left = 1;
+	}
 	if (c == '+')
 		new->sign = 1;
 	if (c == '0')
+	{
 		new->zero = 1;
+		*i += 1;
+	}
 }
 
 void	ft_get_field_prec(t_conv *new, char *s, int *i)
@@ -33,8 +38,10 @@ void	ft_get_field_prec(t_conv *new, char *s, int *i)
 		len++;
 	if (len)
 		new->field = ft_atoi(ft_strsub(s, *i, len));
+	*i += len;
 	if (s[*i] == '.')
 	{
+		len = 0;
 		*i += 1;
 		while (s[*i + len] >= '0' && s[*i + len] <= '9')
 			len++;
