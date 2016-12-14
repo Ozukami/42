@@ -3,10 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   ft_fun_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+/*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/12/14 08:15:28 by qumaujea          #+#    #+#             */
+/*   Updated: 2016/12/14 08:30:57 by qumaujea         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_fun_2.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 09:08:40 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/14 07:49:26 by qumaujea         ###   ########.fr       */
+/*   Updated: 2016/12/14 08:14:48 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,36 +31,41 @@ size_t	ft_va_arg_d(va_list ap, t_conv *list)
 	size_t	i;
 	size_t	j;
 	int		val;
-	size_t	len;
 
 	i = 0;
 	j = 0;
 	val = va_arg(ap, int);
-	printf("MA BITE1\n");
 	cpy2 = ft_itoa_base(val, 10, 0);
-	printf("MA BITE1\n");
-	printf("%s\n", cpy2);
-	if (list->field < ft_strlen(cpy2))
+	if (list->p > -1)
+		list->left = 0;
+	if (list->left)
+		list->zero = 0;
+	if (list->field < (int)ft_strlen(cpy2) || list->p < (int)ft_strlen(cpy2))
 	{
 		ft_putendl(cpy2);
 		return (ft_strlen(cpy2));
 	}
 	else
 	{
-		printf("MA BITE2\n");
-		cpy = ft_memalloc(list->field);
-		while (i < list->field)
+		cpy = ft_memalloc((!(list->left) ? list->field : ft_strlen(cpy2)));
+		while (i < list->field - 1 && (!(list->left)))
 		{
 			cpy[i] = ' ';
 			if (list->zero)
 				cpy[i] = '0';
 			i++;
 		}
-		printf("MA BITE3\n");
 	}
-	printf("MA BITE2\n");
 	i = 0;
-	while (i < (list->field - ft_strlen(cpy2)))
+	if (val < 0)
+	{
+		cpy[i] = '-';
+		i++;
+		j = 1;
+	}
+	while (i < (list->field - ft_strlen(cpy2)) && (!(list->left)))
+		i++;
+	if (list->p == -1)
 		i++;
 	while (cpy2[j])
 	{	
@@ -56,7 +73,6 @@ size_t	ft_va_arg_d(va_list ap, t_conv *list)
 		i++;
 		j++;
 	}
-	printf("MA BITE4\n");
 	ft_putendl(cpy);
 	return (ft_strlen(cpy));
 }
