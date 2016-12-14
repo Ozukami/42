@@ -6,27 +6,26 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 07:11:20 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/13 11:25:44 by qumaujea         ###   ########.fr       */
+/*   Updated: 2016/12/14 15:43:19 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	ft_get_flags(t_conv *new, char c, int *i)
+void	ft_get_flags(t_conv *new, char *s, int *i)
 {
-	if (c == '#')
+	if (s[*i] == '#')
 		new->prefix = 1;
-	if (c == '-')
-	{
+	else if (s[*i] == '-')
 		new->left = 1;
-	}
-	if (c == '+')
+	else if (s[*i] == '+')
 		new->sign = 1;
-	if (c == '0')
-	{
+	else if (s[*i] == '0')
 		new->zero = 1;
-		*i += 1;
-	}
+	else
+		return ;
+	*i = *i + 1;
+	ft_get_flags(new, s, i);
 }
 
 void	ft_get_field_prec(t_conv *new, char *s, int *i)

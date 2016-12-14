@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/14 12:47:52 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/14 15:41:10 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef struct		s_fun
 ** ft_get.c
 */
 
-void				ft_get_flags(t_conv *new, char c, int *i);
+void				ft_get_flags(t_conv *new, char *s, int *i);
 void				ft_get_field_prec(t_conv *new, char *s, int *i);
 void				ft_get_mod(t_conv *new, char *s, int *i);
 void				ft_get_conv(const char *restrict format, t_conv **list);

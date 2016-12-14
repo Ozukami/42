@@ -67,5 +67,7 @@ int		main(int ac, char **av)
 	ft_printf("{%-5.4s}[5|4|4]\n", "1234");
 	ft_printf("{%-5s}[5|0|5]\n", "12345");
 	ft_printf("{%-.5s}[0|5|5]\n", "12345");
+
+	ft_printf("{%-0.5s}[0|5|5]\n", "12345");
 	return (0);
 }
