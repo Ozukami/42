@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 09:08:40 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/14 07:20:07 by qumaujea         ###   ########.fr       */
+/*   Updated: 2016/12/14 07:49:26 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,8 @@ size_t	ft_va_arg_d(va_list ap, t_conv *list)
 	i = 0;
 	j = 0;
 	val = va_arg(ap, int);
-	len = ft_strlen(ft_int_to_str(val));
 	printf("MA BITE1\n");
-	printf("LEN %zu\n", len);
-	cpy2 = ft_int_to_str(val);
+	cpy2 = ft_itoa_base(val, 10, 0);
 	printf("MA BITE1\n");
 	printf("%s\n", cpy2);
 	if (list->field < ft_strlen(cpy2))
