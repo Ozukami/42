@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/13 11:19:59 by qumaujea         ###   ########.fr       */
+/*   Updated: 2016/12/14 06:12:08 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,11 @@ void				ft_add_conv(t_conv *new, t_conv **list);
 */
 
 size_t				ft_va_arg_p(va_list ap);
-size_t				ft_va_arg_c(va_list ap);
+size_t				ft_va_arg_c(va_list ap, t_conv *list);
 size_t				ft_va_arg_cmaj(va_list ap);
 size_t				ft_va_arg_s(va_list ap, t_conv *list);
 size_t				ft_va_arg_smaj(va_list ap);
-size_t				ft_va_arg_d(va_list ap);
+size_t				ft_va_arg_d(va_list ap, t_conv *list);
 size_t				ft_va_arg_dmaj(va_list ap);
 size_t				ft_va_arg_i(va_list ap);
 size_t				ft_va_arg_o(va_list ap);

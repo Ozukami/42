@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 09:04:59 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/13 12:41:53 by qumaujea         ###   ########.fr       */
+/*   Updated: 2016/12/14 06:05:59 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,30 @@ size_t	ft_va_arg_p(va_list ap)
 	printf("%p\n", va_arg(ap, size_t *));
 }
 
-size_t	ft_va_arg_c(va_list ap)
+size_t	ft_va_arg_c(va_list ap, t_conv *list)
 {
-	printf("%c\n", va_arg(ap, int));
+	char	c;
+	size_t	i;
+	char	*cpy;
+
+	i = 0;
+	cpy = ft_memalloc(sizeof(char));
+	if (list->field > 1)
+	{
+		cpy = ft_memalloc(list->field);	
+		while (i < list->field)
+		{
+			cpy[i] = ' ';
+			if (list->zero)
+				cpy[i] = '0';
+			i++;
+		}
+	}
+	if (i > 0)
+		i--;
+	cpy[i] = va_arg(ap, char);
+	ft_putendl(cpy);
+	return (ft_strlen(cpy));
 }
 
 size_t	ft_va_arg_cmaj(va_list ap)
@@ -35,15 +56,13 @@ size_t	ft_va_arg_s(va_list ap, t_conv *list)
 	size_t	j;
 	size_t	len;
 
-	j = 0;
 	cpy2 = va_arg(ap, char *);
 	len = ft_strlen(cpy2);
 	i = 0;
+	j = 0;
 	cpy = ft_memalloc(ft_max(list->field, len));
 	if (list->left)
-	{
 		list->zero = 0;
-	}
 	if (list->field > 0)
 	{
 		while (i < list->field)
