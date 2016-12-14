@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/14 06:12:08 by qumaujea         ###   ########.fr       */
+/*   Updated: 2016/12/14 09:11:16 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct		s_conv
 
 typedef struct		s_fun
 {
-	void			(*f)(va_list, t_conv *);
+	size_t			(*f)(va_list, t_conv *);
 	char			type;
 }					t_fun;
 
@@ -70,20 +70,20 @@ void				ft_add_conv(t_conv *new, t_conv **list);
 ** ft_fun_*.c
 */
 
-size_t				ft_va_arg_p(va_list ap);
+size_t				ft_va_arg_p(va_list ap, t_conv *list);
 size_t				ft_va_arg_c(va_list ap, t_conv *list);
-size_t				ft_va_arg_cmaj(va_list ap);
+size_t				ft_va_arg_cmaj(va_list ap, t_conv *list);
 size_t				ft_va_arg_s(va_list ap, t_conv *list);
-size_t				ft_va_arg_smaj(va_list ap);
+size_t				ft_va_arg_smaj(va_list ap, t_conv *list);
 size_t				ft_va_arg_d(va_list ap, t_conv *list);
-size_t				ft_va_arg_dmaj(va_list ap);
-size_t				ft_va_arg_i(va_list ap);
-size_t				ft_va_arg_o(va_list ap);
-size_t				ft_va_arg_omaj(va_list ap);
-size_t				ft_va_arg_u(va_list ap);
-size_t				ft_va_arg_umaj(va_list ap);
-size_t				ft_va_arg_x(va_list ap);
-size_t				ft_va_arg_xmaj(va_list ap);
+size_t				ft_va_arg_dmaj(va_list ap, t_conv *list);
+size_t				ft_va_arg_i(va_list ap, t_conv *list);
+size_t				ft_va_arg_o(va_list ap, t_conv *list);
+size_t				ft_va_arg_omaj(va_list ap, t_conv *list);
+size_t				ft_va_arg_u(va_list ap, t_conv *list);
+size_t				ft_va_arg_umaj(va_list ap, t_conv *list);
+size_t				ft_va_arg_x(va_list ap, t_conv *list);
+size_t				ft_va_arg_xmaj(va_list ap, t_conv *list);
 
 char				*ft_itoa_base(int value, int base, int maj);
 

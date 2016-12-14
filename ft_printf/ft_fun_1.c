@@ -6,13 +6,13 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 09:04:59 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/14 08:54:57 by qumaujea         ###   ########.fr       */
+/*   Updated: 2016/12/14 09:08:17 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-size_t	ft_va_arg_p(va_list ap)
+size_t	ft_va_arg_p(va_list ap, t_conv *list)
 {
 	printf("%p\n", va_arg(ap, size_t *));
 }
@@ -44,7 +44,7 @@ size_t	ft_va_arg_c(va_list ap, t_conv *list)
 	return (ft_strlen(cpy));
 }
 
-size_t	ft_va_arg_cmaj(va_list ap)
+size_t	ft_va_arg_cmaj(va_list ap, t_conv *list)
 {
 	printf("%C\n", va_arg(ap, wchar_t));
 }
@@ -99,7 +99,7 @@ size_t	ft_va_arg_s(va_list ap, t_conv *list)
 	return (ft_strlen(cpy));
 }
 
-size_t	ft_va_arg_smaj(va_list ap)
+size_t	ft_va_arg_smaj(va_list ap, t_conv *list)
 {
 	printf("%S\n", va_arg(ap, wchar_t *));
 }
