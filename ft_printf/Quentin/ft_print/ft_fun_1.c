@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 09:04:59 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/14 06:05:59 by qumaujea         ###   ########.fr       */
+/*   Updated: 2016/12/14 08:54:57 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ size_t	ft_va_arg_c(va_list ap, t_conv *list)
 	cpy = ft_memalloc(sizeof(char));
 	if (list->field > 1)
 	{
+		free(cpy);
 		cpy = ft_memalloc(list->field);	
 		while (i < list->field)
 		{
