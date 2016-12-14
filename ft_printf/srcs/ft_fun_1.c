@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 09:04:59 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/14 14:00:06 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/14 15:19:14 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ size_t	ft_va_arg_c(va_list ap, t_conv *list)
 	if (list->field > 1)
 	{
 		free(cpy);
-		cpy = ft_memalloc(list->field);	
+		cpy = ft_memalloc(list->field);
 		while ((int)i < list->field)
 		{
 			cpy[i] = ' ';
@@ -57,14 +57,14 @@ size_t	ft_fp_s(size_t len, char **to_print, t_conv *list)
 	size_t	i;
 	size_t	size;
 
-	if (list->field == 0)
+	if (list->field == -1)
 		size = (size_t)ft_min(list->p, (int)len);
-	else if (list->p == 0)
+	else if (list->p == -1)
 		size = (size_t)ft_max(list->field, (int)len);
 	else if (list->p > list->field && list->p < (int)len)
 		size = (size_t)list->p;
-	else if (list->p > list->field && list->p < (int)len)
-		size = len;
+	else if (list->p > list->field && list->p > (int)len)
+		size = (size_t)ft_max(list->field, (int)len);
 	else
 		size = (size_t)list->field;
 	*to_print = ft_memalloc(sizeof(char) * (size + 1));
@@ -72,6 +72,21 @@ size_t	ft_fp_s(size_t len, char **to_print, t_conv *list)
 	while (i < size)
 		(*to_print)[i++] = ' ';
 	return (size);
+}
+
+int		ft_left_s(char *arg, size_t len, char **to_print, t_conv *list)
+{
+	if (list->left)
+	{
+		if (list->p > -1)
+			ft_strncpy(*to_print, arg, (size_t)
+					(ft_min(ft_min((int)ft_strlen(arg), (int)len), list->p)));
+		else
+			ft_strncpy(*to_print, arg, (size_t)
+					(ft_min((int)ft_strlen(arg), (int)len)));
+		return (1);
+	}
+	return (0);
 }
 
 size_t	ft_va_arg_s(va_list ap, t_conv *list)
@@ -82,15 +97,22 @@ size_t	ft_va_arg_s(va_list ap, t_conv *list)
 	size_t	i;
 
 	arg = va_arg(ap, char *);
-	len = ft_fp(ft_strlen(arg), &to_print, list);
-	if (list->left)
-		ft_strncpy(*to_print, arg, (size_t)(ft_min((int)ft_strlen(arg), (int)len)));
-	else
+	len = ft_fp_s(ft_strlen(arg), &to_print, list);
+	i = 0;
+	if (!ft_left_s(arg, len, &to_print, list))
 	{
-		i = 0;
-		while (i < len - ft_strlen(arg))
+		while ((int)i < (int)len - (int)ft_strlen(arg))
 			i++;
-		ft_strncpy(&(*to_print)[i], arg, (size_t)(ft_min((int)ft_strlen(arg), (int)len)));
+		if (list->p > -1)
+		{
+			while ((int)i + list->p < (int)len)
+				i++;
+			ft_strncpy(&(to_print)[i], arg, (size_t)
+					(ft_min(ft_min((int)ft_strlen(arg), (int)len), list->p)));
+		}
+		else
+			ft_strncpy(&(to_print)[i], arg, (size_t)
+					(ft_min((int)ft_strlen(arg), (int)len)));
 	}
 	printf("{%s}\n", to_print);
 	return (ft_strlen(to_print));
