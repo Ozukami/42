@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 09:08:40 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/15 09:43:45 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/15 09:49:31 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ size_t	ft_va_arg_d(va_list ap, t_conv *list)
 	if (list->p == -1)
 		i++;
 	while (cpy2[j])
-	{	
+	{
 		cpy[i] = cpy2[j];
 		i++;
 		j++;

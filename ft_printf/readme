@@ -5,6 +5,7 @@ Modifs 15/12/16 :
 	> Debut de gestion de la chaine entiere
 		>> Affichage de tous les char de la chaine
 		>> Affichage de chaque "%type" entre "{ }"
+	> Extraction des fonctions %s de ft_fun_1.c vers ft_s.c
 	> Rajout dans libft :
 		>> ft_strjoinf.c 
 		>> ft_straddchar.c 

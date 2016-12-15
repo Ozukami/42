@@ -72,6 +72,6 @@ int		main(int ac, char **av)
 	ft_printf("{%-0.5s}[0|5|5]\n", "12345");
 */
 	//printf("\033[31mThis \033[0mis a \033[33mtest\n");
-	ft_printf("bonjour %-.5s est un %s %d !\n", "ceci", "test", 5);
+	ft_printf("bonjour %6s est un %s %d !\n", "ceci", "test", 5);
 	return (0);
 }
