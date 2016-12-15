@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 10:49:10 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/14 13:41:47 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/15 09:02:02 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,5 +109,7 @@ int					ft_check_spaces(int c);
 void				ft_strrev(char *s);
 int					ft_min(int a, int b);
 int					ft_max(int a, int b);
+char				*ft_strjoinf(const char *s1, const char *s2);
+char				*ft_straddchar(const char *s, char c);
 
 #endif

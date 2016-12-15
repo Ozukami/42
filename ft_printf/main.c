@@ -28,6 +28,7 @@ int		main(int ac, char **av)
 		return (0);
 	}
 //	printf("  %-    #0-+8.3hhs   %-  -.5ld   %-x %-X\n", 30, 512, 255, 255);
+/*
 	printf("{%-2.4s}[2|4|5]\n", "12345");
 	printf("{%-4.2s}[4|2|5]\n", "12345");
 	printf("{%-3.4s}[3|4|2]\n", "12");
@@ -69,5 +70,8 @@ int		main(int ac, char **av)
 	ft_printf("{%-.5s}[0|5|5]\n", "12345");
 
 	ft_printf("{%-0.5s}[0|5|5]\n", "12345");
+*/
+	//printf("\033[31mThis \033[0mis a \033[33mtest\n");
+	ft_printf("bonjour %-.5s est un %s %d !\n", "ceci", "test", 5);
 	return (0);
 }

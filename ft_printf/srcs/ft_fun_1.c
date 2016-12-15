@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 09:04:59 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/14 15:19:14 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/15 09:41:51 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,9 @@ size_t	ft_fp_s(size_t len, char **to_print, t_conv *list)
 	size_t	i;
 	size_t	size;
 
-	if (list->field == -1)
+	if (list->field == -1 && list->p == -1)
+		size = len;
+	else if (list->field == -1)
 		size = (size_t)ft_min(list->p, (int)len);
 	else if (list->p == -1)
 		size = (size_t)ft_max(list->field, (int)len);
@@ -114,7 +116,9 @@ size_t	ft_va_arg_s(va_list ap, t_conv *list)
 			ft_strncpy(&(to_print)[i], arg, (size_t)
 					(ft_min((int)ft_strlen(arg), (int)len)));
 	}
-	printf("{%s}\n", to_print);
+	ft_putchar('{');
+	ft_putstr(to_print);
+	ft_putchar('}');
 	return (ft_strlen(to_print));
 }
 

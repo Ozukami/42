@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 07:11:20 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/14 15:43:19 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/15 09:36:01 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,31 +63,45 @@ void	ft_get_mod(t_conv *new, char *s, int *i)
 		new->mod = ft_strsub(s, *i, 1);
 }
 
-void	ft_get_conv(const char *restrict format, t_conv **list)
+size_t	ft_get_len(const char *restrict format, int i)
+{
+	size_t	len;
+
+	len = 0;
+	while (!(format[i + len] == 's' || format[i + len] == 'S' ||
+				format[i + len] == 'p' || format[i + len] == 'i' ||
+				format[i + len] == 'd' || format[i + len] == 'D' ||
+				format[i + len] == 'o' || format[i + len] == 'O' ||
+				format[i + len] == 'u' || format[i + len] == 'U' ||
+				format[i + len] == 'x' || format[i + len] == 'X' ||
+				format[i + len] == 'c' || format[i + len] == 'C'))
+		len++;
+	return (len);
+}
+
+char	*ft_get_conv(const char *restrict format, t_conv **list)
 {
 	int		i;
 	size_t	len;
+	char	*to_print;
 
-	i = 0;
-	while (format[i])
+	to_print = ft_memalloc(1);
+	i = -1;
+	while (format[++i])
 	{
 		if (format[i] == '%')
 		{
+			to_print = ft_straddchar(to_print, format[i]);
 			if (format[++i] != '%')
 			{
-				len = 0;
-				while (!(format[i + len] == 's' || format[i + len] == 'S' ||
-							format[i + len] == 'p' || format[i + len] == 'i' ||
-							format[i + len] == 'd' || format[i + len] == 'D' ||
-							format[i + len] == 'o' || format[i + len] == 'O' ||
-							format[i + len] == 'u' || format[i + len] == 'U' ||
-							format[i + len] == 'x' || format[i + len] == 'X' ||
-							format[i + len] == 'c' || format[i + len] == 'C'))
-					len++;
+				len = ft_get_len(format, i);
 				ft_add_conv(ft_new_conv(ft_strsub(format, i, len + 1)), list);
 				i = i + len;
 			}
+			to_print = ft_straddchar(to_print, format[i]);
 		}
-		i++;
+		else
+			to_print = ft_straddchar(to_print, format[i]);
 	}
+	return (to_print);
 }

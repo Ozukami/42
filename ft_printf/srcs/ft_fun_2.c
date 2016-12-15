@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 09:08:40 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/14 10:03:05 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/15 09:43:45 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ size_t	ft_va_arg_d(va_list ap, t_conv *list)
 		list->zero = 0;
 	if (list->field < (int)ft_strlen(cpy2) || list->p < (int)ft_strlen(cpy2))
 	{
-		ft_putendl(cpy2);
+		ft_putchar('{');
+		ft_putstr(cpy2);
+		ft_putchar('}');
 		return (ft_strlen(cpy2));
 	}
 	else
@@ -61,7 +63,9 @@ size_t	ft_va_arg_d(va_list ap, t_conv *list)
 		i++;
 		j++;
 	}
-	ft_putendl(cpy);
+	ft_putchar('{');
+	ft_putstr(cpy);
+	ft_putchar('}');
 	return (ft_strlen(cpy));
 }
 

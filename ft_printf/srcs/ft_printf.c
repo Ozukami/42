@@ -6,12 +6,11 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:29:40 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/14 09:29:37 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/15 09:44:14 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
 
 void	ft_fun_init(t_fun **tab)
 {
@@ -52,29 +51,38 @@ void	ft_fun_init2(t_fun **tab)
 int		ft_printf(const char *restrict format, ...)
 {
 	va_list	ap;
-	t_conv	*list;
 	int		i;
-	t_fun	*tab;
+	int		j;
 	size_t	len;
+	t_conv	*list;
+	t_fun	*tab;
+	char	*to_print;
 
 	list = NULL;
 	len = 0;
-	if (!(tab = malloc(sizeof(t_fun) * 14)))
+	if (!(tab = ft_memalloc(sizeof(t_fun) * 14)))
 		return (-1);
 	ft_fun_init(&tab);
 	ft_fun_init2(&tab);
-	ft_get_conv(format, &list);
+	to_print = ft_get_conv(format, &list);
 	va_start(ap, format);
-	while (list)
+	j = -1;
+	while (to_print[++j])
 	{
-		i = 0;
-		while (i < 15)
+		if (to_print[j] == '%' && to_print[++j] != '%')
 		{
-			if (list->type == tab[i].type)
-				len += tab[i].f(ap, list);
-			i++;
+			i = 0;
+			while (i < 15)
+			{
+				if (list->type == tab[i].type)
+					len += tab[i].f(ap, list);
+				i++;
+			}
+			list = list->next;
 		}
-		list = list->next;
+		else
+			ft_putchar(to_print[j]);
 	}
+	va_end(ap);
 	return ((int)len);
 }
