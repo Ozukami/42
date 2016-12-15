@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 10:49:10 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/15 09:02:02 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/15 11:35:08 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <string.h>
 # include <stdlib.h>
+# include <limits.h>
 
 typedef struct		s_list
 {
@@ -109,7 +110,14 @@ int					ft_check_spaces(int c);
 void				ft_strrev(char *s);
 int					ft_min(int a, int b);
 int					ft_max(int a, int b);
-char				*ft_strjoinf(const char *s1, const char *s2);
-char				*ft_straddchar(const char *s, char c);
+void				ft_putnbr_endl(int n);
+void				ft_putnbr_short(short n);
+void				ft_putnbr_long(long n);
+void				ft_putnbr_u_short(unsigned short n);
+void				ft_putnbr_u_long(unsigned long n);
+void				ft_putnbr_u_int(unsigned int n);
+char				*ft_itoa_base(int value, int base, int maj);
+char				*ft_strjoinf(char const *s1, char const *s2);
+char				*ft_straddchar(char const *s, char c);
 
 #endif

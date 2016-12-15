@@ -1,4 +1,4 @@
-RAPPEL : FREE !
+RAPPEL : il faudra bien FREE !
 
 Modifs 15/12/16 :
 	> Gestion du "%s" simple (on avait full segfault sur les "%s" sans aucun flag)
@@ -6,10 +6,17 @@ Modifs 15/12/16 :
 		>> Affichage de tous les char de la chaine
 		>> Affichage de chaque "%type" entre "{ }"
 	> Extraction des fonctions %s de ft_fun_1.c vers ft_s.c
+	> Creation d'1 fichier par fonctions de ft_a_ranger.c
 	> Rajout dans libft :
 		>> ft_strjoinf.c 
 		>> ft_straddchar.c 
+		>> ft_putnbr_endl.c
+		>> ft_putnbr_short.c
+		>> ft_putnbr_long.c
+		>> ft_putnbr_u_short.c
+		>> ft_putnbr_u_long.c
+		>> ft_putnbr_u_int.c
 	> Makefile :
 		>> MaJ suite aux ajouts libft
 		>> MaJ de la regle main (execution de ./a.out)
-			Du coup "make main" compile tout puis execute
+			[Du coup "make main" compile tout puis execute]

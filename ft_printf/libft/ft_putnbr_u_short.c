@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_int_to_unsigned.c                               :+:      :+:    :+:   */
+/*   ft_putnbr_u_short.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/15 10:04:43 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/15 10:05:04 by apoisson         ###   ########.fr       */
+/*   Created: 2016/12/15 11:07:02 by apoisson          #+#    #+#             */
+/*   Updated: 2016/12/15 11:19:07 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 
-unsigned int	ft_int_to_unsigned(int nb)
+void	ft_putnbr_u_short(unsigned short n)
 {
-	long	rep;
-
-	rep = (2147483648 * 2) - 1;
-	if (nb < 0)
-		rep = rep + (unsigned int)nb;
+	if (n < 10)
+		ft_putchar('0' + n);
 	else
-		rep = (unsigned int)nb;
-	return (rep);
+	{
+		ft_putnbr_u_short(n / 10);
+		ft_putchar('0' + n % 10);
+	}
 }

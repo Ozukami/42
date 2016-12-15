@@ -1,34 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_long.c                                   :+:      :+:    :+:   */
+/*   ft_putnbr_short.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/15 10:05:38 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/15 10:05:52 by apoisson         ###   ########.fr       */
+/*   Created: 2016/12/15 11:09:00 by apoisson          #+#    #+#             */
+/*   Updated: 2016/12/15 11:18:51 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 
-void	ft_putnbr_long(long n)
+void	ft_putnbr_short(short n)
 {
-	long	min;
-
-	min = -9223372036854775807;
-	if (n == min)
-		ft_putstr("-9223372036854775807");
+	if (n == SHRT_MIN)
+		ft_putstr("-32768");
 	else if (n < 0)
 	{
 		ft_putchar('-');
-		ft_putnbr_long(-n);
+		ft_putnbr_short(-n);
 	}
 	else if (n < 10)
 		ft_putchar('0' + n);
 	else
 	{
-		ft_putnbr_long(n / 10);
+		ft_putnbr_short(n / 10);
 		ft_putchar('0' + n % 10);
 	}
 }

@@ -6,11 +6,11 @@
 /*   By: exam <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 10:48:38 by exam              #+#    #+#             */
-/*   Updated: 2016/12/14 08:45:49 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/15 11:32:14 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include <libft.h>
 
 int		get_size(long value, long base)
 {

@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/15 09:36:14 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/15 11:33:04 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "libft.h"
 # include <stdarg.h>
+# include <limits.h>
 # include <stdio.h> // !!!!!
 
 /*
@@ -83,8 +84,6 @@ size_t				ft_va_arg_u(va_list ap, t_conv *list);
 size_t				ft_va_arg_umaj(va_list ap, t_conv *list);
 size_t				ft_va_arg_x(va_list ap, t_conv *list);
 size_t				ft_va_arg_xmaj(va_list ap, t_conv *list);
-
-char				*ft_itoa_base(int value, int base, int maj);
 
 int					ft_printf(const char *restrict format, ...);
 
