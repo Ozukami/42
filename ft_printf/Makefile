@@ -6,7 +6,7 @@
 #    By: apoisson <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 11:29:15 by apoisson          #+#    #+#              #
-#    Updated: 2016/12/15 11:32:58 by apoisson         ###   ########.fr        #
+#    Updated: 2016/12/18 05:01:05 by apoisson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ $(NAME):
 	@ar rc $(NAME) $(addprefix objs/, $(OBJS1) $(OBJS2))
 
 main: re
-	@gcc $(FLAGS) main.c -L. -lftprintf -I includes/
+	@gcc -Wall -Wextra main.c -L. -lftprintf -I includes/
 	@rm -rdf objs/
 	@printf "\033[0;31m- Executing a.out -\n\033[0m"
 	@./a.out

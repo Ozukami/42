@@ -29,6 +29,10 @@ int		main(int ac, char **av)
 	}
 //	printf("  %-    #0-+8.3hhs   %-  -.5ld   %-x %-X\n", 30, 512, 255, 255);
 /*
+	char	*s;
+	printf("[%p]\n", &s);
+	printf("[%#llx]\n", &s);
+
 	printf("{%-2.4s}[2|4|5]\n", "12345");
 	printf("{%-4.2s}[4|2|5]\n", "12345");
 	printf("{%-3.4s}[3|4|2]\n", "12");
@@ -71,7 +75,9 @@ int		main(int ac, char **av)
 
 	ft_printf("{%-0.5s}[0|5|5]\n", "12345");
 */
-	//printf("\033[31mThis \033[0mis a \033[33mtest\n");
-	ft_printf("bonjour %-6s est un %10.2s %d !\n", "ceci", "test", 5);
+
+	//ft_printf("bonjour %-6s est un %10.2s %d !\n", "ceci", "test", 5);
+	ft_printf("START %C%S%D%O%U%D END\n", 't', "est", 1, 1, 1, 1);	
+	ft_printf("START %S END\n", "salut");	
 	return (0);
 }

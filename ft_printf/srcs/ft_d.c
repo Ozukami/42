@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_fun_2.c                                         :+:      :+:    :+:   */
+/*   ft_d.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 09:08:40 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/15 09:49:31 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/18 05:20:35 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,25 +67,4 @@ size_t	ft_va_arg_d(va_list ap, t_conv *list)
 	ft_putstr(cpy);
 	ft_putchar('}');
 	return (ft_strlen(cpy));
-}
-
-size_t	ft_va_arg_dmaj(va_list ap, t_conv *list)
-{
-	printf("%D\n", va_arg(ap, int));
-	(void)list;
-	return (0);
-}
-
-size_t	ft_va_arg_o(va_list ap, t_conv *list)
-{
-	printf("%o\n", va_arg(ap, int));
-	(void)list;
-	return (0);
-}
-
-size_t	ft_va_arg_omaj(va_list ap, t_conv *list)
-{
-	printf("%O\n", va_arg(ap, unsigned int));
-	(void)list;
-	return (0);
 }

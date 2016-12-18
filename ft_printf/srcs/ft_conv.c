@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 07:09:07 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/14 15:38:25 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/18 05:14:48 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,29 @@ void	ft_new_init(t_conv *new)
 	new->p = -1;
 	new->mod = NULL;
 	new->next = NULL;
+}
+
+void	ft_adjust(t_conv *new)
+{
+	if (new->type == 'C'
+			|| new->type == 'S' || new->type == 'D'
+			|| new->type == 'O' || new->type == 'U')
+	{
+		new->type += 32;
+		new->mod = "l";
+	}
+	if (new->type == 'i')
+		new->type = 'd';
+	if (new->type == 'p')
+	{
+		new->type = 'x';
+		new->prefix = 1;
+		new->mod = "ll";
+	}
+	if (new->zero)
+		new->left = 0;
+	if (new->space)
+		new->sign = 0;
 }
 
 t_conv	*ft_new_conv(char *s)
@@ -47,6 +70,7 @@ t_conv	*ft_new_conv(char *s)
 		ft_get_field_prec(new, s, &i);
 		ft_get_mod(new, s, &i);
 		new->type = s[i];
+		ft_adjust(new);
 		i++;
 	}
 	return (new);

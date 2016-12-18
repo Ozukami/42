@@ -1,18 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_int_to_short.c                                  :+:      :+:    :+:   */
+/*   ft_u.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/15 10:04:12 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/15 10:04:16 by apoisson         ###   ########.fr       */
+/*   Created: 2016/12/18 05:22:59 by apoisson          #+#    #+#             */
+/*   Updated: 2016/12/18 05:23:12 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-short			ft_int_to_short(int nb)
+size_t	ft_va_arg_u(va_list ap, t_conv *list)
 {
-	return ((short)nb);
+	printf("%u\n", va_arg(ap, int));
+	(void)list;
+	return (0);
 }
