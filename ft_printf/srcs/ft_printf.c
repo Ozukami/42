@@ -30,7 +30,7 @@ void	ft_fun_init(t_fun **tab)
 	tab[0][6].type = 'X';
 }
 
-int		ft_printf(const char *restrict format, ...)
+int		ft_printf(const char *format, ...)
 {
 	va_list	ap;
 	int		i;

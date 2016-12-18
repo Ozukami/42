@@ -57,7 +57,7 @@ typedef struct		s_fun
 void				ft_get_flags(t_conv *new, char *s, int *i);
 void				ft_get_field_prec(t_conv *new, char *s, int *i);
 void				ft_get_mod(t_conv *new, char *s, int *i);
-char				*ft_get_conv(const char *restrict format, t_conv **list);
+char				*ft_get_conv(const char *format, t_conv **list);
 
 /*
 ** ft_conv.c
@@ -85,6 +85,6 @@ size_t				ft_va_arg_umaj(va_list ap, t_conv *list);
 size_t				ft_va_arg_x(va_list ap, t_conv *list);
 size_t				ft_va_arg_xmaj(va_list ap, t_conv *list);
 
-int					ft_printf(const char *restrict format, ...);
+int					ft_printf(const char *format, ...);
 
 #endif

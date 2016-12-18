@@ -35,7 +35,7 @@ size_t	ft_va_arg_d_old(va_list ap, t_conv *list)
 	}
 	else
 	{
-		cpy = ft_memalloc((!(list->left) ? list->field : ft_strlen(cpy2)));
+		cpy = ft_memalloc((!(list->left) ? (size_t)list->field : ft_strlen(cpy2)));
 		while ((int)i < list->field - 1 && (!(list->left)))
 		{
 			cpy[i] = ' ';

@@ -63,7 +63,7 @@ void	ft_get_mod(t_conv *new, char *s, int *i)
 		new->mod = ft_strsub(s, *i, 1);
 }
 
-size_t	ft_get_len(const char *restrict format, int i)
+size_t	ft_get_len(const char *format, int i)
 {
 	size_t	len;
 
@@ -79,7 +79,7 @@ size_t	ft_get_len(const char *restrict format, int i)
 	return (len);
 }
 
-char	*ft_get_conv(const char *restrict format, t_conv **list)
+char	*ft_get_conv(const char *format, t_conv **list)
 {
 	int		i;
 	size_t	len;

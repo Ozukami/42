@@ -52,7 +52,6 @@ t_conv	*ft_new_conv(char *s)
 {
 	t_conv	*new;
 	int		i;
-	size_t	len;
 
 	i = 0;
 	if (!(new = malloc(sizeof(t_conv))))
@@ -60,7 +59,6 @@ t_conv	*ft_new_conv(char *s)
 	ft_new_init(new);
 	while (s[i])
 	{
-		len = 0;
 		while (s[i] == ' ')
 		{
 			new->space = 1;
