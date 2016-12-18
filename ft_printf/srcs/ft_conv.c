@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 07:09:07 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/18 05:14:48 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/18 07:57:27 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ void	ft_adjust(t_conv *new)
 		new->prefix = 1;
 		new->mod = "ll";
 	}
-	if (new->zero)
-		new->left = 0;
-	if (new->space)
-		new->sign = 0;
+	if (new->left)
+		new->zero = 0;
+	if (new->sign)
+		new->space = 0;
 }
 
 t_conv	*ft_new_conv(char *s)

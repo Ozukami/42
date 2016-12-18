@@ -33,3 +33,6 @@ Modifs 18/12/16 :
 		>> Formate "%p" en "%#llx"
 		>> Met left a 0 si zero est a 1
 		>> Met sign a 0 si space est a 1
+	> Des soucis sur la gestion du %c
+	> Des soucis sur la gestion du %d
+		>> Debut de restructuration : ft_d_test.c

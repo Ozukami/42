@@ -6,13 +6,13 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 09:08:40 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/18 05:20:35 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/18 08:02:37 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-size_t	ft_va_arg_d(va_list ap, t_conv *list)
+size_t	ft_va_arg_d_old(va_list ap, t_conv *list)
 {
 	char	*cpy;
 	char	*cpy2;
@@ -24,8 +24,6 @@ size_t	ft_va_arg_d(va_list ap, t_conv *list)
 	j = 0;
 	val = va_arg(ap, int);
 	cpy2 = ft_itoa_base(val, 10, 0);
-	if (list->p > -1)
-		list->left = 0;
 	if (list->left)
 		list->zero = 0;
 	if (list->field < (int)ft_strlen(cpy2) || list->p < (int)ft_strlen(cpy2))
