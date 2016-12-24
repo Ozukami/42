@@ -120,8 +120,12 @@ int		main(int ac, char **av)
 	ft_putchar_v2(w);
 	write(1, " ]\n", 3);
 
+	printf("\nTest avec printf :\n");
+	printf("[%s]\n", "¡");
+	ft_printf("[%s]\n", "¡");
+
 	printf("\nTest c : %%c\n");
-	ft_printf(" {%3c} {%-3c} \n", 'A', 'B');
-	printf(" {%3c} {%-3c} \n", 'A', 'B');
+	ft_printf("{%3c} {%-3c}\n", 'A', 'B');
+	printf("{%3c} {%-3c}\n", 'A', 'B');
 	return (0);
 }
