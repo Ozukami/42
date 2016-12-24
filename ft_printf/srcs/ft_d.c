@@ -5,64 +5,97 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/10 09:08:40 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/18 08:02:37 by apoisson         ###   ########.fr       */
+/*   Created: 2016/12/24 12:37:13 by apoisson          #+#    #+#             */
+/*   Updated: 2016/12/24 12:37:19 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-size_t	ft_va_arg_d_old(va_list ap, t_conv *list)
+size_t	ft_fp_d(size_t len, char **to_print, t_conv *list)
 {
-	char	*cpy;
-	char	*cpy2;
 	size_t	i;
-	size_t	j;
-	int		val;
+	size_t	size;
 
-	i = 0;
-	j = 0;
-	val = va_arg(ap, int);
-	cpy2 = ft_itoa_base(val, 10, 0);
-	if (list->left)
-		list->zero = 0;
-	if (list->field < (int)ft_strlen(cpy2) || list->p < (int)ft_strlen(cpy2))
-	{
-		ft_putchar('{');
-		ft_putstr(cpy2);
-		ft_putchar('}');
-		return (ft_strlen(cpy2));
-	}
+	if (list->field == -1 && list->p == -1)
+		size = len;
+	else if (list->field == -1)
+		size = (size_t)ft_min(list->p, (int)len);
+	else if (list->p == -1)
+		size = (size_t)ft_max(list->field, (int)len);
+	else if (list->p > list->field && list->p < (int)len)
+		size = (size_t)list->p;
+	else if (list->p > list->field && list->p > (int)len)
+		size = (size_t)ft_max(list->field, (int)len);
 	else
+		size = (size_t)list->field;
+	*to_print = ft_memalloc(sizeof(char) * (size + 1));
+	i = 0;
+	while (i < size)
+		(*to_print)[i++] = ' ';
+	return (size);
+}
+
+void	ft_p_d(char **to_print, t_conv *list)
+{
+	size_t	i;
+
+	if (list->p > -1)
 	{
-		cpy = ft_memalloc((!(list->left) ? (size_t)list->field : ft_strlen(cpy2)));
-		while ((int)i < list->field - 1 && (!(list->left)))
+		i = 0;
+		while ((to_print)[0][i])
 		{
-			cpy[i] = ' ';
-			if (list->zero)
-				cpy[i] = '0';
+			if (i > (size_t)(list->field - list->p - 1) && !(list->left))
+				(to_print)[0][i] = '0';
+			if (i < (size_t)(list->field - list->p) && list->left)
+				(to_print)[0][i] = '0';
 			i++;
 		}
 	}
-	i = 0;
-	if (val < 0)
+}
+
+int		ft_left_d(char *arg, size_t len, char **to_print, t_conv *list)
+{
+	ft_p_d(to_print, list);
+	if (list->left)
 	{
-		cpy[i] = '-';
-		i++;
-		j = 1;
+		if (list->p > -1)
+			ft_strncpy(*to_print + (size_t)(list->field - list->p)
+					- ft_strlen(arg), arg, (size_t)
+					(ft_min(ft_min((int)ft_strlen(arg), (int)len), list->p)));
+		else
+			ft_strncpy(*to_print, arg, (size_t)
+					(ft_min((int)ft_strlen(arg), (int)len)));
+		return (1);
 	}
-	while (i < (list->field - ft_strlen(cpy2)) && (!(list->left)))
-		i++;
-	if (list->p == -1)
-		i++;
-	while (cpy2[j])
+	return (0);
+}
+
+size_t	ft_va_arg_d(va_list ap, t_conv *list)
+{
+	char	*arg;
+	char	*to_print;
+	size_t	len;
+	size_t	i;
+
+	arg = ft_itoa(va_arg(ap, int));
+	len = ft_fp_d(ft_strlen(arg), &to_print, list);
+	if (!ft_left_d(arg, len, &to_print, list))
 	{
-		cpy[i] = cpy2[j];
-		i++;
-		j++;
+		i = 0;
+		while ((int)i < (int)len - (int)ft_strlen(arg))
+			i++;
+		if (list->p > -1)
+		{
+			while ((int)i + list->p < (int)len)
+				i++;
+			ft_strncpy(&(to_print)[i], arg, (size_t)
+					(ft_min(ft_min((int)ft_strlen(arg), (int)len), list->p)));
+		}
+		else
+			ft_strncpy(&(to_print)[i], arg, (size_t)
+					(ft_min((int)ft_strlen(arg), (int)len)));
 	}
-	ft_putchar('{');
-	ft_putstr(cpy);
-	ft_putchar('}');
-	return (ft_strlen(cpy));
+	ft_putstr(to_print);
+	return (ft_strlen(to_print));
 }
