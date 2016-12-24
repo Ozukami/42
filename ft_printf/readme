@@ -43,3 +43,11 @@ Modifs 24/12/16 (Joyeux Noel !) :
 		>> Pas encore a la NORME
 	> Rajout dans libft :
 		>> ft_recursive_power.c
+	>> MaJ du flags.txt
+		>> Rajout de la ligne pour 'c'
+	> 3 correction apportee a la gestion du %c
+		>> Rajout des +1 dans les malloc, sinon le putstr lisait trop loin
+		>> Rajout de la gestion du flag '-'
+		>> Suppression de la gestion du flag '0'
+			>> Flag non gere pour %c
+

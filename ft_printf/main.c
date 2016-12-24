@@ -76,11 +76,11 @@ int		main(int ac, char **av)
 	   ft_printf("{%-0.5s}[0|5|5]\n", "12345");
 	   */
 
-	//ft_printf("bonjour %-6s est un %10.2s %d !\n", "ceci", "test", 5);
-	//ft_printf("START %C%S%D%O%U%D END\n", 't', "est", 1, 1, 1, 1);	
-	//ft_printf("START %S END\n", "salut");	
+	ft_printf("bonjour %-6s est un %10.2s %d !\n", "ceci", "test", 5);
+	ft_printf("START %C%S%D%O%U%D END\n", 't', "est", 1, 1, 1, 1);	
+	ft_printf("START %S END\n", "salut");	
 
-	printf("Test 1 : %%10d\n");
+	printf("\nTest 1 : %%10d\n");
 	ft_printf("%10d\n", 512);
 	printf("{%10d}\n", 512);
 
@@ -114,5 +114,9 @@ int		main(int ac, char **av)
 	write(1, "[ ", 2);
 	ft_putchar_v2(w);
 	write(1, " ]\n", 3);
+
+	printf("\nTest c : %%c\n");
+	ft_printf(" {%3c} {%-3c} \n", 'A', 'B');
+	printf(" {%3c} {%-3c} \n", 'A', 'B');
 	return (0);
 }

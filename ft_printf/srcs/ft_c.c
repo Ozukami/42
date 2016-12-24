@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 09:04:59 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/18 06:23:02 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/24 12:04:46 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,15 @@ size_t	ft_va_arg_c(va_list ap, t_conv *list)
 	char	*cpy;
 
 	i = 0;
-	cpy = ft_memalloc(sizeof(char));
+	cpy = (list->field > 1) ? ft_memalloc(list->field + 1) : ft_memalloc(2);
 	if (list->field > 1)
-	{
-		free(cpy);
-		cpy = ft_memalloc(list->field);
 		while ((int)i < list->field)
-		{
-			cpy[i] = ' ';
-			if (list->zero)
-				cpy[i] = '0';
-			i++;
-		}
-	}
+			cpy[i++] = ' ';
 	if (i > 0)
 		i--;
+	if (list->left)
+		i = 0;
 	cpy[i] = va_arg(ap, int);
-	ft_putchar('[');
 	ft_putstr(cpy);
-	ft_putchar(']');
 	return (ft_strlen(cpy));
 }

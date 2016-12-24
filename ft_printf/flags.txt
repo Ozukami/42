@@ -1,6 +1,7 @@
 flag '0' is ignored when flag '-'
 flag ' ' is ignored when flag '+'
 
+c : - f l
 s : - f p l
 	field : taille min
 	precision : taille max

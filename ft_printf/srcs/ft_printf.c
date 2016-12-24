@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:29:40 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/18 08:20:01 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/24 11:37:04 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int		ft_printf(const char *format, ...)
 	{
 		if (to_print[j] == '%' && to_print[++j] != '%')
 		{
+			/*
 			printf("[%%%c%c%c%c%c%cd]\n",
 					(list->left) ? '-' : 0,
 					(list->sign) ? '+' : 0,
@@ -59,6 +60,7 @@ int		ft_printf(const char *format, ...)
 					(list->field) ? 'f' : 0,
 					(list->p != -1) ? 'p' : 0,
 					(list->space) ? ' ' : 0);
+			*/
 			i = 0;
 			while (i < 7)
 			{
