@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/15 11:33:04 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/24 11:24:33 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ size_t				ft_va_arg_u(va_list ap, t_conv *list);
 size_t				ft_va_arg_umaj(va_list ap, t_conv *list);
 size_t				ft_va_arg_x(va_list ap, t_conv *list);
 size_t				ft_va_arg_xmaj(va_list ap, t_conv *list);
+
+void				ft_putchar_v2(wchar_t c);
 
 int					ft_printf(const char *format, ...);
 

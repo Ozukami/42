@@ -36,3 +36,10 @@ Modifs 18/12/16 :
 	> Des soucis sur la gestion du %c
 	> Des soucis sur la gestion du %d
 		>> Debut de restructuration : ft_d_test.c
+
+Modifs 24/12/16 (Joyeux Noel !) :
+	> ft_putchar_v2
+		>> Affiche les caracteres classiques + unicode
+		>> Pas encore a la NORME
+	> Rajout dans libft :
+		>> ft_recursive_power.c
