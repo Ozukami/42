@@ -1,40 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/04 16:18:36 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/26 08:51:24 by apoisson         ###   ########.fr       */
+/*   Created: 2016/11/04 12:48:37 by apoisson          #+#    #+#             */
+/*   Updated: 2016/11/04 12:54:46 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_atoi(const char *str)
+char	*ft_strnstr(const char *big, const char *little, size_t len)
 {
-	int	rep;
-	int	neg;
-	int	i;
+	size_t	i;
+	size_t	j;
 
-	rep = 0;
-	neg = 0;
+	if (!little[0])
+		return ((char *)big);
 	i = 0;
-	while (ft_isspace(str[i]))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
+	while (big[i] && i < len)
 	{
-		if (str[i] == '-')
-			neg = 1;
+		j = 0;
+		if (little[j] == big[i])
+		{
+			while (little[j] && little[j] == big[i + j] && i + j < len)
+			{
+				j++;
+			}
+			if (!little[j])
+				return ((char *)&big[i]);
+		}
 		i++;
 	}
-	while (str[i] && str[i] >= '0' && str[i] <= '9')
-	{
-		rep = (rep * 10) + str[i] - 48;
-		i++;
-	}
-	if (neg)
-		return (-rep);
-	return (rep);
+	return (NULL);
 }

@@ -1,40 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_putnbr_u_long.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/04 16:18:36 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/26 08:51:24 by apoisson         ###   ########.fr       */
+/*   Created: 2016/12/15 11:07:19 by apoisson          #+#    #+#             */
+/*   Updated: 2016/12/15 11:19:21 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_atoi(const char *str)
+void	ft_putnbr_u_long(unsigned long n)
 {
-	int	rep;
-	int	neg;
-	int	i;
-
-	rep = 0;
-	neg = 0;
-	i = 0;
-	while (ft_isspace(str[i]))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
+	if (n < 10)
+		ft_putchar('0' + n);
+	else
 	{
-		if (str[i] == '-')
-			neg = 1;
-		i++;
+		ft_putnbr_u_long(n / 10);
+		ft_putchar('0' + n % 10);
 	}
-	while (str[i] && str[i] >= '0' && str[i] <= '9')
-	{
-		rep = (rep * 10) + str[i] - 48;
-		i++;
-	}
-	if (neg)
-		return (-rep);
-	return (rep);
 }

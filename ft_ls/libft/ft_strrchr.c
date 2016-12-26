@@ -1,40 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/04 16:18:36 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/26 08:51:24 by apoisson         ###   ########.fr       */
+/*   Created: 2016/11/04 14:50:19 by apoisson          #+#    #+#             */
+/*   Updated: 2016/11/20 08:39:24 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_atoi(const char *str)
+char	*ft_strrchr(const char *s, int c)
 {
-	int	rep;
-	int	neg;
-	int	i;
+	char	*rep;
+	int		i;
 
-	rep = 0;
-	neg = 0;
+	rep = NULL;
 	i = 0;
-	while (ft_isspace(str[i]))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
+	if ((char)c == '\0')
+		return ((char *)&s[ft_strlen(s)]);
+	while (s[i])
 	{
-		if (str[i] == '-')
-			neg = 1;
+		if (s[i] == (char)c)
+			rep = (char *)&s[i];
 		i++;
 	}
-	while (str[i] && str[i] >= '0' && str[i] <= '9')
-	{
-		rep = (rep * 10) + str[i] - 48;
-		i++;
-	}
-	if (neg)
-		return (-rep);
 	return (rep);
 }

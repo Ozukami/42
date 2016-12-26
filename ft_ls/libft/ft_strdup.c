@@ -1,40 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/04 16:18:36 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/26 08:51:24 by apoisson         ###   ########.fr       */
+/*   Created: 2016/11/07 03:17:48 by apoisson          #+#    #+#             */
+/*   Updated: 2016/11/07 03:25:44 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_atoi(const char *str)
+char	*ft_strdup(const char *s1)
 {
-	int	rep;
-	int	neg;
-	int	i;
+	char	*s2;
 
-	rep = 0;
-	neg = 0;
-	i = 0;
-	while (ft_isspace(str[i]))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			neg = 1;
-		i++;
-	}
-	while (str[i] && str[i] >= '0' && str[i] <= '9')
-	{
-		rep = (rep * 10) + str[i] - 48;
-		i++;
-	}
-	if (neg)
-		return (-rep);
-	return (rep);
+	s2 = ft_memalloc(ft_strlen(s1) + 1);
+	if (!s2)
+		return (NULL);
+	return (ft_strcpy(s2, s1));
 }

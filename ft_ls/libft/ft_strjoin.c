@@ -1,40 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/04 16:18:36 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/26 08:51:24 by apoisson         ###   ########.fr       */
+/*   Created: 2016/11/07 05:29:08 by apoisson          #+#    #+#             */
+/*   Updated: 2016/11/16 11:50:38 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_atoi(const char *str)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	int	rep;
-	int	neg;
-	int	i;
+	char	*join;
+	int		i;
+	int		j;
 
-	rep = 0;
-	neg = 0;
+	if (!s1 || !s2)
+		return (NULL);
+	if (!(join = ft_memalloc(ft_strlen(s1) + ft_strlen(s2) + 1)))
+		return (NULL);
 	i = 0;
-	while (ft_isspace(str[i]))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
+	j = 0;
+	while (s1[i])
 	{
-		if (str[i] == '-')
-			neg = 1;
+		join[i] = s1[i];
 		i++;
 	}
-	while (str[i] && str[i] >= '0' && str[i] <= '9')
+	while (s2[j])
 	{
-		rep = (rep * 10) + str[i] - 48;
-		i++;
+		join[i + j] = s2[j];
+		j++;
 	}
-	if (neg)
-		return (-rep);
-	return (rep);
+	return (join);
 }

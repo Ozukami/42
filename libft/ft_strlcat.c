@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 14:59:20 by apoisson          #+#    #+#             */
-/*   Updated: 2016/11/15 10:56:02 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/26 08:47:31 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ size_t	ft_strlcat(char *dst, const char *src, size_t size)
 	size_t	i;
 	size_t	j;
 
+	if (size == 0)
+		return (ft_strlen(src));
 	i = 0;
 	while (dst[i] && i < size)
 		i++;

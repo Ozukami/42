@@ -1,40 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_strsub.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/04 16:18:36 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/26 08:51:24 by apoisson         ###   ########.fr       */
+/*   Created: 2016/11/07 05:10:06 by apoisson          #+#    #+#             */
+/*   Updated: 2016/11/15 11:52:16 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_atoi(const char *str)
+char	*ft_strsub(char const *s, unsigned int start, size_t len)
 {
-	int	rep;
-	int	neg;
-	int	i;
+	char	*sub;
+	size_t	i;
 
-	rep = 0;
-	neg = 0;
+	if (!(sub = (char *)ft_memalloc(len + 1)) || !s)
+		return (NULL);
 	i = 0;
-	while (ft_isspace(str[i]))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
+	while (i < len)
 	{
-		if (str[i] == '-')
-			neg = 1;
+		sub[i] = s[start + i];
 		i++;
 	}
-	while (str[i] && str[i] >= '0' && str[i] <= '9')
-	{
-		rep = (rep * 10) + str[i] - 48;
-		i++;
-	}
-	if (neg)
-		return (-rep);
-	return (rep);
+	sub[len] = '\0';
+	return (sub);
 }

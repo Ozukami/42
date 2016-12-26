@@ -1,40 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/04 16:18:36 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/26 08:51:24 by apoisson         ###   ########.fr       */
+/*   Created: 2016/11/04 14:59:20 by apoisson          #+#    #+#             */
+/*   Updated: 2016/11/15 10:56:02 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_atoi(const char *str)
+size_t	ft_strlcat(char *dst, const char *src, size_t size)
 {
-	int	rep;
-	int	neg;
-	int	i;
+	size_t	i;
+	size_t	j;
 
-	rep = 0;
-	neg = 0;
 	i = 0;
-	while (ft_isspace(str[i]))
+	while (dst[i] && i < size)
 		i++;
-	if (str[i] == '-' || str[i] == '+')
+	j = i;
+	while (src[i - j] && i < size - 1)
 	{
-		if (str[i] == '-')
-			neg = 1;
+		dst[i] = src[i - j];
 		i++;
 	}
-	while (str[i] && str[i] >= '0' && str[i] <= '9')
-	{
-		rep = (rep * 10) + str[i] - 48;
-		i++;
-	}
-	if (neg)
-		return (-rep);
-	return (rep);
+	if (j < size)
+		dst[i] = '\0';
+	return (j + ft_strlen(src));
 }

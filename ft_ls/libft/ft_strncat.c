@@ -1,40 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_strncat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/04 16:18:36 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/26 08:51:24 by apoisson         ###   ########.fr       */
+/*   Created: 2016/11/04 14:30:56 by apoisson          #+#    #+#             */
+/*   Updated: 2016/11/04 14:34:28 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_atoi(const char *str)
+char	*ft_strncat(char *s1, const char *s2, size_t n)
 {
-	int	rep;
-	int	neg;
-	int	i;
+	size_t	i;
+	size_t	j;
 
-	rep = 0;
-	neg = 0;
 	i = 0;
-	while (ft_isspace(str[i]))
+	while (s1[i])
 		i++;
-	if (str[i] == '-' || str[i] == '+')
+	j = 0;
+	while (s2[j] && j < n)
 	{
-		if (str[i] == '-')
-			neg = 1;
-		i++;
+		s1[i + j] = s2[j];
+		j++;
 	}
-	while (str[i] && str[i] >= '0' && str[i] <= '9')
-	{
-		rep = (rep * 10) + str[i] - 48;
-		i++;
-	}
-	if (neg)
-		return (-rep);
-	return (rep);
+	s1[i + j] = '\0';
+	return (s1);
 }

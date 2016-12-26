@@ -1,40 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_strmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/04 16:18:36 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/26 08:51:24 by apoisson         ###   ########.fr       */
+/*   Created: 2016/11/07 04:39:05 by apoisson          #+#    #+#             */
+/*   Updated: 2016/11/16 11:48:26 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_atoi(const char *str)
+char	*ft_strmap(char const *s, char (*f)(char))
 {
-	int	rep;
-	int	neg;
-	int	i;
+	char	*rep;
+	int		i;
 
-	rep = 0;
-	neg = 0;
+	if (!s || !f)
+		return (NULL);
+	if (!(rep = (char *)ft_memalloc(ft_strlen(s) + 1)))
+		return (NULL);
 	i = 0;
-	while (ft_isspace(str[i]))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
+	while (s[i])
 	{
-		if (str[i] == '-')
-			neg = 1;
+		rep[i] = f(s[i]);
 		i++;
 	}
-	while (str[i] && str[i] >= '0' && str[i] <= '9')
-	{
-		rep = (rep * 10) + str[i] - 48;
-		i++;
-	}
-	if (neg)
-		return (-rep);
+	rep[ft_strlen(s)] = '\0';
 	return (rep);
 }

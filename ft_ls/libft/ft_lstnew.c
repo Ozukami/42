@@ -1,40 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/04 16:18:36 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/26 08:51:24 by apoisson         ###   ########.fr       */
+/*   Created: 2016/11/10 09:09:15 by apoisson          #+#    #+#             */
+/*   Updated: 2016/11/16 15:05:56 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_atoi(const char *str)
+t_list	*ft_lstnew(void const *content, size_t content_size)
 {
-	int	rep;
-	int	neg;
-	int	i;
+	t_list	*lstnew;
 
-	rep = 0;
-	neg = 0;
-	i = 0;
-	while (ft_isspace(str[i]))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
+	if (!(lstnew = malloc(sizeof(t_list))))
+		return (NULL);
+	if (content == NULL)
 	{
-		if (str[i] == '-')
-			neg = 1;
-		i++;
+		lstnew->content = NULL;
+		lstnew->content_size = 0;
 	}
-	while (str[i] && str[i] >= '0' && str[i] <= '9')
+	else
 	{
-		rep = (rep * 10) + str[i] - 48;
-		i++;
+		lstnew->content = malloc(content_size);
+		ft_memcpy(lstnew->content, content, content_size);
+		lstnew->content_size = content_size;
 	}
-	if (neg)
-		return (-rep);
-	return (rep);
+	lstnew->next = NULL;
+	return (lstnew);
 }
