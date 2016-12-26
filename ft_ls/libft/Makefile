@@ -6,7 +6,7 @@
 #    By: apoisson <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 11:29:15 by apoisson          #+#    #+#              #
-#    Updated: 2016/12/26 08:19:30 by apoisson         ###   ########.fr        #
+#    Updated: 2016/12/26 09:38:41 by apoisson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ $(NAME): $(OBJS)
 	@ar rc $(NAME) $(OBJS)
 	@printf "\033[0;32m OK\n\033[0m"
 
-$(OBJS):
+$(OBJS): $(SRC)
 	@gcc $(FLAGS) -c $(SRC) -I ../includes/
 
 clean:

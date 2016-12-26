@@ -12,9 +12,11 @@
 
 #include "ft_printf.h"
 #include <stdio.h>
+#include <locale.h>
 
 int		main(int ac, char **av)
 {
+	setlocale(LC_ALL, "");
 	//int		i;
 	//int		number;
 	//char	c;
@@ -127,5 +129,13 @@ int		main(int ac, char **av)
 	printf("\nTest c : %%c\n");
 	ft_printf("{%3c} {%-3c}\n", 'A', 'B');
 	printf("{%3c} {%-3c}\n", 'A', 'B');
+
+	printf("%S\n", L"ο Δικαιοπολις εν αγρω εστιν");
+	printf("%ls\n\n", L"ο Δικαιοπολις εν αγρω εστιν");
+
+	ft_putchar_v2(L'Δ');
+	printf("\n%C\n", L'Δ');
+	printf("%lc\n", L'Δ');
+
 	return (0);
 }

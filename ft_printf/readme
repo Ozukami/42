@@ -53,3 +53,13 @@ Modifs 24/12/16 (Joyeux Noel !) :
 	> %d : 1 correction
 		>> Gestion fonctionnelle des flag '-' et 'p' en simultane
 	> %d restructure && a la NORME
+
+Idees de bonus :
+	> dprintf : printf sur un fd passe en param
+	> sprintf : printf dans une string
+	> snprintf : printf n caracteres dans une string
+
+Modifs 26/12/16 :
+	> Makefile
+		>> Couleurs pour plus de swag
+		>> Relink si modif

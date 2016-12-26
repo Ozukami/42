@@ -6,7 +6,7 @@
 #    By: apoisson <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 11:29:15 by apoisson          #+#    #+#              #
-#    Updated: 2016/12/24 11:04:47 by apoisson         ###   ########.fr        #
+#    Updated: 2016/12/26 08:19:30 by apoisson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,20 +17,18 @@ OBJS = $(SRC:.c=.o)
 
 all: $(NAME)
 
-$(NAME):
-	gcc $(FLAGS) -c $(SRC)
-	ar rc $(NAME) $(OBJS)
+$(NAME): $(OBJS)
+	@printf "\033[0;36m> Compiling libft\033[0m"
+	@ar rc $(NAME) $(OBJS)
+	@printf "\033[0;32m OK\n\033[0m"
 
-main:
-	gcc $(FLAGS) main.c -L. -lft
+$(OBJS):
+	@gcc $(FLAGS) -c $(SRC) -I ../includes/
 
 clean:
-	rm -f $(OBJS)
+	@rm -f $(OBJS)
 
 fclean: clean
-	rm -f $(NAME)
-
-mainclean:
-	rm -f a.out
+	@rm -f $(NAME)
 
 re: fclean all

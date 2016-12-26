@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 10:49:10 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/24 11:04:30 by apoisson         ###   ########.fr       */
+/*   Updated: 2016/12/26 09:09:20 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,8 @@ void				ft_putnbr_u_short(unsigned short n);
 void				ft_putnbr_u_long(unsigned long n);
 void				ft_putnbr_u_int(unsigned int n);
 char				*ft_itoa_base(int value, int base, int maj);
-char				*ft_strjoinf(char const *s1, char const *s2);
-char				*ft_straddchar(char const *s, char c);
+char				*ft_strjoinf(char *s1, char *s2);
+char				*ft_straddchar(char *s, char c);
 int					ft_recursive_power(int nb, int power);
 
 #endif
