@@ -6,7 +6,7 @@
 #    By: apoisson <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/26 11:58:55 by apoisson          #+#    #+#              #
-#    Updated: 2016/12/26 12:11:11 by apoisson         ###   ########.fr        #
+#    Updated: 2017/01/14 01:13:26 by apoisson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,16 +26,12 @@ $(NAME): $(addprefix objs/, $(OBJS1)) $(addprefix objs/, $(OBJS2))
 	@printf "\033[0;32m > OK\n\033[0m"
 
 $(addprefix objs/, $(OBJS1)): $(addprefix libft/, $(LFTSRC))
-	@printf "\033[0;36m> Compiling $(addsuffix .c, $(basename $(notdir $@))) \033[0m"
 	@test -d objs || mkdir objs
 	@gcc $(FLAGS) -c $(addprefix libft/, $(addsuffix .c, $(basename $(notdir $@)))) -o objs/$(notdir $@) -I includes/
-	@printf "\033[0;32m > OK\n\033[0m"
 
 $(addprefix objs/, $(OBJS2)): $(addprefix srcs/, $(PRINTFSRC))
-	@printf "\033[0;36m> Compiling $(addsuffix .c, $(basename $(notdir $@))) \033[0m"
 	@test -d objs || mkdir objs
 	@gcc $(FLAGS) -c $(addprefix srcs/, $(addsuffix .c, $(basename $(notdir $@)))) -o objs/$(notdir $@) -I includes/
-	@printf "\033[0;32m > OK\n\033[0m"
 
 main: $(NAME)
 	@gcc -Wall -Wextra main.c -L. -lftprintf -I includes/

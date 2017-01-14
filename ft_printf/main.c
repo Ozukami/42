@@ -82,23 +82,71 @@ int		main(int ac, char **av)
 		ft_printf("START %S END\n", "salut");	
 
 	   */
+	printf("\nTest 1.1 : %%d\n");
+	ft_printf("{%d}\n", 512);
+	printf("{%d}\n", 512);
 
-	printf("\nTest 1 : %%10d\n");
-	ft_printf("{%10d}\n", 512);
-	printf("{%10d}\n", 512);
+	printf("\nTest 1.2 : %% d\n");
+	ft_printf("{% d}\n", 512);
+	printf("{% d}\n", 512);
 
-	printf("\nTest 2 : %%10.5d\n");
+	printf("\nTest 2.1 : %%.2d\n");
+	ft_printf("{%.2d}\n", 512);
+	printf("{%.2d}\n", 512);
+
+	printf("\nTest 2.2 : %% .2d\n");
+	ft_printf("{% .2d}\n", 512);
+	printf("{% .2d}\n", 512);
+
+	printf("\nTest 3.1 : %%.5d\n");
+	ft_printf("{%.5d}\n", 512);
+	printf("{%.5d}\n", 512);
+
+	printf("\nTest 3.2 : %% .5d\n");
+	ft_printf("{% .5d}\n", 512);
+	printf("{% .5d}\n", 512);
+
+	printf("\nTest 4.1 : %%-.2d\n");
+	ft_printf("{%-.2d}\n", 512);
+	printf("{%-.2d}\n", 512);
+
+	printf("\nTest 4.2 : %% -.2d\n");
+	ft_printf("{% -.2d}\n", 512);
+	printf("{% -.2d}\n", 512);
+
+	printf("\nTest 5.1 : %%-.6d\n");
+	ft_printf("{%-.6d}\n", 512);
+	printf("{%-.6d}\n", 512);
+
+	printf("\nTest 5.2 : %% -.6d\n");
+	ft_printf("{% -.6d}\n", 512);
+	printf("{% -.6d}\n", 512);
+
+	printf("\nTest 6.1 : %%10.5d\n");
 	ft_printf("{%10.5d}\n", 512);
 	printf("{%10.5d}\n", 512);
 
-	printf("\nTest 3 : %%-10.5d\n");
+	printf("\nTest 6.2 : %% 10.5d\n");
+	ft_printf("{% 10.5d}\n", 512);
+	printf("{% 10.5d}\n", 512);
+
+	printf("\nTest 7.1 : %%-10.5d\n");
 	ft_printf("{%-10.5d}\n", 512);
 	printf("{%-10.5d}\n", 512);
 
-	printf("\nTest 4 : %%-10d\n");
+	printf("\nTest 7.2 : %% -10.5d\n");
+	ft_printf("{% -10.5d}\n", 512);
+	printf("{% -10.5d}\n", 512);
+
+	printf("\nTest 7.1 : %%-10d\n");
 	ft_printf("{%-10d}\n", 512);
 	printf("{%-10d}\n", 512);
 
+	printf("\nTest 7.2 : %% -10d\n");
+	ft_printf("{% -10d}\n", 512);
+	printf("{% -10d}\n", 512);
+
+	/*
 	printf("\nTest ft_putchar_v2 :\n");
 	wchar_t	w;
 	w = 65;
@@ -136,6 +184,6 @@ int		main(int ac, char **av)
 	ft_putchar_v2(L'Δ');
 	printf("\n%C\n", L'Δ');
 	printf("%lc\n", L'Δ');
-
+	*/
 	return (0);
 }
