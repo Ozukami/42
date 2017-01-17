@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/24 11:24:33 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/17 08:17:46 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct		s_fun
 void				ft_get_flags(t_conv *new, char *s, int *i);
 void				ft_get_field_prec(t_conv *new, char *s, int *i);
 void				ft_get_mod(t_conv *new, char *s, int *i);
+size_t				ft_get_len(const char *format, int i);
 char				*ft_get_conv(const char *format, t_conv **list);
 
 /*
@@ -71,17 +72,11 @@ void				ft_add_conv(t_conv *new, t_conv **list);
 ** ft_fun_*.c
 */
 
-size_t				ft_va_arg_p(va_list ap, t_conv *list);
-size_t				ft_va_arg_c(va_list ap, t_conv *list);
-size_t				ft_va_arg_cmaj(va_list ap, t_conv *list);
+size_t				ft_va_arg_c(va_list ap, t_conv *list, char *to_print);
 size_t				ft_va_arg_s(va_list ap, t_conv *list);
-size_t				ft_va_arg_smaj(va_list ap, t_conv *list);
 size_t				ft_va_arg_d(va_list ap, t_conv *list);
-size_t				ft_va_arg_dmaj(va_list ap, t_conv *list);
 size_t				ft_va_arg_o(va_list ap, t_conv *list);
-size_t				ft_va_arg_omaj(va_list ap, t_conv *list);
 size_t				ft_va_arg_u(va_list ap, t_conv *list);
-size_t				ft_va_arg_umaj(va_list ap, t_conv *list);
 size_t				ft_va_arg_x(va_list ap, t_conv *list);
 size_t				ft_va_arg_xmaj(va_list ap, t_conv *list);
 
