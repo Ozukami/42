@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/24 12:37:13 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/17 12:12:22 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/17 13:02:10 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,15 @@ int			ft_left_d(char *arg, size_t len, char **to_print, t_conv *list)
 	{
 		if (list->p > -1 && list->p > (int)ft_strlen(arg) && arg[0] == '-')
 			ft_strncpy(*to_print + (size_t)(list->p)
-					- ft_strlen(arg) + list->space + 1, arg, (size_t)
+					- ft_strlen(arg) + 1, arg, (size_t)
 					(ft_min(ft_min((int)ft_strlen(arg), (int)len), list->p)));
 		else if (list->p > -1 && list->p > (int)ft_strlen(arg))
 			ft_strncpy(*to_print + (size_t)(list->p)
-					- ft_strlen(arg) + list->space, arg, (size_t)
+					- ft_strlen(arg) + list->space + list->sign, arg, (size_t)
 					(ft_min(ft_min((int)ft_strlen(arg), (int)len), list->p)));
+		else if (arg[0] == '-')
+			ft_strncpy(*to_print, arg, (size_t)
+					(ft_min((int)ft_strlen(arg), (int)len)));
 		else
 			ft_strncpy(*to_print + list->space, arg, (size_t)
 					(ft_min((int)ft_strlen(arg), (int)len)));
@@ -146,7 +149,7 @@ size_t		ft_va_arg_d(va_list ap, t_conv *list, char **str)
 		while (to_print[i++])
 		{
 			if (to_print[i] == arg[0])
-				to_print[i] = '0';	
+				to_print[i] = '0';
 		}
 	}
 	*str = ft_strjoin(*str, to_print);
