@@ -29,6 +29,12 @@ int		main(int ac, char **av)
 		printf("%-s", av[0]);
 		return (0);
 	}
+	char	*s;
+
+	s = "[%5.2d]";
+	printf(s, 512);
+	s = "[%-5.3d]";
+	printf(s, 512);
 	//	printf("  %-    #0-+8.3hhs   %-  -.5ld   %-x %-X\n", 30, 512, 255, 255);
 	/*
 	   char	*s;

@@ -6,7 +6,7 @@
 #    By: apoisson <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/26 11:58:55 by apoisson          #+#    #+#              #
-#    Updated: 2017/01/14 06:49:10 by apoisson         ###   ########.fr        #
+#    Updated: 2017/01/17 10:21:27 by apoisson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,13 @@ main: $(NAME)
 	@rm -rdf objs/
 	@printf "\033[0;31m- Executing a.out -\n\033[0m"
 	@./a.out
+	@printf "\033[0;31m-- End of a.out --\n\033[0m"
+
+test: $(NAME)
+	@gcc -Wall -Wextra test.c -L. -lftprintf -I includes/ -o test
+	@rm -rdf objs/
+	@printf "\033[0;31m- Executing a.out -\n\033[0m"
+	@./test 0
 	@printf "\033[0;31m-- End of a.out --\n\033[0m"
 
 clean:
