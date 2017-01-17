@@ -6,13 +6,13 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/24 12:37:13 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/14 02:57:20 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/14 04:48:42 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-size_t	ft_fp_d(size_t len, char **to_print, t_conv *list)
+size_t		ft_fp_d(size_t len, char **to_print, t_conv *list)
 {
 	size_t	i;
 	size_t	size;
@@ -38,10 +38,11 @@ size_t	ft_fp_d(size_t len, char **to_print, t_conv *list)
 	return (size);
 }
 
-void	ft_p_d(char **to_print, t_conv *list)
+void		ft_p_d(char **to_print, t_conv *list, size_t len, size_t size)
 {
 	size_t	i;
 
+	size = (list->p < (int)len) ? size : len;
 	if (list->p > -1)
 	{
 		i = 0;
@@ -51,7 +52,8 @@ void	ft_p_d(char **to_print, t_conv *list)
 			{
 				if (i > (size_t)(list->field - list->p - 1) && !(list->left))
 					(to_print)[0][i] = '0';
-				if (i < (size_t)(list->field - list->p) && list->left)
+				if (i < (size_t)(list->field - ft_max((int)size, list->p))
+							&& list->left)
 					(to_print)[0][i] = '0';
 			}
 			else
@@ -61,9 +63,9 @@ void	ft_p_d(char **to_print, t_conv *list)
 	}
 }
 
-int		ft_left_d(char *arg, size_t len, char **to_print, t_conv *list)
+int			ft_left_d(char *arg, size_t len, char **to_print, t_conv *list)
 {
-	ft_p_d(to_print, list);
+	ft_p_d(to_print, list, ft_strlen(arg), len);
 	if (list->left)
 	{
 		if (list->space)
@@ -80,7 +82,7 @@ int		ft_left_d(char *arg, size_t len, char **to_print, t_conv *list)
 	return (0);
 }
 
-void	ft_sub(t_conv *list, char *to_print, char *arg, size_t len)
+static void	ft_sub(t_conv *list, char *to_print, char *arg, size_t len)
 {
 	size_t	i;
 
@@ -89,7 +91,8 @@ void	ft_sub(t_conv *list, char *to_print, char *arg, size_t len)
 		i++;
 	if (list->p > -1)
 	{
-		while ((int)i + list->p < (int)len && ft_strlen(arg) < len)
+		while ((int)i + ft_max(list->p, (int)len) < (int)len
+				&& ft_strlen(arg) < len)
 			i++;
 		ft_strncpy(&(to_print)[i], arg, (size_t)
 				(ft_min((int)ft_strlen(arg), (int)len)));
@@ -100,7 +103,7 @@ void	ft_sub(t_conv *list, char *to_print, char *arg, size_t len)
 	return ;
 }
 
-size_t	ft_va_arg_d(va_list ap, t_conv *list)
+size_t		ft_va_arg_d(va_list ap, t_conv *list)
 {
 	char	*arg;
 	char	*to_print;

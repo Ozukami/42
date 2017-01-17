@@ -82,6 +82,7 @@ int		main(int ac, char **av)
 		ft_printf("START %S END\n", "salut");	
 
 	   */
+
 	printf("\nTest 1.1 : %%d\n");
 	ft_printf("{%d}\n", 512);
 	printf("{%d}\n", 512);
@@ -145,6 +146,170 @@ int		main(int ac, char **av)
 	printf("\nTest 7.2 : %% -10d\n");
 	ft_printf("{% -10d}\n", 512);
 	printf("{% -10d}\n", 512);
+
+	printf("\nTest 8.1 : %%10.2d\n");
+	ft_printf("{%10.2d}\n", 512);
+	printf("{%10.2d}\n", 512);
+
+	printf("\nTest 8.2 : %% 10.2d\n");
+	ft_printf("{% 10.2d}\n", 512);
+	printf("{% 10.2d}\n", 512);
+
+	printf("\nTest 9.1 : %%-10.2d\n");
+	ft_printf("{%-10.2d}\n", 512);
+	printf("{%-10.2d}\n", 512);
+
+	printf("\nTest 9.2 : %% -10.2d\n");
+	ft_printf("{% -10.2d}\n", 512);
+	printf("{% -10.2d}\n", 512);
+
+	printf("\nTest 10.1 : %%10d\n");
+	ft_printf("{%10d}\n", 512);
+	printf("{%10d}\n", 512);
+
+	printf("\nTest 10.2 : %% 10d\n");
+	ft_printf("{% 10d}\n", 512);
+	printf("{% 10d}\n", 512);
+
+	// x
+	printf("\nTest 1.1 : %%x\n");
+	ft_printf("{%x}\n", 512);
+	printf("{%x}\n", 512);
+
+	printf("\nTest 1.2 : %%#x\n");
+	ft_printf("{%#x}\n", 512);
+	printf("{%#x}\n", 512);
+
+	printf("\nTest 2.1 : %%.2x\n");
+	ft_printf("{%.2x}\n", 512);
+	printf("{%.2x}\n", 512);
+
+	printf("\nTest 2.2 : %%#.2x\n");
+	ft_printf("{%#.2x}\n", 512);
+	printf("{%#.2x}\n", 512);
+
+	printf("\nTest 3.1 : %%.5x\n");
+	ft_printf("{%.5x}\n", 512);
+	printf("{%.5x}\n", 512);
+
+	printf("\nTest 3.2 : %%#.5x\n");
+	ft_printf("{%#.5x}\n", 512);
+	printf("{%#.5x}\n", 512);
+
+	printf("\nTest 4.1 : %%-.2x\n");
+	ft_printf("{%-.2x}\n", 512);
+	printf("{%-.2x}\n", 512);
+
+	printf("\nTest 4.2 : %%#-.2x\n");
+	ft_printf("{%#-.2x}\n", 512);
+	printf("{%#-.2x}\n", 512);
+
+	printf("\nTest 5.1 : %%-.6x\n");
+	ft_printf("{%-.6x}\n", 512);
+	printf("{%-.6x}\n", 512);
+
+	printf("\nTest 5.2 : %%#-.6x\n");
+	ft_printf("{%#-.6x}\n", 512);
+	printf("{%#-.6x}\n", 512);
+
+	printf("\nTest 6.1 : %%10.5x\n");
+	ft_printf("{%10.5x}\n", 512);
+	printf("{%10.5x}\n", 512);
+
+	printf("\nTest 6.2 : %%#10.5x\n");
+	ft_printf("{%#10.5x}\n", 512);
+	printf("{%#10.5x}\n", 512);
+
+	printf("\nTest 7.1 : %%-10.5x\n");
+	ft_printf("{%-10.5x}\n", 512);
+	printf("{%-10.5x}\n", 512);
+
+	printf("\nTest 7.2 : %%#-10.5x\n");
+	ft_printf("{%#-10.5x}\n", 512);
+	printf("{%#-10.5x}\n", 512);
+
+	printf("\nTest 8.1 : %%10.2x\n");
+	ft_printf("{%10.2x}\n", 512);
+	printf("{%10.2x}\n", 512);
+
+	printf("\nTest 8.2 : %%#10.2x\n");
+	ft_printf("{%#10.2x}\n", 512);
+	printf("{%#10.2x}\n", 512);
+
+	printf("\nTest 9.1 : %%-10.2x\n");
+	ft_printf("{%-10.2x}\n", 512);
+	printf("{%-10.2x}\n", 512);
+
+	printf("\nTest 9.2 : %%#-10.2x\n");
+	ft_printf("{%#-10.2x}\n", 512);
+	printf("{%#-10.2x}\n", 512);
+
+	printf("\nTest 10.1 : %%10x\n");
+	ft_printf("{%10x}\n", 512);
+	printf("{%10x}\n", 512);
+
+	printf("\nTest 10.2 : %%#10x\n");
+	ft_printf("{%#10x}\n", 512);
+	printf("{%#10x}\n", 512);
+
+	/*
+	// X
+	printf("\nTest 1.1 : %%X\n");
+	ft_printf("{%X}\n", 512);
+	printf("{%X}\n", 512);
+
+	printf("\nTest 1.2 : %%#X\n");
+	ft_printf("{%#X}\n", 512);
+	printf("{%#X}\n", 512);
+
+	printf("\nTest 2.1 : %%.2X\n");
+	ft_printf("{%.2X}\n", 512);
+	printf("{%.2X}\n", 512);
+
+	printf("\nTest 2.2 : %%#.2X\n");
+	ft_printf("{%#.2X}\n", 512);
+	printf("{%#.2X}\n", 512);
+
+	printf("\nTest 3.1 : %%.5X\n");
+	ft_printf("{%.5X}\n", 512);
+	printf("{%.5X}\n", 512);
+
+	printf("\nTest 3.2 : %%#.5X\n");
+	ft_printf("{%#.5X}\n", 512);
+	printf("{%#.5X}\n", 512);
+
+	printf("\nTest 4.1 : %%-.2X\n");
+	ft_printf("{%-.2X}\n", 512);
+	printf("{%-.2X}\n", 512);
+
+	printf("\nTest 4.2 : %%#-.2X\n");
+	ft_printf("{%#-.2X}\n", 512);
+	printf("{%#-.2X}\n", 512);
+
+	printf("\nTest 5.1 : %%-.6X\n");
+	ft_printf("{%-.6X}\n", 512);
+	printf("{%-.6X}\n", 512);
+
+	printf("\nTest 5.2 : %%#-.6X\n");
+	ft_printf("{%#-.6X}\n", 512);
+	printf("{%#-.6X}\n", 512);
+
+	printf("\nTest 6.1 : %%10.5X\n");
+	ft_printf("{%10.5X}\n", 512);
+	printf("{%10.5X}\n", 512);
+
+	printf("\nTest 6.2 : %%#10.5X\n");
+	ft_printf("{%#10.5X}\n", 512);
+	printf("{%#10.5X}\n", 512);
+
+	printf("\nTest 7.1 : %%-10.5X\n");
+	ft_printf("{%-10.5X}\n", 512);
+	printf("{%-10.5X}\n", 512);
+
+	printf("\nTest 7.2 : %%#-10.5X\n");
+	ft_printf("{%#-10.5X}\n", 512);
+	printf("{%#-10.5X}\n", 512);
+	*/
 
 	/*
 	printf("\nTest ft_putchar_v2 :\n");
