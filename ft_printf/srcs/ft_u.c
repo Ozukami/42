@@ -6,13 +6,13 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/18 05:22:59 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/18 05:23:12 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/17 08:19:05 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-size_t	ft_va_arg_u(va_list ap, t_conv *list)
+size_t	ft_va_arg_u(va_list ap, t_conv *list, char *str)
 {
 	printf("%u\n", va_arg(ap, int));
 	(void)list;

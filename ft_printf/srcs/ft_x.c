@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/24 12:37:13 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/14 06:19:37 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/17 08:19:27 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ static void	ft_sub(t_conv *list, char *to_print, char *arg, size_t len)
 	return ;
 }
 
-size_t		ft_va_arg_x(va_list ap, t_conv *list)
+size_t		ft_va_arg_x(va_list ap, t_conv *list, char *str)
 {
 	char	*arg;
 	char	*to_print;
