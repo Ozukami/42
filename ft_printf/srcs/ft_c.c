@@ -6,13 +6,13 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 09:04:59 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/17 08:47:55 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/17 09:02:31 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-size_t	ft_va_arg_c(va_list ap, t_conv *list, char **str)
+size_t		ft_va_arg_c(va_list ap, t_conv *list, char **str)
 {
 	size_t	i;
 	char	*cpy;

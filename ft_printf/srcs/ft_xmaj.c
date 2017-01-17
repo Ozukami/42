@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/24 12:37:13 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/17 08:47:03 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/17 09:03:30 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,11 +120,11 @@ size_t		ft_va_arg_xmaj(va_list ap, t_conv *list, char **str)
 		ft_sub(list, to_print, arg, len);
 		if (list->prefix && (list->field == -1 || list->p == -1))
 		{
-			ft_putstr(ft_strjoin("0x", to_print));
+			ft_strjoin(*str, (ft_strjoin("0x", to_print)));
 			return (ft_strlen(to_print) + 2);
 		}
 	}
-	ft_putstr(to_print);
+	//ft_putstr(to_print);
 	*str = ft_strjoinf(*str, to_print);
 	return (ft_strlen(to_print));
 }

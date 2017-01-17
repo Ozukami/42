@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:29:40 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/17 08:44:21 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/17 09:04:55 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	ft_fun_init(t_fun **tab)
 	tab[0][6].type = 'X';
 }
 
-int		ft_printf(const char *format, ...)
+char	*ft_printf(const char *format, ...)
 {
 	va_list	ap;
 	int		i;
@@ -43,7 +43,8 @@ int		ft_printf(const char *format, ...)
 	list = NULL;
 	len = 0;
 	if (!(tab = ft_memalloc(sizeof(t_fun) * 14)) || !(to_print = ft_memalloc(1)))
-		return (-1);
+		//return (-1);
+		return ("ERREUR");
 	ft_fun_init(&tab);
 	ft_get_conv(format, &list);
 	va_start(ap, format);
@@ -70,7 +71,7 @@ int		ft_printf(const char *format, ...)
 		else
 			to_print = ft_straddchar(to_print, format[j]);
 	}
-	ft_putstr(to_print);
 	va_end(ap);
-	return ((int)len);
+	//return ((int)len);
+	return (to_print);
 }

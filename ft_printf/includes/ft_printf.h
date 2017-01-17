@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/17 08:44:11 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/17 09:04:14 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,6 @@ size_t				ft_va_arg_xmaj(va_list ap, t_conv *list, char **str);
 
 void				ft_putchar_v2(wchar_t c);
 
-int					ft_printf(const char *format, ...);
+char				*ft_printf(const char *format, ...);
 
 #endif
