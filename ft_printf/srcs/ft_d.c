@@ -6,31 +6,39 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/24 12:37:13 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/17 09:00:54 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/01/17 12:12:22 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-size_t		ft_fp_d(size_t len, char **to_print, t_conv *list)
+size_t		ft_fp_d(size_t len, char **to_print, t_conv *list, char *arg)
 {
 	size_t	i;
 	size_t	size;
 
 	if (list->field == -1 && list->p == -1)
 		size = len;
+	else if (list->field == -1 && arg[0] != '-')
+		size = (size_t)ft_max(list->p, (int)len) + (size_t)list->space;
 	else if (list->field == -1)
-	{
 		size = (size_t)ft_max(list->p, (int)len);
-	}
+	else if (list->p == -1 && arg[0] != '-')
+		size = (size_t)ft_max(list->field, (int)len + list->space);
 	else if (list->p == -1)
 		size = (size_t)ft_max(list->field, (int)len);
+	else if (list->p > list->field && list->p < (int)len && arg[0] != '-')
+		size = len + (size_t)list->space;
 	else if (list->p > list->field && list->p < (int)len)
-		size = (size_t)list->p;
+		size = len;
+	else if (list->p > list->field && list->p > (int)len && arg[0] != '-')
+		size = (size_t)list->p + (size_t)list->space;
 	else if (list->p > list->field && list->p > (int)len)
-		size = (size_t)ft_max(list->field, (int)len);
+		size = (size_t)list->p;
 	else
 		size = (size_t)list->field;
+	if ((arg[0] == '-' || (arg[0] == '+' && list->sign)) && list->p > (int)len)
+		size++;
 	*to_print = ft_memalloc(sizeof(char) * (size + 1));
 	i = 0;
 	while (i < size)
@@ -43,7 +51,7 @@ void		ft_p_d(char **to_print, t_conv *list, size_t len, size_t size)
 	size_t	i;
 
 	size = (list->p < (int)len) ? size : len;
-	if (list->p > -1)
+	if (list->p > -1 || list->zero)
 	{
 		i = 0;
 		while ((to_print)[0][i])
@@ -54,6 +62,8 @@ void		ft_p_d(char **to_print, t_conv *list, size_t len, size_t size)
 					(to_print)[0][i] = '0';
 				if (i < (size_t)(list->field - ft_max((int)size, list->p))
 							&& list->left)
+					(to_print)[0][i] = '0';
+				if (list->p > (int)len || list->p == -1)
 					(to_print)[0][i] = '0';
 			}
 			else
@@ -66,11 +76,15 @@ void		ft_p_d(char **to_print, t_conv *list, size_t len, size_t size)
 int			ft_left_d(char *arg, size_t len, char **to_print, t_conv *list)
 {
 	ft_p_d(to_print, list, ft_strlen(arg), len);
+	if (list->space && arg[0] != '-')
+		to_print[0][0] = ' ';
 	if (list->left)
 	{
-		if (list->space)
-			to_print[0][0] = ' ';
-		if (list->p > -1 && list->p > (int)ft_strlen(arg))
+		if (list->p > -1 && list->p > (int)ft_strlen(arg) && arg[0] == '-')
+			ft_strncpy(*to_print + (size_t)(list->p)
+					- ft_strlen(arg) + list->space + 1, arg, (size_t)
+					(ft_min(ft_min((int)ft_strlen(arg), (int)len), list->p)));
+		else if (list->p > -1 && list->p > (int)ft_strlen(arg))
 			ft_strncpy(*to_print + (size_t)(list->p)
 					- ft_strlen(arg) + list->space, arg, (size_t)
 					(ft_min(ft_min((int)ft_strlen(arg), (int)len), list->p)));
@@ -108,17 +122,31 @@ size_t		ft_va_arg_d(va_list ap, t_conv *list, char **str)
 	char	*arg;
 	char	*to_print;
 	size_t	len;
+	int		i;
 
+	i = 1;
 	arg = ft_itoa(va_arg(ap, int));
-	len = ft_fp_d(ft_strlen(arg), &to_print, list);
+	if (list->sign && arg[0] != '-')
+		arg = ft_strjoin("+", arg);
+	len = ft_fp_d(ft_strlen(arg), &to_print, list, arg);
 	if (!ft_left_d(arg, len, &to_print, list))
 	{
 		ft_sub(list, to_print, arg, len);
-		if (list->space && list->field == -1)
+		if (list->space && list->field == -1 && list->p == -1 && arg[0] != '-')
 		{
 			*str = ft_strjoin(*str, ft_strjoin(" ", to_print));
 			//ft_putstr(ft_strjoin(" ", to_print));
 			return (ft_strlen(to_print) + 1);
+		}
+	}
+	if ((list->p > (int)ft_strlen(arg) || (list->p == -1 && list->zero))
+			&& (arg[0] == '-' || arg[0] == '+'))
+	{
+		to_print[0] = arg[0];
+		while (to_print[i++])
+		{
+			if (to_print[i] == arg[0])
+				to_print[i] = '0';	
 		}
 	}
 	*str = ft_strjoin(*str, to_print);

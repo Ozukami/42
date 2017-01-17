@@ -75,6 +75,7 @@ int		main(int ac, char **av)
 
 	if (a || b)
 	{
+		printf("\033[36mCLASSICO\n\033[0m");
 		ft_test("%d", 512);
 		ft_test("%d", -512);
 		ft_test("%6d", 512);
@@ -97,6 +98,7 @@ int		main(int ac, char **av)
 
 	if (a || c)
 	{
+		printf("\033[36mCLASSICO AVEC SPACE\n\033[0m");
 		ft_test("% d", 512);
 		ft_test("% d", -512);
 		ft_test("% 6d", 512);
@@ -119,6 +121,7 @@ int		main(int ac, char **av)
 
 	if (a || d)
 	{
+		printf("\033[36mCLASSICO LEFT\n\033[0m");
 		ft_test("%-d", 512);
 		ft_test("%-d", -512);
 		ft_test("%-6d", 512);
@@ -141,6 +144,7 @@ int		main(int ac, char **av)
 
 	if (a || e)
 	{
+		printf("\033[36mCLASSICO LEFT SPACE\n\033[0m");
 		ft_test("% -d", 512);
 		ft_test("% -d", -512);
 		ft_test("% -6d", 512);
@@ -163,6 +167,7 @@ int		main(int ac, char **av)
 
 	if (a || f)
 	{
+		printf("\033[36mCLASSICO000000000000000\n\033[0m");
 		ft_test("%0d", 512);
 		ft_test("%0d", -512);
 		ft_test("%06d", 512);
@@ -185,6 +190,7 @@ int		main(int ac, char **av)
 
 	if (a || g)
 	{
+		printf("\033[36mCLASSICO QUINTE +\n\033[0m");
 		ft_test("%+d", 512);
 		ft_test("%+d", -512);
 		ft_test("%+6d", 512);
@@ -207,6 +213,7 @@ int		main(int ac, char **av)
 
 	if (a || h)
 	{
+		printf("\033[36mCLASSICO000000000000000 +\n\033[0m");
 		ft_test("%+0d", 512);
 		ft_test("%+0d", -512);
 		ft_test("%+06d", 512);
@@ -229,6 +236,7 @@ int		main(int ac, char **av)
 
 	if (a || i)
 	{
+		printf("\033[36mCLASSICO QUINTE LEFT +\n\033[0m");
 		ft_test("%+-d", 512);
 		ft_test("%+-d", -512);
 		ft_test("%+-6d", 512);
