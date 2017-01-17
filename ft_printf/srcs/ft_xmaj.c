@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_xmajmaj.c                                          :+:      :+:    :+:   */
+/*   ft_xmaj.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/24 12:37:13 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/17 08:19:58 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/01/17 08:47:03 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ static void	ft_sub(t_conv *list, char *to_print, char *arg, size_t len)
 	return ;
 }
 
-size_t		ft_va_arg_xmaj(va_list ap, t_conv *list, char *str)
+size_t		ft_va_arg_xmaj(va_list ap, t_conv *list, char **str)
 {
 	char	*arg;
 	char	*to_print;
@@ -125,5 +125,6 @@ size_t		ft_va_arg_xmaj(va_list ap, t_conv *list, char *str)
 		}
 	}
 	ft_putstr(to_print);
+	*str = ft_strjoinf(*str, to_print);
 	return (ft_strlen(to_print));
 }

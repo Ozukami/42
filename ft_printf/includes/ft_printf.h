@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/17 08:17:46 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/17 08:44:11 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct		s_conv
 
 typedef struct		s_fun
 {
-	size_t			(*f)(va_list, t_conv *);
+	size_t			(*f)(va_list, t_conv *, char **str);
 	char			type;
 }					t_fun;
 
@@ -72,13 +72,13 @@ void				ft_add_conv(t_conv *new, t_conv **list);
 ** ft_fun_*.c
 */
 
-size_t				ft_va_arg_c(va_list ap, t_conv *list, char *to_print);
-size_t				ft_va_arg_s(va_list ap, t_conv *list);
-size_t				ft_va_arg_d(va_list ap, t_conv *list);
-size_t				ft_va_arg_o(va_list ap, t_conv *list);
-size_t				ft_va_arg_u(va_list ap, t_conv *list);
-size_t				ft_va_arg_x(va_list ap, t_conv *list);
-size_t				ft_va_arg_xmaj(va_list ap, t_conv *list);
+size_t				ft_va_arg_c(va_list ap, t_conv *list, char **str);
+size_t				ft_va_arg_s(va_list ap, t_conv *list, char **str);
+size_t				ft_va_arg_d(va_list ap, t_conv *list, char **str);
+size_t				ft_va_arg_o(va_list ap, t_conv *list, char **str);
+size_t				ft_va_arg_u(va_list ap, t_conv *list, char **str);
+size_t				ft_va_arg_x(va_list ap, t_conv *list, char **str);
+size_t				ft_va_arg_xmaj(va_list ap, t_conv *list, char **str);
 
 void				ft_putchar_v2(wchar_t c);
 

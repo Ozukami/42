@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:29:40 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/24 11:37:04 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/17 08:44:21 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,37 +42,35 @@ int		ft_printf(const char *format, ...)
 
 	list = NULL;
 	len = 0;
-	if (!(tab = ft_memalloc(sizeof(t_fun) * 14)))
+	if (!(tab = ft_memalloc(sizeof(t_fun) * 14)) || !(to_print = ft_memalloc(1)))
 		return (-1);
 	ft_fun_init(&tab);
-	to_print = ft_get_conv(format, &list);
+	ft_get_conv(format, &list);
 	va_start(ap, format);
 	j = -1;
-	while (to_print[++j])
+	while (format[++j])
 	{
-		if (to_print[j] == '%' && to_print[++j] != '%')
+		if (format[j] == '%')
 		{
-			/*
-			printf("[%%%c%c%c%c%c%cd]\n",
-					(list->left) ? '-' : 0,
-					(list->sign) ? '+' : 0,
-					(list->zero) ? '0' : 0,
-					(list->field) ? 'f' : 0,
-					(list->p != -1) ? 'p' : 0,
-					(list->space) ? ' ' : 0);
-			*/
-			i = 0;
-			while (i < 7)
+			if (to_print[++j] != '%')
 			{
-				if (list->type == tab[i].type)
-					len += tab[i].f(ap, list);
-				i++;
+				j += ft_get_len(format, j);
+				i = 0;
+				while (i < 7)
+				{
+					if (list->type == tab[i].type)
+						len += tab[i].f(ap, list, &to_print);
+					i++;
+				}
+				list = list->next;
 			}
-			list = list->next;
+			else
+				to_print = ft_straddchar(to_print, '%');
 		}
 		else
-			ft_putchar(to_print[j]);
+			to_print = ft_straddchar(to_print, format[j]);
 	}
+	ft_putstr(to_print);
 	va_end(ap);
 	return ((int)len);
 }

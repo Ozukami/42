@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/24 12:37:13 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/17 08:19:41 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/01/17 08:44:41 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ static void	ft_sub(t_conv *list, char *to_print, char *arg, size_t len)
 	return ;
 }
 
-size_t		ft_va_arg_d(va_list ap, t_conv *list, char *str)
+size_t		ft_va_arg_d(va_list ap, t_conv *list, char **str)
 {
 	char	*arg;
 	char	*to_print;
@@ -116,10 +116,12 @@ size_t		ft_va_arg_d(va_list ap, t_conv *list, char *str)
 		ft_sub(list, to_print, arg, len);
 		if (list->space && list->field == -1)
 		{
-			ft_putstr(ft_strjoin(" ", to_print));
+			*str = ft_strjoin(*str, ft_strjoin(" ", to_print));
+			//ft_putstr(ft_strjoin(" ", to_print));
 			return (ft_strlen(to_print) + 1);
 		}
 	}
-	ft_putstr(to_print);
+	*str = ft_strjoin(*str, to_print);
+	//ft_putstr(to_print);
 	return (ft_strlen(to_print));
 }
