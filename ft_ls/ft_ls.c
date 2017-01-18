@@ -17,5 +17,6 @@ int		main(int ac, char **av)
 	if (!ac)
 		return (-1);
 	(void)av;
+	write(1, "ls..\n", 5);
 	return (0);
 }

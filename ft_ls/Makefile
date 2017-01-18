@@ -16,7 +16,7 @@ LSSRC = ft*.c
 
 all: $(NAME)
 
-$(NAME): libft.a
+$(NAME): libft.a $(LSSRC)
 	@printf "\033[0;36m> Compiling ft_ls\033[0m"
 	@gcc $(FLAGS) -I includes/ -L. -lft $(LSSRC) -o $(NAME)
 	@printf "\033[0;32m OK\n\033[0m"
