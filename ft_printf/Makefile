@@ -20,7 +20,7 @@ OBJS = $(OBJS2) $(OBJS1)
 
 all: $(NAME)
 
-$(NAME): $(addprefix objs/, $(OBJS1)) $(addprefix objs/, $(OBJS2))
+$(NAME): $(addprefix objs/, $(OBJS2)) $(addprefix objs/, $(OBJS1))
 	@printf "\033[0;35m> Compiling libftprintf.a\033[0m"
 	@ar rc $(NAME) $(addprefix objs/, $(OBJS))
 	@printf "\033[0;32m > OK\n\033[0m"
