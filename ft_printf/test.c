@@ -46,36 +46,36 @@ void	ft_test(char *s, int d)
 int		main(int ac, char **av)
 {
 	setlocale(LC_ALL, "");
-	if (ac < 2)
-		return (0);
-
 	int	k = -1;
-	int	a, b, c, d, e, f, g, h, i = 0;
-	while (av[1][++k])
+	int	d[9] = {0};
+	//int	a, b, c, d, e, f, g, h, i = 0;
+	//printf("%d %d %d %d %d %d %d %d %d\n", a, b, c, d, e, f, g, h, i);
+	if (ac < 2)
+		d[0] = 1;
+	else
 	{
-		if (av[1][k] == '0')
-			a = 1;
-		if (av[1][k] == '1')
-			b = 1;
-		if (av[1][k] == '2')
-			c = 1;
-		if (av[1][k] == '3')
-			d = 1;
-		if (av[1][k] == '4')
-			e = 1;
-		if (av[1][k] == '5')
-			f = 1;
-		if (av[1][k] == '6')
-			g = 1;
-		if (av[1][k] == '7')
-			h = 1;
-		if (av[1][k] == '8')
-			i = 1;
+		if (av[1][0] == 'd')
+		{
+			if (!av[1][1])
+				d[0] = 1;
+			while (av[1][++k])
+			{
+				d[0] = (av[1][k] == '0') ? 1 : d[0];
+				d[1] = (av[1][k] == '1') ? 1 : d[1];
+				d[2] = (av[1][k] == '2') ? 1 : d[2];
+				d[3] = (av[1][k] == '3') ? 1 : d[3];
+				d[4] = (av[1][k] == '4') ? 1 : d[4];
+				d[5] = (av[1][k] == '5') ? 1 : d[5];
+				d[6] = (av[1][k] == '6') ? 1 : d[6];
+				d[7] = (av[1][k] == '7') ? 1 : d[7];
+				d[8] = (av[1][k] == '8') ? 1 : d[8];
+			}
+		}
 	}
 
-	if (a || b)
+	if (d[0] || d[1])
 	{
-		printf("\033[36mCLASSICO\n\033[0m");
+		printf("\033[36m1 - CLASSICO\n\033[0m");
 		ft_test("%d", 512);
 		ft_test("%d", -512);
 		ft_test("%6d", 512);
@@ -96,9 +96,9 @@ int		main(int ac, char **av)
 		ft_test("%.8d", -512);
 	}
 
-	if (a || c)
+	if (d[0] || d[2])
 	{
-		printf("\033[36mCLASSICO AVEC SPACE\n\033[0m");
+		printf("\033[36m2 - CLASSICO SPACE\n\033[0m");
 		ft_test("% d", 512);
 		ft_test("% d", -512);
 		ft_test("% 6d", 512);
@@ -119,9 +119,9 @@ int		main(int ac, char **av)
 		ft_test("% .8d", -512);
 	}
 
-	if (a || d)
+	if (d[0] || d[3])
 	{
-		printf("\033[36mCLASSICO LEFT\n\033[0m");
+		printf("\033[36m3 - CLASSICO LEFT\n\033[0m");
 		ft_test("%-d", 512);
 		ft_test("%-d", -512);
 		ft_test("%-6d", 512);
@@ -142,9 +142,9 @@ int		main(int ac, char **av)
 		ft_test("%-.8d", -512);
 	}
 
-	if (a || e)
+	if (d[0] || d[4])
 	{
-		printf("\033[36mCLASSICO LEFT SPACE\n\033[0m");
+		printf("\033[36m4 - CLASSICO LEFT SPACE\n\033[0m");
 		ft_test("% -d", 512);
 		ft_test("% -d", -512);
 		ft_test("% -6d", 512);
@@ -165,9 +165,9 @@ int		main(int ac, char **av)
 		ft_test("% -.8d", -512);
 	}
 
-	if (a || f)
+	if (d[0] || d[5])
 	{
-		printf("\033[36mCLASSICO000000000000000\n\033[0m");
+		printf("\033[36m5 - CLASSICO0000000000\n\033[0m");
 		ft_test("%0d", 512);
 		ft_test("%0d", -512);
 		ft_test("%06d", 512);
@@ -188,9 +188,9 @@ int		main(int ac, char **av)
 		ft_test("%0.8d", -512);
 	}
 
-	if (a || g)
+	if (d[0] || d[6])
 	{
-		printf("\033[36mCLASSICO QUINTE +\n\033[0m");
+		printf("\033[36m6 - CLASSICO QUINTE +\n\033[0m");
 		ft_test("%+d", 512);
 		ft_test("%+d", -512);
 		ft_test("%+6d", 512);
@@ -211,9 +211,9 @@ int		main(int ac, char **av)
 		ft_test("%+.8d", -512);
 	}
 
-	if (a || h)
+	if (d[0] || d[7])
 	{
-		printf("\033[36mCLASSICO000000000000000 +\n\033[0m");
+		printf("\033[36m7 - CLASSICO0000000000 +\n\033[0m");
 		ft_test("%+0d", 512);
 		ft_test("%+0d", -512);
 		ft_test("%+06d", 512);
@@ -234,9 +234,9 @@ int		main(int ac, char **av)
 		ft_test("%+0.8d", -512);
 	}
 
-	if (a || i)
+	if (d[0] || d[8])
 	{
-		printf("\033[36mCLASSICO QUINTE LEFT +\n\033[0m");
+		printf("\033[36m8 - CLASSICO QUINTE LEFT +\n\033[0m");
 		ft_test("%+-d", 512);
 		ft_test("%+-d", -512);
 		ft_test("%+-6d", 512);
@@ -257,97 +257,9 @@ int		main(int ac, char **av)
 		ft_test("%+-.8d", -512);
 	}
 
-	printf("Total : %d fails\n", fails);
-
-	/*
-	   printf("\nTest 1.1 : %%d\n");
-	   ft_printf("{%d}\n", 512);
-	   printf("{%d}\n", 512);
-
-	   printf("\nTest 1.2 : %% d\n");
-	   ft_printf("{% d}\n", 512);
-	   printf("{% d}\n", 512);
-
-	   printf("\nTest 2.1 : %%.2d\n");
-	   ft_printf("{%.2d}\n", 512);
-	   printf("{%.2d}\n", 512);
-
-	   printf("\nTest 2.2 : %% .2d\n");
-	   ft_printf("{% .2d}\n", 512);
-	   printf("{% .2d}\n", 512);
-
-	   printf("\nTest 3.1 : %%.5d\n");
-	   ft_printf("{%.5d}\n", 512);
-	   printf("{%.5d}\n", 512);
-
-	   printf("\nTest 3.2 : %% .5d\n");
-	   ft_printf("{% .5d}\n", 512);
-	   printf("{% .5d}\n", 512);
-
-	   printf("\nTest 4.1 : %%-.2d\n");
-	   ft_printf("{%-.2d}\n", 512);
-	   printf("{%-.2d}\n", 512);
-
-	   printf("\nTest 4.2 : %% -.2d\n");
-	   ft_printf("{% -.2d}\n", 512);
-	   printf("{% -.2d}\n", 512);
-
-	   printf("\nTest 5.1 : %%-.6d\n");
-	   ft_printf("{%-.6d}\n", 512);
-	   printf("{%-.6d}\n", 512);
-
-	   printf("\nTest 5.2 : %% -.6d\n");
-	   ft_printf("{% -.6d}\n", 512);
-	   printf("{% -.6d}\n", 512);
-
-	   printf("\nTest 6.1 : %%10.5d\n");
-	   ft_printf("{%10.5d}\n", 512);
-	   printf("{%10.5d}\n", 512);
-
-	   printf("\nTest 6.2 : %% 10.5d\n");
-	   ft_printf("{% 10.5d}\n", 512);
-	   printf("{% 10.5d}\n", 512);
-
-	   printf("\nTest 7.1 : %%-10.5d\n");
-	   ft_printf("{%-10.5d}\n", 512);
-	   printf("{%-10.5d}\n", 512);
-
-	   printf("\nTest 7.2 : %% -10.5d\n");
-	   ft_printf("{% -10.5d}\n", 512);
-	   printf("{% -10.5d}\n", 512);
-
-	   printf("\nTest 7.1 : %%-10d\n");
-	   ft_printf("{%-10d}\n", 512);
-	   printf("{%-10d}\n", 512);
-
-	   printf("\nTest 7.2 : %% -10d\n");
-	   ft_printf("{% -10d}\n", 512);
-	   printf("{% -10d}\n", 512);
-
-	   printf("\nTest 8.1 : %%10.2d\n");
-	   ft_printf("{%10.2d}\n", 512);
-	   printf("{%10.2d}\n", 512);
-
-	   printf("\nTest 8.2 : %% 10.2d\n");
-	   ft_printf("{% 10.2d}\n", 512);
-	printf("{% 10.2d}\n", 512);
-
-	printf("\nTest 9.1 : %%-10.2d\n");
-	ft_printf("{%-10.2d}\n", 512);
-	printf("{%-10.2d}\n", 512);
-
-	printf("\nTest 9.2 : %% -10.2d\n");
-	ft_printf("{% -10.2d}\n", 512);
-	printf("{% -10.2d}\n", 512);
-
-	printf("\nTest 10.1 : %%10d\n");
-	ft_printf("{%10d}\n", 512);
-	printf("{%10d}\n", 512);
-
-	printf("\nTest 10.2 : %% 10d\n");
-	ft_printf("{% 10d}\n", 512);
-	printf("{% 10d}\n", 512);
-	*/
-
+	if (fails)
+		printf("Total : \033[31m%d fails\033[0m\n", fails);
+	else
+		printf("Total : \033[32m%d fails\033[0m\n", fails);
 	return (0);
 }

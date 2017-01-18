@@ -25,27 +25,34 @@ $(NAME): $(addprefix objs/, $(OBJS1)) $(addprefix objs/, $(OBJS2))
 	@ar rc $(NAME) $(addprefix objs/, $(OBJS))
 	@printf "\033[0;32m > OK\n\033[0m"
 
+ruleA: $(addprefix objs/, $(OBJS2)) $(addprefix objs/, $(OBJS1))
+	@printf "\033[0;35m> Compiling C files\033[0m"
+	@printf "\033[0;32m > OK\n\033[0m"
+
 $(addprefix objs/, $(OBJS1)): $(addprefix libft/, $(LFTSRC))
-	@test -d objs || mkdir objs
+	@printf "\033[0;35m.\033[0m"
 	@gcc $(FLAGS) -c $(addprefix libft/, $(addsuffix .c, $(basename $(notdir $@)))) -o objs/$(notdir $@) -I includes/
 
 $(addprefix objs/, $(OBJS2)): $(addprefix srcs/, $(PRINTFSRC))
 	@test -d objs || mkdir objs
+	@printf "\033[0;35m.\033[0m"
 	@gcc $(FLAGS) -c $(addprefix srcs/, $(addsuffix .c, $(basename $(notdir $@)))) -o objs/$(notdir $@) -I includes/
 
-main: $(NAME)
-	@gcc -Wall -Wextra main.c -L. -lftprintf -I includes/
-	@rm -rdf objs/
+main: a.out
 	@printf "\033[0;31m- Executing a.out -\n\033[0m"
-	@./a.out
+	@./a.out $(ARGS)
 	@printf "\033[0;31m-- End of a.out --\n\033[0m"
 
-test: $(NAME)
-	@gcc -Wall -Wextra test.c -L. -lftprintf -I includes/ -o test
-	@rm -rdf objs/
-	@printf "\033[0;31m- Executing a.out -\n\033[0m"
-	@./test $(ARGS)
-	@printf "\033[0;31m-- End of a.out --\n\033[0m"
+a.out: $(NAME) main.c
+	@gcc -Wall -Wextra main.c -L. -lftprintf -I includes/
+
+test: test.out
+	@printf "\033[0;31m- Executing test.out -\n\033[0m"
+	@./test.out $(ARGS)
+	@printf "\033[0;31m-- End of test.out --\n\033[0m"
+
+test.out: $(NAME) test.c
+	@gcc -Wall -Wextra test.c -L. -lftprintf -I includes/ -o test.out
 
 clean:
 	@rm -rdf objs/
@@ -56,6 +63,9 @@ fclean: clean
 mainclean:
 	@rm -f a.out
 
-cleanall: mainclean fclean
+testclean:
+	@rm -f test.out
+
+cleanall: mainclean testclean fclean
 
 re: fclean all

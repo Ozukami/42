@@ -1,6 +1,6 @@
 .*
 *.o
 log*
-a.out
+*.out
 test
 *.a
