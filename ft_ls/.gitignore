@@ -1,0 +1,7 @@
+.*
+*.o
+log*
+a.out
+test
+*.a
+ft_ls
