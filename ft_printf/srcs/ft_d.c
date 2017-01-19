@@ -6,15 +6,14 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/24 12:37:13 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/17 13:02:10 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/19 08:48:58 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-size_t		ft_fp_d(size_t len, char **to_print, t_conv *list, char *arg)
+size_t		ft_fp_d(size_t len, t_conv *list, char *arg)
 {
-	size_t	i;
 	size_t	size;
 
 	if (list->field == -1 && list->p == -1)
@@ -39,10 +38,6 @@ size_t		ft_fp_d(size_t len, char **to_print, t_conv *list, char *arg)
 		size = (size_t)list->field;
 	if ((arg[0] == '-' || (arg[0] == '+' && list->sign)) && list->p > (int)len)
 		size++;
-	*to_print = ft_memalloc(sizeof(char) * (size + 1));
-	i = 0;
-	while (i < size)
-		(*to_print)[i++] = ' ';
 	return (size);
 }
 
@@ -99,7 +94,7 @@ int			ft_left_d(char *arg, size_t len, char **to_print, t_conv *list)
 	return (0);
 }
 
-static void	ft_sub(t_conv *list, char *to_print, char *arg, size_t len)
+void		ft_sub_1(t_conv *list, char *to_print, char *arg, size_t len)
 {
 	size_t	i;
 
@@ -117,42 +112,21 @@ static void	ft_sub(t_conv *list, char *to_print, char *arg, size_t len)
 	else
 		ft_strncpy(&(to_print)[i], arg, (size_t)
 				(ft_min((int)ft_strlen(arg), (int)len)));
-	return ;
 }
 
-size_t		ft_va_arg_d(va_list ap, t_conv *list, char **str)
+void		ft_sub_2(t_conv *list, char **to_print, char *arg)
 {
-	char	*arg;
-	char	*to_print;
-	size_t	len;
 	int		i;
 
 	i = 1;
-	arg = ft_itoa(va_arg(ap, int));
-	if (list->sign && arg[0] != '-')
-		arg = ft_strjoin("+", arg);
-	len = ft_fp_d(ft_strlen(arg), &to_print, list, arg);
-	if (!ft_left_d(arg, len, &to_print, list))
-	{
-		ft_sub(list, to_print, arg, len);
-		if (list->space && list->field == -1 && list->p == -1 && arg[0] != '-')
-		{
-			*str = ft_strjoin(*str, ft_strjoin(" ", to_print));
-			//ft_putstr(ft_strjoin(" ", to_print));
-			return (ft_strlen(to_print) + 1);
-		}
-	}
 	if ((list->p > (int)ft_strlen(arg) || (list->p == -1 && list->zero))
 			&& (arg[0] == '-' || arg[0] == '+'))
 	{
-		to_print[0] = arg[0];
-		while (to_print[i++])
+		to_print[0][0] = arg[0];
+		while (to_print[0][i++])
 		{
-			if (to_print[i] == arg[0])
-				to_print[i] = '0';
+			if (to_print[0][i] == arg[0])
+				to_print[0][i] = '0';
 		}
 	}
-	*str = ft_strjoin(*str, to_print);
-	//ft_putstr(to_print);
-	return (ft_strlen(to_print));
 }
