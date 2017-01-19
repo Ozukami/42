@@ -49,8 +49,13 @@ int		main(int ac, char **av)
 	int	k = -1;
 	int	d[9] = {0};
 	int	x[8] = {0};
+	int	xmaj[8] = {0};
 	if (ac < 2)
+	{
 		d[0] = 1;
+		x[0] = 1;
+		xmaj[0] = 1;
+	}
 	else
 	{
 		if (av[1][0] == 'd')
@@ -84,6 +89,22 @@ int		main(int ac, char **av)
 				x[5] = (av[1][k] == '5') ? 1 : x[5];
 				x[6] = (av[1][k] == '6') ? 1 : x[6];
 				x[7] = (av[1][k] == '7') ? 1 : x[7];
+			}
+		}
+		else if (av[1][0] == 'X')
+		{
+			if (!av[1][1])
+				xmaj[0] = 1;
+			while (av[1][++k])
+			{
+				xmaj[0] = (av[1][k] == '0') ? 1 : xmaj[0];
+				xmaj[1] = (av[1][k] == '1') ? 1 : xmaj[1];
+				xmaj[2] = (av[1][k] == '2') ? 1 : xmaj[2];
+				xmaj[3] = (av[1][k] == '3') ? 1 : xmaj[3];
+				xmaj[4] = (av[1][k] == '4') ? 1 : xmaj[4];
+				xmaj[5] = (av[1][k] == '5') ? 1 : xmaj[5];
+				xmaj[6] = (av[1][k] == '6') ? 1 : xmaj[6];
+				xmaj[7] = (av[1][k] == '7') ? 1 : xmaj[7];
 			}
 		}
 	}
@@ -408,6 +429,144 @@ int		main(int ac, char **av)
 		ft_test("%#0.2x", -512);
 		ft_test("%#0.8x", 512);
 		ft_test("%#0.8x", -512);
+	}
+
+	if (xmaj[0] || xmaj[1])
+	{
+		printf("\033[36m1 - CLASSICO\n\033[0m");
+		ft_test("%X", 512);
+		ft_test("%X", -512);
+		ft_test("%6X", 512);
+		ft_test("%6X", -512);
+		ft_test("%1X", 512);
+		ft_test("%1X", -512);
+		ft_test("%6.2X", 512);
+		ft_test("%6.2X", -512);
+		ft_test("%1.2X", 512);
+		ft_test("%1.2X", -512);
+		ft_test("%6.8X", 512);
+		ft_test("%6.8X", -512);
+		ft_test("%1.8X", 512);
+		ft_test("%1.8X", -512);
+		ft_test("%.2X", 512);
+		ft_test("%.2X", -512);
+		ft_test("%.8X", 512);
+		ft_test("%.8X", -512);
+	}
+
+	if (xmaj[0] || xmaj[2])
+	{
+		printf("\033[36m2 - CLASSICO PREFIX\n\033[0m");
+		ft_test("%#X", 512);
+		ft_test("%#X", -512);
+		ft_test("%#6X", 512);
+		ft_test("%#6X", -512);
+		ft_test("%#1X", 512);
+		ft_test("%#1X", -512);
+		ft_test("%#6.2X", 512);
+		ft_test("%#6.2X", -512);
+		ft_test("%#1.2X", 512);
+		ft_test("%#1.2X", -512);
+		ft_test("%#6.8X", 512);
+		ft_test("%#6.8X", -512);
+		ft_test("%#1.8X", 512);
+		ft_test("%#1.8X", -512);
+		ft_test("%#.2X", 512);
+		ft_test("%#.2X", -512);
+		ft_test("%#.8X", 512);
+		ft_test("%#.8X", -512);
+	}
+
+	if (xmaj[0] || xmaj[3])
+	{
+		printf("\033[36m3 - CLASSICO LEFT\n\033[0m");
+		ft_test("%-X", 512);
+		ft_test("%-X", -512);
+		ft_test("%-6X", 512);
+		ft_test("%-6X", -512);
+		ft_test("%-1X", 512);
+		ft_test("%-1X", -512);
+		ft_test("%-6.2X", 512);
+		ft_test("%-6.2X", -512);
+		ft_test("%-1.2X", 512);
+		ft_test("%-1.2X", -512);
+		ft_test("%-6.8X", 512);
+		ft_test("%-6.8X", -512);
+		ft_test("%-1.8X", 512);
+		ft_test("%-1.8X", -512);
+		ft_test("%-.2X", 512);
+		ft_test("%-.2X", -512);
+		ft_test("%-.8X", 512);
+		ft_test("%-.8X", -512);
+	}
+
+	if (xmaj[0] || xmaj[4])
+	{
+		printf("\033[36m4 - CLASSICO PREFIX LEFT\n\033[0m");
+		ft_test("%#-X", 512);
+		ft_test("%#-X", -512);
+		ft_test("%#-6X", 512);
+		ft_test("%#-6X", -512);
+		ft_test("%#-1X", 512);
+		ft_test("%#-1X", -512);
+		ft_test("%#-6.2X", 512);
+		ft_test("%#-6.2X", -512);
+		ft_test("%#-1.2X", 512);
+		ft_test("%#-1.2X", -512);
+		ft_test("%#-6.8X", 512);
+		ft_test("%#-6.8X", -512);
+		ft_test("%#-1.8X", 512);
+		ft_test("%#-1.8X", -512);
+		ft_test("%#-.2X", 512);
+		ft_test("%#-.2X", -512);
+		ft_test("%#-.8X", 512);
+		ft_test("%#-.8X", -512);
+	}
+
+	if (xmaj[0] || xmaj[5])
+	{
+		printf("\033[36m5 - CLASSICO000000\n\033[0m");
+		ft_test("%0X", 512);
+		ft_test("%0X", -512);
+		ft_test("%06X", 512);
+		ft_test("%06X", -512);
+		ft_test("%01X", 512);
+		ft_test("%01X", -512);
+		ft_test("%06.2X", 512);
+		ft_test("%06.2X", -512);
+		ft_test("%01.2X", 512);
+		ft_test("%01.2X", -512);
+		ft_test("%06.8X", 512);
+		ft_test("%06.8X", -512);
+		ft_test("%01.8X", 512);
+		ft_test("%01.8X", -512);
+		ft_test("%0.2X", 512);
+		ft_test("%0.2X", -512);
+		ft_test("%0.8X", 512);
+		ft_test("%0.8X", -512);
+	}
+
+	if (xmaj[0] || xmaj[6])
+	{
+		printf("\033[36m6 - CLASSICO0000000 PREFIX\n\033[0m");
+		ft_test("%#0X", 512);
+		ft_test("%#0X", -512);
+		ft_test("%#06X", 512);
+		ft_test("%#06X", -512);
+		ft_test("%#01X", 512);
+		ft_test("%#01X", -512);
+		ft_test("%#06.2X", 512);
+		ft_test("%#06.2X", -512);
+		ft_test("%#01.2X", 512);
+		ft_test("%#01.2X", -512);
+		ft_test("%#06.8X", 512);
+		ft_test("%#06.8X", -512);
+		ft_test("%#01.8X", 512);
+		ft_test("%#01.8X", -512);
+		ft_test("%#0.2X", 512);
+		ft_test("%#0.2X", -512);
+		ft_test("%#0.8X", 512);
+		ft_test("%#0.8X", -512);
 	}
 
 	if (fails)

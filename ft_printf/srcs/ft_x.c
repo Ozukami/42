@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 09:18:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/19 10:40:12 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/19 11:10:06 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int			ft_left_x(char *arg, size_t len, char **to_print, t_conv *list)
 		if (list->prefix)
 		{
 			to_print[0][0] = '0';
-			to_print[0][1] = 'x';
+			to_print[0][1] = list->type;
 		}
 		return (1);
 	}
@@ -89,12 +89,13 @@ void		ft_sub_x2(t_conv *list, char *to_print, char *arg, size_t *i)
 	if (list->field > (int)ft_strlen(arg) && (int)ft_strlen(arg) > list->p)
 	{
 		to_print[*i - (2 + ((list->p == -1 && list->zero) ? 1 : 0))] = '0';
-		to_print[*i - (1 + ((list->p == -1 && list->zero) ? 1 : 0))] = 'x';
+		to_print[*i - (1 + ((list->p == -1
+						&& list->zero) ? 1 : 0))] = list->type;
 	}
 	else
 	{
 		to_print[((int)ft_strlen(arg) < list->p) ? 0 : *i] = '0';
-		to_print[((int)ft_strlen(arg) < list->p) ? 1 : *i + 1] = 'x';
+		to_print[((int)ft_strlen(arg) < list->p) ? 1 : *i + 1] = list->type;
 		*i += 2;
 	}
 }

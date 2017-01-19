@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 10:39:31 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/19 10:39:40 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/19 11:05:28 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ size_t		ft_va_arg_x(va_list ap, t_conv *list, char **str)
 	char	*to_print;
 	size_t	len;
 
-	arg = ft_itoa_base(va_arg(ap, int), 16, 0);
+	arg = ft_itoa_base(va_arg(ap, int), 16, (list->type == 'x') ? 0 : 1);
 	len = ft_fp_x(ft_strlen(arg), list);
 	to_print = ft_strspace(len);
 	if (!ft_left_x(arg, len, &to_print, list))

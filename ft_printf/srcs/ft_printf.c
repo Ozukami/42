@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:29:40 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/17 09:04:55 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/01/19 11:07:54 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	ft_fun_init(t_fun **tab)
 	tab[0][4].type = 'u';
 	tab[0][5].f = &ft_va_arg_x;
 	tab[0][5].type = 'x';
-	tab[0][6].f = &ft_va_arg_xmaj;
+	tab[0][6].f = &ft_va_arg_x;
 	tab[0][6].type = 'X';
 }
 
