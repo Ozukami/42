@@ -18,6 +18,7 @@
 #define FAILLURE "\033[31mFAILLURE \033[0m"
 
 int		fails = 0;
+int		tests = 0;
 
 void	ft_test(char *s, int d)
 {
@@ -40,6 +41,7 @@ void	ft_test(char *s, int d)
 		printf(SUCCESS);
 		printf("Test %d : %s\n", i++, s);
 	}
+	tests++;
 	free(s1);
 }
 
@@ -119,10 +121,6 @@ int		main(int ac, char **av)
 				u[1] = (av[1][k] == '1') ? 1 : u[1];
 				u[2] = (av[1][k] == '2') ? 1 : u[2];
 				u[3] = (av[1][k] == '3') ? 1 : u[3];
-				u[4] = (av[1][k] == '4') ? 1 : u[4];
-				u[5] = (av[1][k] == '5') ? 1 : u[5];
-				u[6] = (av[1][k] == '6') ? 1 : u[6];
-				u[7] = (av[1][k] == '7') ? 1 : u[7];
 			}
 		}
 		else if (av[1][0] == 'o')
@@ -628,29 +626,6 @@ int		main(int ac, char **av)
 
 	if (u[0] || u[2])
 	{
-		printf("\033[36m2 - CLASSICO PREFIX\n\033[0m");
-		ft_test("%#u", 512);
-		ft_test("%#u", -512);
-		ft_test("%#6u", 512);
-		ft_test("%#6u", -512);
-		ft_test("%#1u", 512);
-		ft_test("%#1u", -512);
-		ft_test("%#6.2u", 512);
-		ft_test("%#6.2u", -512);
-		ft_test("%#1.2u", 512);
-		ft_test("%#1.2u", -512);
-		ft_test("%#6.8u", 512);
-		ft_test("%#6.8u", -512);
-		ft_test("%#1.8u", 512);
-		ft_test("%#1.8u", -512);
-		ft_test("%#.2u", 512);
-		ft_test("%#.2u", -512);
-		ft_test("%#.8u", 512);
-		ft_test("%#.8u", -512);
-	}
-
-	if (u[0] || u[3])
-	{
 		printf("\033[36m3 - CLASSICO LEFT\n\033[0m");
 		ft_test("%-u", 512);
 		ft_test("%-u", -512);
@@ -672,30 +647,7 @@ int		main(int ac, char **av)
 		ft_test("%-.8u", -512);
 	}
 
-	if (u[0] || u[4])
-	{
-		printf("\033[36m4 - CLASSICO PREFIX LEFT\n\033[0m");
-		ft_test("%#-u", 512);
-		ft_test("%#-u", -512);
-		ft_test("%#-6u", 512);
-		ft_test("%#-6u", -512);
-		ft_test("%#-1u", 512);
-		ft_test("%#-1u", -512);
-		ft_test("%#-6.2u", 512);
-		ft_test("%#-6.2u", -512);
-		ft_test("%#-1.2u", 512);
-		ft_test("%#-1.2u", -512);
-		ft_test("%#-6.8u", 512);
-		ft_test("%#-6.8u", -512);
-		ft_test("%#-1.8u", 512);
-		ft_test("%#-1.8u", -512);
-		ft_test("%#-.2u", 512);
-		ft_test("%#-.2u", -512);
-		ft_test("%#-.8u", 512);
-		ft_test("%#-.8u", -512);
-	}
-
-	if (u[0] || u[5])
+	if (u[0] || u[3])
 	{
 		printf("\033[36m5 - CLASSICO000000\n\033[0m");
 		ft_test("%0u", 512);
@@ -716,29 +668,6 @@ int		main(int ac, char **av)
 		ft_test("%0.2u", -512);
 		ft_test("%0.8u", 512);
 		ft_test("%0.8u", -512);
-	}
-
-	if (u[0] || u[6])
-	{
-		printf("\033[36m6 - CLASSICO0000000 PREFIX\n\033[0m");
-		ft_test("%#0u", 512);
-		ft_test("%#0u", -512);
-		ft_test("%#06u", 512);
-		ft_test("%#06u", -512);
-		ft_test("%#01u", 512);
-		ft_test("%#01u", -512);
-		ft_test("%#06.2u", 512);
-		ft_test("%#06.2u", -512);
-		ft_test("%#01.2u", 512);
-		ft_test("%#01.2u", -512);
-		ft_test("%#06.8u", 512);
-		ft_test("%#06.8u", -512);
-		ft_test("%#01.8u", 512);
-		ft_test("%#01.8u", -512);
-		ft_test("%#0.2u", 512);
-		ft_test("%#0.2u", -512);
-		ft_test("%#0.8u", 512);
-		ft_test("%#0.8u", -512);
 	}
 
 	if (o[0] || o[1])
@@ -880,8 +809,14 @@ int		main(int ac, char **av)
 	}
 
 	if (fails)
-		printf("Total : \033[31m%d fails\033[0m\n", fails);
+	{
+		printf("Total : \033[31m%d\033[0m/%d\033[31m fails\033[0m\n",
+				fails, tests);
+	}
 	else
-		printf("Total : \033[32m%d fails\033[0m\n", fails);
+	{
+		printf("Total : \033[32m%d\033[0m/%d\033[32m fails\033[0m\n",
+				fails, tests);
+	}
 	return (0);
 }
