@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 11:37:22 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/01/19 12:30:34 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/01/19 12:39:17 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,9 @@ size_t		ft_fp_o(size_t len, t_conv *list)
 		size = len;
 	else
 		size = (size_t)list->field;
-	if (list->left && list->prefix && ((int)len < list->p) && list->left == 0)
-		size = size + 2;
-	if (list->prefix && (int)len > list->field && (int)len > list->p && !list->left)
+	if (list->prefix && (int)len > list->field
+			&& (int)len > list->p)
 		size++;
-	printf("[SIZE = %zu]\n", size);
 	return (size);
 }
 
@@ -75,10 +73,10 @@ int			ft_left_o(char *arg, size_t len, char **to_print, t_conv *list)
 	{
 		if (list->p > -1 && list->p > (int)ft_strlen(arg))
 			ft_strncpy(*to_print + (size_t)(list->p)
-					- ft_strlen(arg) + (list->prefix) * 2, arg, (size_t)
+					- ft_strlen(arg), arg, (size_t)
 					(ft_min(ft_min((int)ft_strlen(arg), (int)len), list->p)));
 		else
-			ft_strncpy(*to_print + (list->prefix) * 2, arg, (size_t)
+			ft_strncpy(*to_print + (list->prefix), arg, (size_t)
 					(ft_min((int)ft_strlen(arg), (int)len)));
 		if (list->prefix)
 			to_print[0][0] = '0';
