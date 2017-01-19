@@ -871,6 +871,12 @@ int		main(int ac, char **av)
 		ft_test("%#01.2o", -512);
 		ft_test("%#06.8o", 512);
 		ft_test("%#06.8o", -512);
+		ft_test("%#01.8o", 512);
+		ft_test("%#01.8o", -512);
+		ft_test("%#0.2o", 512);
+		ft_test("%#0.2o", -512);
+		ft_test("%#0.8o", 512);
+		ft_test("%#0.8o", -512);
 	}
 
 	if (fails)
