@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/19 10:43:59 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/19 11:40:56 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,33 @@ int					ft_left_x(char *arg, size_t len,
 void				ft_sub_x1(t_conv *list, char *to_print,
 		char *arg, size_t len);
 void				ft_sub_x2(t_conv *list, char *to_print,
+		char *arg, size_t *i);
+
+/*
+** %o
+*/
+
+size_t				ft_fp_o(size_t len, t_conv *list);
+void				ft_p_o(char **to_print, t_conv *list,
+		size_t len, size_t size);
+int					ft_left_o(char *arg, size_t len,
+		char **to_print, t_conv *list);
+void				ft_sub_o1(t_conv *list, char *to_print,
+		char *arg, size_t len);
+void				ft_sub_o2(t_conv *list, char *to_print,
+		char *arg, size_t *i);
+/*
+** %u
+*/
+
+size_t				ft_fp_u(size_t len, t_conv *list);
+void				ft_p_u(char **to_print, t_conv *list,
+		size_t len, size_t size);
+int					ft_left_u(char *arg, size_t len,
+		char **to_print, t_conv *list);
+void				ft_sub_u1(t_conv *list, char *to_print,
+		char *arg, size_t len);
+void				ft_sub_u2(t_conv *list, char *to_print,
 		char *arg, size_t *i);
 
 void				ft_putchar_v2(wchar_t c);
