@@ -54,6 +54,8 @@ int		main(int ac, char **av)
 	int	xmaj[8] = {0};
 	int	u[8] = {0};
 	int	o[8] = {0};
+	int	p = 0;
+	int	i = 512;
 	if (ac < 2)
 	{
 		d[0] = 1;
@@ -138,6 +140,11 @@ int		main(int ac, char **av)
 				o[6] = (av[1][k] == '6') ? 1 : o[6];
 				o[7] = (av[1][k] == '7') ? 1 : o[7];
 			}
+		}
+		else if (av[1][0] == 'p')
+		{
+			if (!av[1][1])
+				p = 1;
 		}
 	}
 
@@ -806,6 +813,23 @@ int		main(int ac, char **av)
 		ft_test("%#0.2o", -512);
 		ft_test("%#0.8o", 512);
 		ft_test("%#0.8o", -512);
+	}
+
+	if (p)
+	{
+		printf("\033[36m1 - CLASSICO\n\033[0m");
+		ft_test("%p", &i);
+		ft_test("%p", &i);
+		ft_test("%6p", &i);
+		ft_test("%6p", &i);
+		ft_test("%1p", &i);
+		ft_test("%1p", &i);
+		ft_test("%-p", &i);
+		ft_test("%-p", &i);
+		ft_test("%-6p", &i);
+		ft_test("%-6p", &i);
+		ft_test("%-1p", &i);
+		ft_test("%-1p", &i);
 	}
 
 	if (fails)
