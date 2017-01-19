@@ -6,7 +6,7 @@
 /*   By: exam <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 10:48:38 by exam              #+#    #+#             */
-/*   Updated: 2016/12/15 11:32:14 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/19 09:47:54 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*ft_itoa_base(int value, int base, int maj)
 
 	nb = (long)value;
 	if (nb < 0 && base != 10)
-		nb = -nb;
+		nb = 4294967296 + value;
 	size = get_size(nb, (long)base);
 	if (!(itoa = malloc(sizeof(char) * (size + 1))))
 		return (NULL);
