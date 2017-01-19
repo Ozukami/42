@@ -50,6 +50,8 @@ int		main(int ac, char **av)
 	int	d[9] = {0};
 	int	x[8] = {0};
 	int	xmaj[8] = {0};
+	int	u[8] = {0};
+	int	o[8] = {0};
 	if (ac < 2)
 	{
 		d[0] = 1;
@@ -105,6 +107,38 @@ int		main(int ac, char **av)
 				xmaj[5] = (av[1][k] == '5') ? 1 : xmaj[5];
 				xmaj[6] = (av[1][k] == '6') ? 1 : xmaj[6];
 				xmaj[7] = (av[1][k] == '7') ? 1 : xmaj[7];
+			}
+		}
+		else if (av[1][0] == 'u')
+		{
+			if (!av[1][1])
+				u[0] = 1;
+			while (av[1][++k])
+			{
+				u[0] = (av[1][k] == '0') ? 1 : u[0];
+				u[1] = (av[1][k] == '1') ? 1 : u[1];
+				u[2] = (av[1][k] == '2') ? 1 : u[2];
+				u[3] = (av[1][k] == '3') ? 1 : u[3];
+				u[4] = (av[1][k] == '4') ? 1 : u[4];
+				u[5] = (av[1][k] == '5') ? 1 : u[5];
+				u[6] = (av[1][k] == '6') ? 1 : u[6];
+				u[7] = (av[1][k] == '7') ? 1 : u[7];
+			}
+		}
+		else if (av[1][0] == 'o')
+		{
+			if (!av[1][1])
+				o[0] = 1;
+			while (av[1][++k])
+			{
+				o[0] = (av[1][k] == '0') ? 1 : o[0];
+				o[1] = (av[1][k] == '1') ? 1 : o[1];
+				o[2] = (av[1][k] == '2') ? 1 : o[2];
+				o[3] = (av[1][k] == '3') ? 1 : o[3];
+				o[4] = (av[1][k] == '4') ? 1 : o[4];
+				o[5] = (av[1][k] == '5') ? 1 : o[5];
+				o[6] = (av[1][k] == '6') ? 1 : o[6];
+				o[7] = (av[1][k] == '7') ? 1 : o[7];
 			}
 		}
 	}
@@ -567,6 +601,276 @@ int		main(int ac, char **av)
 		ft_test("%#0.2X", -512);
 		ft_test("%#0.8X", 512);
 		ft_test("%#0.8X", -512);
+	}
+
+	if (u[0] || u[1])
+	{
+		printf("\033[36m1 - CLASSICO\n\033[0m");
+		ft_test("%u", 512);
+		ft_test("%u", -512);
+		ft_test("%6u", 512);
+		ft_test("%6u", -512);
+		ft_test("%1u", 512);
+		ft_test("%1u", -512);
+		ft_test("%6.2u", 512);
+		ft_test("%6.2u", -512);
+		ft_test("%1.2u", 512);
+		ft_test("%1.2u", -512);
+		ft_test("%6.8u", 512);
+		ft_test("%6.8u", -512);
+		ft_test("%1.8u", 512);
+		ft_test("%1.8u", -512);
+		ft_test("%.2u", 512);
+		ft_test("%.2u", -512);
+		ft_test("%.8u", 512);
+		ft_test("%.8u", -512);
+	}
+
+	if (u[0] || u[2])
+	{
+		printf("\033[36m2 - CLASSICO PREFIX\n\033[0m");
+		ft_test("%#u", 512);
+		ft_test("%#u", -512);
+		ft_test("%#6u", 512);
+		ft_test("%#6u", -512);
+		ft_test("%#1u", 512);
+		ft_test("%#1u", -512);
+		ft_test("%#6.2u", 512);
+		ft_test("%#6.2u", -512);
+		ft_test("%#1.2u", 512);
+		ft_test("%#1.2u", -512);
+		ft_test("%#6.8u", 512);
+		ft_test("%#6.8u", -512);
+		ft_test("%#1.8u", 512);
+		ft_test("%#1.8u", -512);
+		ft_test("%#.2u", 512);
+		ft_test("%#.2u", -512);
+		ft_test("%#.8u", 512);
+		ft_test("%#.8u", -512);
+	}
+
+	if (u[0] || u[3])
+	{
+		printf("\033[36m3 - CLASSICO LEFT\n\033[0m");
+		ft_test("%-u", 512);
+		ft_test("%-u", -512);
+		ft_test("%-6u", 512);
+		ft_test("%-6u", -512);
+		ft_test("%-1u", 512);
+		ft_test("%-1u", -512);
+		ft_test("%-6.2u", 512);
+		ft_test("%-6.2u", -512);
+		ft_test("%-1.2u", 512);
+		ft_test("%-1.2u", -512);
+		ft_test("%-6.8u", 512);
+		ft_test("%-6.8u", -512);
+		ft_test("%-1.8u", 512);
+		ft_test("%-1.8u", -512);
+		ft_test("%-.2u", 512);
+		ft_test("%-.2u", -512);
+		ft_test("%-.8u", 512);
+		ft_test("%-.8u", -512);
+	}
+
+	if (u[0] || u[4])
+	{
+		printf("\033[36m4 - CLASSICO PREFIX LEFT\n\033[0m");
+		ft_test("%#-u", 512);
+		ft_test("%#-u", -512);
+		ft_test("%#-6u", 512);
+		ft_test("%#-6u", -512);
+		ft_test("%#-1u", 512);
+		ft_test("%#-1u", -512);
+		ft_test("%#-6.2u", 512);
+		ft_test("%#-6.2u", -512);
+		ft_test("%#-1.2u", 512);
+		ft_test("%#-1.2u", -512);
+		ft_test("%#-6.8u", 512);
+		ft_test("%#-6.8u", -512);
+		ft_test("%#-1.8u", 512);
+		ft_test("%#-1.8u", -512);
+		ft_test("%#-.2u", 512);
+		ft_test("%#-.2u", -512);
+		ft_test("%#-.8u", 512);
+		ft_test("%#-.8u", -512);
+	}
+
+	if (u[0] || u[5])
+	{
+		printf("\033[36m5 - CLASSICO000000\n\033[0m");
+		ft_test("%0u", 512);
+		ft_test("%0u", -512);
+		ft_test("%06u", 512);
+		ft_test("%06u", -512);
+		ft_test("%01u", 512);
+		ft_test("%01u", -512);
+		ft_test("%06.2u", 512);
+		ft_test("%06.2u", -512);
+		ft_test("%01.2u", 512);
+		ft_test("%01.2u", -512);
+		ft_test("%06.8u", 512);
+		ft_test("%06.8u", -512);
+		ft_test("%01.8u", 512);
+		ft_test("%01.8u", -512);
+		ft_test("%0.2u", 512);
+		ft_test("%0.2u", -512);
+		ft_test("%0.8u", 512);
+		ft_test("%0.8u", -512);
+	}
+
+	if (u[0] || u[6])
+	{
+		printf("\033[36m6 - CLASSICO0000000 PREFIX\n\033[0m");
+		ft_test("%#0u", 512);
+		ft_test("%#0u", -512);
+		ft_test("%#06u", 512);
+		ft_test("%#06u", -512);
+		ft_test("%#01u", 512);
+		ft_test("%#01u", -512);
+		ft_test("%#06.2u", 512);
+		ft_test("%#06.2u", -512);
+		ft_test("%#01.2u", 512);
+		ft_test("%#01.2u", -512);
+		ft_test("%#06.8u", 512);
+		ft_test("%#06.8u", -512);
+		ft_test("%#01.8u", 512);
+		ft_test("%#01.8u", -512);
+		ft_test("%#0.2u", 512);
+		ft_test("%#0.2u", -512);
+		ft_test("%#0.8u", 512);
+		ft_test("%#0.8u", -512);
+	}
+
+	if (o[0] || o[1])
+	{
+		printf("\033[36m1 - CLASSICO\n\033[0m");
+		ft_test("%o", 512);
+		ft_test("%o", -512);
+		ft_test("%6o", 512);
+		ft_test("%6o", -512);
+		ft_test("%1o", 512);
+		ft_test("%1o", -512);
+		ft_test("%6.2o", 512);
+		ft_test("%6.2o", -512);
+		ft_test("%1.2o", 512);
+		ft_test("%1.2o", -512);
+		ft_test("%6.8o", 512);
+		ft_test("%6.8o", -512);
+		ft_test("%1.8o", 512);
+		ft_test("%1.8o", -512);
+		ft_test("%.2o", 512);
+		ft_test("%.2o", -512);
+		ft_test("%.8o", 512);
+		ft_test("%.8o", -512);
+	}
+
+	if (o[0] || o[2])
+	{
+		printf("\033[36m2 - CLASSICO PREFIX\n\033[0m");
+		ft_test("%#o", 512);
+		ft_test("%#o", -512);
+		ft_test("%#6o", 512);
+		ft_test("%#6o", -512);
+		ft_test("%#1o", 512);
+		ft_test("%#1o", -512);
+		ft_test("%#6.2o", 512);
+		ft_test("%#6.2o", -512);
+		ft_test("%#1.2o", 512);
+		ft_test("%#1.2o", -512);
+		ft_test("%#6.8o", 512);
+		ft_test("%#6.8o", -512);
+		ft_test("%#1.8o", 512);
+		ft_test("%#1.8o", -512);
+		ft_test("%#.2o", 512);
+		ft_test("%#.2o", -512);
+		ft_test("%#.8o", 512);
+		ft_test("%#.8o", -512);
+	}
+
+	if (o[0] || o[3])
+	{
+		printf("\033[36m3 - CLASSICO LEFT\n\033[0m");
+		ft_test("%-o", 512);
+		ft_test("%-o", -512);
+		ft_test("%-6o", 512);
+		ft_test("%-6o", -512);
+		ft_test("%-1o", 512);
+		ft_test("%-1o", -512);
+		ft_test("%-6.2o", 512);
+		ft_test("%-6.2o", -512);
+		ft_test("%-1.2o", 512);
+		ft_test("%-1.2o", -512);
+		ft_test("%-6.8o", 512);
+		ft_test("%-6.8o", -512);
+		ft_test("%-1.8o", 512);
+		ft_test("%-1.8o", -512);
+		ft_test("%-.2o", 512);
+		ft_test("%-.2o", -512);
+		ft_test("%-.8o", 512);
+		ft_test("%-.8o", -512);
+	}
+
+	if (o[0] || o[4])
+	{
+		printf("\033[36m4 - CLASSICO PREFIX LEFT\n\033[0m");
+		ft_test("%#-o", 512);
+		ft_test("%#-o", -512);
+		ft_test("%#-6o", 512);
+		ft_test("%#-6o", -512);
+		ft_test("%#-1o", 512);
+		ft_test("%#-1o", -512);
+		ft_test("%#-6.2o", 512);
+		ft_test("%#-6.2o", -512);
+		ft_test("%#-1.2o", 512);
+		ft_test("%#-1.2o", -512);
+		ft_test("%#-6.8o", 512);
+		ft_test("%#-6.8o", -512);
+		ft_test("%#-1.8o", 512);
+		ft_test("%#-1.8o", -512);
+		ft_test("%#-.2o", 512);
+		ft_test("%#-.2o", -512);
+		ft_test("%#-.8o", 512);
+		ft_test("%#-.8o", -512);
+	}
+
+	if (o[0] || o[5])
+	{
+		printf("\033[36m5 - CLASSICO000000\n\033[0m");
+		ft_test("%0o", 512);
+		ft_test("%0o", -512);
+		ft_test("%06o", 512);
+		ft_test("%06o", -512);
+		ft_test("%01o", 512);
+		ft_test("%01o", -512);
+		ft_test("%06.2o", 512);
+		ft_test("%06.2o", -512);
+		ft_test("%01.2o", 512);
+		ft_test("%01.2o", -512);
+		ft_test("%06.8o", 512);
+		ft_test("%06.8o", -512);
+		ft_test("%01.8o", 512);
+		ft_test("%01.8o", -512);
+		ft_test("%0.2o", 512);
+		ft_test("%0.2o", -512);
+		ft_test("%0.8o", 512);
+		ft_test("%0.8o", -512);
+	}
+
+	if (o[0] || o[6])
+	{
+		printf("\033[36m6 - CLASSICO0000000 PREFIX\n\033[0m");
+		ft_test("%#0o", 512);
+		ft_test("%#0o", -512);
+		ft_test("%#06o", 512);
+		ft_test("%#06o", -512);
+		ft_test("%#01o", 512);
+		ft_test("%#01o", -512);
+		ft_test("%#06.2o", 512);
+		ft_test("%#06.2o", -512);
+		ft_test("%#01.2o", 512);
+		ft_test("%#01.2o", -512);
+		ft_test("%#06.8o", 512);
+		ft_test("%#06.8o", -512);
 	}
 
 	if (fails)
