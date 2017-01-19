@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/19 08:47:27 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/19 10:42:33 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,10 @@ size_t				ft_va_arg_u(va_list ap, t_conv *list, char **str);
 size_t				ft_va_arg_x(va_list ap, t_conv *list, char **str);
 size_t				ft_va_arg_xmaj(va_list ap, t_conv *list, char **str);
 
+/*
+** %d
+*/
+
 size_t				ft_fp_d(size_t len, t_conv *list, char *arg);
 void				ft_p_d(char **to_print, t_conv *list,
 		size_t len, size_t size);
@@ -89,8 +93,21 @@ void				ft_sub_1(t_conv *list, char *to_print,
 		char *arg, size_t len);
 void				ft_sub_2(t_conv *list, char **to_print, char *arg);
 
-void				ft_putchar_v2(wchar_t c);
+/*
+** %x
+*/
 
+size_t				ft_fp_x(size_t len, t_conv *list);
+void				ft_p_x(char **to_print, t_conv *list,
+		size_t len, size_t size);
+int					ft_left_x(char *arg, size_t len,
+		char **to_print, t_conv *list);
+void				ft_sub_x1(t_conv *list, char *to_print,
+		char *arg, size_t len);
+void				ft_sub_x2(t_conv *list, char **to_print,
+		char *arg, size_t *i);
+
+void				ft_putchar_v2(wchar_t c);
 char				*ft_printf(const char *format, ...);
 
 #endif
