@@ -61,6 +61,9 @@ int		main(int ac, char **av)
 		d[0] = 1;
 		x[0] = 1;
 		xmaj[0] = 1;
+		u[0] = 1;
+		o[0] = 1;
+		p = 1;
 	}
 	else
 	{
