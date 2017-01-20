@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 06:18:25 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/01/20 06:54:56 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/01/20 07:41:27 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,7 @@ int		main(int ac, char **av)
 				s[4] = (av[1][k] == '4') ? 1 : s[4];
 				s[5] = (av[1][k] == '5') ? 1 : s[5];
 			}
+		}
 	}
 
 	if (d[0] || d[1])
@@ -898,10 +899,10 @@ int		main(int ac, char **av)
 		ft_test("%-1c", 0, 's');
 
 	}
-	
+
 	if (c[0] || c[2])
 	{
-		printf("\033[36m1 - CLASSICO MAJ\n\033[0m");
+		printf("\033[36m2 - CLASSICO MAJ\n\033[0m");
 		ft_test("%c", 0, 'S');
 		ft_test("%6c", 0, 'S');
 		ft_test("%1c", 0, 'S');
@@ -914,10 +915,10 @@ int		main(int ac, char **av)
 		ft_test("%-1c", 0, 'S');
 		ft_test("%-1c", 0, 'S');
 	}
-	
+
 	if (c[0] || c[3])
 	{
-		printf("\033[36m1 - CLASSICO NUMERIK\n\033[0m");
+		printf("\033[36m3 - CLASSICO NUMERIK\n\033[0m");
 		ft_test("%c", 0, '5');
 		ft_test("%6c", 0, '4');
 		ft_test("%1c", 0, '3');
@@ -930,10 +931,10 @@ int		main(int ac, char **av)
 		ft_test("%-1c", 0, '9');
 		ft_test("%-1c", 0, '1');
 	}
-	
+
 	if (c[0] || c[4])
 	{
-		printf("\033[36m1 - CLASSICO SYMBOLES\n\033[0m");
+		printf("\033[36m4 - CLASSICO SYMBOLES\n\033[0m");
 		ft_test("%c", 0, ',');
 		ft_test("%6c", 0, ' ');
 		ft_test("%1c", 0, '	');
@@ -956,7 +957,7 @@ int		main(int ac, char **av)
 
 	if (s[0] || s[2])
 	{
-		printf("\033[36m1 - CLASSICO FIELD ONLY + JUSTIFY\n\033[0m");
+		printf("\033[36m2 - CLASSICO FIELD ONLY + JUSTIFY\n\033[0m");
 		ft_test("%25s", 2, str);
 		ft_test("%17s", 2, str);
 		ft_test("%8s", 2, str);
@@ -965,10 +966,10 @@ int		main(int ac, char **av)
 		ft_test("%-8s", 2, str);
 
 	}
-	
+
 	if (s[0] || s[3])
 	{
-		printf("\033[36m1 - CLASSICO PREC ONLY + JUSTIFY\n\033[0m");
+		printf("\033[36m3 - CLASSICO PREC ONLY + JUSTIFY\n\033[0m");
 		ft_test("%.25s", 2, str);
 		ft_test("%.17s", 2, str);
 		ft_test("%.8s", 2, str);
@@ -979,7 +980,7 @@ int		main(int ac, char **av)
 
 	if (s[0] || s[4])
 	{
-		printf("\033[36m1 - CLASSICO FIELD PREC\n\033[0m");
+		printf("\033[36m4 - CLASSICO FIELD PREC\n\033[0m");
 		ft_test("%25.6s", 2, str);
 		ft_test("%17.6s", 2, str);
 		ft_test("%8.6s", 2, str);
@@ -990,10 +991,10 @@ int		main(int ac, char **av)
 		ft_test("%17.26s", 2, str);
 		ft_test("%17.26s", 2, str);
 	}
-	
+
 	if (s[0] || s[5])
 	{
-		printf("\033[36m1 - CLASSICO FIELD PREC JUSTIFY\n\033[0m");
+		printf("\033[36m5 - CLASSICO FIELD PREC JUSTIFY\n\033[0m");
 		ft_test("%-25.6s", 2, str);
 		ft_test("%-17.6s", 2, str);
 		ft_test("%-8.6s", 2, str);
@@ -1016,5 +1017,4 @@ int		main(int ac, char **av)
 				fails, tests);
 	}
 	return (0);
-}
 }
