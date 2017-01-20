@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 09:29:44 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/19 09:33:27 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/20 10:39:58 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ size_t		ft_va_arg_d(va_list ap, t_conv *list, char **str)
 	arg = ft_itoa(va_arg(ap, int));
 	if (list->sign && arg[0] != '-')
 		arg = ft_strjoin("+", arg);
-	len = ft_fp_d(ft_strlen(arg), list, arg);
+	len = ft_fp_d(ft_strlen(arg), list, arg, 0);
 	to_print = ft_strspace(len);
 	if (!ft_left_d(arg, len, &to_print, list))
 	{

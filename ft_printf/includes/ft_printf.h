@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/19 11:40:56 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/01/20 10:42:13 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ size_t				ft_va_arg_xmaj(va_list ap, t_conv *list, char **str);
 ** %d
 */
 
-size_t				ft_fp_d(size_t len, t_conv *list, char *arg);
+size_t				ft_fp_d(size_t len, t_conv *list, char *arg, size_t size);
 void				ft_p_d(char **to_print, t_conv *list,
 		size_t len, size_t size);
 int					ft_left_d(char *arg, size_t len,
@@ -120,6 +120,7 @@ void				ft_sub_o1(t_conv *list, char *to_print,
 		char *arg, size_t len);
 void				ft_sub_o2(t_conv *list, char *to_print,
 		char *arg, size_t *i);
+
 /*
 ** %u
 */

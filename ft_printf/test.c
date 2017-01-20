@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 06:18:25 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/01/20 07:52:53 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/01/20 10:05:45 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,6 +220,8 @@ int		main(int ac, char **av)
 		ft_test("%.2d", 0, -512);
 		ft_test("%.8d", 0, 512);
 		ft_test("%.8d", 0, -512);
+		ft_test("%8.6d", 0, 512);
+		ft_test("%8.6d", 0, -512);
 	}
 
 	if (d[0] || d[2])
@@ -243,6 +245,8 @@ int		main(int ac, char **av)
 		ft_test("% .2d", 0, -512);
 		ft_test("% .8d", 0, 512);
 		ft_test("% .8d", 0, -512);
+		ft_test("% 8.6d", 0, 512);
+		ft_test("% 8.6d", 0, -512);
 	}
 
 	if (d[0] || d[3])
@@ -266,6 +270,8 @@ int		main(int ac, char **av)
 		ft_test("%-.2d", 0, -512);
 		ft_test("%-.8d", 0, 512);
 		ft_test("%-.8d", 0, -512);
+		ft_test("%-8.6d", 0, 512);
+		ft_test("%-8.6d", 0, -512);
 	}
 
 	if (d[0] || d[4])
@@ -289,6 +295,8 @@ int		main(int ac, char **av)
 		ft_test("% -.2d", 0, -512);
 		ft_test("% -.8d", 0, 512);
 		ft_test("% -.8d", 0, -512);
+		ft_test("% -8.6d", 0, 512);
+		ft_test("% -8.6d", 0, -512);
 	}
 
 	if (d[0] || d[5])
@@ -312,6 +320,8 @@ int		main(int ac, char **av)
 		ft_test("%0.2d", 0, -512);
 		ft_test("%0.8d", 0, 512);
 		ft_test("%0.8d", 0, -512);
+		ft_test("%08.6d", 0, 512);
+		ft_test("%08.6d", 0, -512);
 	}
 
 	if (d[0] || d[6])
@@ -335,6 +345,8 @@ int		main(int ac, char **av)
 		ft_test("%+.2d", 0, -512);
 		ft_test("%+.8d", 0, 512);
 		ft_test("%+.8d", 0, -512);
+		ft_test("%+8.6d", 0, 512);
+		ft_test("%+8.6d", 0, -512);
 	}
 
 	if (d[0] || d[7])
@@ -358,6 +370,8 @@ int		main(int ac, char **av)
 		ft_test("%+0.2d", 0, -512);
 		ft_test("%+0.8d", 0, 512);
 		ft_test("%+0.8d", 0, -512);
+		ft_test("%+08.6d", 0, 512);
+		ft_test("%+08.6d", 0, -512);
 	}
 
 	if (d[0] || d[8])
@@ -381,6 +395,8 @@ int		main(int ac, char **av)
 		ft_test("%+-.2d", 0, -512);
 		ft_test("%+-.8d", 0, 512);
 		ft_test("%+-.8d", 0, -512);
+		ft_test("%+-8.6d", 0, 512);
+		ft_test("%+-8.6d", 0, -512);
 	}
 
 	if (x[0] || x[1])
@@ -404,6 +420,8 @@ int		main(int ac, char **av)
 		ft_test("%.2x", 0, -512);
 		ft_test("%.8x", 0, 512);
 		ft_test("%.8x", 0, -512);
+		ft_test("%8.6x", 0, 512);
+		ft_test("%8.6x", 0, -512);
 	}
 
 	if (x[0] || x[2])
@@ -427,6 +445,8 @@ int		main(int ac, char **av)
 		ft_test("%#.2x", 0, -512);
 		ft_test("%#.8x", 0, 512);
 		ft_test("%#.8x", 0, -512);
+		ft_test("%#8.6x", 0, 512);
+		ft_test("%#8.6x", 0, -512);
 	}
 
 	if (x[0] || x[3])
@@ -450,6 +470,8 @@ int		main(int ac, char **av)
 		ft_test("%-.2x", 0, -512);
 		ft_test("%-.8x", 0, 512);
 		ft_test("%-.8x", 0, -512);
+		ft_test("%-8.6x", 0, 512);
+		ft_test("%-8.6x", 0, -512);
 	}
 
 	if (x[0] || x[4])
@@ -473,6 +495,8 @@ int		main(int ac, char **av)
 		ft_test("%#-.2x", 0, -512);
 		ft_test("%#-.8x", 0, 512);
 		ft_test("%#-.8x", 0, -512);
+		ft_test("%#-8.6x", 0, 512);
+		ft_test("%#-8.6x", 0, -512);
 	}
 
 	if (x[0] || x[5])
@@ -496,6 +520,8 @@ int		main(int ac, char **av)
 		ft_test("%0.2x", 0, -512);
 		ft_test("%0.8x", 0, 512);
 		ft_test("%0.8x", 0, -512);
+		ft_test("%08.6x", 0, 512);
+		ft_test("%08.6x", 0, -512);
 	}
 
 	if (x[0] || x[6])
@@ -519,6 +545,8 @@ int		main(int ac, char **av)
 		ft_test("%#0.2x", 0, -512);
 		ft_test("%#0.8x", 0, 512);
 		ft_test("%#0.8x", 0, -512);
+		ft_test("%#08.6x", 0, 512);
+		ft_test("%#08.6x", 0, -512);
 	}
 
 	if (xmaj[0] || xmaj[1])
@@ -542,6 +570,8 @@ int		main(int ac, char **av)
 		ft_test("%.2X", 0, -512);
 		ft_test("%.8X", 0, 512);
 		ft_test("%.8X", 0, -512);
+		ft_test("%8.6X", 0, 512);
+		ft_test("%8.6X", 0, -512);
 	}
 
 	if (xmaj[0] || xmaj[2])
@@ -565,6 +595,8 @@ int		main(int ac, char **av)
 		ft_test("%#.2X", 0, -512);
 		ft_test("%#.8X", 0, 512);
 		ft_test("%#.8X", 0, -512);
+		ft_test("%#8.6X", 0, 512);
+		ft_test("%#8.6X", 0, -512);
 	}
 
 	if (xmaj[0] || xmaj[3])
@@ -588,6 +620,8 @@ int		main(int ac, char **av)
 		ft_test("%-.2X", 0, -512);
 		ft_test("%-.8X", 0, 512);
 		ft_test("%-.8X", 0, -512);
+		ft_test("%-8.6X", 0, 512);
+		ft_test("%-8.6X", 0, -512);
 	}
 
 	if (xmaj[0] || xmaj[4])
@@ -611,6 +645,8 @@ int		main(int ac, char **av)
 		ft_test("%#-.2X", 0, -512);
 		ft_test("%#-.8X", 0, 512);
 		ft_test("%#-.8X", 0, -512);
+		ft_test("%#-8.6X", 0, 512);
+		ft_test("%#-8.6X", 0, -512);
 	}
 
 	if (xmaj[0] || xmaj[5])
@@ -634,6 +670,8 @@ int		main(int ac, char **av)
 		ft_test("%0.2X", 0, -512);
 		ft_test("%0.8X", 0, 512);
 		ft_test("%0.8X", 0, -512);
+		ft_test("%08.6X", 0, 512);
+		ft_test("%08.6X", 0, -512);
 	}
 
 	if (xmaj[0] || xmaj[6])
@@ -657,6 +695,8 @@ int		main(int ac, char **av)
 		ft_test("%#0.2X", 0, -512);
 		ft_test("%#0.8X", 0, 512);
 		ft_test("%#0.8X", 0, -512);
+		ft_test("%#08.6X", 0, 512);
+		ft_test("%#08.6X", 0, -512);
 	}
 
 	if (u[0] || u[1])
@@ -680,6 +720,8 @@ int		main(int ac, char **av)
 		ft_test("%.2u", 0, -512);
 		ft_test("%.8u", 0, 512);
 		ft_test("%.8u", 0, -512);
+		ft_test("%8.6u", 0, 512);
+		ft_test("%8.6u", 0, -512);
 	}
 
 	if (u[0] || u[2])
@@ -703,6 +745,8 @@ int		main(int ac, char **av)
 		ft_test("%-.2u", 0, -512);
 		ft_test("%-.8u", 0, 512);
 		ft_test("%-.8u", 0, -512);
+		ft_test("%-8.6u", 0, 512);
+		ft_test("%-8.6u", 0, -512);
 	}
 
 	if (u[0] || u[3])
@@ -726,6 +770,8 @@ int		main(int ac, char **av)
 		ft_test("%0.2u", 0, -512);
 		ft_test("%0.8u", 0, 512);
 		ft_test("%0.8u", 0, -512);
+		ft_test("%08.6u", 0, 512);
+		ft_test("%08.6u", 0, -512);
 	}
 
 	if (o[0] || o[1])
@@ -749,6 +795,8 @@ int		main(int ac, char **av)
 		ft_test("%.2o", 0, -512);
 		ft_test("%.8o", 0, 512);
 		ft_test("%.8o", 0, -512);
+		ft_test("%8.6o", 0, 512);
+		ft_test("%8.6o", 0, -512);
 	}
 
 	if (o[0] || o[2])
@@ -772,6 +820,8 @@ int		main(int ac, char **av)
 		ft_test("%#.2o", 0, -512);
 		ft_test("%#.8o", 0, 512);
 		ft_test("%#.8o", 0, -512);
+		ft_test("%#8.6o", 0, 512);
+		ft_test("%#8.6o", 0, -512);
 	}
 
 	if (o[0] || o[3])
@@ -795,6 +845,8 @@ int		main(int ac, char **av)
 		ft_test("%-.2o", 0, -512);
 		ft_test("%-.8o", 0, 512);
 		ft_test("%-.8o", 0, -512);
+		ft_test("%-8.6o", 0, 512);
+		ft_test("%-8.6o", 0, -512);
 	}
 
 	if (o[0] || o[4])
@@ -818,6 +870,8 @@ int		main(int ac, char **av)
 		ft_test("%#-.2o", 0, -512);
 		ft_test("%#-.8o", 0, 512);
 		ft_test("%#-.8o", 0, -512);
+		ft_test("%#-8.6o", 0, 512);
+		ft_test("%#-8.6o", 0, -512);
 	}
 
 	if (o[0] || o[5])
@@ -841,6 +895,8 @@ int		main(int ac, char **av)
 		ft_test("%0.2o", 0, -512);
 		ft_test("%0.8o", 0, 512);
 		ft_test("%0.8o", 0, -512);
+		ft_test("%08.6o", 0, 512);
+		ft_test("%08.6o", 0, -512);
 	}
 
 	if (o[0] || o[6])
@@ -864,6 +920,8 @@ int		main(int ac, char **av)
 		ft_test("%#0.2o", 0, -512);
 		ft_test("%#0.8o", 0, 512);
 		ft_test("%#0.8o", 0, -512);
+		ft_test("%#08.6o", 0, 512);
+		ft_test("%#08.6o", 0, -512);
 	}
 
 	if (p)
@@ -1005,6 +1063,16 @@ int		main(int ac, char **av)
 		ft_test("%-17.26s", 2, str);
 		ft_test("%-17.26s", 2, str);
 	}
+
+	char my_c1 = 'a';
+	char my_c2 = 130;
+
+	ft_test("%hhd", 0, my_c1);
+	ft_test("%hhd", 0, my_c2);
+	ft_test("%8.3hhd", 0, my_c1);
+	ft_test("%8.3d", 0, 12);
+	ft_test("%8.3hhd", 0, my_c2);
+	ft_test("%8.3c", 0, my_c1);
 
 	if (fails)
 	{
