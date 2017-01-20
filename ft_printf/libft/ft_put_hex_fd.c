@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/27 09:23:54 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/03 09:22:33 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/20 09:21:47 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	ft_print_hex_fd(long n, int fd)
 			ft_putchar_fd('7' + n % 16, fd);
 		else
 			ft_putchar_fd('0' + n % 16, fd);
-	}	
+	}
 }
 
 void		ft_put_hex_fd(int n, int fd)
@@ -60,6 +60,7 @@ void		ft_put_hex_fd(int n, int fd)
 int			main(void)
 {
 	int	i;
+
 	i = 0;
 	while (i < 33)
 	{

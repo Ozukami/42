@@ -5,11 +5,13 @@ c : - f l
 s : - f p l
 	field : taille min
 	precision : taille max
-d : - + 0 f p space h l
+d : - + 0 f p space h l z j
 p : - f 
 o : # - 0 f p h l
-u : # - 0 f p h l
+u : # - 0 f p h l z
 x : # - 0 f p h l
 X : # - 0 f p h l
 
 check z & j for all
+
+J = LONG

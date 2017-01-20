@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 06:18:25 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/01/20 07:41:27 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/20 07:52:53 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ void	ft_test(char *s, int type, ...)
 	else if (type == 1)
 	{
 		int	arg = va_arg(ap, int);
-		sprintf(s1, s, arg);
-		s2 = ft_printf(s, arg);
+		sprintf(s1, s, &arg);
+		s2 = ft_printf(s, &arg);
 	}
 	else if (type == 2)
 	{

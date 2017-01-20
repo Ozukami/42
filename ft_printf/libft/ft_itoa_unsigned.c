@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 12:11:22 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/19 12:22:28 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/20 09:24:11 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static int	get_size(unsigned int value)
 
 char		*ft_itoa_unsigned(int value)
 {
-	char	*itoa;
-	int		size;
+	char			*itoa;
+	int				size;
 	unsigned int	nb;
 
 	nb = (unsigned int)value;
