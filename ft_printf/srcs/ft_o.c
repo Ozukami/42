@@ -6,10 +6,9 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 11:37:22 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/01/19 12:39:17 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/20 12:40:47 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "ft_printf.h"
 
@@ -51,12 +50,11 @@ void		ft_p_o(char **to_print, t_conv *list, size_t len, size_t size)
 		{
 			if (list->field > -1)
 			{
-				if (i > (size_t)(list->field - list->p - 1) && !(list->left))
-					(to_print)[0][i] = '0';
-				if (i < (size_t)(list->field - ft_max((int)size, list->p))
-						&& list->left)
-					(to_print)[0][i] = '0';
-				if (list->p > (int)len || list->p == -1)
+				if ((i > (size_t)(list->field - list->p - 1) && !(list->left))
+						|| (i < (size_t)(list->field -
+								ft_max((int)size, list->p)) && list->left)
+						|| ((list->p > (int)len && list->field)
+							|| list->p == -1))
 					(to_print)[0][i] = '0';
 			}
 			else

@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 06:18:25 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/01/20 10:05:45 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/20 12:42:29 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@
 #define SUCCESS "\033[32mSUCCESS  \033[0m"
 #define FAILLURE "\033[31mFAILLURE \033[0m"
 
+int		debug = 1;
 int		fails = 0;
 int		tests = 0;
+int		error = 0;
 
 void	ft_test(char *s, int type, ...)
 {
@@ -52,11 +54,15 @@ void	ft_test(char *s, int type, ...)
 		printf("Test %d : %s\n", i++, s);
 		printf("	s{%s}\n	f{%s}\n", s1, s2);
 		fails++;
+		error++;
 	}
 	else
 	{
-		printf(SUCCESS);
-		printf("Test %d : %s\n", i++, s);
+		if (!debug)
+		{
+			printf(SUCCESS);
+			printf("Test %d : %s\n", i++, s);
+		}
 	}
 	tests++;
 	free(s1);
@@ -74,6 +80,7 @@ int		main(int ac, char **av)
 	int	p = 0;
 	int	c[8] = {0};
 	int	s[8] = {0};
+	int	hh[8] = {0};
 	int	i = 512;
 	char	str[25] = "#@  	p% htyu(();;";
 	if (ac < 2)
@@ -86,6 +93,7 @@ int		main(int ac, char **av)
 		p = 1;
 		c[0] = 1;
 		s[0] = 1;
+		hh[0] = 1;
 	}
 	else
 	{
@@ -197,11 +205,15 @@ int		main(int ac, char **av)
 				s[5] = (av[1][k] == '5') ? 1 : s[5];
 			}
 		}
+		else if (av[1][0] == 'h' && av[1][1] == 'h')
+			hh[0] = 1;
 	}
 
 	if (d[0] || d[1])
 	{
-		printf("\033[36m1 - CLASSICO\n\033[0m");
+		error = 0;
+		error = 0;
+		printf("\033[36m{d} 1 - CLASSICO\n\033[0m");
 		ft_test("%d", 0, 512);
 		ft_test("%d", 0, -512);
 		ft_test("%6d", 0, 512);
@@ -222,11 +234,16 @@ int		main(int ac, char **av)
 		ft_test("%.8d", 0, -512);
 		ft_test("%8.6d", 0, 512);
 		ft_test("%8.6d", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (d[0] || d[2])
 	{
-		printf("\033[36m2 - CLASSICO SPACE\n\033[0m");
+		error = 0;
+		printf("\033[36m{d} 2 - CLASSICO SPACE\n\033[0m");
 		ft_test("% d", 0, 512);
 		ft_test("% d", 0, -512);
 		ft_test("% 6d", 0, 512);
@@ -247,11 +264,16 @@ int		main(int ac, char **av)
 		ft_test("% .8d", 0, -512);
 		ft_test("% 8.6d", 0, 512);
 		ft_test("% 8.6d", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (d[0] || d[3])
 	{
-		printf("\033[36m3 - CLASSICO LEFT\n\033[0m");
+		error = 0;
+		printf("\033[36m{d} 3 - CLASSICO LEFT\n\033[0m");
 		ft_test("%-d", 0, 512);
 		ft_test("%-d", 0, -512);
 		ft_test("%-6d", 0, 512);
@@ -272,11 +294,16 @@ int		main(int ac, char **av)
 		ft_test("%-.8d", 0, -512);
 		ft_test("%-8.6d", 0, 512);
 		ft_test("%-8.6d", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (d[0] || d[4])
 	{
-		printf("\033[36m4 - CLASSICO LEFT SPACE\n\033[0m");
+		error = 0;
+		printf("\033[36m{d} 4 - CLASSICO LEFT SPACE\n\033[0m");
 		ft_test("% -d", 0, 512);
 		ft_test("% -d", 0, -512);
 		ft_test("% -6d", 0, 512);
@@ -297,11 +324,16 @@ int		main(int ac, char **av)
 		ft_test("% -.8d", 0, -512);
 		ft_test("% -8.6d", 0, 512);
 		ft_test("% -8.6d", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (d[0] || d[5])
 	{
-		printf("\033[36m5 - CLASSICO0000000000\n\033[0m");
+		error = 0;
+		printf("\033[36m{d} 5 - CLASSICO0000000000\n\033[0m");
 		ft_test("%0d", 0, 512);
 		ft_test("%0d", 0, -512);
 		ft_test("%06d", 0, 512);
@@ -322,11 +354,16 @@ int		main(int ac, char **av)
 		ft_test("%0.8d", 0, -512);
 		ft_test("%08.6d", 0, 512);
 		ft_test("%08.6d", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (d[0] || d[6])
 	{
-		printf("\033[36m6 - CLASSICO QUINTE +\n\033[0m");
+		error = 0;
+		printf("\033[36m{d} 6 - CLASSICO QUINTE +\n\033[0m");
 		ft_test("%+d", 0, 512);
 		ft_test("%+d", 0, -512);
 		ft_test("%+6d", 0, 512);
@@ -347,11 +384,16 @@ int		main(int ac, char **av)
 		ft_test("%+.8d", 0, -512);
 		ft_test("%+8.6d", 0, 512);
 		ft_test("%+8.6d", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (d[0] || d[7])
 	{
-		printf("\033[36m7 - CLASSICO0000000000 +\n\033[0m");
+		error = 0;
+		printf("\033[36m{d} 7 - CLASSICO0000000000 +\n\033[0m");
 		ft_test("%+0d", 0, 512);
 		ft_test("%+0d", 0, -512);
 		ft_test("%+06d", 0, 512);
@@ -372,11 +414,16 @@ int		main(int ac, char **av)
 		ft_test("%+0.8d", 0, -512);
 		ft_test("%+08.6d", 0, 512);
 		ft_test("%+08.6d", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (d[0] || d[8])
 	{
-		printf("\033[36m8 - CLASSICO QUINTE LEFT +\n\033[0m");
+		error = 0;
+		printf("\033[36m{d} 8 - CLASSICO QUINTE LEFT +\n\033[0m");
 		ft_test("%+-d", 0, 512);
 		ft_test("%+-d", 0, -512);
 		ft_test("%+-6d", 0, 512);
@@ -397,11 +444,16 @@ int		main(int ac, char **av)
 		ft_test("%+-.8d", 0, -512);
 		ft_test("%+-8.6d", 0, 512);
 		ft_test("%+-8.6d", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (x[0] || x[1])
 	{
-		printf("\033[36m1 - CLASSICO\n\033[0m");
+		error = 0;
+		printf("\033[36m{x} 1 - CLASSICO\n\033[0m");
 		ft_test("%x", 0, 512);
 		ft_test("%x", 0, -512);
 		ft_test("%6x", 0, 512);
@@ -422,11 +474,16 @@ int		main(int ac, char **av)
 		ft_test("%.8x", 0, -512);
 		ft_test("%8.6x", 0, 512);
 		ft_test("%8.6x", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (x[0] || x[2])
 	{
-		printf("\033[36m2 - CLASSICO PREFIX\n\033[0m");
+		error = 0;
+		printf("\033[36m{x} 2 - CLASSICO PREFIX\n\033[0m");
 		ft_test("%#x", 0, 512);
 		ft_test("%#x", 0, -512);
 		ft_test("%#6x", 0, 512);
@@ -447,11 +504,16 @@ int		main(int ac, char **av)
 		ft_test("%#.8x", 0, -512);
 		ft_test("%#8.6x", 0, 512);
 		ft_test("%#8.6x", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (x[0] || x[3])
 	{
-		printf("\033[36m3 - CLASSICO LEFT\n\033[0m");
+		error = 0;
+		printf("\033[36m{x} 3 - CLASSICO LEFT\n\033[0m");
 		ft_test("%-x", 0, 512);
 		ft_test("%-x", 0, -512);
 		ft_test("%-6x", 0, 512);
@@ -472,11 +534,16 @@ int		main(int ac, char **av)
 		ft_test("%-.8x", 0, -512);
 		ft_test("%-8.6x", 0, 512);
 		ft_test("%-8.6x", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (x[0] || x[4])
 	{
-		printf("\033[36m4 - CLASSICO PREFIX LEFT\n\033[0m");
+		error = 0;
+		printf("\033[36m{x} 4 - CLASSICO PREFIX LEFT\n\033[0m");
 		ft_test("%#-x", 0, 512);
 		ft_test("%#-x", 0, -512);
 		ft_test("%#-6x", 0, 512);
@@ -497,11 +564,16 @@ int		main(int ac, char **av)
 		ft_test("%#-.8x", 0, -512);
 		ft_test("%#-8.6x", 0, 512);
 		ft_test("%#-8.6x", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (x[0] || x[5])
 	{
-		printf("\033[36m5 - CLASSICO000000\n\033[0m");
+		error = 0;
+		printf("\033[36m{x} 5 - CLASSICO000000\n\033[0m");
 		ft_test("%0x", 0, 512);
 		ft_test("%0x", 0, -512);
 		ft_test("%06x", 0, 512);
@@ -522,11 +594,16 @@ int		main(int ac, char **av)
 		ft_test("%0.8x", 0, -512);
 		ft_test("%08.6x", 0, 512);
 		ft_test("%08.6x", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (x[0] || x[6])
 	{
-		printf("\033[36m6 - CLASSICO0000000 PREFIX\n\033[0m");
+		error = 0;
+		printf("\033[36m{x} 6 - CLASSICO0000000 PREFIX\n\033[0m");
 		ft_test("%#0x", 0, 512);
 		ft_test("%#0x", 0, -512);
 		ft_test("%#06x", 0, 512);
@@ -547,11 +624,16 @@ int		main(int ac, char **av)
 		ft_test("%#0.8x", 0, -512);
 		ft_test("%#08.6x", 0, 512);
 		ft_test("%#08.6x", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (xmaj[0] || xmaj[1])
 	{
-		printf("\033[36m1 - CLASSICO\n\033[0m");
+		error = 0;
+		printf("\033[36m{X} 1 - CLASSICO\n\033[0m");
 		ft_test("%X", 0, 512);
 		ft_test("%X", 0, -512);
 		ft_test("%6X", 0, 512);
@@ -572,11 +654,16 @@ int		main(int ac, char **av)
 		ft_test("%.8X", 0, -512);
 		ft_test("%8.6X", 0, 512);
 		ft_test("%8.6X", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (xmaj[0] || xmaj[2])
 	{
-		printf("\033[36m2 - CLASSICO PREFIX\n\033[0m");
+		error = 0;
+		printf("\033[36m{X} 2 - CLASSICO PREFIX\n\033[0m");
 		ft_test("%#X", 0, 512);
 		ft_test("%#X", 0, -512);
 		ft_test("%#6X", 0, 512);
@@ -597,11 +684,16 @@ int		main(int ac, char **av)
 		ft_test("%#.8X", 0, -512);
 		ft_test("%#8.6X", 0, 512);
 		ft_test("%#8.6X", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (xmaj[0] || xmaj[3])
 	{
-		printf("\033[36m3 - CLASSICO LEFT\n\033[0m");
+		error = 0;
+		printf("\033[36m{X} 3 - CLASSICO LEFT\n\033[0m");
 		ft_test("%-X", 0, 512);
 		ft_test("%-X", 0, -512);
 		ft_test("%-6X", 0, 512);
@@ -622,11 +714,16 @@ int		main(int ac, char **av)
 		ft_test("%-.8X", 0, -512);
 		ft_test("%-8.6X", 0, 512);
 		ft_test("%-8.6X", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (xmaj[0] || xmaj[4])
 	{
-		printf("\033[36m4 - CLASSICO PREFIX LEFT\n\033[0m");
+		error = 0;
+		printf("\033[36m{X} 4 - CLASSICO PREFIX LEFT\n\033[0m");
 		ft_test("%#-X", 0, 512);
 		ft_test("%#-X", 0, -512);
 		ft_test("%#-6X", 0, 512);
@@ -647,11 +744,16 @@ int		main(int ac, char **av)
 		ft_test("%#-.8X", 0, -512);
 		ft_test("%#-8.6X", 0, 512);
 		ft_test("%#-8.6X", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (xmaj[0] || xmaj[5])
 	{
-		printf("\033[36m5 - CLASSICO000000\n\033[0m");
+		error = 0;
+		printf("\033[36m{X} 5 - CLASSICO000000\n\033[0m");
 		ft_test("%0X", 0, 512);
 		ft_test("%0X", 0, -512);
 		ft_test("%06X", 0, 512);
@@ -672,11 +774,16 @@ int		main(int ac, char **av)
 		ft_test("%0.8X", 0, -512);
 		ft_test("%08.6X", 0, 512);
 		ft_test("%08.6X", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (xmaj[0] || xmaj[6])
 	{
-		printf("\033[36m6 - CLASSICO0000000 PREFIX\n\033[0m");
+		error = 0;
+		printf("\033[36m{X} 6 - CLASSICO0000000 PREFIX\n\033[0m");
 		ft_test("%#0X", 0, 512);
 		ft_test("%#0X", 0, -512);
 		ft_test("%#06X", 0, 512);
@@ -697,11 +804,16 @@ int		main(int ac, char **av)
 		ft_test("%#0.8X", 0, -512);
 		ft_test("%#08.6X", 0, 512);
 		ft_test("%#08.6X", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (u[0] || u[1])
 	{
-		printf("\033[36m1 - CLASSICO\n\033[0m");
+		error = 0;
+		printf("\033[36m{u} 1 - CLASSICO\n\033[0m");
 		ft_test("%u", 0, 512);
 		ft_test("%u", 0, -512);
 		ft_test("%6u", 0, 512);
@@ -722,11 +834,16 @@ int		main(int ac, char **av)
 		ft_test("%.8u", 0, -512);
 		ft_test("%8.6u", 0, 512);
 		ft_test("%8.6u", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (u[0] || u[2])
 	{
-		printf("\033[36m2 - CLASSICO LEFT\n\033[0m");
+		error = 0;
+		printf("\033[36m{u} 2 - CLASSICO LEFT\n\033[0m");
 		ft_test("%-u", 0, 512);
 		ft_test("%-u", 0, -512);
 		ft_test("%-6u", 0, 512);
@@ -747,11 +864,16 @@ int		main(int ac, char **av)
 		ft_test("%-.8u", 0, -512);
 		ft_test("%-8.6u", 0, 512);
 		ft_test("%-8.6u", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (u[0] || u[3])
 	{
-		printf("\033[36m3 - CLASSICO000000\n\033[0m");
+		error = 0;
+		printf("\033[36m{u} 3 - CLASSICO000000\n\033[0m");
 		ft_test("%0u", 0, 512);
 		ft_test("%0u", 0, -512);
 		ft_test("%06u", 0, 512);
@@ -772,11 +894,16 @@ int		main(int ac, char **av)
 		ft_test("%0.8u", 0, -512);
 		ft_test("%08.6u", 0, 512);
 		ft_test("%08.6u", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (o[0] || o[1])
 	{
-		printf("\033[36m1 - CLASSICO\n\033[0m");
+		error = 0;
+		printf("\033[36m{o} 1 - CLASSICO\n\033[0m");
 		ft_test("%o", 0, 512);
 		ft_test("%o", 0, -512);
 		ft_test("%6o", 0, 512);
@@ -797,11 +924,16 @@ int		main(int ac, char **av)
 		ft_test("%.8o", 0, -512);
 		ft_test("%8.6o", 0, 512);
 		ft_test("%8.6o", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (o[0] || o[2])
 	{
-		printf("\033[36m2 - CLASSICO PREFIX\n\033[0m");
+		error = 0;
+		printf("\033[36m{o} 2 - CLASSICO PREFIX\n\033[0m");
 		ft_test("%#o", 0, 512);
 		ft_test("%#o", 0, -512);
 		ft_test("%#6o", 0, 512);
@@ -822,11 +954,16 @@ int		main(int ac, char **av)
 		ft_test("%#.8o", 0, -512);
 		ft_test("%#8.6o", 0, 512);
 		ft_test("%#8.6o", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (o[0] || o[3])
 	{
-		printf("\033[36m3 - CLASSICO LEFT\n\033[0m");
+		error = 0;
+		printf("\033[36m{o} 3 - CLASSICO LEFT\n\033[0m");
 		ft_test("%-o", 0, 512);
 		ft_test("%-o", 0, -512);
 		ft_test("%-6o", 0, 512);
@@ -847,11 +984,16 @@ int		main(int ac, char **av)
 		ft_test("%-.8o", 0, -512);
 		ft_test("%-8.6o", 0, 512);
 		ft_test("%-8.6o", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (o[0] || o[4])
 	{
-		printf("\033[36m4 - CLASSICO PREFIX LEFT\n\033[0m");
+		error = 0;
+		printf("\033[36m{o} 4 - CLASSICO PREFIX LEFT\n\033[0m");
 		ft_test("%#-o", 0, 512);
 		ft_test("%#-o", 0, -512);
 		ft_test("%#-6o", 0, 512);
@@ -872,11 +1014,16 @@ int		main(int ac, char **av)
 		ft_test("%#-.8o", 0, -512);
 		ft_test("%#-8.6o", 0, 512);
 		ft_test("%#-8.6o", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (o[0] || o[5])
 	{
-		printf("\033[36m5 - CLASSICO000000\n\033[0m");
+		error = 0;
+		printf("\033[36m{o} 5 - CLASSICO000000\n\033[0m");
 		ft_test("%0o", 0, 512);
 		ft_test("%0o", 0, -512);
 		ft_test("%06o", 0, 512);
@@ -897,11 +1044,16 @@ int		main(int ac, char **av)
 		ft_test("%0.8o", 0, -512);
 		ft_test("%08.6o", 0, 512);
 		ft_test("%08.6o", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (o[0] || o[6])
 	{
-		printf("\033[36m6 - CLASSICO0000000 PREFIX\n\033[0m");
+		error = 0;
+		printf("\033[36m{o} 6 - CLASSICO0000000 PREFIX\n\033[0m");
 		ft_test("%#0o", 0, 512);
 		ft_test("%#0o", 0, -512);
 		ft_test("%#06o", 0, 512);
@@ -922,11 +1074,16 @@ int		main(int ac, char **av)
 		ft_test("%#0.8o", 0, -512);
 		ft_test("%#08.6o", 0, 512);
 		ft_test("%#08.6o", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (p)
 	{
-		printf("\033[36m1 - CLASSICO\n\033[0m");
+		error = 0;
+		printf("\033[36m{p} 1 - CLASSICO\n\033[0m");
 		ft_test("%p", 1, 512);
 		ft_test("%p", 1, 512);
 		ft_test("%6p", 1, 512);
@@ -939,11 +1096,16 @@ int		main(int ac, char **av)
 		ft_test("%-6p", 1, 512);
 		ft_test("%-1p", 1, i);
 		ft_test("%-1p", 1, i);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (c[0] || c[1])
 	{
-		printf("\033[36m1 - CLASSICO\n\033[0m");
+		error = 0;
+		printf("\033[36m{c} 1 - CLASSICO\n\033[0m");
 		ft_test("%c", 0, 's');
 		ft_test("%6c", 0, 's');
 		ft_test("%1c", 0, 's');
@@ -955,12 +1117,16 @@ int		main(int ac, char **av)
 		ft_test("%-6c", 0, 's');
 		ft_test("%-1c", 0, 's');
 		ft_test("%-1c", 0, 's');
-
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (c[0] || c[2])
 	{
-		printf("\033[36m2 - CLASSICO MAJ\n\033[0m");
+		error = 0;
+		printf("\033[36m{c} 2 - CLASSICO MAJ\n\033[0m");
 		ft_test("%c", 0, 'S');
 		ft_test("%6c", 0, 'S');
 		ft_test("%1c", 0, 'S');
@@ -972,11 +1138,16 @@ int		main(int ac, char **av)
 		ft_test("%-6c", 0, 'S');
 		ft_test("%-1c", 0, 'S');
 		ft_test("%-1c", 0, 'S');
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (c[0] || c[3])
 	{
-		printf("\033[36m3 - CLASSICO NUMERIK\n\033[0m");
+		error = 0;
+		printf("\033[36m{c} 3 - CLASSICO NUMERIK\n\033[0m");
 		ft_test("%c", 0, '5');
 		ft_test("%6c", 0, '4');
 		ft_test("%1c", 0, '3');
@@ -988,11 +1159,16 @@ int		main(int ac, char **av)
 		ft_test("%-6c", 0, '8');
 		ft_test("%-1c", 0, '9');
 		ft_test("%-1c", 0, '1');
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (c[0] || c[4])
 	{
-		printf("\033[36m4 - CLASSICO SYMBOLES\n\033[0m");
+		error = 0;
+		printf("\033[36m{c} 4 - CLASSICO SYMBOLES\n\033[0m");
 		ft_test("%c", 0, ',');
 		ft_test("%6c", 0, ' ');
 		ft_test("%1c", 0, '	');
@@ -1004,41 +1180,60 @@ int		main(int ac, char **av)
 		ft_test("%-6c", 0, '-');
 		ft_test("%-1c", 0, '*');
 		ft_test("%-1c", 0, '=');
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (s[0] || s[1])
 	{
-		printf("\033[36m1 - CLASSICO + CLASSICO JUSTIFY\n\033[0m");
+		error = 0;
+		printf("\033[36m{s} 1 - CLASSICO + CLASSICO JUSTIFY\n\033[0m");
 		ft_test("%s", 2, str);
 		ft_test("%-s", 2, str);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (s[0] || s[2])
 	{
-		printf("\033[36m2 - CLASSICO FIELD ONLY + JUSTIFY\n\033[0m");
+		error = 0;
+		printf("\033[36m{s} 2 - CLASSICO FIELD ONLY + JUSTIFY\n\033[0m");
 		ft_test("%25s", 2, str);
 		ft_test("%17s", 2, str);
 		ft_test("%8s", 2, str);
 		ft_test("%-25s", 2, str);
 		ft_test("%-17s", 2, str);
 		ft_test("%-8s", 2, str);
-
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (s[0] || s[3])
 	{
-		printf("\033[36m3 - CLASSICO PREC ONLY + JUSTIFY\n\033[0m");
+		error = 0;
+		printf("\033[36m{s} 3 - CLASSICO PREC ONLY + JUSTIFY\n\033[0m");
 		ft_test("%.25s", 2, str);
 		ft_test("%.17s", 2, str);
 		ft_test("%.8s", 2, str);
 		ft_test("%-.25s", 2, str);
 		ft_test("%-.17s", 2, str);
 		ft_test("%-.8s", 2, str);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (s[0] || s[4])
 	{
-		printf("\033[36m4 - CLASSICO FIELD PREC\n\033[0m");
+		error = 0;
+		printf("\033[36m{s} 4 - CLASSICO FIELD PREC\n\033[0m");
 		ft_test("%25.6s", 2, str);
 		ft_test("%17.6s", 2, str);
 		ft_test("%8.6s", 2, str);
@@ -1048,11 +1243,16 @@ int		main(int ac, char **av)
 		ft_test("%25.26s", 2, str);
 		ft_test("%17.26s", 2, str);
 		ft_test("%17.26s", 2, str);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
 	if (s[0] || s[5])
 	{
-		printf("\033[36m5 - CLASSICO FIELD PREC JUSTIFY\n\033[0m");
+		error = 0;
+		printf("\033[36m{s} 5 - CLASSICO FIELD PREC JUSTIFY\n\033[0m");
 		ft_test("%-25.6s", 2, str);
 		ft_test("%-17.6s", 2, str);
 		ft_test("%-8.6s", 2, str);
@@ -1062,17 +1262,30 @@ int		main(int ac, char **av)
 		ft_test("%-25.26s", 2, str);
 		ft_test("%-17.26s", 2, str);
 		ft_test("%-17.26s", 2, str);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
-	char my_c1 = 'a';
-	char my_c2 = 130;
+	if (hh[0])
+	{
+		error = 0;
+		char my_c1 = 'a';
+		char my_c2 = 130;
 
-	ft_test("%hhd", 0, my_c1);
-	ft_test("%hhd", 0, my_c2);
-	ft_test("%8.3hhd", 0, my_c1);
-	ft_test("%8.3d", 0, 12);
-	ft_test("%8.3hhd", 0, my_c2);
-	ft_test("%8.3c", 0, my_c1);
+		printf("\033[36m{hhd} 1 - SOME TESTS\n\033[0m");
+		ft_test("%hhd", 0, my_c1);
+		ft_test("%hhd", 0, my_c2);
+		ft_test("%8.3hhd", 0, my_c1);
+		ft_test("%8.3d", 0, 12);
+		ft_test("%8.3hhd", 0, my_c2);
+		ft_test("%8.3c", 0, my_c1);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
+	}
 
 	if (fails)
 	{

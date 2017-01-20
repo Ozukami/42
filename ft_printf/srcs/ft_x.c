@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 09:18:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/19 11:10:06 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/20 12:40:49 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ size_t		ft_fp_x(size_t len, t_conv *list)
 		size = len;
 	else
 		size = (size_t)list->field;
-	if (list->left && list->prefix && ((int)len < list->p))
+	if (list->left && list->prefix && ((int)len < list->p)
+			&& list->p > list->field)
 		size = size + 2;
 	return (size);
 }
@@ -47,12 +48,13 @@ void		ft_p_x(char **to_print, t_conv *list, size_t len, size_t size)
 		{
 			if (list->field > -1)
 			{
-				if (i > (size_t)(list->field - list->p - 1) && !(list->left))
+				if (list->left && (int)i < list->p)
 					(to_print)[0][i] = '0';
-				if (i < (size_t)(list->field - ft_max((int)size, list->p))
-						&& list->left)
-					(to_print)[0][i] = '0';
-				if (list->p > (int)len || list->p == -1)
+				if ((i > (size_t)(list->field - list->p - 1) && !(list->left))
+						|| (i < (size_t)(list->field -
+								ft_max((int)size, list->p)) && list->left)
+						|| ((list->p > (int)len && list->field < list->p)
+							|| list->p == -1))
 					(to_print)[0][i] = '0';
 			}
 			else
@@ -120,8 +122,9 @@ void		ft_sub_x1(t_conv *list, char *to_print, char *arg, size_t len)
 		while ((int)i + ft_max(list->p, (int)len) < (int)len
 				&& ft_strlen(arg) < len)
 			i++;
-		ft_strncpy(&(to_print)[i], arg, (size_t)
-				(ft_min((int)ft_strlen(arg), (int)len)));
+		ft_strncpy(&(to_print)[i - ((list->field > list->p && list->p >
+						(int)ft_strlen(arg) && list->prefix) ? 2 : 0)],
+				arg, (size_t)(ft_min((int)ft_strlen(arg), (int)len)));
 	}
 	else
 		ft_strncpy(&(to_print)[i], arg, (size_t)

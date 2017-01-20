@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/24 12:37:13 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/20 10:41:00 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/20 11:39:01 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void		ft_p_d(char **to_print, t_conv *list, size_t len, size_t size)
 				(to_print)[0][i] = '0';
 			i++;
 		}
-		printf("{%s}\n", *to_print);
 	}
 }
 
