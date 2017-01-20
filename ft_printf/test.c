@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   test.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Creates: 2016/12/09 23:45:58 by apoisson          #+#    #+#             */
-/*   Upsated: 2016/12/14 14:04:23 by apoisson         ###   ########.fr       */
+/*   Created: 2017/01/20 06:18:25 by qumaujea          #+#    #+#             */
+/*   Updated: 2017/01/20 06:54:56 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ void	ft_test(char *s, int type, ...)
 	else if (type == 1)
 	{
 		int	arg = va_arg(ap, int);
-		sprintf(s1, s, &arg);
-		s2 = ft_printf(s, &arg);
+		sprintf(s1, s, arg);
+		s2 = ft_printf(s, arg);
 	}
 	else if (type == 2)
 	{
@@ -72,7 +72,10 @@ int		main(int ac, char **av)
 	int	u[8] = {0};
 	int	o[8] = {0};
 	int	p = 0;
+	int	c[8] = {0};
+	int	s[8] = {0};
 	int	i = 512;
+	char	str[25] = "#@  	p% htyu(();;";
 	if (ac < 2)
 	{
 		d[0] = 1;
@@ -81,6 +84,8 @@ int		main(int ac, char **av)
 		u[0] = 1;
 		o[0] = 1;
 		p = 1;
+		c[0] = 1;
+		s[0] = 1;
 	}
 	else
 	{
@@ -166,6 +171,31 @@ int		main(int ac, char **av)
 			if (!av[1][1])
 				p = 1;
 		}
+		else if (av[1][0] == 'c')
+		{
+			if (!av[1][1])
+				c[0] = 1;
+			while (av[1][++k])
+			{
+				c[0] = (av[1][k] == '0') ? 1 : c[0];
+				c[1] = (av[1][k] == '1') ? 1 : c[1];
+				c[2] = (av[1][k] == '2') ? 1 : c[2];
+				c[3] = (av[1][k] == '3') ? 1 : c[3];
+			}
+		}
+		else if (av[1][0] == 's')
+		{
+			if (!av[1][1])
+				s[0] = 1;
+			while (av[1][++k])
+			{
+				s[0] = (av[1][k] == '0') ? 1 : s[0];
+				s[1] = (av[1][k] == '1') ? 1 : s[1];
+				s[2] = (av[1][k] == '2') ? 1 : s[2];
+				s[3] = (av[1][k] == '3') ? 1 : s[3];
+				s[4] = (av[1][k] == '4') ? 1 : s[4];
+				s[5] = (av[1][k] == '5') ? 1 : s[5];
+			}
 	}
 
 	if (d[0] || d[1])
@@ -852,6 +882,129 @@ int		main(int ac, char **av)
 		ft_test("%-1p", 1, i);
 	}
 
+	if (c[0] || c[1])
+	{
+		printf("\033[36m1 - CLASSICO\n\033[0m");
+		ft_test("%c", 0, 's');
+		ft_test("%6c", 0, 's');
+		ft_test("%1c", 0, 's');
+		ft_test("%2c", 0, 's');
+		ft_test("%c", 0, 's');
+		ft_test("%-c", 0, 's');
+		ft_test("%-c", 0, 's');
+		ft_test("%-6c", 0, 's');
+		ft_test("%-6c", 0, 's');
+		ft_test("%-1c", 0, 's');
+		ft_test("%-1c", 0, 's');
+
+	}
+	
+	if (c[0] || c[2])
+	{
+		printf("\033[36m1 - CLASSICO MAJ\n\033[0m");
+		ft_test("%c", 0, 'S');
+		ft_test("%6c", 0, 'S');
+		ft_test("%1c", 0, 'S');
+		ft_test("%2c", 0, 'S');
+		ft_test("%c", 0, 'S');
+		ft_test("%-c", 0, 'S');
+		ft_test("%-c", 0, 'S');
+		ft_test("%-6c", 0, 'S');
+		ft_test("%-6c", 0, 'S');
+		ft_test("%-1c", 0, 'S');
+		ft_test("%-1c", 0, 'S');
+	}
+	
+	if (c[0] || c[3])
+	{
+		printf("\033[36m1 - CLASSICO NUMERIK\n\033[0m");
+		ft_test("%c", 0, '5');
+		ft_test("%6c", 0, '4');
+		ft_test("%1c", 0, '3');
+		ft_test("%2c", 0, '2');
+		ft_test("%c", 0, '1');
+		ft_test("%-c", 0, '0');
+		ft_test("%-c", 0, '6');
+		ft_test("%-6c", 0, '7');
+		ft_test("%-6c", 0, '8');
+		ft_test("%-1c", 0, '9');
+		ft_test("%-1c", 0, '1');
+	}
+	
+	if (c[0] || c[4])
+	{
+		printf("\033[36m1 - CLASSICO SYMBOLES\n\033[0m");
+		ft_test("%c", 0, ',');
+		ft_test("%6c", 0, ' ');
+		ft_test("%1c", 0, '	');
+		ft_test("%2c", 0, '&');
+		ft_test("%c", 0, '[');
+		ft_test("%-c", 0, '/');
+		ft_test("%-c", 0, '@');
+		ft_test("%-6c", 0, '+');
+		ft_test("%-6c", 0, '-');
+		ft_test("%-1c", 0, '*');
+		ft_test("%-1c", 0, '=');
+	}
+
+	if (s[0] || s[1])
+	{
+		printf("\033[36m1 - CLASSICO + CLASSICO JUSTIFY\n\033[0m");
+		ft_test("%s", 2, str);
+		ft_test("%-s", 2, str);
+	}
+
+	if (s[0] || s[2])
+	{
+		printf("\033[36m1 - CLASSICO FIELD ONLY + JUSTIFY\n\033[0m");
+		ft_test("%25s", 2, str);
+		ft_test("%17s", 2, str);
+		ft_test("%8s", 2, str);
+		ft_test("%-25s", 2, str);
+		ft_test("%-17s", 2, str);
+		ft_test("%-8s", 2, str);
+
+	}
+	
+	if (s[0] || s[3])
+	{
+		printf("\033[36m1 - CLASSICO PREC ONLY + JUSTIFY\n\033[0m");
+		ft_test("%.25s", 2, str);
+		ft_test("%.17s", 2, str);
+		ft_test("%.8s", 2, str);
+		ft_test("%-.25s", 2, str);
+		ft_test("%-.17s", 2, str);
+		ft_test("%-.8s", 2, str);
+	}
+
+	if (s[0] || s[4])
+	{
+		printf("\033[36m1 - CLASSICO FIELD PREC\n\033[0m");
+		ft_test("%25.6s", 2, str);
+		ft_test("%17.6s", 2, str);
+		ft_test("%8.6s", 2, str);
+		ft_test("%25.17s", 2, str);
+		ft_test("%17.17s", 2, str);
+		ft_test("%8.17s", 2, str);
+		ft_test("%25.26s", 2, str);
+		ft_test("%17.26s", 2, str);
+		ft_test("%17.26s", 2, str);
+	}
+	
+	if (s[0] || s[5])
+	{
+		printf("\033[36m1 - CLASSICO FIELD PREC JUSTIFY\n\033[0m");
+		ft_test("%-25.6s", 2, str);
+		ft_test("%-17.6s", 2, str);
+		ft_test("%-8.6s", 2, str);
+		ft_test("%-25.17s", 2, str);
+		ft_test("%-17.17s", 2, str);
+		ft_test("%-8.17s", 2, str);
+		ft_test("%-25.26s", 2, str);
+		ft_test("%-17.26s", 2, str);
+		ft_test("%-17.26s", 2, str);
+	}
+
 	if (fails)
 	{
 		printf("Total : \033[31m%d\033[0m/%d\033[31m fails\033[0m\n",
@@ -863,4 +1016,5 @@ int		main(int ac, char **av)
 				fails, tests);
 	}
 	return (0);
+}
 }
