@@ -6,13 +6,13 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 09:09:47 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/01/20 09:14:27 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/01/20 12:54:51 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 
-static int		get_size(long value, long long base)
+static int		get_size(long long value, long long base)
 {
 	if (value > -base && value <= -1)
 		return (2);
@@ -23,7 +23,7 @@ static int		get_size(long value, long long base)
 	return (1 + get_size(value / base, base));
 }
 
-static int		neg_case(long *nb, int base, char **itoa)
+static int		neg_case(long long *nb, int base, char **itoa)
 {
 	if (*nb < 0 && base == 10)
 	{

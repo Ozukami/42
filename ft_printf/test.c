@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 06:18:25 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/01/20 12:42:29 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/20 13:01:31 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #define FAILLURE "\033[31mFAILLURE \033[0m"
 
 int		debug = 1;
+int		detail = 0;
 int		fails = 0;
 int		tests = 0;
 int		error = 0;
@@ -62,6 +63,8 @@ void	ft_test(char *s, int type, ...)
 		{
 			printf(SUCCESS);
 			printf("Test %d : %s\n", i++, s);
+			if (detail)
+				printf("	s{%s}\n	f{%s}\n", s1, s2);
 		}
 	}
 	tests++;
@@ -72,15 +75,16 @@ int		main(int ac, char **av)
 {
 	setlocale(LC_ALL, "");
 	int	k = -1;
-	int	d[9] = {0};
-	int	x[8] = {0};
-	int	xmaj[8] = {0};
-	int	u[8] = {0};
-	int	o[8] = {0};
+	int	d[10] = {0};
+	int	x[10] = {0};
+	int	xmaj[10] = {0};
+	int	u[10] = {0};
+	int	o[10] = {0};
 	int	p = 0;
-	int	c[8] = {0};
-	int	s[8] = {0};
-	int	hh[8] = {0};
+	int	c[10] = {0};
+	int	s[10] = {0};
+	int	hh[10] = {0};
+	int	l[10] = {0};
 	int	i = 512;
 	char	str[25] = "#@  	p% htyu(();;";
 	if (ac < 2)
@@ -94,6 +98,7 @@ int		main(int ac, char **av)
 		c[0] = 1;
 		s[0] = 1;
 		hh[0] = 1;
+		l[0] = 1;
 	}
 	else
 	{
@@ -207,6 +212,8 @@ int		main(int ac, char **av)
 		}
 		else if (av[1][0] == 'h' && av[1][1] == 'h')
 			hh[0] = 1;
+		else if (av[1][0] == 'l')
+			l[0] = 1;
 	}
 
 	if (d[0] || d[1])
@@ -1281,6 +1288,16 @@ int		main(int ac, char **av)
 		ft_test("%8.3d", 0, 12);
 		ft_test("%8.3hhd", 0, my_c2);
 		ft_test("%8.3c", 0, my_c1);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
+	}
+
+	if (l[0])
+	{
+		printf("\033[36m{ld} 1 - SOME TESTS\n\033[0m");
+		ft_test("%ld", 0, INT_MAX + 10);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)

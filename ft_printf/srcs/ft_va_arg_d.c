@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 09:29:44 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/20 10:39:58 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/20 13:01:57 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ size_t		ft_va_arg_d(va_list ap, t_conv *list, char **str)
 	char	*to_print;
 	size_t	len;
 
+	//arg = ft_ltoa_base(va_arg(ap, long int), 10, 0); pour ld
 	arg = ft_itoa(va_arg(ap, int));
 	if (list->sign && arg[0] != '-')
 		arg = ft_strjoin("+", arg);
