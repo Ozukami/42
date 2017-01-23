@@ -51,8 +51,7 @@ void		ft_p_o(char **to_print, t_conv *list, size_t len, size_t size)
 			if (list->field > -1)
 			{
 				if ((i > (size_t)(list->field - list->p - 1) && !(list->left))
-						|| (i < (size_t)(list->field -
-								ft_max((int)size, list->p)) && list->left)
+						|| (list->left && (int)i < list->p)
 						|| ((list->p > (int)len && list->field < list->p)
 							|| list->p == -1))
 					(to_print)[0][i] = '0';

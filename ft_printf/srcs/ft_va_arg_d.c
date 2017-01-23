@@ -17,6 +17,7 @@ size_t		ft_va_arg_d(va_list ap, t_conv *list, char **str)
 	char	*arg;
 	char	*to_print;
 	size_t	len;
+	int		i;
 
 	if (ft_strequ(list->mod, "l"))
 		arg = ft_ltoa_base(va_arg(ap, long int), 10, 0);
@@ -25,7 +26,22 @@ size_t		ft_va_arg_d(va_list ap, t_conv *list, char **str)
 	else
 		arg = ft_itoa(va_arg(ap, int));
 	if (list->sign && arg[0] != '-')
-		arg = ft_strjoin("+", arg);
+	{
+		if (list->p == (int)ft_strlen(arg) + 1)
+			arg = ft_strjoin("+0", arg);
+		else
+			arg = ft_strjoin("+", arg);
+	}
+	if (list->p == (int)ft_strlen(arg) && arg[0] == '-')
+	{
+		i = -1;
+		while (arg[++i])
+		{
+			if (arg[i] == '-')
+				arg[i] = '0';
+		}
+		arg = ft_strjoin("-", arg);
+	}
 	len = ft_fp_d(ft_strlen(arg), list, arg, 0);
 	to_print = ft_strspace(len);
 	if (!ft_left_d(arg, len, &to_print, list))

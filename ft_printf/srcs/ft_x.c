@@ -48,11 +48,8 @@ void		ft_p_x(char **to_print, t_conv *list, size_t len, size_t size)
 		{
 			if (list->field > -1)
 			{
-				if (list->left && (int)i < list->p)
-					(to_print)[0][i] = '0';
 				if ((i > (size_t)(list->field - list->p - 1) && !(list->left))
-						|| (i < (size_t)(list->field -
-								ft_max((int)size, list->p)) && list->left)
+						|| (list->left && (int)i < list->p)
 						|| ((list->p > (int)len && list->field < list->p)
 							|| list->p == -1))
 					(to_print)[0][i] = '0';
@@ -88,11 +85,24 @@ int			ft_left_x(char *arg, size_t len, char **to_print, t_conv *list)
 
 void		ft_sub_x2(t_conv *list, char *to_print, char *arg, size_t *i)
 {
+	int	j;
+
 	if (list->field > (int)ft_strlen(arg) && (int)ft_strlen(arg) > list->p)
 	{
 		to_print[*i - (2 + ((list->p == -1 && list->zero) ? 1 : 0))] = '0';
 		to_print[*i - (1 + ((list->p == -1
 						&& list->zero) ? 1 : 0))] = list->type;
+	}
+	else if ((list->zero || list->prefix)
+					&& list->field > (int)ft_strlen(arg)
+					&& (int)ft_strlen(arg) < list->p)
+	{
+		j = 0;
+		while (to_print[j] && to_print[j] == ' ')
+			j++;
+		to_print[(!j) ? 0 : j - 2] = '0';
+		to_print[(!j) ? 1 : j - 1] = list->type;
+		*i += 2;
 	}
 	else
 	{

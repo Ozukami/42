@@ -55,8 +55,6 @@ void		ft_p_d(char **to_print, t_conv *list, size_t len, size_t size)
 				if (list->left && (int)i < list->p)
 					(to_print)[0][i] = '0';
 				if ((i > (size_t)(list->field - list->p - 1) && !(list->left))
-						|| (i < (size_t)(list->field -
-								ft_max((int)size, list->p)) && list->left)
 						|| ((list->p > (int)len && list->field < list->p)
 							|| list->p == -1))
 					(to_print)[0][i] = '0';
