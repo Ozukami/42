@@ -49,6 +49,12 @@ void	ft_test(char *s, int type, ...)
 		sprintf(s1, s, arg);
 		s2 = ft_printf(s, arg);
 	}
+	if (type == 3)
+	{
+		long	arg = va_arg(ap, long);
+		sprintf(s1, s, arg);
+		s2 = ft_printf(s, arg);
+	}
 	if (ft_strcmp(s1, s2))
 	{
 		printf(FAILLURE);
@@ -83,8 +89,10 @@ int		main(int ac, char **av)
 	int	p = 0;
 	int	c[10] = {0};
 	int	s[10] = {0};
+	int	h[10] = {0};
 	int	hh[10] = {0};
 	int	l[10] = {0};
+	int	ll[10] = {0};
 	int	i = 512;
 	char	str[25] = "#@  	p% htyu(();;";
 	if (ac < 2)
@@ -97,8 +105,10 @@ int		main(int ac, char **av)
 		p = 1;
 		c[0] = 1;
 		s[0] = 1;
+		h[0] = 1;
 		hh[0] = 1;
 		l[0] = 1;
+		ll[0] = 1;
 	}
 	else
 	{
@@ -210,10 +220,14 @@ int		main(int ac, char **av)
 				s[5] = (av[1][k] == '5') ? 1 : s[5];
 			}
 		}
+		else if (av[1][0] == 'h' && av[1][1] == '\0')
+			hh[0] = 1;
 		else if (av[1][0] == 'h' && av[1][1] == 'h')
 			hh[0] = 1;
-		else if (av[1][0] == 'l')
+		else if (av[1][0] == 'l' && av[1][1] == '\0')
 			l[0] = 1;
+		else if (av[1][0] == 'l' && av[1][1] == 'l')
+			hh[0] = 1;
 	}
 
 	if (d[0] || d[1])
@@ -241,6 +255,8 @@ int		main(int ac, char **av)
 		ft_test("%.8d", 0, -512);
 		ft_test("%8.6d", 0, 512);
 		ft_test("%8.6d", 0, -512);
+		ft_test("%8.3d", 0, 52);
+		ft_test("%8.3d", 0, -52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -271,6 +287,8 @@ int		main(int ac, char **av)
 		ft_test("% .8d", 0, -512);
 		ft_test("% 8.6d", 0, 512);
 		ft_test("% 8.6d", 0, -512);
+		ft_test("% 8.3d", 0, 52);
+		ft_test("% 8.3d", 0, -52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -301,6 +319,8 @@ int		main(int ac, char **av)
 		ft_test("%-.8d", 0, -512);
 		ft_test("%-8.6d", 0, 512);
 		ft_test("%-8.6d", 0, -512);
+		ft_test("%-8.3d", 0, 52);
+		ft_test("%-8.3d", 0, -52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -331,6 +351,8 @@ int		main(int ac, char **av)
 		ft_test("% -.8d", 0, -512);
 		ft_test("% -8.6d", 0, 512);
 		ft_test("% -8.6d", 0, -512);
+		ft_test("% -8.3d", 0, 52);
+		ft_test("% -8.3d", 0, -52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -361,6 +383,8 @@ int		main(int ac, char **av)
 		ft_test("%0.8d", 0, -512);
 		ft_test("%08.6d", 0, 512);
 		ft_test("%08.6d", 0, -512);
+		ft_test("%08.3d", 0, 52);
+		ft_test("%08.3d", 0, -52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -391,6 +415,8 @@ int		main(int ac, char **av)
 		ft_test("%+.8d", 0, -512);
 		ft_test("%+8.6d", 0, 512);
 		ft_test("%+8.6d", 0, -512);
+		ft_test("%+8.3d", 0, 52);
+		ft_test("%+8.3d", 0, -52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -421,6 +447,8 @@ int		main(int ac, char **av)
 		ft_test("%+0.8d", 0, -512);
 		ft_test("%+08.6d", 0, 512);
 		ft_test("%+08.6d", 0, -512);
+		ft_test("%+08.3d", 0, 52);
+		ft_test("%+08.3d", 0, -52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -451,6 +479,8 @@ int		main(int ac, char **av)
 		ft_test("%+-.8d", 0, -512);
 		ft_test("%+-8.6d", 0, 512);
 		ft_test("%+-8.6d", 0, -512);
+		ft_test("%+-8.3d", 0, 52);
+		ft_test("%+-8.3d", 0, -52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -481,6 +511,8 @@ int		main(int ac, char **av)
 		ft_test("%.8x", 0, -512);
 		ft_test("%8.6x", 0, 512);
 		ft_test("%8.6x", 0, -512);
+		ft_test("%8.3x", 0, 52);
+		ft_test("%8.3x", 0, -52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -511,6 +543,8 @@ int		main(int ac, char **av)
 		ft_test("%#.8x", 0, -512);
 		ft_test("%#8.6x", 0, 512);
 		ft_test("%#8.6x", 0, -512);
+		ft_test("%#8.3x", 0, 52);
+		ft_test("%#8.3x", 0, -52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -541,6 +575,8 @@ int		main(int ac, char **av)
 		ft_test("%-.8x", 0, -512);
 		ft_test("%-8.6x", 0, 512);
 		ft_test("%-8.6x", 0, -512);
+		ft_test("%-8.3x", 0, 52);
+		ft_test("%-8.3x", 0, -52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -571,6 +607,8 @@ int		main(int ac, char **av)
 		ft_test("%#-.8x", 0, -512);
 		ft_test("%#-8.6x", 0, 512);
 		ft_test("%#-8.6x", 0, -512);
+		ft_test("%#-8.3x", 0, 52);
+		ft_test("%#-8.3x", 0, -52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -601,6 +639,8 @@ int		main(int ac, char **av)
 		ft_test("%0.8x", 0, -512);
 		ft_test("%08.6x", 0, 512);
 		ft_test("%08.6x", 0, -512);
+		ft_test("%08.3x", 0, 52);
+		ft_test("%08.3x", 0, -52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -631,6 +671,8 @@ int		main(int ac, char **av)
 		ft_test("%#0.8x", 0, -512);
 		ft_test("%#08.6x", 0, 512);
 		ft_test("%#08.6x", 0, -512);
+		ft_test("%#08.3x", 0, 52);
+		ft_test("%#08.3x", 0, -52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -661,6 +703,8 @@ int		main(int ac, char **av)
 		ft_test("%.8X", 0, -512);
 		ft_test("%8.6X", 0, 512);
 		ft_test("%8.6X", 0, -512);
+		ft_test("%8.3X", 0, 52);
+		ft_test("%8.3X", 0, -52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -691,6 +735,8 @@ int		main(int ac, char **av)
 		ft_test("%#.8X", 0, -512);
 		ft_test("%#8.6X", 0, 512);
 		ft_test("%#8.6X", 0, -512);
+		ft_test("%#8.3X", 0, 52);
+		ft_test("%#8.3X", 0, -52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -721,6 +767,8 @@ int		main(int ac, char **av)
 		ft_test("%-.8X", 0, -512);
 		ft_test("%-8.6X", 0, 512);
 		ft_test("%-8.6X", 0, -512);
+		ft_test("%-8.3X", 0, 52);
+		ft_test("%-8.3X", 0, -52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -751,6 +799,8 @@ int		main(int ac, char **av)
 		ft_test("%#-.8X", 0, -512);
 		ft_test("%#-8.6X", 0, 512);
 		ft_test("%#-8.6X", 0, -512);
+		ft_test("%#-8.3X", 0, 52);
+		ft_test("%#-8.3X", 0, -52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -781,6 +831,8 @@ int		main(int ac, char **av)
 		ft_test("%0.8X", 0, -512);
 		ft_test("%08.6X", 0, 512);
 		ft_test("%08.6X", 0, -512);
+		ft_test("%08.3X", 0, 52);
+		ft_test("%08.3X", 0, -52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -811,6 +863,8 @@ int		main(int ac, char **av)
 		ft_test("%#0.8X", 0, -512);
 		ft_test("%#08.6X", 0, 512);
 		ft_test("%#08.6X", 0, -512);
+		ft_test("%#08.3X", 0, 52);
+		ft_test("%#08.3X", 0, -52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -841,6 +895,8 @@ int		main(int ac, char **av)
 		ft_test("%.8u", 0, -512);
 		ft_test("%8.6u", 0, 512);
 		ft_test("%8.6u", 0, -512);
+		ft_test("%8.3u", 0, 52);
+		ft_test("%8.3u", 0, -52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -871,6 +927,8 @@ int		main(int ac, char **av)
 		ft_test("%-.8u", 0, -512);
 		ft_test("%-8.6u", 0, 512);
 		ft_test("%-8.6u", 0, -512);
+		ft_test("%-8.3u", 0, 52);
+		ft_test("%-8.3u", 0, -52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -901,6 +959,8 @@ int		main(int ac, char **av)
 		ft_test("%0.8u", 0, -512);
 		ft_test("%08.6u", 0, 512);
 		ft_test("%08.6u", 0, -512);
+		ft_test("%08.3u", 0, 52);
+		ft_test("%08.3u", 0, -52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -931,6 +991,8 @@ int		main(int ac, char **av)
 		ft_test("%.8o", 0, -512);
 		ft_test("%8.6o", 0, 512);
 		ft_test("%8.6o", 0, -512);
+		ft_test("%8.3o", 0, 52);
+		ft_test("%8.3o", 0, -52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -961,6 +1023,8 @@ int		main(int ac, char **av)
 		ft_test("%#.8o", 0, -512);
 		ft_test("%#8.6o", 0, 512);
 		ft_test("%#8.6o", 0, -512);
+		ft_test("%#8.3o", 0, 52);
+		ft_test("%#8.3o", 0, -52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -991,6 +1055,8 @@ int		main(int ac, char **av)
 		ft_test("%-.8o", 0, -512);
 		ft_test("%-8.6o", 0, 512);
 		ft_test("%-8.6o", 0, -512);
+		ft_test("%-8.3o", 0, 52);
+		ft_test("%-8.3o", 0, -52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -1021,6 +1087,8 @@ int		main(int ac, char **av)
 		ft_test("%#-.8o", 0, -512);
 		ft_test("%#-8.6o", 0, 512);
 		ft_test("%#-8.6o", 0, -512);
+		ft_test("%#-8.3o", 0, 52);
+		ft_test("%#-8.3o", 0, -52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -1051,6 +1119,8 @@ int		main(int ac, char **av)
 		ft_test("%0.8o", 0, -512);
 		ft_test("%08.6o", 0, 512);
 		ft_test("%08.6o", 0, -512);
+		ft_test("%08.3o", 0, 52);
+		ft_test("%08.3o", 0, -52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -1081,6 +1151,8 @@ int		main(int ac, char **av)
 		ft_test("%#0.8o", 0, -512);
 		ft_test("%#08.6o", 0, 512);
 		ft_test("%#08.6o", 0, -512);
+		ft_test("%#08.3o", 0, 52);
+		ft_test("%#08.3o", 0, -52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -1280,14 +1352,21 @@ int		main(int ac, char **av)
 		error = 0;
 		char my_c1 = 'a';
 		char my_c2 = 130;
+		char my_c3 = 5320;
 
 		printf("\033[36m{hhd} 1 - SOME TESTS\n\033[0m");
+		ft_test("%hhd", 0, 12);
 		ft_test("%hhd", 0, my_c1);
 		ft_test("%hhd", 0, my_c2);
+		ft_test("%hhd", 0, my_c3);
+		ft_test("%8.3hhd", 0, 12);
 		ft_test("%8.3hhd", 0, my_c1);
-		ft_test("%8.3d", 0, 12);
 		ft_test("%8.3hhd", 0, my_c2);
+		ft_test("%8.3hhd", 0, my_c3);
+		ft_test("%8.3c", 0, 12);
 		ft_test("%8.3c", 0, my_c1);
+		ft_test("%8.3c", 0, my_c2);
+		ft_test("%8.3c", 0, my_c3);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -1297,7 +1376,7 @@ int		main(int ac, char **av)
 	if (l[0])
 	{
 		printf("\033[36m{ld} 1 - SOME TESTS\n\033[0m");
-		ft_test("%ld", 0, INT_MAX + 10);
+		ft_test("%ld", 3, (long)(INT_MAX) + 10);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)

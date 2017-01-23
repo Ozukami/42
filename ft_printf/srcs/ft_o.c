@@ -53,7 +53,7 @@ void		ft_p_o(char **to_print, t_conv *list, size_t len, size_t size)
 				if ((i > (size_t)(list->field - list->p - 1) && !(list->left))
 						|| (i < (size_t)(list->field -
 								ft_max((int)size, list->p)) && list->left)
-						|| ((list->p > (int)len && list->field)
+						|| ((list->p > (int)len && list->field < list->p)
 							|| list->p == -1))
 					(to_print)[0][i] = '0';
 			}
@@ -89,7 +89,7 @@ void		ft_sub_o2(t_conv *list, char *to_print, char *arg, size_t *i)
 		to_print[*i - (2 + ((list->p == -1) ? -1 : -2))] = '0';
 	else if (list->field > (int)ft_strlen(arg) && (int)ft_strlen(arg) > list->p)
 		to_print[*i - (2 + ((list->p == -1) ? 0 : -1))] = '0';
-	else
+	else if (!(list->field > list->p))
 		to_print[((int)ft_strlen(arg) < list->p) ? 0 : *i] = '0';
 }
 

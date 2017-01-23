@@ -18,8 +18,12 @@ size_t		ft_va_arg_d(va_list ap, t_conv *list, char **str)
 	char	*to_print;
 	size_t	len;
 
-	//arg = ft_ltoa_base(va_arg(ap, long int), 10, 0); pour ld
-	arg = ft_itoa(va_arg(ap, int));
+	if (ft_strequ(list->mod, "l"))
+		arg = ft_ltoa_base(va_arg(ap, long int), 10, 0);
+	else if (ft_strequ(list->mod, "ll"))
+		arg = ft_lltoa_base(va_arg(ap, long long int), 10, 0);
+	else
+		arg = ft_itoa(va_arg(ap, int));
 	if (list->sign && arg[0] != '-')
 		arg = ft_strjoin("+", arg);
 	len = ft_fp_d(ft_strlen(arg), list, arg, 0);

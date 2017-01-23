@@ -18,7 +18,12 @@ size_t		ft_va_arg_o(va_list ap, t_conv *list, char **str)
 	char	*to_print;
 	size_t	len;
 
-	arg = ft_itoa_base(va_arg(ap, int), 8, 0);
+	if (ft_strequ(list->mod, "l"))
+		arg = ft_ltoa_base(va_arg(ap, long int), 8, 0);
+	else if (ft_strequ(list->mod, "ll"))
+		arg = ft_lltoa_base(va_arg(ap, long long int), 8, 0);
+	else
+		arg = ft_itoa_base(va_arg(ap, int), 8, 0);
 	len = ft_fp_o(ft_strlen(arg), list);
 	to_print = ft_strspace(len);
 	if (!ft_left_o(arg, len, &to_print, list))
