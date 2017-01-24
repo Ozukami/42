@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:29:40 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/19 11:07:54 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/24 08:14:04 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ char	*ft_printf(const char *format, ...)
 
 	list = NULL;
 	len = 0;
-	if (!(tab = ft_memalloc(sizeof(t_fun) * 14)) || !(to_print = ft_memalloc(1)))
+	if (!(tab = ft_memalloc(sizeof(t_fun) * 14))
+			|| !(to_print = ft_memalloc(1)))
 		//return (-1);
 		return ("ERREUR");
 	ft_fun_init(&tab);

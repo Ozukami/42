@@ -317,7 +317,6 @@ int		main(int ac, char **av)
 	printf("{%#-10.5X}\n", 512);
 	*/
 
-	/*
 	printf("\nTest ft_putchar_v2 :\n");
 	wchar_t	w;
 	w = 65;
@@ -355,6 +354,5 @@ int		main(int ac, char **av)
 	ft_putchar_v2(L'Δ');
 	printf("\n%C\n", L'Δ');
 	printf("%lc\n", L'Δ');
-	*/
 	return (0);
 }

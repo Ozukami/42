@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/24 11:22:25 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/24 11:23:28 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/24 07:49:11 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,21 +53,9 @@ int		ft_bin_to_dec(char *bin)
 	return (hex);
 }
 
-void	ft_putchar_v2(wchar_t c)
+void	ft_data(char *bin, char **data, int bits)
 {
-	unsigned char	print;
-	char			*bin;
-	char			**data;
-	int				bits;
-	int				i;
-
-	bin = ft_itoa_base((int)c, 2, 0);
-	bits = (int)ft_strlen(bin);
-	data = ft_memalloc(5);
-	i = 0;
-	if (bits < 8)
-		return (ft_putchar(c));
-	else if (bits < 12)
+	if (bits < 12)
 	{
 		bin = ft_fill(bin, 11);
 		data[0] = ft_strjoin("110", ft_strsub(bin, 0, 5));
@@ -91,6 +79,24 @@ void	ft_putchar_v2(wchar_t c)
 		data[3] = ft_strjoin("10", ft_strsub(bin, 15, 6));
 		data[4] = 0;
 	}
+}
+
+void	ft_putchar_v2(wchar_t c)
+{
+	unsigned char	print;
+	char			*bin;
+	char			**data;
+	int				bits;
+	int				i;
+
+	bin = ft_itoa_base((int)c, 2, 0);
+	bits = (int)ft_strlen(bin);
+	data = ft_memalloc(5);
+	i = 0;
+	if (bits < 8)
+		return (ft_putchar(c));
+	else
+		ft_data(bin, data, bits);
 	while (data[i])
 	{
 		print = ft_bin_to_dec(data[i++]);

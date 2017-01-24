@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 06:18:25 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/01/20 13:01:31 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/24 07:57:47 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int		main(int ac, char **av)
 	//int	h[10] = {0};
 	int	hh[10] = {0};
 	int	l[10] = {0};
-	//int	ll[10] = {0};
+	int	ll[10] = {0};
 	int	i = 512;
 	char	str[25] = "#@  	p% htyu(();;";
 	if (ac < 2)
@@ -108,7 +108,7 @@ int		main(int ac, char **av)
 		//h[0] = 1;
 		hh[0] = 1;
 		l[0] = 1;
-		//ll[0] = 1;
+		ll[0] = 1;
 	}
 	else
 	{
@@ -1380,13 +1380,31 @@ int		main(int ac, char **av)
 			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
-	ft_test("%#08.3x", 0, 52);
-	ft_test("%-8.3x", 0, 52);
-	ft_test("%#8.3x", 0, 52);
-	ft_test("%#8.4x", 0, 52);
+	if (ll[0])
+	{
+		printf("\033[36m{lld} 1 - SOME TESTS\n\033[0m");
+		ft_test("%lld", 3, (long long)(INT_MAX) + 10);
+		ft_test("%lld", 3, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
+	}
 
-	ft_test("%+8.3d", 0, 52);
-	ft_test("%+8.4d", 0, 52);
+	if (l[0])
+	{
+		printf("\033[36m{DOU} 1 - SOME TESTS\n\033[0m");
+		ft_test("%D", 0, 512);
+		ft_test("%D", 0, -512);
+		ft_test("%O", 0, 512);
+		ft_test("%O", 0, -512);
+		ft_test("%U", 0, 512);
+		ft_test("%U", 0, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
+	}
 
 	if (fails)
 	{
