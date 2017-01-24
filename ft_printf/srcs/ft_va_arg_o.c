@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 11:47:18 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/01/19 12:09:26 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/01/24 10:05:22 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ size_t		ft_va_arg_o(va_list ap, t_conv *list, char **str)
 
 	if (ft_strequ(list->mod, "l"))
 		arg = ft_ltoa_base(va_arg(ap, long int), 8, 0);
+	else if (ft_strequ(list->mod, "h"))
+		arg = ft_stoa_base((short)va_arg(ap, int), 8, 0);
 	else if (ft_strequ(list->mod, "ll"))
 		arg = ft_lltoa_base(va_arg(ap, long long int), 8, 0);
 	else

@@ -4,3 +4,4 @@ log*
 *.out
 test
 *.a
+test_print.c

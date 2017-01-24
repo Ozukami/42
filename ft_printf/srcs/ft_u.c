@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_va_arg_x.c                                      :+:      :+:    :+:   */
+/*   ft_va_arg_u.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 10:39:31 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/19 12:24:04 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/24 10:06:16 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,14 @@ size_t		ft_va_arg_u(va_list ap, t_conv *list, char **str)
 	char	*to_print;
 	size_t	len;
 
-	arg = ft_itoa_unsigned(va_arg(ap, int));
+	if (ft_strequ(list->mod, "h"))
+		arg = ft_stoa_unsigned((short)va_arg(ap, int));
+	else if (ft_strequ(list->mod, "l"))
+		arg = ft_ltoa_unsigned(va_arg(ap, long int));
+	else if (ft_strequ(list->mod, "ll"))
+		arg = ft_lltoa_unsigned(va_arg(ap, long long int));
+	else
+		arg = ft_itoa_unsigned(va_arg(ap, long long int));
 	len = ft_fp_x(ft_strlen(arg), list);
 	to_print = ft_strspace(len);
 	if (!ft_left_x(arg, len, &to_print, list))

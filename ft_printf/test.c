@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 06:18:25 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/01/24 07:57:47 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/24 10:45:05 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 #define SUCCESS "\033[32mSUCCESS  \033[0m"
 #define FAILLURE "\033[31mFAILLURE \033[0m"
 
-int		debug = 1;
-int		detail = 0;
+int		debug = 0;
+int		detail = 1;
 int		fails = 0;
 int		tests = 0;
 int		error = 0;
@@ -52,6 +52,12 @@ void	ft_test(char *s, int type, ...)
 	if (type == 3)
 	{
 		long	arg = va_arg(ap, long);
+		sprintf(s1, s, arg);
+		s2 = ft_printf(s, arg);
+	}
+	if (type == 4)
+	{
+		short	arg = (short)va_arg(ap, int);
 		sprintf(s1, s, arg);
 		s2 = ft_printf(s, arg);
 	}
@@ -89,7 +95,7 @@ int		main(int ac, char **av)
 	int	p = 0;
 	int	c[10] = {0};
 	int	s[10] = {0};
-	//int	h[10] = {0};
+	int	h[10] = {0};
 	int	hh[10] = {0};
 	int	l[10] = {0};
 	int	ll[10] = {0};
@@ -105,7 +111,7 @@ int		main(int ac, char **av)
 		p = 1;
 		c[0] = 1;
 		s[0] = 1;
-		//h[0] = 1;
+		h[0] = 1;
 		hh[0] = 1;
 		l[0] = 1;
 		ll[0] = 1;
@@ -221,13 +227,13 @@ int		main(int ac, char **av)
 			}
 		}
 		else if (av[1][0] == 'h' && av[1][1] == '\0')
-			hh[0] = 1;
+			h[0] = 1;
 		else if (av[1][0] == 'h' && av[1][1] == 'h')
 			hh[0] = 1;
 		else if (av[1][0] == 'l' && av[1][1] == '\0')
 			l[0] = 1;
 		else if (av[1][0] == 'l' && av[1][1] == 'l')
-			hh[0] = 1;
+			ll[0] = 1;
 	}
 
 	if (d[0] || d[1])
@@ -1374,6 +1380,12 @@ int		main(int ac, char **av)
 		printf("\033[36m{ld} 1 - SOME TESTS\n\033[0m");
 		ft_test("%ld", 3, (long)(INT_MAX) + 10);
 		ft_test("%ld", 3, -512);
+		ft_test("%lo", 3, (long)(INT_MAX) + 10);
+		ft_test("%lo", 3, -512);
+		ft_test("%lu", 3, (long)(INT_MAX) + 10);
+		ft_test("%lu", 3, -512);
+		ft_test("%lx", 3, (long)(INT_MAX) + 10);
+		ft_test("%lx", 3, -512);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -1385,6 +1397,33 @@ int		main(int ac, char **av)
 		printf("\033[36m{lld} 1 - SOME TESTS\n\033[0m");
 		ft_test("%lld", 3, (long long)(INT_MAX) + 10);
 		ft_test("%lld", 3, -512);
+		ft_test("%llo", 3, (long long)(INT_MAX) + 10);
+		ft_test("%llo", 3, -512);
+		ft_test("%llu", 3, (long long)(INT_MAX) + 10);
+		ft_test("%llu", 3, -512);
+		ft_test("%llx", 3, (long long)(INT_MAX) + 10);
+		ft_test("%llx", 3, -512);
+		if (debug && !error)
+			printf("\033[33mOK ! :)\n\033[0m");
+		if (debug && error)
+			printf("\033[31m%d Erreurs\n\033[0m", error);
+	}
+	
+	if (h[0])
+	{
+		printf("\033[36m{hd} 1 - SOME TESTS\n\033[0m");
+		ft_test("%hd", 4, (short)(INT_MAX) + 10);
+		ft_test("%hd", 4, -512);
+		ft_test("%hd", 4, 52);
+		ft_test("%hu", 4, (short)(INT_MAX) + 10);
+		ft_test("%hu", 4, -512);
+		ft_test("%hu", 4, 52);
+		ft_test("%ho", 4, (short)(INT_MAX) + 10);
+		ft_test("%ho", 4, -512);
+		ft_test("%ho", 4, 52);
+		ft_test("%hx", 4, (short)(INT_MAX) + 10);
+		ft_test("%hx", 4, -512);
+		ft_test("%hx", 4, 52);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -1406,6 +1445,28 @@ int		main(int ac, char **av)
 			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
+	ft_test("%jd", 0, (intmax_t)512); 
+	ft_test("%ju", 0, (uintmax_t)512); 
+	ft_test("%jo", 0, (uintmax_t)512); 
+	ft_test("%jx", 0, (uintmax_t)512); 
+	ft_test("%jX", 0, (uintmax_t)512); 
+	ft_test("%jd", 0, (intmax_t)(-512)); 
+	ft_test("%ju", 0, (uintmax_t)-512); 
+	ft_test("%jo", 0, (uintmax_t)-512); 
+	ft_test("%jx", 0, (uintmax_t)-512); 
+	ft_test("%jX", 0, (uintmax_t)-512); 
+
+	ft_test("%zd", 0, (size_t)512); 
+	ft_test("%zu", 0, (size_t)512); 
+	ft_test("%zo", 0, (size_t)512); 
+	ft_test("%zx", 0, (size_t)512); 
+	ft_test("%zX", 0, (size_t)512); 
+	ft_test("%zd", 0, (size_t)(-512)); 
+	ft_test("%zu", 0, (size_t)-512); 
+	ft_test("%zo", 0, (size_t)-512); 
+	ft_test("%zx", 0, (size_t)-512); 
+	ft_test("%zX", 0, (size_t)-512); 
+	
 	if (fails)
 	{
 		printf("Total : \033[31m%d\033[0m/%d\033[31m fails\033[0m\n",

@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 09:26:08 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/01/20 09:33:09 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/01/24 10:17:26 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int		neg_case(int *nb, int base, char **itoa)
 	return (0);
 }
 
-char			*ft_ltoa_base(short value, int base, int maj)
+char			*ft_stoa_base(short value, int base, int maj)
 {
 	char		*itoa;
 	int			size;
@@ -43,7 +43,7 @@ char			*ft_ltoa_base(short value, int base, int maj)
 
 	nb = (int)value;
 	if (nb < 0 && base != 10)
-		nb = 4294967296 + value;
+		nb = USHRT_MAX + value + 1;
 	size = get_size(nb, base);
 	if (!(itoa = malloc(sizeof(char) * (size + 1))))
 		return (NULL);
