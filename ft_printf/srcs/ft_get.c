@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 07:11:20 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/31 10:08:59 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/31 12:47:12 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	ft_get_field_prec(t_conv *new, char *s, int *i)
 	*i += len;
 	if (s[*i] == '.')
 	{
+		new->point = 1;
 		len = 0;
 		*i += 1;
 		while (s[*i + len] >= '0' && s[*i + len] <= '9')

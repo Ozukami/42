@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 10:39:31 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/31 10:55:51 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/31 13:47:50 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,16 @@ size_t		ft_va_arg_x(va_list ap, t_conv *list, char **str)
 
 	arg = ft_get_arg_x(ap, list);
 	len = ft_fp_x(ft_strlen(arg), list);
-	to_print = ft_strspace(len);
+	if (len > 1)
+		to_print = ft_strspace(len);
+	else
+		to_print = ft_memalloc(len);
 	if (!ft_left_x(arg, len, &to_print, list))
 	{
-		ft_sub_x1(list, to_print, arg, len);
+		if (!(ft_strequ(arg, "0") && list->point))
+		{
+			ft_sub_x1(list, to_print, arg, len);
+		}
 		if (list->prefix && (list->field == -1 || (list->p == -1
 						&& list->field < (int)ft_strlen(arg))))
 		{

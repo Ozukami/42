@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/24 11:46:22 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/31 12:49:27 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct		s_conv
 	int				left;
 	int				sign;
 	int				field;
+	int				point;
 	int				p;
 	char			*mod;
 	char			type;

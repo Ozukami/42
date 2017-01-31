@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 10:39:31 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/24 10:06:16 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/01/31 13:12:34 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ size_t		ft_va_arg_u(va_list ap, t_conv *list, char **str)
 
 	if (ft_strequ(list->mod, "h"))
 		arg = ft_stoa_unsigned((short)va_arg(ap, int));
-	else if (ft_strequ(list->mod, "l"))
+	else if (ft_strequ(list->mod, "l") || ft_strequ(list->mod, "z") || ft_strequ(list->mod, "j"))
 		arg = ft_ltoa_unsigned(va_arg(ap, long int));
 	else if (ft_strequ(list->mod, "ll"))
 		arg = ft_lltoa_unsigned(va_arg(ap, long long int));

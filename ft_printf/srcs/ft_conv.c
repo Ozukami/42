@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 07:09:07 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/17 13:00:09 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/31 12:48:35 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	ft_new_init(t_conv *new)
 	new->p = -1;
 	new->mod = NULL;
 	new->next = NULL;
+	new->point = 0;
 }
 
 void	ft_adjust(t_conv *new)

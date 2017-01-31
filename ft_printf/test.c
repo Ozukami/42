@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 06:18:25 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/01/31 11:36:14 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/31 13:56:21 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1473,63 +1473,44 @@ int		main(int ac, char **av)
 		ft_test("%zx", 0, (size_t)-512); 
 		ft_test("%zX", 0, (size_t)-512); 
 	}
+	/*
+	   printf("@moulitest: [%#10.5x] [%#10.x] [%#.0x]", 0, 0, 512);
+	   printf("\n");
+	   printf("@moulitest: [%#1.x] [%#.x] [%#.0x]", 0, 0, 512);
+	   printf("\n");
+	   printf("@moulitest: [%#.x] [%#x] [%#.0x]", 0, 0, 512);
+	   printf("\n\n");
+	   */
 
-	printf("@moulitest: %#.x %#.0x", 0, 0);
+	//	0040 (int)
+	ft_printf("%#x", 0);
 	printf("\n");
-	ft_printf("@moulitest: %#.x %#.0x", 0, 0);
+	printf("%#x", 0);
 	printf("\n\n");
 
-	printf("@moulitest: %.x %.0x", 0, 0);
-	printf("\n");
-	ft_printf("@moulitest: %.x %.0x", 0, 0);
-	printf("\n\n");
-
-	printf("@moulitest: %5.x %5.0x", 0, 0);
-	printf("\n");
-	ft_printf("@moulitest: %5.x %5.0x", 0, 0);
-	printf("\n\n");
-
-	/* SEGF
-	printf("@moulitest: %s", NULL);
-	printf("\n");
-	ft_printf("@moulitest: %s", NULL);
-	printf("\n\n");
-	*/
-
-	printf("@moulitest: %.o %.0o", 0, 0);
-	printf("\n");
-	ft_printf("@moulitest: %.o %.0o", 0, 0);
-	printf("\n\n");
-
-	printf("@moulitest: %5.o %5.0o", 0, 0);
-	printf("\n");
-	ft_printf("@moulitest: %5.o %5.0o", 0, 0);
-	printf("\n\n");
-
-	printf("@moulitest: %#.o %#.0o", 0, 0);
-	printf("\n");
+	// 0095 (int)
 	ft_printf("@moulitest: %#.o %#.0o", 0, 0);
+	printf("\n");
+	printf("@moulitest: %#.o %#.0o", 0, 0);
 	printf("\n\n");
 
-	printf("@moulitest: %.d %.0d", 0, 0);
-	printf("\n");
+	// 0175 (int)
 	ft_printf("@moulitest: %.d %.0d", 0, 0);
+	printf("\n");
+	printf("@moulitest: %.d %.0d", 0, 0);
 	printf("\n\n");
 
-	printf("@moulitest: %5.d %5.0d", 0, 0);
-	printf("\n");
+	// 0176 (int)
 	ft_printf("@moulitest: %5.d %5.0d", 0, 0);
+	printf("\n");
+	printf("@moulitest: %5.d %5.0d", 0, 0);
 	printf("\n\n");
 
 	if (fails)
-	{
 		printf("Total : \033[31m%d\033[0m/%d\033[31m fails\033[0m\n",
 				fails, tests);
-	}
 	else
-	{
 		printf("Total : \033[32m%d\033[0m/%d\033[32m fails\033[0m\n",
 				fails, tests);
-	}
 	return (0);
 }

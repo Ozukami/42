@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 09:52:38 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/20 06:53:24 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/01/31 13:16:29 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,11 @@ size_t	ft_va_arg_s(va_list ap, t_conv *list, char **str)
 	size_t	i;
 
 	arg = va_arg(ap, char *);
+	if (arg == NULL)
+	{
+		*str = ft_strjoin(*str, "(null)");
+		return (ft_strlen(to_print));
+	}
 	len = ft_fp_s(ft_strlen(arg), &to_print, list);
 	if (!ft_left_s(arg, len, &to_print, list))
 	{

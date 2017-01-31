@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 11:37:22 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/01/20 12:40:47 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/31 13:51:54 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int			ft_left_o(char *arg, size_t len, char **to_print, t_conv *list)
 			ft_strncpy(*to_print + (size_t)(list->p)
 					- ft_strlen(arg), arg, (size_t)
 					(ft_min(ft_min((int)ft_strlen(arg), (int)len), list->p)));
-		else
+		else if (!(ft_strequ(arg, "0") && list->point))
 			ft_strncpy(*to_print + (list->prefix), arg, (size_t)
 					(ft_min((int)ft_strlen(arg), (int)len)));
 		if (list->prefix)
@@ -110,10 +110,11 @@ void		ft_sub_o1(t_conv *list, char *to_print, char *arg, size_t len)
 		while ((int)i + ft_max(list->p, (int)len) < (int)len
 				&& ft_strlen(arg) < len)
 			i++;
-		ft_strncpy(&(to_print)[i], arg, (size_t)
-				(ft_min((int)ft_strlen(arg), (int)len)));
+		if (!ft_strequ(arg, "0"))
+			ft_strncpy(&(to_print)[i], arg, (size_t)
+					(ft_min((int)ft_strlen(arg), (int)len)));
 	}
-	else
+	else if (!(ft_strequ(arg, "0") && list->point))
 		ft_strncpy(&(to_print)[i], arg, (size_t)
 				(ft_min((int)ft_strlen(arg), (int)len)));
 }

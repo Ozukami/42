@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 09:18:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/31 11:35:33 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/31 13:44:37 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void		ft_p_x(char **to_print, t_conv *list, size_t len, size_t size)
 	size_t	i;
 
 	size = (list->p < (int)len) ? size : len;
-	if (list->p > -1 || list->zero)
+	if (list->p > 0 || list->zero)
 	{
 		i = 0;
 		while ((to_print)[0][i])
@@ -70,7 +70,7 @@ int			ft_left_x(char *arg, size_t len, char **to_print, t_conv *list)
 			ft_strncpy(*to_print + (size_t)(list->p)
 					- ft_strlen(arg) + (list->prefix) * 2, arg, (size_t)
 					(ft_min(ft_min((int)ft_strlen(arg), (int)len), list->p)));
-		else
+		else if (!ft_strequ(arg, "0") && !list->point)
 			ft_strncpy(*to_print + (list->prefix) * 2, arg, (size_t)
 					(ft_min((int)ft_strlen(arg), (int)len)));
 		if (list->prefix)
@@ -94,8 +94,8 @@ void		ft_sub_x2(t_conv *list, char *to_print, char *arg, size_t *i)
 						&& list->zero) ? (*i - 2) : 0))] = list->type;
 	}
 	else if ((list->zero || list->prefix)
-					&& list->field > (int)ft_strlen(arg)
-					&& (int)ft_strlen(arg) < list->p)
+			&& list->field > (int)ft_strlen(arg)
+			&& (int)ft_strlen(arg) < list->p)
 	{
 		j = 0;
 		while (to_print[j] && to_print[j] == ' ')
@@ -104,7 +104,7 @@ void		ft_sub_x2(t_conv *list, char *to_print, char *arg, size_t *i)
 		to_print[(!j) ? 1 : j - 1] = list->type;
 		*i += 2;
 	}
-	else if (!ft_strequ(arg, "0"))
+	else
 	{
 		to_print[((int)ft_strlen(arg) < list->p) ? 0 : *i] = '0';
 		to_print[((int)ft_strlen(arg) < list->p) ? 1 : *i + 1] = list->type;
@@ -130,11 +130,12 @@ void		ft_sub_x1(t_conv *list, char *to_print, char *arg, size_t len)
 		while ((int)i + ft_max(list->p, (int)len) < (int)len
 				&& ft_strlen(arg) < len)
 			i++;
-		ft_strncpy(&(to_print)[i - ((list->field > list->p && list->p >
-						(int)ft_strlen(arg) && list->prefix) ? 2 : 0)],
-				arg, (size_t)(ft_min((int)ft_strlen(arg), (int)len)));
+		if (!(ft_strequ(arg, "0")))
+			ft_strncpy(&(to_print)[i - ((list->field > list->p && list->p >
+							(int)ft_strlen(arg) && list->prefix) ? 2 : 0)],
+					arg, (size_t)(ft_min((int)ft_strlen(arg), (int)len)));
 	}
-	else
+	else if (!(ft_strequ(arg, "0") && list->point))
 		ft_strncpy(&(to_print)[i], arg, (size_t)
 				(ft_min((int)ft_strlen(arg), (int)len)));
 }
