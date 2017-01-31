@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_sprintf.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/10 01:29:40 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/31 10:18:44 by apoisson         ###   ########.fr       */
+/*   Created: 2017/01/24 11:44:43 by apoisson          #+#    #+#             */
+/*   Updated: 2017/01/31 07:18:34 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	ft_fun_init(t_fun **tab)
 	tab[0][6].type = 'X';
 }
 
-int			ft_printf(const char *format, ...)
+char		*ft_sprintf(const char *format, ...)
 {
 	va_list	ap;
 	int		i;
@@ -44,7 +44,8 @@ int			ft_printf(const char *format, ...)
 	len = 0;
 	if (!(tab = ft_memalloc(sizeof(t_fun) * 14))
 			|| !(to_print = ft_memalloc(1)))
-		return (-1);
+		//return (-1);
+		return ("ERREUR");
 	ft_fun_init(&tab);
 	ft_get_conv(format, &list);
 	va_start(ap, format);
@@ -53,7 +54,7 @@ int			ft_printf(const char *format, ...)
 	{
 		if (format[j] == '%')
 		{
-			if (format[++j] != '%')
+			if (to_print[++j] != '%')
 			{
 				j += ft_get_len(format, j);
 				i = 0;
@@ -63,40 +64,15 @@ int			ft_printf(const char *format, ...)
 						len += tab[i].f(ap, list, &to_print);
 					i++;
 				}
-				if (i == 7 && list->type == '%')
-				{
-					i = 0;
-					if (list->left)
-					{
-						to_print = ft_straddchar(to_print, '%');
-						len++;
-					}
-					while (++i < list->field)
-					{
-						to_print = ft_straddchar(to_print, ' ');
-						len++;
-					}
-					if (!list->left)
-					{
-						to_print = ft_straddchar(to_print, '%');
-						len++;
-					}
-				}
 				list = list->next;
 			}
 			else
-			{
 				to_print = ft_straddchar(to_print, '%');
-				len++;
-			}
 		}
 		else
-		{
 			to_print = ft_straddchar(to_print, format[j]);
-			len++;
-		}
 	}
 	va_end(ap);
-	ft_putstr(to_print);
-	return ((int)len);
+	//return ((int)len);
+	return (to_print);
 }

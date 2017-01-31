@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 07:11:20 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/24 13:02:25 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/31 10:08:59 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ size_t	ft_get_len(const char *format, int i)
 				format[i + len] == 'o' || format[i + len] == 'O' ||
 				format[i + len] == 'u' || format[i + len] == 'U' ||
 				format[i + len] == 'x' || format[i + len] == 'X' ||
-				format[i + len] == 'c' || format[i + len] == 'C'))
+				format[i + len] == 'c' || format[i + len] == 'C' ||
+				format[i + len] == '%') && format[i + len])
 		len++;
 	return (len);
 }

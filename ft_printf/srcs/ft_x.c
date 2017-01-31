@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 09:18:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/20 12:40:49 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/01/31 11:35:33 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,9 @@ void		ft_sub_x2(t_conv *list, char *to_print, char *arg, size_t *i)
 
 	if (list->field > (int)ft_strlen(arg) && (int)ft_strlen(arg) > list->p)
 	{
-		to_print[*i - (2 + ((list->p == -1 && list->zero) ? 1 : 0))] = '0';
+		to_print[*i - (2 + ((list->p == -1 && list->zero) ? (*i - 1) : 0))] = '0';
 		to_print[*i - (1 + ((list->p == -1
-						&& list->zero) ? 1 : 0))] = list->type;
+						&& list->zero) ? (*i - 2) : 0))] = list->type;
 	}
 	else if ((list->zero || list->prefix)
 					&& list->field > (int)ft_strlen(arg)
@@ -104,7 +104,7 @@ void		ft_sub_x2(t_conv *list, char *to_print, char *arg, size_t *i)
 		to_print[(!j) ? 1 : j - 1] = list->type;
 		*i += 2;
 	}
-	else
+	else if (!ft_strequ(arg, "0"))
 	{
 		to_print[((int)ft_strlen(arg) < list->p) ? 0 : *i] = '0';
 		to_print[((int)ft_strlen(arg) < list->p) ? 1 : *i + 1] = list->type;
@@ -124,9 +124,7 @@ void		ft_sub_x1(t_conv *list, char *to_print, char *arg, size_t len)
 				|| (list->p == -1 && list->field == -1)
 				|| (list->p <= (int)ft_strlen(arg)
 					&& (list->field < (int)ft_strlen(arg)))))
-	{
 		ft_sub_x2(list, to_print, arg, &i);
-	}
 	if (list->p > -1)
 	{
 		while ((int)i + ft_max(list->p, (int)len) < (int)len

@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 06:18:25 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/01/24 10:45:05 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/01/31 11:36:14 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,31 +35,31 @@ void	ft_test(char *s, int type, ...)
 	{
 		int	arg = va_arg(ap, int);
 		sprintf(s1, s, arg);
-		s2 = ft_printf(s, arg);
+		s2 = ft_sprintf(s, arg);
 	}
 	else if (type == 1)
 	{
 		int	arg = va_arg(ap, int);
 		sprintf(s1, s, &arg);
-		s2 = ft_printf(s, &arg);
+		s2 = ft_sprintf(s, &arg);
 	}
 	else if (type == 2)
 	{
 		char	*arg = va_arg(ap, char*);
 		sprintf(s1, s, arg);
-		s2 = ft_printf(s, arg);
+		s2 = ft_sprintf(s, arg);
 	}
 	if (type == 3)
 	{
 		long	arg = va_arg(ap, long);
 		sprintf(s1, s, arg);
-		s2 = ft_printf(s, arg);
+		s2 = ft_sprintf(s, arg);
 	}
 	if (type == 4)
 	{
 		short	arg = (short)va_arg(ap, int);
 		sprintf(s1, s, arg);
-		s2 = ft_printf(s, arg);
+		s2 = ft_sprintf(s, arg);
 	}
 	if (ft_strcmp(s1, s2))
 	{
@@ -659,8 +659,12 @@ int		main(int ac, char **av)
 		printf("\033[36m{x} 6 - CLASSICO0000000 PREFIX\n\033[0m");
 		ft_test("%#0x", 0, 512);
 		ft_test("%#0x", 0, -512);
+		ft_test("%#08x", 0, 512);
+		ft_test("%#08x", 0, -512);
 		ft_test("%#06x", 0, 512);
 		ft_test("%#06x", 0, -512);
+		ft_test("%#06x", 0, 51);
+		ft_test("%#06x", 0, -51);
 		ft_test("%#01x", 0, 512);
 		ft_test("%#01x", 0, -512);
 		ft_test("%#06.2x", 0, 512);
@@ -1408,7 +1412,7 @@ int		main(int ac, char **av)
 		if (debug && error)
 			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
-	
+
 	if (h[0])
 	{
 		printf("\033[36m{hd} 1 - SOME TESTS\n\033[0m");
@@ -1445,28 +1449,78 @@ int		main(int ac, char **av)
 			printf("\033[31m%d Erreurs\n\033[0m", error);
 	}
 
-	ft_test("%jd", 0, (intmax_t)512); 
-	ft_test("%ju", 0, (uintmax_t)512); 
-	ft_test("%jo", 0, (uintmax_t)512); 
-	ft_test("%jx", 0, (uintmax_t)512); 
-	ft_test("%jX", 0, (uintmax_t)512); 
-	ft_test("%jd", 0, (intmax_t)(-512)); 
-	ft_test("%ju", 0, (uintmax_t)-512); 
-	ft_test("%jo", 0, (uintmax_t)-512); 
-	ft_test("%jx", 0, (uintmax_t)-512); 
-	ft_test("%jX", 0, (uintmax_t)-512); 
+	if (l[0])
+	{
+		ft_test("%jd", 0, (intmax_t)512); 
+		ft_test("%ju", 0, (uintmax_t)512); 
+		ft_test("%jo", 0, (uintmax_t)512); 
+		ft_test("%jx", 0, (uintmax_t)512); 
+		ft_test("%jX", 0, (uintmax_t)512); 
+		ft_test("%jd", 0, (intmax_t)(-512)); 
+		ft_test("%ju", 0, (uintmax_t)-512); 
+		ft_test("%jo", 0, (uintmax_t)-512); 
+		ft_test("%jx", 0, (uintmax_t)-512); 
+		ft_test("%jX", 0, (uintmax_t)-512); 
 
-	ft_test("%zd", 0, (size_t)512); 
-	ft_test("%zu", 0, (size_t)512); 
-	ft_test("%zo", 0, (size_t)512); 
-	ft_test("%zx", 0, (size_t)512); 
-	ft_test("%zX", 0, (size_t)512); 
-	ft_test("%zd", 0, (size_t)(-512)); 
-	ft_test("%zu", 0, (size_t)-512); 
-	ft_test("%zo", 0, (size_t)-512); 
-	ft_test("%zx", 0, (size_t)-512); 
-	ft_test("%zX", 0, (size_t)-512); 
-	
+		ft_test("%zd", 0, (size_t)512); 
+		ft_test("%zu", 0, (size_t)512); 
+		ft_test("%zo", 0, (size_t)512); 
+		ft_test("%zx", 0, (size_t)512); 
+		ft_test("%zX", 0, (size_t)512); 
+		ft_test("%zd", 0, (size_t)(-512)); 
+		ft_test("%zu", 0, (size_t)-512); 
+		ft_test("%zo", 0, (size_t)-512); 
+		ft_test("%zx", 0, (size_t)-512); 
+		ft_test("%zX", 0, (size_t)-512); 
+	}
+
+	printf("@moulitest: %#.x %#.0x", 0, 0);
+	printf("\n");
+	ft_printf("@moulitest: %#.x %#.0x", 0, 0);
+	printf("\n\n");
+
+	printf("@moulitest: %.x %.0x", 0, 0);
+	printf("\n");
+	ft_printf("@moulitest: %.x %.0x", 0, 0);
+	printf("\n\n");
+
+	printf("@moulitest: %5.x %5.0x", 0, 0);
+	printf("\n");
+	ft_printf("@moulitest: %5.x %5.0x", 0, 0);
+	printf("\n\n");
+
+	/* SEGF
+	printf("@moulitest: %s", NULL);
+	printf("\n");
+	ft_printf("@moulitest: %s", NULL);
+	printf("\n\n");
+	*/
+
+	printf("@moulitest: %.o %.0o", 0, 0);
+	printf("\n");
+	ft_printf("@moulitest: %.o %.0o", 0, 0);
+	printf("\n\n");
+
+	printf("@moulitest: %5.o %5.0o", 0, 0);
+	printf("\n");
+	ft_printf("@moulitest: %5.o %5.0o", 0, 0);
+	printf("\n\n");
+
+	printf("@moulitest: %#.o %#.0o", 0, 0);
+	printf("\n");
+	ft_printf("@moulitest: %#.o %#.0o", 0, 0);
+	printf("\n\n");
+
+	printf("@moulitest: %.d %.0d", 0, 0);
+	printf("\n");
+	ft_printf("@moulitest: %.d %.0d", 0, 0);
+	printf("\n\n");
+
+	printf("@moulitest: %5.d %5.0d", 0, 0);
+	printf("\n");
+	ft_printf("@moulitest: %5.d %5.0d", 0, 0);
+	printf("\n\n");
+
 	if (fails)
 	{
 		printf("Total : \033[31m%d\033[0m/%d\033[31m fails\033[0m\n",

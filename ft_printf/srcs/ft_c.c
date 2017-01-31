@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 09:04:59 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/17 09:02:31 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/01/31 10:36:53 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,5 @@ size_t		ft_va_arg_c(va_list ap, t_conv *list, char **str)
 		i = 0;
 	cpy[i] = va_arg(ap, int);
 	*str = ft_strjoinf(*str, cpy);
-	return (ft_strlen(cpy));
+	return (ft_max(list->field, 1));
 }
