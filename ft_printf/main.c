@@ -348,7 +348,8 @@ int		main(int ac, char **av)
 	ft_printf("{%3c} {%-3c}\n", 'A', 'B');
 	printf("{%3c} {%-3c}\n", 'A', 'B');
 
-	printf("%S\n", L"ο Δικαιοπολις εν αγρω εστιν");
+	ft_printf("%s\n", L"ο Δικαιοπολις εν αγρω εστιν");
+	ft_printf("%S\n", L"ο Δικαιοπολις εν αγρω εστιν");
 	printf("%ls\n\n", L"ο Δικαιοπολις εν αγρω εστιν");
 
 	ft_putchar_v2(L'Δ');

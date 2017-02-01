@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 06:18:25 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/01/31 13:56:21 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/01 08:22:14 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1506,11 +1506,131 @@ int		main(int ac, char **av)
 	printf("@moulitest: %5.d %5.0d", 0, 0);
 	printf("\n\n");
 
+	// 05
+	/*
+	printf("%");
+	printf("% Zoooo");
+	printf("{%}");
+	*/
+
+	// 07
+	/*
+	printf("%S", L"米");
+	printf("\n");
+	ft_printf("%S", L"米");
+	printf("\n\n");
+	printf("%S", L"我是一只猫。");
+	printf("\n");
+	ft_printf("%S", L"我是一只猫。");
+	printf("\n\n");
+	printf("%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S", L"Α α", L"Β β", L"Γ γ", L"Δ δ", L"Ε ε", L"Ζ ζ", L"Η η", L"Θ θ", L"Ι ι", L"Κ κ", L"Λ λ", L"Μ μ", L"Ν ν", L"Ξ ξ", L"Ο ο", L"Π π", L"Ρ ρ", L"Σ σ", L"Τ τ", L"Υ υ", L"Φ φ", L"Χ χ", L"Ψ ψ", L"Ω ω", L"");
+	printf("\n");
+	ft_printf("%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S", L"Α α", L"Β β", L"Γ γ", L"Δ δ", L"Ε ε", L"Ζ ζ", L"Η η", L"Θ θ", L"Ι ι", L"Κ κ", L"Λ λ", L"Μ μ", L"Ν ν", L"Ξ ξ", L"Ο ο", L"Π π", L"Ρ ρ", L"Σ σ", L"Τ τ", L"Υ υ", L"Φ φ", L"Χ χ", L"Ψ ψ", L"Ω ω", L"");
+	printf("\n\n");
+	printf("a%Sb%sc%S", L"我", "42", L"猫");
+	printf("\n");
+	ft_printf("a%Sb%sc%S", L"我", "42", L"猫");
+	printf("\n\n");
+	*/
+
+	// 08
+	/*
+	printf("%D", -1L);
+	printf("\n");
+	ft_printf("%D", -1L);
+	printf("\n");
+	ft_printf("%D", -1);
+	printf("\n\n");
+	printf("%D", LONG_MIN);
+	printf("\n");
+	ft_printf("%D", LONG_MIN);
+	printf("\n\n");
+	*/
+
+	// 17
+	/*
+	assert_printf("%C%C", '4', '2');
+	assert_printf("%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C \
+%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C\
+%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C",
+' ', '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-',
+'.', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';',
+'<', '=', '>', '?', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
+'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
+'X', 'Y', 'Z', '[', '\\', ']', '^', '_', '`', 'a', 'b', 'c', 'd', 'e',
+'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
+'t', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}');
+
+	assert_printf("%C", L'猫');
+	assert_printf("%C", L'δ');
+	assert_printf("%C", L'요');
+	assert_printf("%C", L'莨');
+	assert_printf("%C", L'ي');
+	*/
+	
+	// 40
+	printf("%ld", (long)INT_MIN - 1);
+	printf("%ld", LONG_MIN);
+	printf("%li", (long)INT_MIN - 1);
+	printf("%li", LONG_MIN);
+
+	//41
+	printf("%llo, %llo", 0, ULLONG_MAX);
+	printf("%llx, %llx", 0, ULLONG_MAX);
+	printf("%llX, %llX", 0, ULLONG_MAX);
+
+	//43
+	printf("%hhd", CHAR_MAX + 42);
+	printf("%hhd", CHAR_MIN - 42);
+	printf("%hhi", CHAR_MAX + 42);
+	printf("%hhi", CHAR_MIN - 42);
+	printf("%hhu", CHAR_MAX + 42);
+	printf("%hho", CHAR_MAX + 42);
+	printf("%hhx", CHAR_MAX + 42);
+	printf("%hhX", CHAR_MAX + 42);
+
+	// 43 bis
+	printf("%jd", LLONG_MIN);
+	printf("%ji", LLONG_MIN);
+	printf("%jo, %jo", 0, ULLONG_MAX);
+	
+
+	// 44
+	printf("%zo, %zo", 0, ULLONG_MAX);
+
+	// 50
+	printf("{%3c}", 0);
+	printf("{%-15p}", 0);
+	printf("{%-12p}", &k); //SEGFAULT 
+
+	// 52
+	printf("{%03c}", 0);
+	printf("{%05s}", "abc");
+
+	// 53
+	printf("{%-15Z}", 123);
+
+	// 60
+	printf("%#o", 42);
+	printf("%#o", 0);	
+	printf("%#o", INT_MAX); //OCTAL VALEUR DE RETOUR A CHECK
+	printf("%#X", 0);
+
+
+
+
+
+		
+	
 	if (fails)
+	{
 		printf("Total : \033[31m%d\033[0m/%d\033[31m fails\033[0m\n",
 				fails, tests);
+	}
 	else
+	{
 		printf("Total : \033[32m%d\033[0m/%d\033[32m fails\033[0m\n",
 				fails, tests);
+	}
 	return (0);
 }
