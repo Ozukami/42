@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/24 12:37:13 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/20 11:39:01 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/02 09:44:22 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,10 @@ size_t		ft_fp_d(size_t len, t_conv *list, char *arg, size_t size)
 	if ((arg[0] == '-' || (arg[0] == '+' && list->sign)) && list->p > (int)len
 			&& list->p > list->field)
 		size++;
+	/*
+	if (ft_strequ(arg, "0") && list->field == -1)
+		size--;
+		*/
 	return (size);
 }
 

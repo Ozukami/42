@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 11:47:18 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/01/31 13:47:43 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/02 09:14:39 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ size_t		ft_va_arg_o(va_list ap, t_conv *list, char **str)
 		arg = ft_lltoa_base(va_arg(ap, long long int), 8, 0);
 	else
 		arg = ft_itoa_base(va_arg(ap, int), 8, 0);
-	len = ft_fp_o(ft_strlen(arg), list);
+	len = ft_fp_o(ft_strlen(arg), list, arg);
 	if (len > 1)
 		to_print = ft_strspace(len);
 	else
@@ -39,7 +39,7 @@ size_t		ft_va_arg_o(va_list ap, t_conv *list, char **str)
 		{
 			*str = ft_strjoin(*str, to_print);
 			//ft_putstr(ft_strjoin("0x", to_print));
-			return (ft_strlen(to_print) + 2);
+			return (ft_strlen(to_print));
 		}
 	}
 	*str = ft_strjoin(*str, to_print);

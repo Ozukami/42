@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:29:40 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/01 07:37:37 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/02 07:42:28 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,12 +97,6 @@ int			ft_printf(const char *format, ...)
 		}
 	}
 	va_end(ap);
-	//ft_putstr(to_print);
-	j = 0;
-	while (to_print[j])
-	{
-		ft_putchar_v2(to_print[j]);
-		j++;
-	}
+	ft_putstr(to_print);
 	return ((int)len);
 }

@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 09:18:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/31 13:44:37 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/02 09:04:30 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int			ft_left_x(char *arg, size_t len, char **to_print, t_conv *list)
 			ft_strncpy(*to_print + (size_t)(list->p)
 					- ft_strlen(arg) + (list->prefix) * 2, arg, (size_t)
 					(ft_min(ft_min((int)ft_strlen(arg), (int)len), list->p)));
-		else if (!ft_strequ(arg, "0") && !list->point)
+		else
 			ft_strncpy(*to_print + (list->prefix) * 2, arg, (size_t)
 					(ft_min((int)ft_strlen(arg), (int)len)));
 		if (list->prefix)
@@ -124,7 +124,8 @@ void		ft_sub_x1(t_conv *list, char *to_print, char *arg, size_t len)
 				|| (list->p == -1 && list->field == -1)
 				|| (list->p <= (int)ft_strlen(arg)
 					&& (list->field < (int)ft_strlen(arg)))))
-		ft_sub_x2(list, to_print, arg, &i);
+		if (!(ft_strequ(arg, "0")))
+			ft_sub_x2(list, to_print, arg, &i);
 	if (list->p > -1)
 	{
 		while ((int)i + ft_max(list->p, (int)len) < (int)len

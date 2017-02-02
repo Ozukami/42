@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 06:18:25 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/02/01 08:22:14 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/02 10:49:16 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #define SUCCESS "\033[32mSUCCESS  \033[0m"
 #define FAILLURE "\033[31mFAILLURE \033[0m"
 
-int		debug = 0;
+int		debug = 1;
 int		detail = 1;
 int		fails = 0;
 int		tests = 0;
@@ -1473,6 +1473,7 @@ int		main(int ac, char **av)
 		ft_test("%zx", 0, (size_t)-512); 
 		ft_test("%zX", 0, (size_t)-512); 
 	}
+
 	/*
 	   printf("@moulitest: [%#10.5x] [%#10.x] [%#.0x]", 0, 0, 512);
 	   printf("\n");
@@ -1482,122 +1483,260 @@ int		main(int ac, char **av)
 	   printf("\n\n");
 	   */
 
-	//	0040 (int)
-	ft_printf("%#x", 0);
-	printf("\n");
-	printf("%#x", 0);
-	printf("\n\n");
-
-	// 0095 (int)
-	ft_printf("@moulitest: %#.o %#.0o", 0, 0);
-	printf("\n");
-	printf("@moulitest: %#.o %#.0o", 0, 0);
-	printf("\n\n");
-
+	/*
 	// 0175 (int)
-	ft_printf("@moulitest: %.d %.0d", 0, 0);
+	ft_printf("@moulitest: [%.d] [%.0d]", 0, 0);
 	printf("\n");
-	printf("@moulitest: %.d %.0d", 0, 0);
+	printf("@moulitest: [%.d] [%.0d]", 0, 0);
 	printf("\n\n");
+	*/
 
+	/*
+	   printf("TEST: [%0.d] [%0.0d]\n", 0, 0);
+	   printf("TEST: [%-.d] [%-.0d]\n", 0, 0);
+	   printf("TEST: [%+.d] [%+.0d]\n", 0, 0);
+	   printf("TEST: [%0-.d] [%0-.0d]\n", 0, 0);
+	   printf("TEST: [% .d] [% .0d]\n", 0, 0);
+	   printf("TEST: [% d] [% 0d]\n", 0, 0);
+	   printf("TEST: [%d] [%0d]\n", 0, 0);
+	   */
+
+	/*
 	// 0176 (int)
-	ft_printf("@moulitest: %5.d %5.0d", 0, 0);
+	ft_printf("@moulitest: [%5.d] [%5.0d]", 0, 0);
 	printf("\n");
-	printf("@moulitest: %5.d %5.0d", 0, 0);
+	printf("@moulitest: [%5.d] [%5.0d]", 0, 0);
 	printf("\n\n");
+	*/
+
+	/*
+	// 0105 (int)
+	printf("%d\n", -2147483648);
+	ft_printf("%d\n\n", -2147483648);
+
+	// 0106 (int)
+	printf("%d\n", -2147483649);
+	ft_printf("%d\n\n", -2147483649);
+
+	// 0138 (short)
+	printf("%hd\n", -32768);
+	ft_printf("%hd\n\n", -32768);
+
+	// 0140 (short)
+	printf("%hd\n", -32769);
+	ft_printf("%hd\n\n", -32769);
+	*/
+
+	/*
+	// 0146 (long)
+	printf("%ld\n", -2147483648);
+	ft_printf("%ld\n\n", -2147483648);
+
+	// 0148 (long)
+	printf("%ld\n", -2147483649);
+	ft_printf("%ld\n\n", -2147483649);
+	*/
+
+	/*
+	// 0152 (intmax_t)
+	printf("%jd\n", -9223372036854775808);
+	ft_printf("%jd\n\n", -9223372036854775808);
+	*/
+
+	/*
+	// 0155 (ssize_t)
+	printf("[%zd]\n", -0);
+	ft_printf("[%zd]\n\n", -0);
+
+	// 0156 (ssize_t)
+	printf("%zd\n", -1);
+	ft_printf("%zd\n\n", -1);
+	*/
 
 	// 05
 	/*
-	printf("%");
-	printf("% Zoooo");
-	printf("{%}");
-	*/
+	   printf("%");
+	   printf("% Zoooo");
+	   printf("{%}");
+	   */
 
 	// 07
 	/*
-	printf("%S", L"米");
-	printf("\n");
-	ft_printf("%S", L"米");
-	printf("\n\n");
-	printf("%S", L"我是一只猫。");
-	printf("\n");
-	ft_printf("%S", L"我是一只猫。");
-	printf("\n\n");
-	printf("%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S", L"Α α", L"Β β", L"Γ γ", L"Δ δ", L"Ε ε", L"Ζ ζ", L"Η η", L"Θ θ", L"Ι ι", L"Κ κ", L"Λ λ", L"Μ μ", L"Ν ν", L"Ξ ξ", L"Ο ο", L"Π π", L"Ρ ρ", L"Σ σ", L"Τ τ", L"Υ υ", L"Φ φ", L"Χ χ", L"Ψ ψ", L"Ω ω", L"");
-	printf("\n");
-	ft_printf("%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S", L"Α α", L"Β β", L"Γ γ", L"Δ δ", L"Ε ε", L"Ζ ζ", L"Η η", L"Θ θ", L"Ι ι", L"Κ κ", L"Λ λ", L"Μ μ", L"Ν ν", L"Ξ ξ", L"Ο ο", L"Π π", L"Ρ ρ", L"Σ σ", L"Τ τ", L"Υ υ", L"Φ φ", L"Χ χ", L"Ψ ψ", L"Ω ω", L"");
-	printf("\n\n");
-	printf("a%Sb%sc%S", L"我", "42", L"猫");
-	printf("\n");
-	ft_printf("a%Sb%sc%S", L"我", "42", L"猫");
-	printf("\n\n");
-	*/
+	   printf("%S", L"米");
+	   printf("\n");
+	   ft_printf("%S", L"米");
+	   printf("\n\n");
+	   printf("%S", L"我是一只猫。");
+	   printf("\n");
+	   ft_printf("%S", L"我是一只猫。");
+	   printf("\n\n");
+	   printf("%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S", L"Α α", L"Β β", L"Γ γ", L"Δ δ", L"Ε ε", L"Ζ ζ", L"Η η", L"Θ θ", L"Ι ι", L"Κ κ", L"Λ λ", L"Μ μ", L"Ν ν", L"Ξ ξ", L"Ο ο", L"Π π", L"Ρ ρ", L"Σ σ", L"Τ τ", L"Υ υ", L"Φ φ", L"Χ χ", L"Ψ ψ", L"Ω ω", L"");
+	   printf("\n");
+	   ft_printf("%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S", L"Α α", L"Β β", L"Γ γ", L"Δ δ", L"Ε ε", L"Ζ ζ", L"Η η", L"Θ θ", L"Ι ι", L"Κ κ", L"Λ λ", L"Μ μ", L"Ν ν", L"Ξ ξ", L"Ο ο", L"Π π", L"Ρ ρ", L"Σ σ", L"Τ τ", L"Υ υ", L"Φ φ", L"Χ χ", L"Ψ ψ", L"Ω ω", L"");
+	   printf("\n\n");
+	   printf("a%Sb%sc%S", L"我", "42", L"猫");
+	   printf("\n");
+	   ft_printf("a%Sb%sc%S", L"我", "42", L"猫");
+	   printf("\n\n");
+	   */
 
 	// 08
 	/*
-	printf("%D", -1L);
-	printf("\n");
-	ft_printf("%D", -1L);
-	printf("\n");
-	ft_printf("%D", -1);
-	printf("\n\n");
-	printf("%D", LONG_MIN);
-	printf("\n");
-	ft_printf("%D", LONG_MIN);
-	printf("\n\n");
-	*/
+	   printf("%D", -1L);
+	   printf("\n");
+	   ft_printf("%D", -1L);
+	   printf("\n");
+	   ft_printf("%D", -1);
+	   printf("\n\n");
+	   printf("%D", LONG_MIN);
+	   printf("\n");
+	   ft_printf("%D", LONG_MIN);
+	   printf("\n\n");
+	   */
 
 	// 17
 	/*
-	assert_printf("%C%C", '4', '2');
-	assert_printf("%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C \
-%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C\
-%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C",
-' ', '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-',
-'.', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';',
-'<', '=', '>', '?', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
-'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
-'X', 'Y', 'Z', '[', '\\', ']', '^', '_', '`', 'a', 'b', 'c', 'd', 'e',
-'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
-'t', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}');
+	   assert_printf("%C%C", '4', '2');
+	   assert_printf("%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C \
+	   %C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C\
+	   %C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C%C",
+	   ' ', '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-',
+	   '.', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';',
+	   '<', '=', '>', '?', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
+	   'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
+	   'X', 'Y', 'Z', '[', '\\', ']', '^', '_', '`', 'a', 'b', 'c', 'd', 'e',
+	   'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
+	   't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}');
 
-	assert_printf("%C", L'猫');
-	assert_printf("%C", L'δ');
-	assert_printf("%C", L'요');
-	assert_printf("%C", L'莨');
-	assert_printf("%C", L'ي');
-	*/
-	
+	   assert_printf("%C", L'猫');
+	   assert_printf("%C", L'δ');
+	   assert_printf("%C", L'요');
+	   assert_printf("%C", L'莨');
+	   assert_printf("%C", L'ي');
+	   */
+
 	// 40
+	/*
+	ft_printf("%ld", (long)INT_MIN - 1);
+	   printf("\n");
 	printf("%ld", (long)INT_MIN - 1);
+	   printf("\n");
+	   printf("\n");
+	   */
+	ft_printf("%ld", LONG_MIN);
+	   printf("\n");
 	printf("%ld", LONG_MIN);
+	   printf("\n");
+	   printf("\n");
+
+	ft_printf("%ld", LONG_MIN + 1);
+	   printf("\n");
+	printf("%ld", LONG_MIN + 1);
+	   printf("\n");
+	   printf("\n");
+	   /*
+	ft_printf("%li", (long)INT_MIN - 1);
+	   printf("\n");
 	printf("%li", (long)INT_MIN - 1);
+	   printf("\n");
+	   printf("\n");
+	   */
+	ft_printf("%li", LONG_MIN);
+	   printf("\n");
 	printf("%li", LONG_MIN);
+	   printf("\n");
+	   printf("\n");
 
-	//41
-	printf("%llo, %llo", 0, ULLONG_MAX);
-	printf("%llx, %llx", 0, ULLONG_MAX);
-	printf("%llX, %llX", 0, ULLONG_MAX);
+	// 41
+	ft_printf("%llo", ULLONG_MAX);
+	   printf("\n");
+	printf("%llo", ULLONG_MAX);
+	   printf("\n");
+	   printf("\n");
+	ft_printf("%llx", ULLONG_MAX);
+	   printf("\n");
+	printf("%llx", ULLONG_MAX);
+	   printf("\n");
+	   printf("\n");
+	ft_printf("%llX", ULLONG_MAX);
+	   printf("\n");
+	printf("%llX", ULLONG_MAX);
+	   printf("\n");
+	   printf("\n");
 
-	//43
+	   /*
+	// 43
+	ft_printf("%hhd", CHAR_MAX + 42);
+	   printf("\n");
 	printf("%hhd", CHAR_MAX + 42);
+	   printf("\n");
+	   printf("\n");
+	ft_printf("%hhd", CHAR_MIN - 42);
+	   printf("\n");
 	printf("%hhd", CHAR_MIN - 42);
+	   printf("\n");
+	   printf("\n");
+	ft_printf("%hhi", CHAR_MAX + 42);
+	   printf("\n");
 	printf("%hhi", CHAR_MAX + 42);
+	   printf("\n");
+	   printf("\n");
+	ft_printf("%hhi", CHAR_MIN - 42);
+	   printf("\n");
 	printf("%hhi", CHAR_MIN - 42);
+	   printf("\n");
+	   printf("\n");
+	ft_printf("%hhu", CHAR_MAX + 42);
+	   printf("\n");
 	printf("%hhu", CHAR_MAX + 42);
+	   printf("\n");
+	   printf("\n");
+	ft_printf("%hho", CHAR_MAX + 42);
+	   printf("\n");
 	printf("%hho", CHAR_MAX + 42);
+	   printf("\n");
+	   printf("\n");
+	ft_printf("%hhx", CHAR_MAX + 42);
+	   printf("\n");
 	printf("%hhx", CHAR_MAX + 42);
+	   printf("\n");
+	   printf("\n");
+	ft_printf("%hhX", CHAR_MAX + 42);
+	   printf("\n");
 	printf("%hhX", CHAR_MAX + 42);
+	   printf("\n");
+	   printf("\n");
+	   */
 
+	   /*
 	// 43 bis
+	ft_printf("%jd", LLONG_MIN);
+	   printf("\n");
 	printf("%jd", LLONG_MIN);
+	   printf("\n");
+	   printf("\n");
+	ft_printf("%ji", LLONG_MIN);
+	   printf("\n");
 	printf("%ji", LLONG_MIN);
-	printf("%jo, %jo", 0, ULLONG_MAX);
-	
+	   printf("\n");
+	   printf("\n");
+	ft_printf("%jo", ULLONG_MAX);
+	   printf("\n");
+	printf("%jo", ULLONG_MAX);
+	   printf("\n");
+	   printf("\n");
+	   */
 
+	   /*
 	// 44
-	printf("%zo, %zo", 0, ULLONG_MAX);
+	ft_printf("%zo", ULLONG_MAX);
+	   printf("\n");
+	printf("%zo", ULLONG_MAX);
+	   printf("\n");
+	   printf("\n");
+	   */
 
+	/*
 	// 50
 	printf("{%3c}", 0);
 	printf("{%-15p}", 0);
@@ -1615,13 +1754,9 @@ int		main(int ac, char **av)
 	printf("%#o", 0);	
 	printf("%#o", INT_MAX); //OCTAL VALEUR DE RETOUR A CHECK
 	printf("%#X", 0);
+	*/
 
 
-
-
-
-		
-	
 	if (fails)
 	{
 		printf("Total : \033[31m%d\033[0m/%d\033[31m fails\033[0m\n",

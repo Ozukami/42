@@ -6,13 +6,13 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 11:37:22 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/01/31 13:51:54 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/02 09:15:45 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-size_t		ft_fp_o(size_t len, t_conv *list)
+size_t		ft_fp_o(size_t len, t_conv *list, char *arg)
 {
 	size_t	size;
 
@@ -31,8 +31,9 @@ size_t		ft_fp_o(size_t len, t_conv *list)
 	else
 		size = (size_t)list->field;
 	if (list->prefix && (int)len > list->field
-			&& (int)len > list->p)
+			&& (int)len > list->p && !ft_strequ(arg, "0"))
 		size++;
+	//printf("{SIZE = %zu}", size);
 	return (size);
 }
 
@@ -88,7 +89,7 @@ void		ft_sub_o2(t_conv *list, char *to_print, char *arg, size_t *i)
 		to_print[*i - (2 + ((list->p == -1) ? -1 : -2))] = '0';
 	else if (list->field > (int)ft_strlen(arg) && (int)ft_strlen(arg) > list->p)
 		to_print[*i - (2 + ((list->p == -1) ? 0 : -1))] = '0';
-	else if (!(list->field > list->p))
+	else if (!(list->field > list->p) && !ft_strequ(arg, "0"))
 		to_print[((int)ft_strlen(arg) < list->p) ? 0 : *i] = '0';
 }
 
