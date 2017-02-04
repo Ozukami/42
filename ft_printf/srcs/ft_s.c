@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 09:52:38 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/04 06:26:36 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/04 06:32:27 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ size_t	ft_s_mod_l(va_list ap, t_conv *list, char **str)
 		*str = ft_strjoin(*str, "(null)");
 		return (ft_strlen(to_print));
 	}
-		printf("[%s]\n", *str);
+		//printf("[%s]\n", *str);
 	len = ft_fp_s(ft_strlen((char *)arg), &to_print, list);
 	tab = ft_memalloc(ft_strlen((char *)arg) + 1);
 	i = 0;
@@ -80,11 +80,11 @@ size_t	ft_s_mod_l(va_list ap, t_conv *list, char **str)
 	}
 	while (arg[i])
 	{
-		printf("%zu[%s]", i, *str);
+		//printf("%zu[%s]", i, *str);
 		tab[i] = ft_dothework(arg[i], &tmp, 0);
-		printf("	%zu[%s]", i, *str);
+		//printf("	%zu[%s]", i, *str);
 		to_print = ft_strjoin(to_print, tmp);
-		printf("	%zu[%s]\n", i, *str);
+		//printf("	%zu[%s]\n", i, *str);
 		i++;
 	}
 	tab[i] = 0;
@@ -94,13 +94,13 @@ size_t	ft_s_mod_l(va_list ap, t_conv *list, char **str)
 		max += tab[i++];
 	if (max > list->p)
 		i--;
-	printf("{MAX = %d|%zu}\n", max, i);
+	//printf("{MAX = %d|%zu}\n", max, i);
 	i = 0;
 	if (list->p)
 	{
 		while ((int)i < max)
 			i++;
-		printf("i = %zu | %c\n", i, to_print[i]);
+		//printf("i = %zu | %c\n", i, to_print[i]);
 		to_print[i] = '\0';
 	}
 	*str = ft_strjoin(*str, to_print);
