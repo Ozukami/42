@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 10:39:31 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/02 11:57:21 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/04 03:38:48 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 char		*ft_get_arg_x(va_list ap, t_conv *list)
 {
-	if (ft_strequ(list->mod, "l") || ft_strequ(list->mod, "j")
-			|| ft_strequ(list->mod, "z"))
+	if (ft_strequ(list->mod, "j"))
 		return (ft_ltoa_base(va_arg(ap, long int), 16,
+					(list->type == 'x') ? 0 : 1));
+	else if (ft_strequ(list->mod, "l") || ft_strequ(list->mod, "z"))
+		return (ft_ultoa_base(va_arg(ap, long int), 16,
 					(list->type == 'x') ? 0 : 1));
 	else if (ft_strequ(list->mod, "ll"))
 		return (ft_ulltoa_base(va_arg(ap, unsigned long long int), 16,

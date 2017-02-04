@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/24 11:22:25 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/24 07:49:11 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/04 05:57:37 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,4 +102,37 @@ void	ft_putchar_v2(wchar_t c)
 		print = ft_bin_to_dec(data[i++]);
 		write(1, &print, 1);
 	}
+}
+
+int		ft_dothework(wchar_t c, char **print, int j)
+{
+	char			*bin;
+	char			**data;
+	int				bits;
+	int				i;
+
+	bin = ft_itoa_base((int)c, 2, 0);
+	bits = (int)ft_strlen(bin);
+	if (bits < 8)
+		i = 2;
+	else if (bits < 12)
+		i = 3;
+	else if (bits < 17)
+		i = 4;
+	else
+		i = 5;
+	data = ft_memalloc(5);
+	*print = ft_memalloc(i);
+	if (bits < 8)
+	{
+		print[0][0] = c;
+		return (1);
+	}
+	ft_data(bin, data, bits);
+	while (j < i - 1)
+	{
+		print[0][j] = ft_bin_to_dec(data[j]);
+		j++;
+	}
+	return (i - 1);
 }

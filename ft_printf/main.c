@@ -89,6 +89,7 @@ int		main(int ac, char **av)
 
 	   */
 
+	/*
 	printf("\nTest 1.1 : %%d\n");
 	ft_printf("{%d}\n", 512);
 	printf("{%d}\n", 512);
@@ -257,6 +258,7 @@ int		main(int ac, char **av)
 	printf("\nTest 10.2 : %%#10x\n");
 	ft_printf("{%#10x}\n", 512);
 	printf("{%#10x}\n", 512);
+	*/
 
 	/*
 	// X
@@ -341,16 +343,33 @@ int		main(int ac, char **av)
 	write(1, " ]\n", 3);
 
 	printf("\nTest avec printf :\n");
-	printf("[%s]\n", "¡");
-	ft_printf("[%s]\n", "¡");
+	printf("[%ls]\n", L"¡");
+	ft_printf("[%ls]\n", L"¡");
 
 	printf("\nTest c : %%c\n");
 	ft_printf("{%3c} {%-3c}\n", 'A', 'B');
 	printf("{%3c} {%-3c}\n", 'A', 'B');
 
-	ft_printf("%s\n", L"ο Δικαιοπολις εν αγρω εστιν");
-	ft_printf("%S\n", L"ο Δικαιοπολις εν αγρω εστιν");
-	printf("%ls\n\n", L"ο Δικαιοπολις εν αγρω εστιν");
+	ft_printf("{%.48ls}\n", L"ο Δικαιοπολις εν αγρω εστιν");
+	printf("{%.48ls}\n\n", L"ο Δικαιοπολις εν αγρω εστιν");
+
+	ft_printf("{%.47ls}\n", L"ο Δικαιοπολις εν αγρω εστιν");
+	printf("{%.47ls}\n\n", L"ο Δικαιοπολις εν αγρω εστιν");
+
+	ft_printf("{%.46ls}\n", L"ο Δικαιοπολις εν αγρω εστιν");
+	printf("{%.46ls}\n\n", L"ο Δικαιοπολις εν αγρω εστιν");
+
+	ft_printf("{%.45ls}\n", L"ο Δικαιοπολις εν αγρω εστιν");
+	printf("{%.45ls}\n\n", L"ο Δικαιοπολις εν αγρω εστιν");
+
+	ft_printf("{%.44ls}\n", L"ο Δικαιοπολις εν αγρω εστιν");
+	printf("{%.44ls}\n\n", L"ο Δικαιοπολις εν αγρω εστιν");
+
+	ft_printf("{%.5ls}\n", L"ο Δικαιοπολις εν αγρω εστιν");
+	printf("{%.5ls}\n\n", L"ο Δικαιοπολις εν αγρω εστιν");
+
+	ft_printf("{%.4ls}\n", L"ο Δικαιοπολις εν αγρω εστιν");
+	printf("{%.4ls}\n\n", L"ο Δικαιοπολις εν αγρω εστιν");
 
 	ft_printf("[%c]\n", 'c');
 	printf("[%c]\n", 'c');
@@ -359,20 +378,32 @@ int		main(int ac, char **av)
 	ft_printf("[%2c]\n", 'c');
 	printf("[%2c]\n", 'c');
 
-	int r = printf("[%-3lc]\n", L'Δ');
-	printf("%d\n", r);
-	r = ft_printf("[%-3lc]\n", L'Δ');
-	printf("%d\n", r);
+	int r1;
+	int r2;
 	
-	r = printf("[%-5lc]\n", L'Δ');
-	printf("%d\n", r);
-	r = ft_printf("[%-5lc]\n", L'Δ');
-	printf("%d\n", r);
+	r1 = ft_printf("[%-3lc]\n", L'Δ');
+	r2 = printf("[%-3lc]\n", L'Δ');
+	if (r1 != r2)
+		printf("erreur r val (%d|%d)\n", r1, r2);
 	
-	r = printf("[%3lc]\n", L'Δ');
-	printf("%d\n", r);
-	r = ft_printf("[%3lc]\n", L'Δ');
-	printf("%d\n", r);
+	r1 = ft_printf("[%-5lc]\n", L'Δ');
+	r2 = printf("[%-5lc]\n", L'Δ');
+	if (r1 != r2)
+		printf("erreur r val (%d|%d)\n", r1, r2);
+	
+	r1 = ft_printf("[%3lc]\n", L'Δ');
+	r2 = printf("[%3lc]\n", L'Δ');
+	if (r1 != r2)
+		printf("erreur r val (%d|%d)\n", r1, r2);
+	
+	/*
+	printf("\n");
+	char test = 197;
+	write(1, &test, 1);
+	test = 164;
+	write(1, &test, 1);
+	printf("\n");
+	*/
 	
 	return (0);
 }

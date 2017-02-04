@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 09:29:44 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/03 23:54:24 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/02/04 03:59:22 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@ char		*ft_get_arg_d(va_list ap, t_conv *list)
 	char	*arg;
 	int		i;
 
-	if (ft_strequ(list->mod, "l") || ft_strequ(list->mod, "j")
-			|| ft_strequ(list->mod, "z"))
+	if (ft_strequ(list->mod, "j"))
 		arg = (ft_ltoa_base(va_arg(ap, long int), 10, 0));
+	else if (ft_strequ(list->mod, "l") || ft_strequ(list->mod, "z"))
+		arg = (ft_ultoa_base(va_arg(ap, long int), 10, 0));
 	else if (ft_strequ(list->mod, "h"))
 		arg = (ft_stoa_base((short)va_arg(ap, int), 10, 0));
 	else if (ft_strequ(list->mod, "ll"))
@@ -51,7 +52,6 @@ size_t		ft_va_arg_d(va_list ap, t_conv *list, char **str)
 	size_t	len;
 
 	arg = ft_get_arg_d(ap, list);
-	//printf("{%s}", arg);
 	if (ft_strequ(arg, "0") && list->field == -1 && !list->sign && list->point
 			&& !list->space)
 		return (0);

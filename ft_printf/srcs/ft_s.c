@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 09:52:38 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/31 13:16:29 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/04 06:26:36 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,62 @@ int		ft_left_s(char *arg, size_t len, char **to_print, t_conv *list)
 	return (0);
 }
 
+size_t	ft_s_mod_l(va_list ap, t_conv *list, char **str)
+{
+	wchar_t	*arg;
+	char	*to_print;
+	char 	*tmp;
+	size_t	len;
+	size_t	i;
+	int		*tab;
+	int		max;
+
+	tmp = NULL;
+	arg = va_arg(ap, wchar_t *);
+	if (arg == NULL)
+	{
+		*str = ft_strjoin(*str, "(null)");
+		return (ft_strlen(to_print));
+	}
+		printf("[%s]\n", *str);
+	len = ft_fp_s(ft_strlen((char *)arg), &to_print, list);
+	tab = ft_memalloc(ft_strlen((char *)arg) + 1);
+	i = 0;
+	if (arg[i])
+	{
+		tab[i] = ft_dothework(arg[i], &tmp, 0);
+		ft_strcpy(to_print, tmp);
+		i++;
+	}
+	while (arg[i])
+	{
+		printf("%zu[%s]", i, *str);
+		tab[i] = ft_dothework(arg[i], &tmp, 0);
+		printf("	%zu[%s]", i, *str);
+		to_print = ft_strjoin(to_print, tmp);
+		printf("	%zu[%s]\n", i, *str);
+		i++;
+	}
+	tab[i] = 0;
+	i = 0;
+	max = 0;
+	while (tab[i] && max < list->p)
+		max += tab[i++];
+	if (max > list->p)
+		i--;
+	printf("{MAX = %d|%zu}\n", max, i);
+	i = 0;
+	if (list->p)
+	{
+		while ((int)i < max)
+			i++;
+		printf("i = %zu | %c\n", i, to_print[i]);
+		to_print[i] = '\0';
+	}
+	*str = ft_strjoin(*str, to_print);
+	return (ft_strlen(to_print));
+}
+
 size_t	ft_va_arg_s(va_list ap, t_conv *list, char **str)
 {
 	char	*arg;
@@ -58,6 +114,17 @@ size_t	ft_va_arg_s(va_list ap, t_conv *list, char **str)
 	size_t	len;
 	size_t	i;
 
+	if (ft_strequ(list->mod, "l"))
+		return (ft_s_mod_l(ap, list, str));
+	/*
+	   arg2 = va_arg(ap, wchar_t *);
+	   len = ft_fp_s(ft_strlen((char *)arg2), &to_print, list);
+	   i = 0;
+	   if (arg2[i])
+	   ft_strcpy(to_print, ft_dothework(arg2[i++], 0));
+	   while (arg2[i])
+	   to_print = ft_strjoin(to_print, ft_dothework(arg2[i++], 0));
+	   */
 	arg = va_arg(ap, char *);
 	if (arg == NULL)
 	{
