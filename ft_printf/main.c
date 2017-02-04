@@ -352,8 +352,27 @@ int		main(int ac, char **av)
 	ft_printf("%S\n", L"ο Δικαιοπολις εν αγρω εστιν");
 	printf("%ls\n\n", L"ο Δικαιοπολις εν αγρω εστιν");
 
-	ft_putchar_v2(L'Δ');
-	printf("\n%C\n", L'Δ');
-	printf("%lc\n", L'Δ');
+	ft_printf("[%c]\n", 'c');
+	printf("[%c]\n", 'c');
+	ft_printf("[%1c]\n", 'c');
+	printf("[%1c]\n", 'c');
+	ft_printf("[%2c]\n", 'c');
+	printf("[%2c]\n", 'c');
+
+	int r = printf("[%-3lc]\n", L'Δ');
+	printf("%d\n", r);
+	r = ft_printf("[%-3lc]\n", L'Δ');
+	printf("%d\n", r);
+	
+	r = printf("[%-5lc]\n", L'Δ');
+	printf("%d\n", r);
+	r = ft_printf("[%-5lc]\n", L'Δ');
+	printf("%d\n", r);
+	
+	r = printf("[%3lc]\n", L'Δ');
+	printf("%d\n", r);
+	r = ft_printf("[%3lc]\n", L'Δ');
+	printf("%d\n", r);
+	
 	return (0);
 }

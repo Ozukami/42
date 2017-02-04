@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/24 12:37:13 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/02 09:44:22 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/03 23:53:56 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,10 +131,8 @@ void		ft_sub_2(t_conv *list, char **to_print, char *arg)
 		}
 		else
 			to_print[0][0] = arg[0];
-		while (to_print[0][i++])
-		{
-			if (to_print[0][i] == arg[0])
-				to_print[0][i] = '0';
-		}
+		while (to_print[0][i])
+			if (to_print[0][i++] == arg[0])
+				to_print[0][i - 1] = '0';
 	}
 }

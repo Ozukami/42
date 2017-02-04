@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 06:18:25 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/02/02 11:50:20 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/03 23:54:35 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1622,7 +1622,6 @@ int		main(int ac, char **av)
 	printf("%ld", (long)INT_MIN - 1);
 	   printf("\n");
 	   printf("\n");
-	   */
 	ft_printf("%ld", LONG_MIN);
 	   printf("\n");
 	printf("%ld", LONG_MIN);
@@ -1634,13 +1633,11 @@ int		main(int ac, char **av)
 	printf("%ld", LONG_MIN + 1);
 	   printf("\n");
 	   printf("\n");
-	   /*
 	ft_printf("%li", (long)INT_MIN - 1);
 	   printf("\n");
 	printf("%li", (long)INT_MIN - 1);
 	   printf("\n");
 	   printf("\n");
-	   */
 	ft_printf("%li", LONG_MIN);
 	   printf("\n");
 	printf("%li", LONG_MIN);
@@ -1664,7 +1661,6 @@ int		main(int ac, char **av)
 	   printf("\n");
 	   printf("\n");
 
-	   /*
 	// 43
 	ft_printf("%hhd", CHAR_MAX + 42);
 	   printf("\n");
@@ -1749,13 +1745,16 @@ int		main(int ac, char **av)
 	// 53
 	printf("{%-15Z}", 123);
 
-	// 60
-	printf("%#o", 42);
-	printf("%#o", 0);	
-	printf("%#o", INT_MAX); //OCTAL VALEUR DE RETOUR A CHECK
-	printf("%#X", 0);
+	// 60		C GUD
+	printf("%#o]\n", 42);
+	ft_printf("%#o]\n\n", 42);
+	printf("%#o]\n", 0);	
+	ft_printf("%#o]\n\n", 0);	
+	printf("%#o]\n", INT_MAX); //OCTAL VALEUR DE RETOUR A CHECK
+	ft_printf("%#o]\n\n", INT_MAX); //OCTAL VALEUR DE RETOUR A CHECK
+	printf("%#X]\n", 0);
+	ft_printf("%#X]\n\n", 0);
 	*/
-
 
 	if (fails)
 	{
