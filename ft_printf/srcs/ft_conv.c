@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 07:09:07 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/31 12:48:35 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/06 01:30:13 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,14 @@ void	ft_adjust(t_conv *new)
 	}
 	if (new->type == 'i')
 		new->type = 'd';
+	/*
 	if (new->type == 'p')
 	{
 		new->type = 'x';
 		new->prefix = 1;
 		new->mod = "ll";
 	}
+	*/
 	if (new->left)
 		new->zero = 0;
 	if (new->sign)

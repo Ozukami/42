@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 09:29:44 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/04 03:59:22 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/06 01:55:59 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,12 @@ size_t		ft_va_arg_d(va_list ap, t_conv *list, char **str)
 	if (ft_strequ(arg, "0") && list->field == -1 && !list->sign && list->point
 			&& !list->space)
 		return (0);
+	else if (ft_strequ(arg, "0") && list->field == -1 && list->p == -1 &&
+			!list->point && !list->space)
+	{
+		*str = ft_strjoin(*str, "0");
+		return (1);
+	}
 	len = ft_fp_d(ft_strlen(arg), list, arg, 0);
 	to_print = ft_strspace(len);
 	if (!ft_left_d(arg, len, &to_print, list))

@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:29:40 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/04 00:51:01 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/02/06 01:38:14 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static void	ft_fun_init(t_fun **tab)
 	tab[0][5].type = 'x';
 	tab[0][6].f = &ft_va_arg_x;
 	tab[0][6].type = 'X';
+	tab[0][7].f = &ft_va_arg_p;
+	tab[0][7].type = 'p';
 }
 
 int			ft_printf(const char *format, ...)
@@ -57,13 +59,13 @@ int			ft_printf(const char *format, ...)
 			{
 				j += ft_get_len(format, j);
 				i = 0;
-				while (i < 7)
+				while (i < 8)
 				{
 					if (list->type == tab[i].type)
 						len += tab[i].f(ap, list, &to_print);
 					i++;
 				}
-				if (i == 7 && list->type == '%')
+				if (i == 8 && list->type == '%')
 				{
 					i = 0;
 					if (list->left)

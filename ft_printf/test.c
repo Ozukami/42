@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 06:18:25 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/02/04 04:32:21 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/06 01:58:29 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1562,16 +1562,83 @@ int		main(int ac, char **av)
 	printf("{%}");
 	*/
 
-	/*
 	// 07
-	printf("%S", L"米");
+	/*
+	printf("{%d|%d}\n\n", 177 - 231, 25 -79);
+	char wchar_test = 231;
+	write(1, &wchar_test, 1);
+	wchar_test = 177;
+	write(1, &wchar_test, 1);
+	wchar_test = 179;
+	write(1, &wchar_test, 1);
 	printf("\n");
-	ft_printf("%S", L"米");
+	printf("\n");
+
+	printf("%S", L"🟊");
+	printf("\n");
+	ft_printf("%S", L"🟊");
 	printf("\n\n");
+*/
+
+	/*
+	printf("{%p}", (void *)0);
+	printf("\n");
+	ft_printf("{%p}", (void *)0);
+	printf("\n\n");
+	printf("{%#llx}", (unsigned long long)0);
+	printf("\n");
+	ft_printf("{%#llx}", (unsigned long long)0);
+	printf("\n\n");
+
+	printf("{%S}", L"¶");
+	printf("\n");
+	ft_printf("{%S}", L"¶");
+	printf("\n\n");
+
+	printf("{%S}", L"ਆ");
+	printf("\n");
+	ft_printf("{%S}", L"ਆ");
+	printf("\n\n");
+
+	printf("{%S}", L"米米");
+	printf("\n");
+	ft_printf("{%S}", L"米米");
+	printf("\n\n");
+
+	printf("{%-10S}", L"米米");
+	printf("\n");
+	ft_printf("{%-10S}", L"米米");
+	printf("\n\n");
+
+	printf("{%10S}", L"test🛵");
+	printf("\n");
+	ft_printf("{%10S}", L"test🛵");
+	printf("\n\n");
+
+	printf("{%.10ls}", L"test🛵");
+	printf("\n");
+	ft_printf("{%.10ls}", L"test🛵");
+	printf("\n\n");
+
+	printf("{%-.10ls}", L"test🛵");
+	printf("\n");
+	ft_printf("{%-.10ls}", L"test🛵");
+	printf("\n\n");
+
+	printf("{%-10ls}", L"test🛵");
+	printf("\n");
+	ft_printf("{%-10ls}", L"test🛵");
+	printf("\n\n");
+	*/
+
+	/*
 	printf("%S", L"我是一只猫。");
 	printf("\n");
 	ft_printf("%S", L"我是一只猫。");
 	printf("\n\n");
+	*/
+
+	/*
 	printf("%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S%S", L"Α α", L"Β β",
 	L"Γ γ", L"Δ δ", L"Ε ε", L"Ζ ζ", L"Η η", L"Θ θ", L"Ι ι", L"Κ κ", L"Λ λ", L"Μ μ",
 	L"Ν ν", L"Ξ ξ", L"Ο ο", L"Π π", L"Ρ ρ", L"Σ σ", L"Τ τ", L"Υ υ", L"Φ φ", L"Χ χ",
@@ -1582,6 +1649,9 @@ int		main(int ac, char **av)
 	L"Ν ν", L"Ξ ξ", L"Ο ο", L"Π π", L"Ρ ρ", L"Σ σ", L"Τ τ", L"Υ υ", L"Φ φ", L"Χ χ",
 	L"Ψ ψ", L"Ω ω", L"");
 	printf("\n\n");
+	*/
+
+	/*
 	printf("a%Sb%sc%S", L"我", "42", L"猫");
 	printf("\n");
 	ft_printf("a%Sb%sc%S", L"我", "42", L"猫");
@@ -1590,12 +1660,43 @@ int		main(int ac, char **av)
 
 	/*
 	// 08
-	printf("%D", -1L);
+	printf("%ld", 0L);
 	printf("\n");
-	ft_printf("%D", -1L);
+	ft_printf("%ld", 0L);
 	printf("\n");
-	ft_printf("%D", -1);
-	printf("\n\n");
+
+	printf("%-ld", 0L);
+	printf("\n");
+	ft_printf("%-ld", 0L);
+	printf("\n");
+
+	printf("%+ld", 0L);
+	printf("\n");
+	ft_printf("%+ld", 0L);
+	printf("\n");
+
+	printf("%-0ld", 0L);
+	printf("\n");
+	ft_printf("%-0ld", 0L);
+	printf("\n");
+
+	printf("%ld", 1L);
+	printf("\n");
+	ft_printf("%ld", 1L);
+	printf("\n");
+
+	printf("%ld", -1L);
+	printf("\n");
+	ft_printf("%ld", -1L);
+	printf("\n");
+
+	printf("%ld", 42L);
+	printf("\n");
+	ft_printf("%ld", 42L);
+	printf("\n");
+	*/
+
+	/*
 	printf("%D", LONG_MIN);
 	printf("\n");
 	ft_printf("%D", LONG_MIN);

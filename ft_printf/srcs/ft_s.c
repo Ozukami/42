@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 09:52:38 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/04 06:32:27 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/06 01:46:39 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,48 +60,51 @@ size_t	ft_s_mod_l(va_list ap, t_conv *list, char **str)
 	size_t	i;
 	int		*tab;
 	int		max;
+	int		a;
+	int		b;
 
 	tmp = NULL;
 	arg = va_arg(ap, wchar_t *);
+	//printf("	> size(%ls) = %d\n", arg, a);
 	if (arg == NULL)
 	{
 		*str = ft_strjoin(*str, "(null)");
 		return (ft_strlen(to_print));
 	}
-		//printf("[%s]\n", *str);
+	a = (int)ft_lslen(arg);
 	len = ft_fp_s(ft_strlen((char *)arg), &to_print, list);
+	//printf("[%s]\n", to_print);
 	tab = ft_memalloc(ft_strlen((char *)arg) + 1);
 	i = 0;
 	if (arg[i])
 	{
 		tab[i] = ft_dothework(arg[i], &tmp, 0);
-		ft_strcpy(to_print, tmp);
+		if (list->field > a && !list->left)
+			ft_strcpy(to_print + len - a, tmp);
+		else
+			ft_strcpy(to_print, tmp);
 		i++;
 	}
 	while (arg[i])
 	{
-		//printf("%zu[%s]", i, *str);
 		tab[i] = ft_dothework(arg[i], &tmp, 0);
-		//printf("	%zu[%s]", i, *str);
 		to_print = ft_strjoin(to_print, tmp);
-		//printf("	%zu[%s]\n", i, *str);
 		i++;
 	}
+	b = ft_strlen(to_print);
+	while (b < (int)len)
+		to_print[b++] = ' ';
+	to_print[b] = '\0';
 	tab[i] = 0;
 	i = 0;
-	max = 0;
-	while (tab[i] && max < list->p)
-		max += tab[i++];
-	if (max > list->p)
-		i--;
-	//printf("{MAX = %d|%zu}\n", max, i);
-	i = 0;
-	if (list->p)
+	if (list->p > 0)
 	{
-		while ((int)i < max)
-			i++;
-		//printf("i = %zu | %c\n", i, to_print[i]);
-		to_print[i] = '\0';
+		max = 0;
+		while (max < list->p)
+			max += tab[i++];
+		if (max > list->p)
+			max -= tab[i - 1];
+		to_print[max] = '\0';
 	}
 	*str = ft_strjoin(*str, to_print);
 	return (ft_strlen(to_print));

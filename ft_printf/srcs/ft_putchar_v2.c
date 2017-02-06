@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/24 11:22:25 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/04 05:57:37 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/06 00:37:36 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	ft_data(char *bin, char **data, int bits)
 {
 	if (bits < 12)
 	{
+		//printf("{2 octets}\n");
 		bin = ft_fill(bin, 11);
 		data[0] = ft_strjoin("110", ft_strsub(bin, 0, 5));
 		data[1] = ft_strjoin("10", ft_strsub(bin, 5, 6));
@@ -64,6 +65,7 @@ void	ft_data(char *bin, char **data, int bits)
 	}
 	else if (bits < 17)
 	{
+		//printf("{3 octets}\n");
 		bin = ft_fill(bin, 16);
 		data[0] = ft_strjoin("1110", ft_strsub(bin, 0, 4));
 		data[1] = ft_strjoin("10", ft_strsub(bin, 4, 6));
@@ -72,6 +74,7 @@ void	ft_data(char *bin, char **data, int bits)
 	}
 	else
 	{
+		//printf("{4 octets}\n");
 		bin = ft_fill(bin, 21);
 		data[0] = ft_strjoin("11110", ft_strsub(bin, 0, 3));
 		data[1] = ft_strjoin("10", ft_strsub(bin, 3, 6));
@@ -121,7 +124,7 @@ int		ft_dothework(wchar_t c, char **print, int j)
 		i = 4;
 	else
 		i = 5;
-	data = ft_memalloc(5);
+	data = ft_memalloc(i);
 	*print = ft_memalloc(i);
 	if (bits < 8)
 	{
@@ -129,10 +132,15 @@ int		ft_dothework(wchar_t c, char **print, int j)
 		return (1);
 	}
 	ft_data(bin, data, bits);
+	if (i >= 4)
+		print[0][2] = ft_bin_to_dec(data[2]);
 	while (j < i - 1)
 	{
-		print[0][j] = ft_bin_to_dec(data[j]);
+		if (j != 2)
+			print[0][j] = ft_bin_to_dec(data[j]);
 		j++;
 	}
+	print[0][j] = '\0';
+	free(data);
 	return (i - 1);
 }

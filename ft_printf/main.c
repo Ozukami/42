@@ -29,12 +29,14 @@ int		main(int ac, char **av)
 		printf("%-s", av[0]);
 		return (0);
 	}
+	/*
 	char	*s;
 
 	s = "[%5.2d]";
 	printf(s, 512);
 	s = "[%-5.3d]";
 	printf(s, 512);
+	*/
 	//	printf("  %-    #0-+8.3hhs   %-  -.5ld   %-x %-X\n", 30, 512, 255, 255);
 	/*
 	   char	*s;
@@ -319,6 +321,7 @@ int		main(int ac, char **av)
 	printf("{%#-10.5X}\n", 512);
 	*/
 
+		/*
 	printf("\nTest ft_putchar_v2 :\n");
 	wchar_t	w;
 	w = 65;
@@ -341,7 +344,14 @@ int		main(int ac, char **av)
 	write(1, "[ ", 2);
 	ft_putchar_v2(w);
 	write(1, " ]\n", 3);
+	*/
 
+	wchar_t w = 128970;
+	write(1, "[ ", 2);
+	ft_putchar_v2(w);
+	write(1, " ]\n", 3);
+
+	/*
 	printf("\nTest avec printf :\n");
 	printf("[%ls]\n", L"¡");
 	ft_printf("[%ls]\n", L"¡");
@@ -349,6 +359,8 @@ int		main(int ac, char **av)
 	printf("\nTest c : %%c\n");
 	ft_printf("{%3c} {%-3c}\n", 'A', 'B');
 	printf("{%3c} {%-3c}\n", 'A', 'B');
+	*/
+
 /*
 	ft_printf("{%.48ls}\n", L"ο Δικαιοπολις εν αγρω εστιν");
 	printf("{%.48ls}\n\n", L"ο Δικαιοπολις εν αγρω εστιν");
@@ -356,6 +368,11 @@ int		main(int ac, char **av)
 	ft_printf("{%.47ls}\n", L"ο Δικαιοπολις εν αγρω εστιν");
 	printf("{%.47ls}\n\n", L"ο Δικαιοπολις εν αγρω εστιν");
 */
+
+	/*
+	ft_printf("{%ls}\n", L"ο Δικαιοπολις εν αγρω εστιν");
+	printf("{%ls}\n\n", L"ο Δικαιοπολις εν αγρω εστιν");
+
 	ft_printf("{%.46ls}\n", L"ο Δικαιοπολις εν αγρω εστιν");
 	printf("{%.46ls}\n\n", L"ο Δικαιοπολις εν αγρω εστιν");
 
@@ -365,6 +382,16 @@ int		main(int ac, char **av)
 	ft_printf("{%.44ls}\n", L"ο Δικαιοπολις εν αγρω εστιν");
 	printf("{%.44ls}\n\n", L"ο Δικαιοπολις εν αγρω εστιν");
 
+	ft_printf("%.46ls\n", L"ο Δικαιοπολις εν αγρω εστιν");
+	printf("%.46ls\n\n", L"ο Δικαιοπολις εν αγρω εστιν");
+
+	ft_printf("%.45ls\n", L"ο Δικαιοπολις εν αγρω εστιν");
+	printf("%.45ls\n\n", L"ο Δικαιοπολις εν αγρω εστιν");
+
+	ft_printf("%.44ls\n", L"ο Δικαιοπολις εν αγρω εστιν");
+	printf("%.44ls\n\n", L"ο Δικαιοπολις εν αγρω εστιν");
+	*/
+
 	/*
 	ft_printf("{%.5ls}\n", L"ο Δικαιοπολις εν αγρω εστιν");
 	printf("{%.5ls}\n\n", L"ο Δικαιοπολις εν αγρω εστιν");
@@ -372,6 +399,7 @@ int		main(int ac, char **av)
 	ft_printf("{%.4ls}\n", L"ο Δικαιοπολις εν αγρω εστιν");
 	printf("{%.4ls}\n\n", L"ο Δικαιοπολις εν αγρω εστιν");
 */
+	/*
 	ft_printf("[%c]\n", 'c');
 	printf("[%c]\n", 'c');
 	ft_printf("[%1c]\n", 'c');
@@ -396,6 +424,7 @@ int		main(int ac, char **av)
 	r2 = printf("[%3lc]\n", L'Δ');
 	if (r1 != r2)
 		printf("erreur r val (%d|%d)\n", r1, r2);
+		*/
 	
 	/*
 	printf("\n");

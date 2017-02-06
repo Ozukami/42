@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/24 11:44:43 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/31 07:18:34 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/06 01:39:34 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static void	ft_fun_init(t_fun **tab)
 	tab[0][5].type = 'x';
 	tab[0][6].f = &ft_va_arg_x;
 	tab[0][6].type = 'X';
+	tab[0][7].f = &ft_va_arg_p;
+	tab[0][7].type = 'p';
 }
 
 char		*ft_sprintf(const char *format, ...)
@@ -58,7 +60,7 @@ char		*ft_sprintf(const char *format, ...)
 			{
 				j += ft_get_len(format, j);
 				i = 0;
-				while (i < 7)
+				while (i < 8)
 				{
 					if (list->type == tab[i].type)
 						len += tab[i].f(ap, list, &to_print);
