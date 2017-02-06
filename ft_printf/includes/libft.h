@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 10:49:10 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/06 05:46:00 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/06 06:30:51 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ char				*ft_ulltoa_base(unsigned long long value, int base, int maj);
 char				*ft_ultoa_base(long value, int base, int maj);
 char				*ft_ultoa_base_2(long value, int base, int maj);
 char				*ft_stoa_base(short value, int base, int maj);
+char				*ft_usstoa_base(int value, int base, int maj);
 char				*ft_ltoa_unsigned(long int value);
 char				*ft_lltoa_unsigned(long long int value);
 char				*ft_stoa_unsigned(short value);

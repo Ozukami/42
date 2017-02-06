@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/24 12:37:13 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/03 23:53:56 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/02/06 08:24:26 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ size_t		ft_fp_d(size_t len, t_conv *list, char *arg, size_t size)
 	else if (list->p > list->field && list->p > (int)len)
 		size = (size_t)list->p;
 	else
-		size = (size_t)list->field;
+		size = (size_t)ft_max((size_t)list->field, len);
 	if ((arg[0] == '-' || (arg[0] == '+' && list->sign)) && list->p > (int)len
 			&& list->p > list->field)
 		size++;

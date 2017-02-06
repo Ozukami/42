@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/06 03:44:57 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/06 08:27:35 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void				ft_sub_2(t_conv *list, char **to_print, char *arg);
 ** %x
 */
 
-size_t				ft_fp_x(size_t len, t_conv *list);
+size_t				ft_fp_x(size_t len, t_conv *list, char *arg);
 void				ft_p_x(char **to_print, t_conv *list,
 		size_t len, size_t size);
 int					ft_left_x(char *arg, size_t len,

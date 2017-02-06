@@ -6,13 +6,13 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 09:18:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/02 09:04:30 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/06 09:31:24 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-size_t		ft_fp_x(size_t len, t_conv *list)
+size_t		ft_fp_x(size_t len, t_conv *list, char *arg)
 {
 	size_t	size;
 
@@ -33,6 +33,8 @@ size_t		ft_fp_x(size_t len, t_conv *list)
 	if (list->left && list->prefix && ((int)len < list->p)
 			&& list->p > list->field)
 		size = size + 2;
+	if (ft_strequ(arg, "0") && list->point && list->field == -1 && list->p == -1)
+		size--;
 	return (size);
 }
 

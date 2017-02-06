@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 09:52:38 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/06 05:29:27 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/06 09:04:16 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ size_t	ft_va_arg_s(va_list ap, t_conv *list, char **str)
 			ft_strncpy(&(to_print)[i], arg, (size_t)
 					(ft_min(ft_min((int)ft_strlen(arg), (int)len), list->p)));
 		}
-		else
+		else if (!list->point)
 			ft_strncpy(&(to_print)[i], arg, (size_t)
 					(ft_min((int)ft_strlen(arg), (int)len)));
 	}
