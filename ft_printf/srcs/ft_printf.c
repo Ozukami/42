@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:29:40 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/06 01:38:14 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/06 05:27:46 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ int			ft_printf(const char *format, ...)
 	t_conv	*list;
 	t_fun	*tab;
 	char	*to_print;
+	char	*tmp;
+	char	*tmp2;
 
 	list = NULL;
 	len = 0;
@@ -62,7 +64,22 @@ int			ft_printf(const char *format, ...)
 				while (i < 8)
 				{
 					if (list->type == tab[i].type)
-						len += tab[i].f(ap, list, &to_print);
+					{
+						if (list->prefix != 1)
+							list->prefix = 0;
+						tmp = ft_memalloc(1);
+						tmp2 = ft_memalloc(1);
+						//printf("< %s >\n", tmp);
+						len += tab[i].f(ap, list, &tmp);
+					//	printf("< %s >\n", tmp);
+						tmp2 = ft_strjoinf(tmp2, tmp);
+						to_print = ft_strjoin(to_print, tmp2);
+					//	printf("< TO_PRINT =  %s >\n", to_print);
+						tmp = NULL;
+						tmp2 = NULL;
+						//printf("< 1 %s >\n", tmp);
+						//printf("< %s >\n", to_print);
+					}
 					i++;
 				}
 				if (i == 8 && list->type == '%')

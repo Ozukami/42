@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/24 11:22:25 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/06 00:37:36 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/06 05:29:58 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	ft_data(char *bin, char **data, int bits)
 	}
 	else if (bits < 17)
 	{
-		//printf("{3 octets}\n");
+	//	printf("{3 octets}\n");
 		bin = ft_fill(bin, 16);
 		data[0] = ft_strjoin("1110", ft_strsub(bin, 0, 4));
 		data[1] = ft_strjoin("10", ft_strsub(bin, 4, 6));
@@ -138,6 +138,81 @@ int		ft_dothework(wchar_t c, char **print, int j)
 	{
 		if (j != 2)
 			print[0][j] = ft_bin_to_dec(data[j]);
+		j++;
+	}
+	print[0][j] = '\0';
+	free(data);
+	return (i - 1);
+}
+
+void	ft_data2(char *bin, char **data, int bits, char **str)
+{
+	if (bits < 12)
+	{
+		//printf("{2 octets}\n");
+		bin = ft_fill(bin, 11);
+		data[0] = ft_strjoin("110", ft_strsub(bin, 0, 5));
+		data[1] = ft_strjoin("10", ft_strsub(bin, 5, 6));
+		data[2] = 0;
+	}
+	else if (bits < 17)
+	{
+		//printf("{3 octets}\n");
+		bin = ft_fill(bin, 16);
+		data[0] = ft_strjoin("1110", ft_strsub(bin, 0, 4));
+		data[1] = ft_strjoin("10", ft_strsub(bin, 4, 6));
+		printf("		AVANT < %s | %p >\n", *str, str);
+		//printf("		data < %s | %p >\n", data[2], data);
+		data[2] = ft_strjoin("10", ft_strsub(bin, 10, 6));
+		//data[2] = ft_strdup("10000000");
+		printf("			data < %s | %p >\n", data[0], data[0]);
+		printf("			data < %s | %p >\n", data[1], data[1]);
+		printf("			data < %s | %p >\n", data[2], data[2]);
+		printf("		APRES < %s | %p >\n", *str, str);
+		data[3] = 0;
+	}
+	else
+	{
+		//printf("{4 octets}\n");
+		bin = ft_fill(bin, 21);
+		data[0] = ft_strjoin("11110", ft_strsub(bin, 0, 3));
+		data[1] = ft_strjoin("10", ft_strsub(bin, 3, 6));
+		data[3] = ft_strjoin("10", ft_strsub(bin, 9, 6));
+		data[4] = ft_strjoin("10", ft_strsub(bin, 15, 6));
+		data[5] = 0;
+	}
+}
+
+int		ft_dothework2(wchar_t c, char **print, int j, char **str)
+{
+	char			*bin;
+	char			**data;
+	int				bits;
+	int				i;
+
+	bin = ft_itoa_base((int)c, 2, 0);
+	bits = (int)ft_strlen(bin);
+	if (bits < 8)
+		i = 2;
+	else if (bits < 12)
+		i = 3;
+	else if (bits < 17)
+		i = 4;
+	else
+		i = 5;
+	data = ft_memalloc(i + 1);
+	*print = ft_memalloc(i);
+	if (bits < 8)
+	{
+		print[0][0] = c;
+		return (1);
+	}
+	ft_data2(bin, data, bits, str);
+	while (j < i - 1)
+	{
+		//if (j == 2)
+		//	j++;
+		print[0][j] = ft_bin_to_dec(data[j]);
 		j++;
 	}
 	print[0][j] = '\0';

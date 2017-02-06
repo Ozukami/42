@@ -6,60 +6,39 @@
 /*   By: exam <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 10:48:38 by exam              #+#    #+#             */
-/*   Updated: 2017/02/06 05:43:30 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/06 05:45:44 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 
-static int		get_size(long long value, long long base)
+static int		get_size(unsigned long value, unsigned long base)
 {
-	if (value > -base && value <= -1)
-		return (2);
-	if (value >= 0 && value < base)
+	if (value < base)
 		return (1);
-	if (value < -base)
-		return (2 + get_size(-value / base, base));
 	return (1 + get_size(value / base, base));
 }
 
-static int		neg_case(long long *nb, int base, char **itoa)
-{
-	if (*nb < 0 && base == 10)
-	{
-		*nb = -(*nb);
-		itoa[0][0] = '-';
-		return (1);
-	}
-	return (0);
-}
-
-char	*ft_ultoa_base(long value, int base, int maj)
+char	*ft_ultoa_base_2(long value, int base, int maj)
 {
 	char	*itoa;
 	int		size;
-	long long	nb;
-	int		neg;
+	unsigned long	nb;
 
-	nb = (long long)value;
-	if (nb < 0 && base != 10)
-		nb = UINT_MAX + 1 + value;
-	if (value == LONG_MIN)
-		return (ft_strdup("-9223372036854775808"));
-	size = get_size(nb, (long long)base);
+	nb = (unsigned long)value;
+	size = get_size(nb, (unsigned long)base);
 	if (!(itoa = malloc(sizeof(char) * (size + 1))))
 		return (NULL);
 	itoa[size--] = '\0';
-	neg = neg_case(&nb, base, &itoa);
-	while (size >= neg)
+	while (size >= 0)
 	{
-		if (nb % (long long)base > 9 && maj)
-			itoa[size--] = '7' + nb % (long long)base;
-		else if (nb % (long long)base > 9)
-			itoa[size--] = '7' + 32 + nb % (long long)base;
+		if (nb % (unsigned long)base > 9 && maj)
+			itoa[size--] = '7' + nb % (unsigned long)base;
+		else if (nb % (unsigned long)base > 9)
+			itoa[size--] = '7' + 32 + nb % (unsigned long)base;
 		else
-			itoa[size--] = '0' + nb % (long long)base;
-		nb = nb / (long long)base;
+			itoa[size--] = '0' + nb % (unsigned long)base;
+		nb = nb / (unsigned long)base;
 	}
 	return (itoa);
 }

@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 09:04:59 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/04 05:56:25 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/06 05:27:35 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,18 @@ size_t		ft_va_arg_c(va_list ap, t_conv *list, char **str)
 {
 	size_t	i;
 	char	*cpy;
+	char	*tmp2;
 	char	*tmp;
 	int		j;
 
 	tmp = NULL;
+	tmp2 = ft_memalloc(1);
 	i = 0;
 	if (ft_strequ(list->mod, "l"))
+	{
+		//printf("	%c\n", list->type);
 		ft_dothework(va_arg(ap, wchar_t), &tmp, 0);
+	}
 	else
 	{
 		tmp = ft_memalloc(2);
@@ -37,7 +42,7 @@ size_t		ft_va_arg_c(va_list ap, t_conv *list, char **str)
 	{
 		if (!tmp[0])
 			cpy[i - 1] = tmp[0];
-		*str = ft_strjoinf(*str, ft_strncpy(cpy, tmp, ft_strlen(tmp)));
+		tmp2 = ft_strjoinf(tmp2, ft_strncpy(cpy, tmp, ft_strlen(tmp)));
 	}
 	else
 	{
@@ -49,7 +54,10 @@ size_t		ft_va_arg_c(va_list ap, t_conv *list, char **str)
 			cpy[j - 1] = tmp[i];
 		while (tmp[i])
 			cpy[j++] = tmp[i++];
-		*str = ft_strjoinf(*str, cpy);
+		tmp2 = ft_strjoinf(tmp2, cpy);
 	}
+	*str = ft_strdup(tmp2);
+	free(tmp);
+	free(tmp2);
 	return (ft_max(list->field, ft_max(ft_strlen(cpy), 1)));
 }
