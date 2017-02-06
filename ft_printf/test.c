@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 06:18:25 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/02/06 09:38:59 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/06 10:58:48 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1547,11 +1547,11 @@ int		main(int ac, char **av)
 	printf("{%030S}", L"我是一只猫。");
 	printf("\n\n");
 
-	*/
 	ft_printf("{%05p}", 0);
 	printf("\n");
 	printf("{%05p}", 0);
 	printf("\n\n");
+	*/
 
 	/*
 	 * compile pas
@@ -1588,11 +1588,24 @@ int		main(int ac, char **av)
 	printf("[%.u] [%.0u]", 0, 0);
 	printf("\n\n");
 	*/
+	ft_printf("%S", L"米");
+	printf("\n");
+	printf("%S", L"米");
+	printf("\n\n");
 
-	/*
+	ft_printf("[%.4S]", L"我是一只猫。");
+	printf("\n");
+	printf("[%.4S]", L"我是一只猫。");
+	printf("\n\n");
+
 	ft_printf("[%15.4S]", L"我是一只猫。");
 	printf("\n");
 	printf("[%15.4S]", L"我是一只猫。");
+	printf("\n\n");
+
+	ft_printf("[%4.15S]", L"我是一只猫。");
+	printf("\n");
+	printf("[%4.15S]", L"我是一只猫。");
 	printf("\n\n");
 
 	ft_printf("[%4.S]", L"我是一只猫。");
@@ -1604,7 +1617,6 @@ int		main(int ac, char **av)
 	printf("\n");
 	printf("[%4.1S]", L"Jambon");
 	printf("\n\n");
-	*/
 
 	/*
 	ft_printf("%.0p, %.p", 0, 0);

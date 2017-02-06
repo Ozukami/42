@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 09:18:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/06 09:31:24 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/06 10:14:39 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ size_t		ft_fp_x(size_t len, t_conv *list, char *arg)
 	if (list->left && list->prefix && ((int)len < list->p)
 			&& list->p > list->field)
 		size = size + 2;
-	if (ft_strequ(arg, "0") && list->point && list->field == -1 && list->p == -1)
+	if (ft_strequ(arg, "0") && list->point && list->field == -1 && list->p <= 0)
 		size--;
 	return (size);
 }

@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/15 09:52:38 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/06 09:04:16 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/06 10:59:44 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,14 +81,15 @@ size_t	ft_s_mod_l(va_list ap, t_conv *list, char **str)
 		tab[i] = ft_dothework(arg[i], &tmp, 0);
 		if (list->field > a && !list->left)
 			ft_strcpy(to_print + len - a, tmp);
-		else
+		else if (list->p > 0 || !list->point)
 			ft_strcpy(to_print, tmp);
 		i++;
 	}
 	while (arg[i])
 	{
 		tab[i] = ft_dothework(arg[i], &tmp, 0);
-		to_print = ft_strjoin(to_print, tmp);
+		if (list->p > 0 || !list->point)
+			to_print = ft_strjoin(to_print, tmp);
 		i++;
 	}
 	b = ft_strlen(to_print);
