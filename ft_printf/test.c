@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 06:18:25 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/02/06 10:58:48 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/06 22:58:15 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1529,6 +1529,16 @@ int		main(int ac, char **av)
 	printf("\n\n");
 	*/
 
+	// 50 PRINTF renvoi pas le bon truc via le 42fc
+	// sprintf renvoi le truc du 42sh a regarder
+	/*
+	char *str1 = ft_memalloc(1);
+	printf("{%3c}", 0);
+	printf("\n");
+	sprintf(str, "{%3c}", 0);
+	printf("%s\n", str);
+	printf("\n\n");
+	*/
 	/*
 	 * Warning
 	// 52
@@ -1588,6 +1598,7 @@ int		main(int ac, char **av)
 	printf("[%.u] [%.0u]", 0, 0);
 	printf("\n\n");
 	*/
+	/*
 	ft_printf("%S", L"米");
 	printf("\n");
 	printf("%S", L"米");
@@ -1617,7 +1628,7 @@ int		main(int ac, char **av)
 	printf("\n");
 	printf("[%4.1S]", L"Jambon");
 	printf("\n\n");
-
+	*/
 	/*
 	ft_printf("%.0p, %.p", 0, 0);
 	printf("\n");
@@ -1649,6 +1660,33 @@ int		main(int ac, char **av)
 	printf("%2.9p", 1234567);
 	printf("\n\n");
 	*/
+	
+	//79
+	
+	ft_printf("{%05.c}", 0);
+	printf("\n");
+	printf("{%05.c}", 0);
+	printf("\n\n");
+	ft_printf("{%05.s}", 0);
+	printf("\n");
+	printf("{%05.s}", 0);
+	printf("\n\n");
+	ft_printf("{%05.%}", 0);
+	printf("\n");
+	printf("{%05.%}", 0);
+	printf("\n\n");
+	ft_printf("{%05.Z}", 0);
+	printf("\n");
+	printf("{%05.Z}", 0);
+	printf("\n\n");
+	ft_printf("{%#.5x}", 1);
+	printf("\n");
+	printf("{%#.5x}", 1);
+	printf("\n\n");
+	ft_printf("{%05.S}", L"42 c est cool");
+	printf("\n");
+	printf("{%05.S}", L"42 c est cool");
+	printf("\n\n");
 
 	if (fails)
 	{
