@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/07 02:27:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/07 06:16:12 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/02/07 08:19:27 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ t_info			*ft_new_info(char p);
 t_place			*ft_new_place(int x, int y);
 void			ft_add_place(t_place **list, t_place *new);
 
-int				ft_check_place(t_info *info, int x, int y);
-void			ft_get_place(t_info *info);
+int				ft_check_place(t_info *info, int x, int y, int fd);
+void			ft_get_place(t_info *info, int fd);
+void			ft_get_value(t_info *info, t_place place, int fd);
 
 #endif
