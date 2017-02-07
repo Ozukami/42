@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/07 02:27:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/07 02:39:49 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/07 04:14:04 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,6 @@ typedef struct	s_info
 	int			y_piece;
 }				t_info;
 
-
+t_info			*ft_new_info(char p);
 
 #endif
