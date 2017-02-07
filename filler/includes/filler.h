@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/07 02:27:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/07 08:19:27 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/07 09:51:40 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,14 @@ typedef struct	s_info
 	char		**map;
 	int			x_map;
 	int			y_map;
+	char		**map_prev;
+	int			x_map_prev;
+	int			y_map_prev;
 	char		**piece;
 	int			x_piece;
 	int			y_piece;
+	int			x_side;
+	int			y_side;
 }				t_info;
 
 typedef struct	s_place

@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/06 23:52:54 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/07 08:20:16 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/07 10:28:11 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,13 @@
 
 int	debug = 0;
 int	no_VM = 0;
+
+int		ft_absolute(int a)
+{
+	if (a < 0)
+		return (-a);
+	return (a);
+}
 
 void	ft_display_map(char **map, int fd)
 {
@@ -41,7 +48,7 @@ void	ft_display_info(t_info *info, int fd)
 t_place		*ft_new_place(int x, int y)
 {
 	t_place	*new;
-	
+
 	new = ft_memalloc(sizeof(t_place));
 	new->x = x;
 	new->y = y;
@@ -73,7 +80,7 @@ int			ft_check_place(t_info *info, int x, int y, int fd)
 	if (x + info->x_piece > info->x_map
 			|| y + info->y_piece > info->y_map)
 	{
-		dprintf(fd, "	>> Failed : map out of bounds\n");
+		//dprintf(fd, "	>> Failed : map out of bounds\n");
 		return (0);
 	}
 	while ((info->piece)[i])
@@ -88,15 +95,15 @@ int			ft_check_place(t_info *info, int x, int y, int fd)
 					if ((info->map)[i + x][j + y] != info->player
 							&& (info->map)[i + x][j + y] != info->player - 32)
 					{
-						dprintf(fd, "	>> Failed : enemy found ! %c VS %c\n",
-								info->player, (info->map)[i + x][j + y]);
+						//dprintf(fd, "	>> Failed : enemy found ! %c VS %c\n",
+						//		info->player, (info->map)[i + x][j + y]);
 						return (0);
 					}
 					else
 					{
 						if (verif++)
 						{
-							dprintf(fd, "	>> Failed : too much TK\n");
+							//dprintf(fd, "	>> Failed : too much TK\n");
 							return (0);
 						}
 					}
@@ -111,7 +118,7 @@ int			ft_check_place(t_info *info, int x, int y, int fd)
 		dprintf(fd, "	>> SUCCES !\n");
 		return (1);
 	}
-	dprintf(fd, "	>> Failed : not enough friends :(\n");
+	//dprintf(fd, "	>> Failed : not enough friends :(\n");
 	return (0);
 }	
 
@@ -130,12 +137,12 @@ void		ft_get_place(t_info *info, int fd)
 		y = 0;
 		while ((info->map)[x][y])
 		{
-			dprintf(fd, "	> CHECK at {%d,%d}", x, y);
+			//dprintf(fd, "	> CHECK at {%d,%d}", x, y);
 			if (ft_check_place(info, x, y, fd))
 			{
-				dprintf(fd, "		> OK");
+				//dprintf(fd, "		> OK");
 				ft_add_place(&list, ft_new_place(x, y));
-				dprintf(fd, "	>> PLACED\n");
+				//dprintf(fd, "	>> PLACED\n");
 				//ft_get_value(info, list, fd);
 			}
 			y++;
@@ -143,11 +150,31 @@ void		ft_get_place(t_info *info, int fd)
 		x++;
 	}
 	dprintf(fd, "\n	> SOLUTIONS\n");
+	x = -1;
+	y = -1;
 	current = list;
 	while (current)
 	{
+		if (info->x_side > -1 || info->y_side > -1)
+		{
+			if (ft_absolute(info->x_side - current->x) +
+					ft_absolute(info->y_side - current->y) <
+					ft_absolute(info->x_side - x) +
+					ft_absolute(info->y_side - y))
+			{
+				x = current->x;
+				y = current->y;
+			}
+		}
 		dprintf(fd, "		>%d %d\n", current->x, current->y);
 		current = current->next;
+	}
+	//ft_display_map(info->map, fd);
+	if (x > -1 && y > -1)
+	{
+		dprintf(fd, "			BEST		{%d %d}\n", x, y);
+		dprintf(1, "%d %d\n", x, y);
+		return ;
 	}
 	dprintf(fd, "> REP ?\n");
 	if (list)
@@ -167,7 +194,7 @@ int		main(void)
 {
 	char	*path = "log.txt";
 	int		fd = open(path, O_WRONLY | O_CREAT | O_TRUNC,
-				S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	int	nb_piece = 0;
 
 	t_info	*info;
@@ -175,12 +202,13 @@ int		main(void)
 	int		i;
 	int		x;
 	int		y;
+	int		t;
 
 	if (no_VM)
 	{
 		printf("MODE NO VM!\n");
 		printf("-- START --\n\n");
-		
+
 		// New Player
 		info = ft_new_info('o');
 		printf("> Player : %c\n\n", info->player);
@@ -240,42 +268,81 @@ int		main(void)
 		printf("--- END ---\n");
 		return (0);
 	}
-	
+
 	get_next_line(0, &line);
 	info = ft_new_info(((line[10] == '1') ? 'o' : 'x'));
 	dprintf(fd, "LIGNE 1 : %s\n\n", line);
 
+	if (get_next_line(0, &line))
+		dprintf(fd, "> %s\n", line);
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] > '0' && line[i] < '9')
+		{
+			info->x_map = ft_atoi(line + i);
+			while (line[i] > '0' && line[i] < '9')
+				i++;
+			info->y_map = ft_atoi(line + i);
+			dprintf(fd, "Map (MaJ) : [%d|%d]\n", info->x_map, info->y_map);
+			break ;
+		}
+		i++;
+	}
+	info->map = ft_memalloc((sizeof(char *)) * (info->x_map + 1));
+	info->map_prev = ft_memalloc((sizeof(char *)) * (info->x_map + 1));
+	(info->map)[info->x_map] = 0;
+	(info->map_prev)[info->x_map] = 0;
+	get_next_line(0, &line);
+	i = 0;
+	while (i < info->x_map)
+	{
+		get_next_line(0, &line);
+		(info->map)[i] = ft_strdup(ft_strsub(line, 4, info->x_map));
+		(info->map_prev)[i] = ft_strdup(ft_strsub(line, 4, info->x_map));
+		i++;
+	}
+
+	t = 0;
 	while (1)
 	{
-		if (get_next_line(0, &line))
-			dprintf(fd, "> %s\n", line);
-		i = 0;
-		while (line[i])
+		if (t++)
 		{
-			if (line[i] > '0' && line[i] < '9')
-			{
-				info->x_map = ft_atoi(line + i);
-				while (line[i] > '0' && line[i] < '9')
-					i++;
-				info->y_map = ft_atoi(line + i);
-				dprintf(fd, "Map (MaJ) : [%d|%d]\n", info->x_map, info->y_map);
-				break ;
-			}
-			i++;
-		}
-		info->map = ft_memalloc((sizeof(char *)) * (info->x_map + 1));
-		(info->map)[info->x_map] = 0;
-		get_next_line(0, &line);
-		i = 0;
-		while (i < info->x_map)
-		{
+			if (get_next_line(0, &line))
+				dprintf(fd, "> %s\n", line);
 			get_next_line(0, &line);
-			(info->map)[i] = ft_strdup(ft_strsub(line, 4, info->x_map));
-			i++;
+			i = 0;
+			while (i < info->x_map)
+			{
+				get_next_line(0, &line);
+				free((info->map)[i]);
+				(info->map)[i] = ft_strdup(ft_strsub(line, 4, info->x_map));
+				i++;
+			}
 		}
-
 		if (debug)
 			ft_display_map(info->map, fd);
+
+		if (info->map_prev)
+		{
+			x = 0;
+			while ((info->map)[x])
+			{	
+				y = 0;
+				while ((info->map)[x][y])
+				{
+					if ((info->map)[x][y] != (info->map_prev)[x][y])
+					{
+						dprintf(fd, "	< ENNEMI EN [%d, %d] >\n", x, y);
+						info->x_side = x;
+						info->y_side = y;
+						(info->map_prev)[x][y] = (info->map)[x][y];
+					}
+					y++;
+				}
+				x++;
+			}
+		}
 
 		get_next_line(0, &line);
 		i = 0;
@@ -304,25 +371,7 @@ int		main(void)
 
 		if (debug)
 			ft_display_map(info->piece, fd);
-/*
-		x = 0;
-		while (x < info->x_map)
-		{
-			y = 0;
-			while (y < info->y_map)
-			{
-				if ((info->map)[x][y] == info->player
-						|| (info->map)[x][y] == info->player - 32)
-					ft_place(info, x, y);
-					//	break ;
-				y++;
-			}
-			if ((info->map)[x][y] == info->player
-					|| (info->map)[x][y] == info->player - 32)
-				break ;
-			x++;
-		}
-*/
+
 		ft_get_place(info, fd);
 		x = 0;
 		y = 0;
@@ -331,7 +380,7 @@ int		main(void)
 			dprintf(fd, "%d %d\n", x, y);
 			dprintf(fd, "nb_piece = %d\n", ++nb_piece);
 		}
-//		dprintf(1, "%d %d\n", x, y);
+		//		dprintf(1, "%d %d\n", x, y);
 	}
 	return (0);
 }
