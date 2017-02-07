@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/06 23:52:54 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/07 04:39:09 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/07 06:21:46 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-int	debug = 1;
+int	debug = 0;
 
 void	ft_display_map(char **map, int fd)
 {
@@ -35,6 +35,79 @@ void	ft_display_info(t_info *info, int fd)
 	ft_display_map(info->map, fd);
 	dprintf(fd, "Piece : %d %d\n", info->x_piece, info->y_piece);
 	ft_display_map(info->piece, fd);
+}
+
+t_place		*ft_new_place(int x, int y)
+{
+	t_place	*new;
+	
+	new = ft_memalloc(sizeof(t_place));
+	new->x = x;
+	new->y = y;
+	return (new);
+}
+
+void		ft_add_place(t_place **list, t_place *new)
+{
+	new->next = *list;
+	*list = new;
+}
+
+int			ft_check_place(t_info *info, int x, int y)
+{
+	int		i;
+	int		j;
+	int		verif;
+
+	i = 0;
+	j = 0;
+	verif = 0;
+	if (x + info->x_piece > info->x_map
+			|| y + info->y_piece > info->y_map)
+		return (0);
+	while ((info->piece)[i])
+	{
+		j = 0;
+		while ((info->piece)[i][j])
+		{
+			if ((info->piece)[i][j] != '.')
+			{
+				if ((info->piece)[i + x][j + y] != '.')
+				{
+					if ((info->map)[i + x][j + y] != info->player)
+						return (0);
+					else
+						if (verif++)
+							return (0);
+				}
+			}
+			j++;
+		}
+		i++;
+	}
+	return (1);
+}	
+
+void		ft_get_place(t_info *info)
+{
+	int		x;
+	int		y;
+	t_place	*list;
+
+	x = 0;
+	while ((info->map)[x])
+	{	
+		y = 0;
+		while ((info->map)[x][y])
+		{
+			if (ft_check_place(info, x, y))
+				ft_add_place(&list, ft_new_place(x, y));
+			y++;
+		}
+		x++;
+	}
+	if (list)
+		dprintf(1, "%d %d\n", list->x, list->y);
 }
 
 int		main(void)
@@ -113,7 +186,7 @@ int		main(void)
 
 		if (debug)
 			ft_display_map(info->piece, fd);
-
+/*
 		x = 0;
 		while (x < info->x_map)
 		{
@@ -122,7 +195,8 @@ int		main(void)
 			{
 				if ((info->map)[x][y] == info->player
 						|| (info->map)[x][y] == info->player - 32)
-					break ;
+					ft_place(info, x, y);
+					//	break ;
 				y++;
 			}
 			if ((info->map)[x][y] == info->player
@@ -130,12 +204,16 @@ int		main(void)
 				break ;
 			x++;
 		}
+*/
+		ft_get_place(info);
+		x = 0;
+		y = 0;
 		if (debug)
 		{
 			dprintf(fd, "%d %d\n", x, y);
 			dprintf(fd, "nb_piece = %d\n", ++nb_piece);
 		}
-		dprintf(1, "%d %d\n", x, y);
+//		dprintf(1, "%d %d\n", x, y);
 	}
 	return (0);
 }

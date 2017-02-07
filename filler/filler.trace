@@ -1,4 +1,6 @@
-seed = 1403
+seed = 4280
+X: error on input
+players/filler: Segfault at 0
 players/superjeannot.filler won
 Score:
-14AGAINST1
+2AGAINST0
