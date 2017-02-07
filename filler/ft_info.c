@@ -1,31 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   filler.h                                           :+:      :+:    :+:   */
+/*   ft_info.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/07 02:27:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/07 02:39:49 by apoisson         ###   ########.fr       */
+/*   Created: 2017/02/07 02:40:25 by apoisson          #+#    #+#             */
+/*   Updated: 2017/02/07 02:43:01 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FILLER_H
-# define FILLER_H
+#include "filler.h"
 
-# include "libft.h"
-
-typedef struct	s_info
+t_info	*ft_new_info(char p)
 {
-	char		player;
-	char		**map;
-	int			x_map;
-	int			y_map;
-	char		**piece;
-	int			x_piece;
-	int			y_piece;
-}				t_info;
+	t_info	*info;
 
-
-
-#endif
+	info = NULL;
+	(void)p;
+	return (info);
+}
