@@ -1,23 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   filler.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/04 11:00:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/07 00:40:21 by apoisson         ###   ########.fr       */
+/*   Created: 2017/02/07 02:27:04 by apoisson          #+#    #+#             */
+/*   Updated: 2017/02/07 02:27:58 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef FILLER_H
+# define FILLER_H
 
-size_t	ft_strlen(const char *s)
-{
-	size_t	i;
+# include "libft.h"
 
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
+#endif
