@@ -6,7 +6,7 @@
 #    By: apoisson <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 11:29:15 by apoisson          #+#    #+#              #
-#    Updated: 2017/02/07 07:44:48 by apoisson         ###   ########.fr        #
+#    Updated: 2017/02/07 11:03:11 by apoisson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,11 +33,11 @@ test: $(NAME)
 	@./filler_vm -f maps/custom_map -p1 players/filler
 	@printf "\033[0;31m-- End of filler --\n\033[0m"
 
-test2: $(NAME)
+test_map: $(NAME)
 	@printf "\033[0;31m- Executing filler -\n\033[0m"
 	@rm players/filler
 	@cp filler players/
-	@./filler_vm -f maps/map00 -p1 players/filler -p2 players/superjeannot.filler
+	@./filler_vm -f maps/$(ARGS) -p1 players/filler -p2 players/superjeannot.filler
 	@printf "\033[0;31m-- End of filler --\n\033[0m"
 
 clean:

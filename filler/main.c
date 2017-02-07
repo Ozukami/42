@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/06 23:52:54 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/07 10:28:11 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/07 11:25:52 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,12 +269,15 @@ int		main(void)
 		return (0);
 	}
 
+	// First ligne : exec shit
 	get_next_line(0, &line);
 	info = ft_new_info(((line[10] == '1') ? 'o' : 'x'));
 	dprintf(fd, "LIGNE 1 : %s\n\n", line);
 
 	if (get_next_line(0, &line))
 		dprintf(fd, "> %s\n", line);
+
+	// Get x_map and y_map
 	i = 0;
 	while (line[i])
 	{
@@ -293,6 +296,8 @@ int		main(void)
 	info->map_prev = ft_memalloc((sizeof(char *)) * (info->x_map + 1));
 	(info->map)[info->x_map] = 0;
 	(info->map_prev)[info->x_map] = 0;
+
+	// Get map and map_prev
 	get_next_line(0, &line);
 	i = 0;
 	while (i < info->x_map)
@@ -306,6 +311,7 @@ int		main(void)
 	t = 0;
 	while (1)
 	{
+		// Only from turn 2 : updates the map
 		if (t++)
 		{
 			if (get_next_line(0, &line))
@@ -323,6 +329,7 @@ int		main(void)
 		if (debug)
 			ft_display_map(info->map, fd);
 
+		// Diff(map, map_prev) : spot new ennemies + updates map_prev
 		if (info->map_prev)
 		{
 			x = 0;
@@ -333,7 +340,7 @@ int		main(void)
 				{
 					if ((info->map)[x][y] != (info->map_prev)[x][y])
 					{
-						dprintf(fd, "	< ENNEMI EN [%d, %d] >\n", x, y);
+						//dprintf(fd, "	< A wild ennemi appears in [%d, %d] >\n", x, y);
 						info->x_side = x;
 						info->y_side = y;
 						(info->map_prev)[x][y] = (info->map)[x][y];
@@ -344,6 +351,7 @@ int		main(void)
 			}
 		}
 
+		// Get x_piece
 		get_next_line(0, &line);
 		i = 0;
 		while (line[i])
@@ -361,6 +369,8 @@ int		main(void)
 		}
 		info->piece = ft_memalloc((sizeof(char *)) * (info->x_piece + 1));
 		(info->piece)[info->x_piece] = 0;
+
+		// Get piece
 		i = 0;
 		while (i < info->x_piece)
 		{
