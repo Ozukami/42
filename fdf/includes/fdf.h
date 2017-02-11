@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 23:15:20 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/02/11 04:48:59 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/02/11 05:22:19 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ typedef struct	s_data
 {
 	char 		**content_file;
 	char		*buf;
-	int			**map;
+	double		**map;
 }				t_data;
 
 t_data			*ft_new_data();

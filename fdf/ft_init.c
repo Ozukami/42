@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 23:47:04 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/02/11 04:37:19 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/11 05:24:14 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_data	*ft_new_data(int y)
 	
 	new = ft_memalloc(sizeof(t_data));
 	new->content_file = ft_memalloc(sizeof(char *) * (y + 1));
-	new->map = ft_memalloc(sizeof(int *) * (y + 1));
+	new->map = ft_memalloc(sizeof(double *) * (y + 1));
 	(new->map)[y + 1] = 0;
 	new->buf = NULL;
 	return (new);
@@ -44,8 +44,7 @@ t_env	*ft_new_env(char *file, int size)
 	new->data = ft_new_data(new->win_y);
 	new->mlx = mlx_init();
 	new->win_size = size;
-	new->win = mlx_new_window(new->mlx, new->win_y * new->win_size,
-			new->win_x * new->win_size, "FdF");
+	new->win = NULL;
 	if (close(fd))
 		exit(0);
 	return (new);

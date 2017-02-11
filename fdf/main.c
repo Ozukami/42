@@ -6,11 +6,39 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 23:04:32 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/02/11 04:39:43 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/11 08:00:07 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+void		ft_brensenham(t_env *env, int y, int x, int y2, int x2)
+{
+	double		dy;
+	double		dx;
+	double	error_value;
+	double	error_inc;
+	double	error_dec;
+
+	error_value = 0;
+	dy = (double)y2 - (double)y;
+	dx = (double)x2 - (double)x;
+	error_inc = dy / dx;
+	error_dec = -1.0;
+	while (x < x2)
+	{
+		mlx_pixel_put(env->mlx, env->win, x, y, 0x00FF0000);
+		error_value = error_value + (dy / dx);
+		printf("[%f]\n", error_value);
+		if (error_value >= 0.5)
+		{
+			y++;
+			error_value = error_value + error_dec;
+			printf("2[%f]\n", error_value);
+		}
+		x++;
+	}
+}
 
 int			ft_tab_size(char **tab)
 {
@@ -34,10 +62,10 @@ void		ft_moulisplit(t_env *env)
 		j = 0;
 		split = ft_strsplit(((env->data)->content_file)[i], ' ');
 		env->win_x = ft_tab_size(split);
-		((env->data)->map)[i] = ft_memalloc(sizeof(int) * env->win_x);
+		((env->data)->map)[i] = ft_memalloc(sizeof(double) * env->win_x);
 		while (split[j])
 		{
-			((env->data)->map)[i][j] = ft_atoi(split[j]);
+			((env->data)->map)[i][j] = atof(split[j]);
 			j++;	
 		}
 		i++;
@@ -70,12 +98,15 @@ int			main(int ac, char **av)
 		printf("%2d |", y);
 		while (x < env->win_x)
 		{
-			printf("%2d |", ((env->data)->map)[y][x]);
+			printf("%2f |", ((env->data)->map)[y][x]);
 			x++;
 		}
 		printf("\n");
 		y++;
 	}
+	env->win = mlx_new_window(env->mlx, env->win_x * env->win_size,
+			env->win_y * env->win_size, "FdF");
+	ft_brensenham(env, 20, 20, 35, 235);
 	mlx_loop(env->mlx);
 	return (0);
 }
