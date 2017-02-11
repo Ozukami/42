@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 06:29:27 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/11 00:39:46 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/02/11 04:36:53 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,17 +228,3 @@ int	main(void)
 	return (0);
 }
 */
-
-#include "fdf.h"
-
-int		main(int ac, char **av)
-{
-	
-	if (ac != 2)
-	{
-		exit(0);
-		return (1);
-	}
-	ft_read_map(av[1]);
-	return (0);
-}

@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 23:04:32 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/02/11 04:19:06 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/02/11 04:39:43 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,12 @@ int			main(int ac, char **av)
 	int		fd; 
 	t_env	*env;
 
+	if (ac < 2)
+		return (0);
 	env = ft_new_env(av[1], 20);
 	if (!(fd = open(av[1], O_RDONLY)))
 		exit(0);
-	(env->data)->content_file = malloc(sizeof(char *) * (i + 1));
+	(env->data)->content_file = malloc(sizeof(char *) * (env->win_y + 1));
 	i = 0;
 	while (get_next_line(fd, &(env->data->buf)))
 		((env->data)->content_file)[i++] = ft_strdup((env->data->buf));
