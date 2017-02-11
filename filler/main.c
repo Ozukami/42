@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/06 23:52:54 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/07 11:25:52 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/10 08:37:39 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,10 +281,10 @@ int		main(void)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] > '0' && line[i] < '9')
+		if (line[i] >= '0' && line[i] <= '9')
 		{
 			info->x_map = ft_atoi(line + i);
-			while (line[i] > '0' && line[i] < '9')
+			while (line[i] >= '0' && line[i] <= '9')
 				i++;
 			info->y_map = ft_atoi(line + i);
 			dprintf(fd, "Map (MaJ) : [%d|%d]\n", info->x_map, info->y_map);
@@ -356,10 +356,10 @@ int		main(void)
 		i = 0;
 		while (line[i])
 		{
-			if (line[i] > '0' && line[i] < '9')
+			if (line[i] >= '0' && line[i] <= '9')
 			{
 				info->x_piece =	ft_atoi(line + i);
-				while (line[i] > '0' && line[i] < '9')
+				while (line[i] >= '0' && line[i] <= '9')
 					i++;
 				info->y_piece =	ft_atoi(line + i);
 				dprintf(fd, "Piece (Maj) : [%d|%d]\n", info->x_piece, info->y_piece);
