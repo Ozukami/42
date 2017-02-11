@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 10:49:10 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/11 06:09:49 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/11 07:48:47 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,5 +138,6 @@ void				ft_bspace(char *s, size_t n);
 char				*ft_strspace(size_t size);
 size_t				ft_lslen(wchar_t *s);
 int					ft_atoi_base(const char *str, int base);
+double				ft_atof(const char *str);
 
 #endif
