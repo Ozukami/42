@@ -6,11 +6,55 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 23:04:32 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/02/12 13:32:25 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/02/12 16:50:18 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+/* NON FONCTIONEL C'EST LE TRUC QUE JE TRAVAILLE POUR L'INSTANT
+double		ft_error_increase(double dy, double dx)
+{
+	double		error_inc;
+
+	if (dx < dy)
+		error_inc = dx / dy;
+	else
+		error_inc = dy / dx;
+	return (error_inc);
+
+}
+
+void	ft_rework_location(int *x, int *y, int *x_end, int *y_end)
+{
+	int		tmp;
+
+	tmp = 0;
+	if (*x > *x2 && *y > *y2)
+	{
+		tmp = *x;
+		*x = *x2;
+		*x2 = tmp;
+		tmp = 0;
+		tmp = *y;
+		*y = *y2;
+		*y2 = *y;
+	}
+
+}
+
+void		ft_drw_line(t_env *env, int x, int y, int x_end, int y_end)
+{
+	double	err_value;
+	double	err_inc;
+	double	dx;
+	double	dy;
+
+	err_value = 0;
+	ft_rework_location(&x, &y, &x_end, &y_end)
+	err_inc = ft_error_increase(dy, dx);
+}
+*/
 
 int			ft_tab_size(char **tab)
 {
@@ -90,6 +134,7 @@ int			main(int ac, char **av)
 	ft_draw_shit_x(env, 250, 250, 150, 200);
 	ft_draw_shit_x(env, 250, 250, 150, 150);
 	
+	/*
 //	ft_draw_shit2_y(env, 250, 250, 250, 150);
 //	ft_draw_shit2_y(env, 250, 250, 200, 150);
 //	ft_draw_shit2_y(env, 250, 250, 150, 150);
@@ -97,11 +142,10 @@ int			main(int ac, char **av)
 //	ft_draw_shit2_y(env, 250, 250, 350, 150);
 
 //	ft_draw_shit_y(env, 250, 250, 150, 350);
-	ft_draw_shit_y(env, 250, 250, 200, 350);
+	ft_draw_shit_y(env, 250, 250, 200, 350); -> fonctionne presque bizarrement
 //	ft_draw_shit_y(env, 250, 250, 250, 350);
 //	ft_draw_shit_y(env, 250, 250, 300, 350);
 //	ft_draw_shit_y(env, 250, 250, 350, 350);
-	/*
 	ft_brensenham(env, 100, 100, 100, 200, 0x00FF0000);
 	ft_brensenham(env, 100, 100, 200, 100, 0x00FFFF00);
 	ft_brensenham(env, 100, 100, 50, 0, 0x000000FF);

@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 23:15:20 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/02/12 13:31:14 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/02/12 16:50:15 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ typedef struct s_env
 t_env			*ft_new_env(char *file, int size);
 
 /*
- *	Brenseham en 4 fonctions plus ou moins
+ *	Brenseham gauche droite
  */
 
 void			ft_draw_shit_x(t_env *env, int x, int y, int x2, int y2);
 void			ft_draw_shit2_x(t_env *env, int x, int y, int x2, int y2);
-void			ft_draw_shit_y(t_env *env, int x, int y, int x2, int y2);
-void			ft_draw_shit2_y(t_env *env, int x, int y, int x2, int y2);
+//void			ft_draw_shit_y(t_env *env, int x, int y, int x2, int y2);
+//void			ft_draw_shit2_y(t_env *env, int x, int y, int x2, int y2);
 
 #endif
