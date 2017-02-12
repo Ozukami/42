@@ -6,39 +6,11 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 23:04:32 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/02/11 08:00:07 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/02/12 13:32:25 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-void		ft_brensenham(t_env *env, int y, int x, int y2, int x2)
-{
-	double		dy;
-	double		dx;
-	double	error_value;
-	double	error_inc;
-	double	error_dec;
-
-	error_value = 0;
-	dy = (double)y2 - (double)y;
-	dx = (double)x2 - (double)x;
-	error_inc = dy / dx;
-	error_dec = -1.0;
-	while (x < x2)
-	{
-		mlx_pixel_put(env->mlx, env->win, x, y, 0x00FF0000);
-		error_value = error_value + (dy / dx);
-		printf("[%f]\n", error_value);
-		if (error_value >= 0.5)
-		{
-			y++;
-			error_value = error_value + error_dec;
-			printf("2[%f]\n", error_value);
-		}
-		x++;
-	}
-}
 
 int			ft_tab_size(char **tab)
 {
@@ -104,9 +76,40 @@ int			main(int ac, char **av)
 		printf("\n");
 		y++;
 	}
-	env->win = mlx_new_window(env->mlx, env->win_x * env->win_size,
-			env->win_y * env->win_size, "FdF");
-	ft_brensenham(env, 20, 20, 35, 235);
+	env->win = mlx_new_window(env->mlx, 500, 500/*env->win_x * env->win_size,
+			env->win_y * env->win_size*/, "FdF");
+	ft_draw_shit2_x(env, 250, 250, 350, 300);
+	ft_draw_shit2_x(env, 250, 250, 350, 350);
+	ft_draw_shit2_x(env, 250, 250, 350, 250);
+	ft_draw_shit2_x(env, 250, 250, 350, 200);
+	ft_draw_shit2_x(env, 250, 250, 350, 150);
+
+	ft_draw_shit_x(env, 250, 250, 150, 300);
+	ft_draw_shit_x(env, 250, 250, 150, 350);
+	ft_draw_shit_x(env, 250, 250, 150, 250);
+	ft_draw_shit_x(env, 250, 250, 150, 200);
+	ft_draw_shit_x(env, 250, 250, 150, 150);
+	
+//	ft_draw_shit2_y(env, 250, 250, 250, 150);
+//	ft_draw_shit2_y(env, 250, 250, 200, 150);
+//	ft_draw_shit2_y(env, 250, 250, 150, 150);
+//	ft_draw_shit2_y(env, 250, 250, 300, 150);
+//	ft_draw_shit2_y(env, 250, 250, 350, 150);
+
+//	ft_draw_shit_y(env, 250, 250, 150, 350);
+	ft_draw_shit_y(env, 250, 250, 200, 350);
+//	ft_draw_shit_y(env, 250, 250, 250, 350);
+//	ft_draw_shit_y(env, 250, 250, 300, 350);
+//	ft_draw_shit_y(env, 250, 250, 350, 350);
+	/*
+	ft_brensenham(env, 100, 100, 100, 200, 0x00FF0000);
+	ft_brensenham(env, 100, 100, 200, 100, 0x00FFFF00);
+	ft_brensenham(env, 100, 100, 50, 0, 0x000000FF);
+	ft_brensenham(env, 100, 100, 100, 0, 0x0000FF00);
+	ft_brensenham(env, 100, 100, 0, 100, 0x00FF00FF);
+	ft_brensenham(env, 100, 100, 0, 150, 0x0000FFFF);
+	ft_brensenham(env, 100, 100, 150, 0, 0x00Fb4800);
+	*/
 	mlx_loop(env->mlx);
 	return (0);
 }
