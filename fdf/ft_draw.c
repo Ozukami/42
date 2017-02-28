@@ -6,11 +6,40 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 04:41:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/23 04:42:11 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/02/23 05:55:20 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+void	ft_line(t_env *env)
+{
+	int		i;
+
+	mlx_pixel_put(env->mlx, env->win, x, y, color);
+	e = 2 * dy - dx;
+	inc1 = 2 * (dy -dx);
+	inc2 = 2 * dy;
+	i = 0;
+	while (i < dx)
+	{
+		if (e >= 0)
+		{
+			y += incy;
+			e += inc1;
+		}
+		else
+			e += inc2;
+		x += incx;
+		mlx_pixel_put(env->mlx, env->win, x, y, color);
+		i++;
+	}
+}
+
+void	ft_draw_line(t_env *env, t_point *start, t_point *end, int color)
+{
+
+}
 
 void	ft_draw_line(t_env *env, int x1, int y1, int x2, int y2, int color)
 {
