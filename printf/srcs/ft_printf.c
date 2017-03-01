@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/01 04:35:10 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/01 06:30:48 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 #define DELIM	(data->delim)
 
 #define ARG 	((data->conv)->arg)
+#define TYPE	((data->conv)->type)
+#define BASE	((data->conv)->base)
 #define SPACE	((data->conv)->space)
 #define PREFIX	((data->conv)->prefix)
 #define ZERO	((data->conv)->zero)
@@ -36,24 +38,50 @@
 #define MODIF	((data->conv)->mod)
 #define DELI	((data->conv)->delim)
 
+#define LL		(long long)
+
 /*
-static void	ft_init(t_fun **tab)
-{
-	tab[0][0].f = &ft_va_arg_s;
-	tab[0][1].f = &ft_va_arg_d;
-	tab[0][2].f = &ft_va_arg_o;
-	tab[0][3].f = &ft_va_arg_u;
-	tab[0][4].f = &ft_va_arg_x;
-	tab[0][5].f = &ft_va_arg_p;
-}
+** A SCINDER POUR LA NORME !!
 */
 
-void		ft_get_arg(t_data *data, int i)
+void		ft_get_arg(t_data *data)
 {
-	if (FORMAT[i + LEN] == 's')
+	char	c;
+
+	if (TYPE == 's')
 		ARG = va_arg(AP, char *);
-	if (FORMAT[i + LEN] == 'd')
-		ARG = ft_itoa(va_arg(AP, int));
+	else if (TYPE == 'c')
+	{
+		c = va_arg(AP, int);
+		ARG = ft_strdup(&c);
+	}
+	else if (TYPE == 'p')
+		ARG = ft_ulltoa_base(va_arg(AP, unsigned long long int), 16, 0);
+	else
+	{
+		if (ft_strequ(MODIF, ""))
+			ARG = ft_lltoa_base(LL(va_arg(AP, int)),
+					BASE, ((TYPE == 'X') ? 1 : 0));
+		else if (ft_strequ(MODIF, "hh"))
+			ARG = ft_lltoa_base(LL((char)va_arg(AP, int)),
+					BASE, ((TYPE == 'X') ? 1 : 0));
+		else if (ft_strequ(MODIF, "h"))
+			ARG = ft_lltoa_base(LL((short)va_arg(AP, int)),
+					BASE, ((TYPE == 'X') ? 1 : 0));
+		else if (ft_strequ(MODIF, "l"))
+			ARG = ft_lltoa_base(LL(va_arg(AP, long)),
+					BASE, ((TYPE == 'X') ? 1 : 0));
+		else if (ft_strequ(MODIF, "ll"))
+			ARG = ft_lltoa_base(va_arg(AP, long long),
+					BASE, ((TYPE == 'X') ? 1 : 0));
+		else if (TYPE == 'd'
+				&& (ft_strequ(MODIF, "j") || ft_strequ(MODIF, "z")))
+			ARG = ft_lltoa_base(LL((char)va_arg(AP, int)),
+					BASE, ((TYPE == 'X') ? 1 : 0));
+		else
+			ARG = ft_ulltoa_base(LL((char)va_arg(AP, int)),
+					BASE, ((TYPE == 'X') ? 1 : 0));
+	}
 }
 
 void		ft_add_spaces(char *s, int n)
@@ -116,6 +144,14 @@ void		ft_get_mod(t_data *data, int i)
 	LEN++;
 }
 
+void		ft_set_base(t_data *data)
+{
+	if (TYPE == 'x' || TYPE == 'X' || TYPE == 'p')
+		BASE = 16;
+	else if (TYPE == 'o')
+		BASE = 8;
+}
+
 void		ft_get_conv(t_data *data, int i)
 {
 	LEN = 0;
@@ -138,7 +174,11 @@ void		ft_get_conv(t_data *data, int i)
 		BUFFER = ft_straddchar(BUFFER, FORMAT[i + LEN]);
 	}
 	else
-		ft_get_arg(data, i);
+	{
+		TYPE = FORMAT[i + LEN];
+		ft_set_base(data);
+		ft_get_arg(data);
+	}
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 00:57:08 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/01 02:46:49 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/01 06:19:58 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ t_conv		*ft_init_conv(void)
 	if (!(new = malloc(sizeof(t_conv))))
 		exit(0);
 	new->arg = NULL;
+	new->base = 10;
 	new->space = 0;
 	new->prefix = 0;
 	new->zero = 0;
