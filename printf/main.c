@@ -2,12 +2,12 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#define TEST	(test)
+#define TEST	if (1 != 0) {printf("LOL\n");}
 
 int		main(void)
 {
 	int	test = 1;
-	if (TEST)
-		printf("Bonjour [%5.8.3s] %d !\n", "GROSTESTOMGMONGOL", 5);
+	TEST
+	printf("Bonjour [%1k] !\n", 1);
 	return (1);
 }

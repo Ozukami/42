@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/01 01:51:07 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/01 02:50:19 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,12 @@ typedef struct		s_conv
 	bool			zero;
 	bool			left;
 	bool			sign;
+	bool			star;
 	int				field;
 	bool			point;
 	int				prec;
 	char			*mod;
 	char			delim;
-	struct s_conv	*next;
 }					t_conv;
 
 typedef struct		s_fun
@@ -60,108 +60,30 @@ typedef struct		s_fun
 	char			type;
 }					t_fun;
 
+/*
+** len = size from % to delimiter
+*/
+
 typedef struct		s_data
 {
 	char			*flag;
-	char			*delim;
+	char			*f_p;
 	char			*mod;
+	char			*delim;
 	char			*buff;
 	char			*format;
 	va_list			ap;
-	t_conv			*list;
+	size_t			len;
+	t_conv			*conv;
 }					t_data;
 
-/*
-** ft_get.c
-*/
+void				ft_get_flag(t_data *data, int i);
+void				ft_get_f_p(t_data *data, int i);
+void				ft_get_mod(t_data *data, int i);
+void				ft_get_conv(t_data *data, int i);
 
-void				ft_get_flags(t_conv *new, char *s, int *i);
-void				ft_get_field_prec(t_conv *new, char *s, int *i);
-void				ft_get_mod(t_conv *new, char *s, int *i);
-size_t				ft_get_len(const char *format, int i);
-char				*ft_get_conv(const char *format, t_conv **list);
+void				ft_init_data(char *format, va_list ap);
 
-/*
-** ft_conv.c
-*/
-
-void				ft_new_init(t_conv *new);
-t_conv				*ft_new_conv(char *s);
-void				ft_add_conv(t_conv *new, t_conv **list);
-
-/*
-** ft_fun_*.c
-*/
-
-size_t				ft_va_arg_c(va_list ap, t_conv *list, char **str);
-size_t				ft_va_arg_s(va_list ap, t_conv *list, char **str);
-size_t				ft_va_arg_d(va_list ap, t_conv *list, char **str);
-size_t				ft_va_arg_o(va_list ap, t_conv *list, char **str);
-size_t				ft_va_arg_u(va_list ap, t_conv *list, char **str);
-size_t				ft_va_arg_x(va_list ap, t_conv *list, char **str);
-size_t				ft_va_arg_xmaj(va_list ap, t_conv *list, char **str);
-size_t				ft_va_arg_p(va_list ap, t_conv *list, char **str);
-
-/*
-** %d
-*/
-
-size_t				ft_fp_d(size_t len, t_conv *list, char *arg, size_t size);
-void				ft_p_d(char **to_print, t_conv *list,
-		size_t len, size_t size);
-int					ft_left_d(char *arg, size_t len,
-		char **to_print, t_conv *list);
-void				ft_sub_1(t_conv *list, char *to_print,
-		char *arg, size_t len);
-void				ft_sub_2(t_conv *list, char **to_print, char *arg);
-
-/*
-** %x
-*/
-
-size_t				ft_fp_x(size_t len, t_conv *list, char *arg);
-void				ft_p_x(char **to_print, t_conv *list,
-		size_t len, size_t size);
-int					ft_left_x(char *arg, size_t len,
-		char **to_print, t_conv *list);
-void				ft_sub_x1(t_conv *list, char *to_print,
-		char *arg, size_t len);
-void				ft_sub_x2(t_conv *list, char *to_print,
-		char *arg, size_t *i);
-
-/*
-** %o
-*/
-
-size_t				ft_fp_o(size_t len, t_conv *list, char *arg);
-void				ft_p_o(char **to_print, t_conv *list,
-		size_t len, size_t size);
-int					ft_left_o(char *arg, size_t len,
-		char **to_print, t_conv *list);
-void				ft_sub_o1(t_conv *list, char *to_print,
-		char *arg, size_t len);
-void				ft_sub_o2(t_conv *list, char *to_print,
-		char *arg, size_t *i);
-
-/*
-** %u
-*/
-
-size_t				ft_fp_u(size_t len, t_conv *list);
-void				ft_p_u(char **to_print, t_conv *list,
-		size_t len, size_t size);
-int					ft_left_u(char *arg, size_t len,
-		char **to_print, t_conv *list);
-void				ft_sub_u1(t_conv *list, char *to_print,
-		char *arg, size_t len);
-void				ft_sub_u2(t_conv *list, char *to_print,
-		char *arg, size_t *i);
-
-void				ft_putchar_v2(wchar_t c);
-//char				*ft_dothework(wchar_t c, int j);
-int					ft_dothework(wchar_t c, char **print, int j);
-int					ft_dothework2(wchar_t c, char **print, int j, char **str);
 int					ft_printf(const char *format, ...);
-char				*ft_sprintf(const char *format, ...);
 
 #endif
