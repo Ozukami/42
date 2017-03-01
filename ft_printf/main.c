@@ -23,7 +23,6 @@ int		main(int ac, char **av)
 
 	//c = '8';
 	//i = -512;
-	//	printf("%-5.2s\n", 6);
 	if (ac < 1)
 	{
 		printf("%-s", av[0]);
@@ -346,10 +345,12 @@ int		main(int ac, char **av)
 	write(1, " ]\n", 3);
 	*/
 
+		/*
 	wchar_t w = 128970;
 	write(1, "[ ", 2);
 	ft_putchar_v2(w);
 	write(1, " ]\n", 3);
+	*/
 
 	/*
 	printf("\nTest avec printf :\n");

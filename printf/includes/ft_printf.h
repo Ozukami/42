@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/06 08:27:35 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/01 01:51:07 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "libft.h"
 # include <stdarg.h>
 # include <limits.h>
+# include <stdbool.h>
 # include <stdio.h> // !!!!!
 
 /*
@@ -30,18 +31,26 @@
 ** type = coversion type
 */
 
+/*
+typedef struct		s_bool
+{
+	int				bool;
+}					t_bool;
+*/
+
 typedef struct		s_conv
 {
-	int				space;
-	int				prefix;
-	int				zero;
-	int				left;
-	int				sign;
+	char			*arg;
+	bool			space;
+	bool			prefix;
+	bool			zero;
+	bool			left;
+	bool			sign;
 	int				field;
-	int				point;
-	int				p;
+	bool			point;
+	int				prec;
 	char			*mod;
-	char			type;
+	char			delim;
 	struct s_conv	*next;
 }					t_conv;
 
@@ -50,6 +59,17 @@ typedef struct		s_fun
 	size_t			(*f)(va_list, t_conv *, char **str);
 	char			type;
 }					t_fun;
+
+typedef struct		s_data
+{
+	char			*flag;
+	char			*delim;
+	char			*mod;
+	char			*buff;
+	char			*format;
+	va_list			ap;
+	t_conv			*list;
+}					t_data;
 
 /*
 ** ft_get.c
