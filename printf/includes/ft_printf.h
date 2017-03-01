@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/01 02:50:19 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/01 04:03:16 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void				ft_get_f_p(t_data *data, int i);
 void				ft_get_mod(t_data *data, int i);
 void				ft_get_conv(t_data *data, int i);
 
-void				ft_init_data(char *format, va_list ap);
+t_data				*ft_init_data(char *format, va_list ap);
 
 int					ft_printf(const char *format, ...);
 

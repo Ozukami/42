@@ -6,11 +6,13 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/01 03:32:26 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/01 04:35:10 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+#define AP		(data->ap)
 
 #define FORMAT	(data->format)
 #define BUFFER	(data->buff)
@@ -27,12 +29,14 @@
 #define ZERO	((data->conv)->zero)
 #define LEFT	((data->conv)->left)
 #define SIGN	((data->conv)->sign)
+#define STAR	((data->conv)->star)
 #define FIELD	((data->conv)->field)
 #define POINT	((data->conv)->point)
 #define PREC	((data->conv)->prec)
 #define MODIF	((data->conv)->mod)
 #define DELI	((data->conv)->delim)
 
+/*
 static void	ft_init(t_fun **tab)
 {
 	tab[0][0].f = &ft_va_arg_s;
@@ -41,6 +45,15 @@ static void	ft_init(t_fun **tab)
 	tab[0][3].f = &ft_va_arg_u;
 	tab[0][4].f = &ft_va_arg_x;
 	tab[0][5].f = &ft_va_arg_p;
+}
+*/
+
+void		ft_get_arg(t_data *data, int i)
+{
+	if (FORMAT[i + LEN] == 's')
+		ARG = va_arg(AP, char *);
+	if (FORMAT[i + LEN] == 'd')
+		ARG = ft_itoa(va_arg(AP, int));
 }
 
 void		ft_add_spaces(char *s, int n)
@@ -122,14 +135,10 @@ void		ft_get_conv(t_data *data, int i)
 	{
 		if (FIELD > 0)
 			ft_add_spaces(BUFFER, FIELD - 1);
-		ft_straddchar(BUFFER, FORMAT[i + LEN]);
-		LEN++;
+		BUFFER = ft_straddchar(BUFFER, FORMAT[i + LEN]);
 	}
 	else
-	{
-		LEN++;
-		ft_process(data);
-	}
+		ft_get_arg(data, i);
 }
 
 /*
@@ -138,16 +147,17 @@ void		ft_get_conv(t_data *data, int i)
 
 int			ft_printf(const char *format, ...)
 {
-	t_data	*data;
-	int		i;
+	t_data		*data;
+	va_list		ap;
+	int			i;
 
 	va_start(ap, format);
-	data = ft_init_data(format, ap);
+	data = ft_init_data((char *)format, ap);
 	i = -1;
 	while (FORMAT[++i])
 	{
 		if (FORMAT[i] != '%')
-			ft_straddchar(BUFFER, FORMAT[i]);
+			BUFFER = ft_straddchar(BUFFER, FORMAT[i]);
 		else
 		{
 			ft_get_conv(data, ++i);

@@ -1,13 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/01 04:05:02 by apoisson          #+#    #+#             */
+/*   Updated: 2017/03/01 05:26:51 by apoisson         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#define TEST	if (1 != 0) {printf("LOL\n");}
+#include "ft_printf.h"
 
 int		main(void)
 {
-	int	test = 1;
-	TEST
-	printf("Bonjour [%1k] !\n", 1);
-	return (1);
+	ft_printf("Bonjour %s, moi j'ai %d ans !\nEst-ce que tu vois le %k ?\n",
+			"Quentin", 23, "hello");
+	return (0);
 }
