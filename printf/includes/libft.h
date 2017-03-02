@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 10:49:10 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/01 03:16:02 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/02 01:34:59 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,8 @@ char				*ft_straddchar(char *s, char c);
 int					ft_recursive_power(int nb, int power);
 void				ft_bspace(char *s, size_t n);
 char				*ft_strspace(size_t size);
+void				ft_fill_zero(char *s, size_t n);
+char				*ft_strzero(size_t size);
 size_t				ft_lslen(wchar_t *s);
 int					ft_count_digit(long value);
 

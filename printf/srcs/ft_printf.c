@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/02 01:06:38 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/02 01:35:46 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,11 @@ void		ft_set_base(t_data *data)
 
 void		ft_process_alpha(t_data *data)
 {
+	if (ARG == NULL)
+	{
+		ARG = ft_strdup("(null)");
+		return ;
+	}
 	if (FIELD == -1 && PREC == -1)
 		SIZE = LARG;
 	else if ((FIELD == -1) || (FIELD < PREC && PREC < (int)LARG))
@@ -172,12 +177,14 @@ void		ft_process_alpha(t_data *data)
 	FARG = ft_strspace(SIZE);
 }
 
-/*
 void		ft_process_num(t_data *data)
 {
-
+	SIZE = (size_t)ft_max(ft_max(FIELD, PREC), (int)LARG);
+	if (ARG[0] == '-')
+		SIZE++;
+	(!(ZERO)) ? (FARG = ft_strspace(SIZE)) : (FARG = ft_strzero(SIZE));
+	printf("{%s}\n", FARG);
 }
-*/
 
 /*
 ** Dispatch the process depending of the type
@@ -188,10 +195,8 @@ void		ft_dispatch(t_data *data)
 {
 	if (TYPE == 's' || TYPE == 'c')
 		ft_process_alpha(data);
-	/*
 	else
 		ft_process_num(data);
-		*/
 	BUFFER = ft_strjoinf(ft_strdup(BUFFER), ft_strdup(ARG));
 }
 
