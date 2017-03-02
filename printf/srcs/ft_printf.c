@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/02 08:24:08 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/02 08:34:02 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,8 @@ void		ft_adjust(t_data *data)
 		BASE = 16;
 	else if (TYPE == 'o')
 		BASE = 8;
+	else
+		BASE = 10;
 	if (TYPE >= 'C' && TYPE <= 'U')
 	{
 		TYPE += 32;
