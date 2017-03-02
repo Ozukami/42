@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/02 03:35:45 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/02 03:40:17 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@
 # define PREC	((data->conv)->prec)
 # define MODIF	((data->conv)->mod)
 # define DELI	((data->conv)->delim)
-# define SIZE	((data->conv)->conv_size)
 
 # define LL		(long long)
 
@@ -84,7 +83,6 @@ typedef struct		s_conv
 	int				prec;
 	char			*mod;
 	char			delim;
-	size_t			conv_size;
 }					t_conv;
 
 typedef struct		s_arg

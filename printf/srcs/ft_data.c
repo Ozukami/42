@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 00:57:08 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/02 03:26:50 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/02 03:40:15 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ t_conv		*ft_init_conv(void)
 	new->prec = -1;
 	new->mod = ft_strdup("");
 	new->delim = 0;
-	new->conv_size = 0;
 	return (new);
 }
 

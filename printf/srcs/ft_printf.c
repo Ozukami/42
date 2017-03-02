@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/02 03:30:43 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/02 03:41:35 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,30 +129,6 @@ void		ft_set_base(t_data *data)
 		BASE = 8;
 }
 
-void		ft_process_alpha(t_data *data)
-{
-	if (ARG == NULL)
-	{
-		ARG = ft_strdup("(null)");
-		return ;
-	}
-	if (FIELD == -1 && PREC == -1)
-		SIZE = L_ARG;
-	else if ((FIELD == -1) || (FIELD < PREC && PREC < (int)L_ARG))
-		SIZE = (size_t)ft_min(PREC, (int)L_ARG);
-	else if ((PREC == -1) || (FIELD < (int)L_ARG && (int)L_ARG <= PREC))
-		SIZE = (size_t)ft_max(FIELD, (int)L_ARG);
-	else
-		SIZE = (size_t)FIELD;
-	FARG = ft_strspace(SIZE);
-}
-
-void		ft_process_num(t_data *data)
-{
-	SIZE = (size_t)ft_max(ft_max(FIELD, PREC), (int)L_ARG);
-	FARG = ((!(ZERO)) ? (ft_strspace(SIZE)) : (ft_strzero(SIZE)));
-}
-
 /*
 ** Dispatch the process depending of the type
 ** String VS Numbers
@@ -161,9 +137,23 @@ void		ft_process_num(t_data *data)
 void		ft_dispatch(t_data *data)
 {
 	if (TYPE == 's' || TYPE == 'c')
-		ft_process_alpha(data);
+	{
+		if (ARG == NULL)
+		{
+			ARG = ft_strdup("(null)");
+			return ;
+		}
+		if (FIELD == -1 && PREC == -1)
+			L_FARG = L_ARG;
+		else if ((FIELD == -1) || (FIELD < PREC && PREC < (int)L_ARG))
+			L_FARG = (size_t)ft_min(PREC, (int)L_ARG);
+		else if ((PREC == -1) || (FIELD < (int)L_ARG && (int)L_ARG <= PREC))
+			L_FARG = (size_t)ft_max(FIELD, (int)L_ARG);
+		else
+			L_FARG = (size_t)FIELD;
+	}
 	else
-		ft_process_num(data);
+		L_FARG = (size_t)ft_max(ft_max(FIELD, PREC), (int)L_ARG);
 	BUFFER = ft_strjoinf(ft_strdup(BUFFER), ft_strdup(ARG));
 }
 
