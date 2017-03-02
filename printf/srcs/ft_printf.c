@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/02 09:10:18 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/02 09:47:41 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void		ft_debug(t_data *data)
 {
-	printf("|%s|%s|%s|\n", LARG, ARG, RARG);
+	printf("\n|%s|%s|%s|\n", LARG, ARG, RARG);
 }
 
 void		ft_get_arg_2(t_data *data)
@@ -138,6 +138,11 @@ void		ft_adjust_2(t_data *data)
 		PREFIX = 0;
 	if (TYPE == 'c')
 		PREC = -1;
+	if (TYPE == 'p')
+	{
+		PREFIX = 1;
+		PREC = -1;
+	}
 }
 
 void		ft_adjust(t_data *data)
