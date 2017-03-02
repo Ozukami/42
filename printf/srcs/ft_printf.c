@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/02 01:35:46 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/02 02:43:21 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,6 @@ void		ft_process_num(t_data *data)
 	if (ARG[0] == '-')
 		SIZE++;
 	(!(ZERO)) ? (FARG = ft_strspace(SIZE)) : (FARG = ft_strzero(SIZE));
-	printf("{%s}\n", FARG);
 }
 
 /*
