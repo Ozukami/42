@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/02 03:41:35 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/02 05:26:02 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,35 @@ void		ft_set_base(t_data *data)
 		BASE = 8;
 }
 
+void		ft_set_size(t_data *data)
+{
+	L_ARG = ((PREC > -1) ?
+			(size_t)ft_min((int)L_ARG, PREC) : L_ARG);
+	if (LEFT && (L_FARG > L_ARG))
+	{
+		L_RARG = L_FARG - L_ARG;
+		RARG = ft_strspace(L_RARG);
+	}
+	else if (L_FARG > L_ARG)
+	{
+		L_LARG = L_FARG - L_ARG;
+		LARG = ft_strspace(L_LARG);
+	}
+}
+
+void		ft_process(t_data *data)
+{
+	ft_set_size(data);
+	if (PREC > -1)
+		ARG = ft_strsub(ARG, 0, PREC);
+	if (LEFT)
+		BUFFER = ft_strjoinf(BUFFER,
+				ft_strjoin(ARG, RARG));
+	else
+		BUFFER = ft_strjoinf(BUFFER,
+				ft_strjoin(LARG, ARG));
+}
+
 /*
 ** Dispatch the process depending of the type
 ** String VS Numbers
@@ -154,7 +183,7 @@ void		ft_dispatch(t_data *data)
 	}
 	else
 		L_FARG = (size_t)ft_max(ft_max(FIELD, PREC), (int)L_ARG);
-	BUFFER = ft_strjoinf(ft_strdup(BUFFER), ft_strdup(ARG));
+	ft_process(data);
 }
 
 /*
