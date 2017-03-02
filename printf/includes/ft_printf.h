@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/01 06:15:49 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/02 01:02:50 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct		s_bool
 typedef struct		s_conv
 {
 	char			*arg;
+	char			*final_arg;
 	char			type;
 	int				base;
 	bool			space;
@@ -54,6 +55,7 @@ typedef struct		s_conv
 	int				prec;
 	char			*mod;
 	char			delim;
+	size_t			conv_size;
 }					t_conv;
 
 typedef struct		s_fun

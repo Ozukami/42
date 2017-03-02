@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/01 06:30:48 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/02 01:06:38 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 #define DELIM	(data->delim)
 
 #define ARG 	((data->conv)->arg)
+#define LARG 	ft_strlen((data->conv)->arg)
+#define FARG 	((data->conv)->final_arg)
 #define TYPE	((data->conv)->type)
 #define BASE	((data->conv)->base)
 #define SPACE	((data->conv)->space)
@@ -37,14 +39,37 @@
 #define PREC	((data->conv)->prec)
 #define MODIF	((data->conv)->mod)
 #define DELI	((data->conv)->delim)
+#define SIZE	((data->conv)->conv_size)
 
 #define LL		(long long)
 
-/*
-** A SCINDER POUR LA NORME !!
-*/
+void		ft_get_arg_2(t_data *data)
+{
+	if (ft_strequ(MODIF, ""))
+		ARG = ft_lltoa_base(LL(va_arg(AP, int)),
+				BASE, ((TYPE == 'X') ? 1 : 0));
+	else if (ft_strequ(MODIF, "hh"))
+		ARG = ft_lltoa_base(LL((char)va_arg(AP, int)),
+				BASE, ((TYPE == 'X') ? 1 : 0));
+	else if (ft_strequ(MODIF, "h"))
+		ARG = ft_lltoa_base(LL((short)va_arg(AP, int)),
+				BASE, ((TYPE == 'X') ? 1 : 0));
+	else if (ft_strequ(MODIF, "l"))
+		ARG = ft_lltoa_base(LL(va_arg(AP, long)),
+				BASE, ((TYPE == 'X') ? 1 : 0));
+	else if (ft_strequ(MODIF, "ll"))
+		ARG = ft_lltoa_base(va_arg(AP, long long),
+				BASE, ((TYPE == 'X') ? 1 : 0));
+	else if (TYPE == 'd'
+			&& (ft_strequ(MODIF, "j") || ft_strequ(MODIF, "z")))
+		ARG = ft_lltoa_base(LL((char)va_arg(AP, int)),
+				BASE, ((TYPE == 'X') ? 1 : 0));
+	else
+		ARG = ft_ulltoa_base(LL((char)va_arg(AP, int)),
+				BASE, ((TYPE == 'X') ? 1 : 0));
+}
 
-void		ft_get_arg(t_data *data)
+void		ft_get_arg_1(t_data *data)
 {
 	char	c;
 
@@ -58,36 +83,18 @@ void		ft_get_arg(t_data *data)
 	else if (TYPE == 'p')
 		ARG = ft_ulltoa_base(va_arg(AP, unsigned long long int), 16, 0);
 	else
-	{
-		if (ft_strequ(MODIF, ""))
-			ARG = ft_lltoa_base(LL(va_arg(AP, int)),
-					BASE, ((TYPE == 'X') ? 1 : 0));
-		else if (ft_strequ(MODIF, "hh"))
-			ARG = ft_lltoa_base(LL((char)va_arg(AP, int)),
-					BASE, ((TYPE == 'X') ? 1 : 0));
-		else if (ft_strequ(MODIF, "h"))
-			ARG = ft_lltoa_base(LL((short)va_arg(AP, int)),
-					BASE, ((TYPE == 'X') ? 1 : 0));
-		else if (ft_strequ(MODIF, "l"))
-			ARG = ft_lltoa_base(LL(va_arg(AP, long)),
-					BASE, ((TYPE == 'X') ? 1 : 0));
-		else if (ft_strequ(MODIF, "ll"))
-			ARG = ft_lltoa_base(va_arg(AP, long long),
-					BASE, ((TYPE == 'X') ? 1 : 0));
-		else if (TYPE == 'd'
-				&& (ft_strequ(MODIF, "j") || ft_strequ(MODIF, "z")))
-			ARG = ft_lltoa_base(LL((char)va_arg(AP, int)),
-					BASE, ((TYPE == 'X') ? 1 : 0));
-		else
-			ARG = ft_ulltoa_base(LL((char)va_arg(AP, int)),
-					BASE, ((TYPE == 'X') ? 1 : 0));
-	}
+		ft_get_arg_2(data);
 }
 
-void		ft_add_spaces(char *s, int n)
+/*
+** Adds n spaces to the string s
+*/
+
+char		*ft_add_spaces(char *s, int n)
 {
 	while (n-- > 0)
-		ft_straddchar(s, ' ');
+		s = ft_straddchar(s, ' ');
+	return (s);
 }
 
 void		ft_get_flag(t_data *data, int i)
@@ -152,6 +159,48 @@ void		ft_set_base(t_data *data)
 		BASE = 8;
 }
 
+void		ft_process_alpha(t_data *data)
+{
+	if (FIELD == -1 && PREC == -1)
+		SIZE = LARG;
+	else if ((FIELD == -1) || (FIELD < PREC && PREC < (int)LARG))
+		SIZE = (size_t)ft_min(PREC, (int)LARG);
+	else if ((PREC == -1) || (FIELD < (int)LARG && (int)LARG <= PREC))
+		SIZE = (size_t)ft_max(FIELD, (int)LARG);
+	else
+		SIZE = (size_t)FIELD;
+	FARG = ft_strspace(SIZE);
+}
+
+/*
+void		ft_process_num(t_data *data)
+{
+
+}
+*/
+
+/*
+** Dispatch the process depending of the type
+** String VS Numbers
+*/
+
+void		ft_dispatch(t_data *data)
+{
+	if (TYPE == 's' || TYPE == 'c')
+		ft_process_alpha(data);
+	/*
+	else
+		ft_process_num(data);
+		*/
+	BUFFER = ft_strjoinf(ft_strdup(BUFFER), ft_strdup(ARG));
+}
+
+/*
+** Get the flags, the field, the precision, the modifiers
+** Verify if the delimiter is OK, treat directly if not
+** If delim OK : get the arg and call the process
+*/
+
 void		ft_get_conv(t_data *data, int i)
 {
 	LEN = 0;
@@ -165,19 +214,19 @@ void		ft_get_conv(t_data *data, int i)
 			ft_get_f_p(data, i);
 		if (ft_strchr((const char *)MOD, FORMAT[i + LEN]))
 			ft_get_mod(data, i);
-		LEN++;
 	}
 	if (!(ft_strchr((const char *)DELIM, FORMAT[i + LEN])))
 	{
 		if (FIELD > 0)
-			ft_add_spaces(BUFFER, FIELD - 1);
+			BUFFER = ft_add_spaces(BUFFER, FIELD - 1);
 		BUFFER = ft_straddchar(BUFFER, FORMAT[i + LEN]);
 	}
 	else
 	{
 		TYPE = FORMAT[i + LEN];
 		ft_set_base(data);
-		ft_get_arg(data);
+		ft_get_arg_1(data);
+		ft_dispatch(data);
 	}
 }
 
