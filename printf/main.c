@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 04:05:02 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/02 06:01:51 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/02 06:41:48 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int		main(void)
 		ft_printf("{% 5d}\n\n", -158);
 	}
 
-	if (1)
+	if (0)
 	{
 		printf("[%12s]\n", "123456789");
 		ft_printf("[%12s]\n\n", "123456789");
@@ -64,35 +64,35 @@ int		main(void)
 
 	if (1)
 	{
-		printf("[%12d]\n", 1234);
-		ft_printf("[%12d]\n\n", 1234);
+		printf("[%#+12d]\n", 1234);
+		ft_printf("[%#+12d]\n\n", 1234);
 
-		printf("[%-12d]\n", 1234);
-		ft_printf("[%-12d]\n\n", 1234);
+		printf("[%#+-12d]\n", 1234);
+		ft_printf("[%#+-12d]\n\n", 1234);
 
-		printf("[%12.5d]\n", 1234);
-		ft_printf("[%12.5d]\n\n", 1234);
+		printf("[%#+12.5d]\n", 1234);
+		ft_printf("[%#+12.5d]\n\n", 1234);
 
-		printf("[%-12.5d]\n", 1234);
-		ft_printf("[%-12.5d]\n\n", 1234);
+		printf("[%#+-12.5d]\n", 1234);
+		ft_printf("[%#+-12.5d]\n\n", 1234);
 
-		printf("[%12.11d]\n", 1234);
-		ft_printf("[%12.11d]\n\n", 1234);
+		printf("[%#+12.11d]\n", 1234);
+		ft_printf("[%#+12.11d]\n\n", 1234);
 
-		printf("[%-12.11d]\n", 1234);
-		ft_printf("[%-12.11d]\n\n", 1234);
+		printf("[%#+-12.11d]\n", 1234);
+		ft_printf("[%#+-12.11d]\n\n", 1234);
 
-		printf("[%6.5d]\n", 1234);
-		ft_printf("[%6.5d]\n\n", 1234);
+		printf("[%#+6.5d]\n", 1234);
+		ft_printf("[%#+6.5d]\n\n", 1234);
 
-		printf("[%-6.5d]\n", 1234);
-		ft_printf("[%-6.5d]\n\n", 1234);
+		printf("[%#+-6.5d]\n", 1234);
+		ft_printf("[%#+-6.5d]\n\n", 1234);
 
-		printf("[%.5d]\n", 1234);
-		ft_printf("[%.5d]\n\n", 1234);
+		printf("[%#+.5d]\n", 1234);
+		ft_printf("[%#+.5d]\n\n", 1234);
 
-		printf("[%-.5d]\n", 1234);
-		ft_printf("[%-.5d]\n\n", 1234);
+		printf("[%#+-.5d]\n", 1234);
+		ft_printf("[%#+-.5d]\n\n", 1234);
 	}
 
 	if (0)

@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/02 06:07:46 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/02 06:41:56 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ void		ft_set_base(t_data *data)
 		BASE = 8;
 }
 
-char		*ft_stradd_space(t_data *data, char *s, int n)
+char		*ft_stradd_char(t_data *data, char *s, int n)
 {
 	while (n > 0)
 	{
@@ -144,9 +144,9 @@ char		*ft_stradd_space(t_data *data, char *s, int n)
 
 void		ft_set_size(t_data *data)
 {
-	L_ARG = ((PREC > -1) ? (PREC) : L_ARG);
+	L_ARG = ((PREC > -1) ? (PREC + SIGN) : L_ARG + SIGN);
 	if (L_ARG > ft_strlen(ARG))
-		ARG = ft_stradd_space(data, ARG, L_ARG - ft_strlen(ARG));
+		ARG = ft_stradd_char(data, ARG, L_ARG - ft_strlen(ARG));
 	if (LEFT && (L_FARG > L_ARG))
 	{
 		L_RARG = L_FARG - L_ARG;
@@ -159,11 +159,30 @@ void		ft_set_size(t_data *data)
 	}
 }
 
+void		ft_set_sign(t_data *data)
+{
+	int		i;
+
+	i = -1;
+	while (ARG[++i])
+	{
+		if (ARG[i] == '0' || (ARG[i] == ' ' && ARG[i + 1] != ' '))
+		{
+			ARG[i] = '+';
+			return ;
+		}
+	}
+}
+
 void		ft_process(t_data *data)
 {
+	if (TYPE == 's')
+		SIGN = 0;
 	ft_set_size(data);
+	if (SIGN)
+		ft_set_sign(data);
 	if (PREC > -1)
-		ARG = ft_strsub(ARG, 0, PREC);
+		ARG = ft_strsub(ARG, 0, PREC + SIGN);
 	if (LEFT)
 		BUFFER = ft_strjoinf(BUFFER,
 				ft_strjoin(ARG, RARG));
