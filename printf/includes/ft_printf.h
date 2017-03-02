@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/02 07:45:36 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/03 00:05:31 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ typedef struct		s_conv
 	char			type;
 	int				base;
 	bool			space;
-	bool			prefix;
+	int				prefix;
 	bool			zero;
 	bool			left;
 	bool			sign;
@@ -127,5 +127,6 @@ void				ft_get_conv(t_data *data, int i);
 t_data				*ft_init_data(char *format, va_list ap);
 
 int					ft_printf(const char *format, ...);
+char				*ft_sprintf(const char *format, ...);
 
 #endif

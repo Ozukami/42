@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 04:05:02 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/02 09:45:24 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/03 00:41:33 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 int		main(void)
 {
-	int	a;
-	int z;
+	ft_printf("HH : %hhu\n", -455);
+	printf("HH : %hhu\n", -455);
 
 	/*
 	printf("salut [%.2p] %p\n", &a, &z);
 	ft_printf("salut [%.2p] %p\n", &a, &z);
 	*/
 
-	ft_printf("salut [%12p]>%p les [%-8.4p] copains\n", &a, a, &z);
+	//ft_printf("salut [%12p]>%p les [%-8.4p] copains\n", &a, a, &z);
 
 	/*
 	printf("salut [%3.2p] les [%-5.2p] copains\n", &a, &z);

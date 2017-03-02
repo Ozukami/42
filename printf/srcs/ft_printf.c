@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/02 09:47:41 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/03 00:53:52 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,15 @@ void		ft_get_arg_1(t_data *data)
 	}
 	else if (TYPE == 'p')
 		ARG = ft_ulltoa_base(va_arg(AP, unsigned long long int), 16, 0);
+	else if (TYPE == 'u')
+	{
+		if (ft_strequ(MODIF, "hh"))
+			ARG = ft_lltoa_base((unsigned char)va_arg(AP, int), 10, 0);
+		else if (ft_strequ(MODIF, "h"))
+			ARG = ft_lltoa_base((unsigned short)(va_arg(AP, int)), BASE, 0);
+		else
+			ARG = ft_lltoa_base((unsigned int)(va_arg(AP, int)), BASE, 0);
+	}
 	else
 		ft_get_arg_2(data);
 	L_ARG = ft_strlen(ARG);
@@ -78,7 +87,7 @@ void		ft_get_flag(t_data *data, int i)
 	if (FORMAT[i + LEN] == ' ')
 		SPACE = 1;
 	if (FORMAT[i + LEN] == '#')
-		PREFIX = 1;
+		PREFIX = 2;
 	if (FORMAT[i + LEN] == '-')
 		LEFT = 1;
 	if (FORMAT[i + LEN] == '+')
@@ -136,13 +145,17 @@ void		ft_adjust_2(t_data *data)
 	}
 	if (TYPE == 'd' || TYPE == 's' || TYPE == 'c')
 		PREFIX = 0;
+	if (TYPE == 'o' && PREFIX)
+		PREFIX = 1;
 	if (TYPE == 'c')
 		PREC = -1;
 	if (TYPE == 'p')
 	{
-		PREFIX = 1;
+		PREFIX = 2;
 		PREC = -1;
 	}
+	if (PREC > -1)
+		ZERO = 0;
 }
 
 void		ft_adjust(t_data *data)
@@ -189,10 +202,10 @@ void		ft_replace_neg(t_data *data)
 {
 	int		i;
 
-	if (PREC > (int)L_INIT)
+	if (PREC >= (int)L_INIT)
 		ARG = ft_strjoin("-", ARG);
 	i = 0;
-	if (PREC > (int)L_INIT)
+	if (PREC >= (int)L_INIT)
 	{
 		while (ARG[++i])
 		{
@@ -201,6 +214,25 @@ void		ft_replace_neg(t_data *data)
 				ARG[i] = '0';
 				return ;
 			}
+		}
+	}
+}
+
+void		ft_adjust_sign(t_data *data)
+{
+	int		i;
+
+	if (NEG)
+		FARG[0] = '-';
+	else if (SIGN)
+		FARG[0] = '+';
+	i = 0;
+	while (FARG[++i])
+	{
+		if (FARG[i] == '-' || FARG[i] == '+')
+		{
+			FARG[i] = '0';
+			return ;
 		}
 	}
 }
@@ -214,23 +246,24 @@ void		ft_set_size(t_data *data)
 	if (LEFT && (L_FARG > L_ARG))
 	{
 		L_RARG = L_FARG - L_ARG;
-		L_RARG -= ((PREC > (int)L_INIT) ? NEG : 0);
+		L_RARG -= ((PREC >= (int)L_INIT) ? NEG : 0);
 		L_RARG -= ((FIELD > (int)L_INIT && FIELD > PREC && LEFT) ? SPACE : 0);
 		L_RARG -= ((FIELD > (int)L_INIT && FIELD > PREC && LEFT)
-				? (2 * PREFIX) : 0);
+				? (PREFIX) : 0);
 		RARG = ((!ZERO) ? ft_strspace(L_RARG) : ft_strzero(L_RARG));
 	}
 	else if (L_FARG > L_ARG)
 	{
 		L_LARG = L_FARG - L_ARG;
-		L_LARG -= ((PREC > (int)L_INIT) ? NEG : 0);
+		L_LARG -= ((PREC >= (int)L_INIT) ? NEG : 0);
 		L_LARG -= ((FIELD > (int)L_INIT && FIELD > PREC) ? SPACE : 0);
 		L_LARG -= ((FIELD > (int)L_INIT && FIELD > PREC)
-				? (2 * PREFIX) : 0);
+				? (PREFIX) : 0);
 		LARG = ((!ZERO) ? ft_strspace(L_LARG) : ft_strzero(L_LARG));
 	}
 	if (NEG && PREC > 0)
 		ft_replace_neg(data);
+	//ft_debug(data);
 }
 
 void		ft_set_sign(t_data *data)
@@ -250,7 +283,24 @@ void		ft_set_sign(t_data *data)
 
 void		ft_set_prefix(t_data *data)
 {
-	ARG = ft_strjoin("0x", ARG);
+	char	*s;
+
+	s = ft_strdup("0");
+	if (TYPE == 'x' || TYPE == 'p')
+		s = ft_straddchar(s, 'x');
+	else if (TYPE == 'X')
+		s = ft_straddchar(s, 'X');
+	if (TYPE == 'o' && PREFIX && PREC > (int)L_INIT)
+	{
+		if (FIELD > (int)L_ARG && LEFT)
+			ARG = ft_strjoin(ARG, " ");
+		else if (FIELD > (int)L_ARG)
+			ARG = ft_strjoin(" ", ARG);
+	}
+	else if (ZERO)
+		LARG = ft_strjoin(s, LARG);
+	else
+		ARG = ft_strjoin(s, ARG);
 }
 
 void		ft_process(t_data *data)
@@ -265,11 +315,12 @@ void		ft_process(t_data *data)
 	if (SPACE)
 		BUFFER = ft_strjoin(BUFFER, " ");
 	if (LEFT)
-		BUFFER = ft_strjoinf(BUFFER,
-				ft_strjoin(ARG, RARG));
+		FARG = ft_strjoin(ARG, RARG);
 	else
-		BUFFER = ft_strjoinf(BUFFER,
-				ft_strjoin(LARG, ARG));
+		FARG = ft_strjoin(LARG, ARG);
+	if (PREC == -1 && ZERO)
+		ft_adjust_sign(data);
+	BUFFER = ft_strjoinf(BUFFER, FARG);
 }
 
 void		ft_neg_case(t_data *data)
@@ -391,4 +442,28 @@ int			ft_printf(const char *format, ...)
 	va_end(ap);
 	ft_putstr(BUFFER);
 	return ((int)ft_strlen(BUFFER));
+}
+
+char		*ft_sprintf(const char *format, ...)
+{
+	t_data		*data;
+	va_list		ap;
+	int			i;
+
+	va_start(ap, format);
+	data = ft_init_data((char *)format, ap);
+	i = -1;
+	while (FORMAT[++i])
+	{
+		if (FORMAT[i] != '%')
+			BUFFER = ft_straddchar(BUFFER, FORMAT[i]);
+		else
+		{
+			ft_reset_conv(data);
+			ft_get_conv(data, ++i);
+			i += LEN;
+		}
+	}
+	va_end(ap);
+	return (BUFFER);
 }
