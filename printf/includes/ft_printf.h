@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/02 01:02:50 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/02 03:35:45 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,44 @@
 # include <limits.h>
 # include <stdbool.h>
 # include <stdio.h> // !!!!!
+
+# define AP		(data->ap)
+
+# define FORMAT	(data->format)
+# define BUFFER	(data->buff)
+# define LEN	(data->len)
+
+# define FLAG	(data->flag)
+# define F_P	(data->f_p)
+# define MOD	(data->mod)
+# define DELIM	(data->delim)
+
+# define ARG 	((data->arg)->arg)
+# define FARG 	((data->arg)->final_arg)
+# define LARG 	((data->arg)->left_arg)
+# define RARG 	((data->arg)->right_arg)
+
+# define L_ARG 	((data->arg)->size_arg)
+# define L_FARG ((data->arg)->size_farg)
+# define L_LARG ((data->arg)->size_larg)
+# define L_RARG ((data->arg)->size_rarg)
+
+# define TYPE	((data->conv)->type)
+# define BASE	((data->conv)->base)
+# define SPACE	((data->conv)->space)
+# define PREFIX	((data->conv)->prefix)
+# define ZERO	((data->conv)->zero)
+# define LEFT	((data->conv)->left)
+# define SIGN	((data->conv)->sign)
+# define STAR	((data->conv)->star)
+# define FIELD	((data->conv)->field)
+# define POINT	((data->conv)->point)
+# define PREC	((data->conv)->prec)
+# define MODIF	((data->conv)->mod)
+# define DELI	((data->conv)->delim)
+# define SIZE	((data->conv)->conv_size)
+
+# define LL		(long long)
 
 /*
 ** space = blank after %
@@ -31,17 +69,8 @@
 ** type = coversion type
 */
 
-/*
-typedef struct		s_bool
-{
-	int				bool;
-}					t_bool;
-*/
-
 typedef struct		s_conv
 {
-	char			*arg;
-	char			*final_arg;
 	char			type;
 	int				base;
 	bool			space;
@@ -58,11 +87,17 @@ typedef struct		s_conv
 	size_t			conv_size;
 }					t_conv;
 
-typedef struct		s_fun
+typedef struct		s_arg
 {
-	size_t			(*f)(va_list, t_conv *, char **str);
-	char			type;
-}					t_fun;
+	char			*arg;
+	char			*final_arg;
+	char			*left_arg;
+	char			*right_arg;
+	size_t			size_arg;
+	size_t			size_farg;
+	size_t			size_larg;
+	size_t			size_rarg;
+}					t_arg;
 
 /*
 ** len = size from % to delimiter
@@ -79,6 +114,7 @@ typedef struct		s_data
 	va_list			ap;
 	size_t			len;
 	t_conv			*conv;
+	t_arg			*arg;
 }					t_data;
 
 void				ft_get_flag(t_data *data, int i);

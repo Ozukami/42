@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 10:49:10 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/02 01:34:59 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/02 03:34:44 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,37 +107,37 @@ t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 int					ft_isupper(int c);
 int					ft_islower(int c);
 int					ft_isspace(int c);
+
 int					ft_check_spaces(int c);
+
 void				ft_strrev(char *s);
+
 int					ft_min(int a, int b);
 int					ft_max(int a, int b);
+int					ft_recursive_power(int nb, int power);
+
 void				ft_putnbr_endl(int n);
 void				ft_putnbr_short(short n);
 void				ft_putnbr_long(long n);
 void				ft_putnbr_u_short(unsigned short n);
 void				ft_putnbr_u_long(unsigned long n);
 void				ft_putnbr_u_int(unsigned int n);
+
 char				*ft_itoa_base(int value, int base, int maj);
-char				*ft_ltoa_base(long value, int base, int maj);
 char				*ft_lltoa_base(long long value, int base, int maj);
-char				*ft_ulltoa_base(unsigned long long value, int base, int maj);
-char				*ft_ultoa_base(long value, int base, int maj);
-char				*ft_ultoa_base_2(long value, int base, int maj);
-char				*ft_stoa_base(short value, int base, int maj);
-char				*ft_usstoa_base(int value, int base, int maj);
-char				*ft_ltoa_unsigned(long int value);
-char				*ft_lltoa_unsigned(long long int value);
-char				*ft_stoa_unsigned(short value);
-char				*ft_sstoa(int value);
-char				*ft_itoa_unsigned(int value);
+char				*ft_ulltoa_base(unsigned long long value, int base,
+		int maj);
+
 char				*ft_strjoinf(char *s1, char *s2);
 char				*ft_straddchar(char *s, char c);
-int					ft_recursive_power(int nb, int power);
+
 void				ft_bspace(char *s, size_t n);
 char				*ft_strspace(size_t size);
 void				ft_fill_zero(char *s, size_t n);
 char				*ft_strzero(size_t size);
+
 size_t				ft_lslen(wchar_t *s);
+
 int					ft_count_digit(long value);
 
 #endif

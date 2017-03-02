@@ -6,42 +6,11 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/02 02:43:21 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/02 03:30:43 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
-#define AP		(data->ap)
-
-#define FORMAT	(data->format)
-#define BUFFER	(data->buff)
-#define LEN		(data->len)
-
-#define FLAG	(data->flag)
-#define F_P		(data->f_p)
-#define MOD		(data->mod)
-#define DELIM	(data->delim)
-
-#define ARG 	((data->conv)->arg)
-#define LARG 	ft_strlen((data->conv)->arg)
-#define FARG 	((data->conv)->final_arg)
-#define TYPE	((data->conv)->type)
-#define BASE	((data->conv)->base)
-#define SPACE	((data->conv)->space)
-#define PREFIX	((data->conv)->prefix)
-#define ZERO	((data->conv)->zero)
-#define LEFT	((data->conv)->left)
-#define SIGN	((data->conv)->sign)
-#define STAR	((data->conv)->star)
-#define FIELD	((data->conv)->field)
-#define POINT	((data->conv)->point)
-#define PREC	((data->conv)->prec)
-#define MODIF	((data->conv)->mod)
-#define DELI	((data->conv)->delim)
-#define SIZE	((data->conv)->conv_size)
-
-#define LL		(long long)
 
 void		ft_get_arg_2(t_data *data)
 {
@@ -84,6 +53,7 @@ void		ft_get_arg_1(t_data *data)
 		ARG = ft_ulltoa_base(va_arg(AP, unsigned long long int), 16, 0);
 	else
 		ft_get_arg_2(data);
+	L_ARG = ft_strlen(ARG);
 }
 
 /*
@@ -167,11 +137,11 @@ void		ft_process_alpha(t_data *data)
 		return ;
 	}
 	if (FIELD == -1 && PREC == -1)
-		SIZE = LARG;
-	else if ((FIELD == -1) || (FIELD < PREC && PREC < (int)LARG))
-		SIZE = (size_t)ft_min(PREC, (int)LARG);
-	else if ((PREC == -1) || (FIELD < (int)LARG && (int)LARG <= PREC))
-		SIZE = (size_t)ft_max(FIELD, (int)LARG);
+		SIZE = L_ARG;
+	else if ((FIELD == -1) || (FIELD < PREC && PREC < (int)L_ARG))
+		SIZE = (size_t)ft_min(PREC, (int)L_ARG);
+	else if ((PREC == -1) || (FIELD < (int)L_ARG && (int)L_ARG <= PREC))
+		SIZE = (size_t)ft_max(FIELD, (int)L_ARG);
 	else
 		SIZE = (size_t)FIELD;
 	FARG = ft_strspace(SIZE);
@@ -179,10 +149,8 @@ void		ft_process_alpha(t_data *data)
 
 void		ft_process_num(t_data *data)
 {
-	SIZE = (size_t)ft_max(ft_max(FIELD, PREC), (int)LARG);
-	if (ARG[0] == '-')
-		SIZE++;
-	(!(ZERO)) ? (FARG = ft_strspace(SIZE)) : (FARG = ft_strzero(SIZE));
+	SIZE = (size_t)ft_max(ft_max(FIELD, PREC), (int)L_ARG);
+	FARG = ((!(ZERO)) ? (ft_strspace(SIZE)) : (ft_strzero(SIZE)));
 }
 
 /*
