@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/02 05:26:02 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/02 06:07:46 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,10 +129,24 @@ void		ft_set_base(t_data *data)
 		BASE = 8;
 }
 
+char		*ft_stradd_space(t_data *data, char *s, int n)
+{
+	while (n > 0)
+	{
+		if (LEFT && TYPE == 's')
+			s = ft_strjoin(s, " ");
+		else
+			s = ft_strjoin(((TYPE == 's') ? " " : "0"), s);
+		n--;
+	}
+	return (s);
+}
+
 void		ft_set_size(t_data *data)
 {
-	L_ARG = ((PREC > -1) ?
-			(size_t)ft_min((int)L_ARG, PREC) : L_ARG);
+	L_ARG = ((PREC > -1) ? (PREC) : L_ARG);
+	if (L_ARG > ft_strlen(ARG))
+		ARG = ft_stradd_space(data, ARG, L_ARG - ft_strlen(ARG));
 	if (LEFT && (L_FARG > L_ARG))
 	{
 		L_RARG = L_FARG - L_ARG;
@@ -182,7 +196,10 @@ void		ft_dispatch(t_data *data)
 			L_FARG = (size_t)FIELD;
 	}
 	else
+	{
 		L_FARG = (size_t)ft_max(ft_max(FIELD, PREC), (int)L_ARG);
+	//	ft_process_zero(data);
+	}
 	ft_process(data);
 }
 
