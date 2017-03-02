@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 04:05:02 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/02 08:32:46 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/02 09:10:28 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 
 int		main(void)
 {
-	if (1)
+	ft_printf("salut [%3.2c] les [%-5.2c] copains\n", 'a', 'z');
+	printf("salut [%3.2c] les [%-5.2c] copains\n", 'a', 'z');
+
+	if (0)
 	{
 		printf("{% 2.4d} 2 - 4 - 5\n", 13579);
 		ft_printf("{% 2.4d} 2 - 4 - 5\n\n", 13579);
@@ -56,7 +59,7 @@ int		main(void)
 		ft_printf("{% -10.4d} 10 - 4 - 5\n\n", -3579);
 	}
 
-	if (1)
+	if (0)
 	{
 		printf("{%d}\n", -158);
 		ft_printf("{%d}\n\n", -158);
@@ -100,7 +103,7 @@ int		main(void)
 		ft_printf("{% 7d}\n\n", -158);
 	}
 
-	if (1)
+	if (0)
 	{
 		printf("[%12s]\n", "123456789");
 		ft_printf("[%12s]\n\n", "123456789");
@@ -133,7 +136,7 @@ int		main(void)
 		ft_printf("[%-.5s]\n\n", "123456789");
 	}
 
-	if (1)
+	if (0)
 	{
 		printf("[%#+12d]\n", -123);
 		ft_printf("[%#+12d]\n\n", -123);
@@ -166,7 +169,7 @@ int		main(void)
 		ft_printf("[%#+-.5d]\n\n", -123);
 	}
 
-	if (1)
+	if (0)
 	{
 		printf("[%#+12d]\n", 123);
 		ft_printf("[%#+12d]\n\n", 123);
@@ -199,15 +202,13 @@ int		main(void)
 		ft_printf("[%#+-.5d]\n\n", 123);
 	}
 
-	if (1)
+	if (0)
 	{
 		ft_printf("Bad delimiter test : {%5k}\n");
 
-		ft_printf("Bonjour [%s], moi j'ai [%d] ans !\n",
-				"Quentin", 23);
-		ft_printf("[%10s] [%04d] [% -0+12x] [% -0+12o] [% -0+12u]\n",
+		ft_printf("[%010s] [%#04d] [% 0+12x] [% -0+12o] [% -0+12u]\n",
 				"Quentin", 23, 23, 23, 23);
-		printf("[%10s] [%04d] [% -0+12x] [% -0+12o] [% -0+12u]\n",
+		printf("[%010s] [%#04d] [% 0+12x] [% -0+12o] [% -0+12u]\n",
 				"Quentin", 23, 23, 23, 23);
 	}
 	return (0);

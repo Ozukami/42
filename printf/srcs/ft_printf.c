@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/02 08:34:02 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/02 09:10:18 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void		ft_get_arg_1(t_data *data)
 	else if (TYPE == 'c')
 	{
 		c = va_arg(AP, int);
-		ARG = ft_strdup(&c);
+		ARG = ft_straddchar(ft_strdup(""), c);
 	}
 	else if (TYPE == 'p')
 		ARG = ft_ulltoa_base(va_arg(AP, unsigned long long int), 16, 0);
@@ -127,6 +127,19 @@ void		ft_get_mod(t_data *data, int i)
 	LEN++;
 }
 
+void		ft_adjust_2(t_data *data)
+{
+	if (TYPE != 'd')
+	{
+		SPACE = 0;
+		SIGN = 0;
+	}
+	if (TYPE == 'd' || TYPE == 's' || TYPE == 'c')
+		PREFIX = 0;
+	if (TYPE == 'c')
+		PREC = -1;
+}
+
 void		ft_adjust(t_data *data)
 {
 	if (TYPE == 'x' || TYPE == 'X' || TYPE == 'p')
@@ -151,6 +164,7 @@ void		ft_adjust(t_data *data)
 		SIGN = 0;
 		PREFIX = 0;
 	}
+	ft_adjust_2(data);
 }
 
 char		*ft_stradd_char(t_data *data, char *s, int n)
@@ -197,14 +211,18 @@ void		ft_set_size(t_data *data)
 		L_RARG = L_FARG - L_ARG;
 		L_RARG -= ((PREC > (int)L_INIT) ? NEG : 0);
 		L_RARG -= ((FIELD > (int)L_INIT && FIELD > PREC && LEFT) ? SPACE : 0);
-		RARG = ft_strspace(L_RARG);
+		L_RARG -= ((FIELD > (int)L_INIT && FIELD > PREC && LEFT)
+				? (2 * PREFIX) : 0);
+		RARG = ((!ZERO) ? ft_strspace(L_RARG) : ft_strzero(L_RARG));
 	}
 	else if (L_FARG > L_ARG)
 	{
 		L_LARG = L_FARG - L_ARG;
 		L_LARG -= ((PREC > (int)L_INIT) ? NEG : 0);
-		L_LARG -= ((FIELD > (int)L_INIT && FIELD > PREC && LEFT) ? SPACE : 0);
-		LARG = ft_strspace(L_LARG);
+		L_LARG -= ((FIELD > (int)L_INIT && FIELD > PREC) ? SPACE : 0);
+		L_LARG -= ((FIELD > (int)L_INIT && FIELD > PREC)
+				? (2 * PREFIX) : 0);
+		LARG = ((!ZERO) ? ft_strspace(L_LARG) : ft_strzero(L_LARG));
 	}
 	if (NEG && PREC > 0)
 		ft_replace_neg(data);
@@ -225,11 +243,18 @@ void		ft_set_sign(t_data *data)
 	}
 }
 
+void		ft_set_prefix(t_data *data)
+{
+	ARG = ft_strjoin("0x", ARG);
+}
+
 void		ft_process(t_data *data)
 {
 	ft_set_size(data);
 	if (SIGN)
 		ft_set_sign(data);
+	if (PREFIX)
+		ft_set_prefix(data);
 	if ((PREC > -1 && TYPE == 's') || PREC > (int)L_ARG)
 		ARG = ft_strsub(ARG, 0, PREC + SIGN);
 	if (SPACE)
@@ -318,6 +343,22 @@ void		ft_get_conv(t_data *data, int i)
 	}
 }
 
+void		ft_reset_conv(t_data *data)
+{
+	BASE = 10;
+	SPACE = 0;
+	PREFIX = 0;
+	ZERO = 0;
+	LEFT = 0;
+	SIGN = 0;
+	NEG = 0;
+	STAR = 0;
+	FIELD = -1;
+	POINT = 0;
+	PREC = -1;
+	MODIF = ft_strdup("");
+}
+
 /*
 ** Ne pas oublier de free les struct si mem leaks au filechecker !!!
 */
@@ -337,6 +378,7 @@ int			ft_printf(const char *format, ...)
 			BUFFER = ft_straddchar(BUFFER, FORMAT[i]);
 		else
 		{
+			ft_reset_conv(data);
 			ft_get_conv(data, ++i);
 			i += LEN;
 		}
