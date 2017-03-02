@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 00:57:08 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/02 05:19:16 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/02 07:46:52 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_conv		*ft_init_conv(void)
 	new->zero = 0;
 	new->left = 0;
 	new->sign = 0;
+	new->neg = 0;
 	new->star = 0;
 	new->field = -1;
 	new->point = 0;
@@ -43,6 +44,7 @@ t_arg		*ft_init_arg(void)
 	new->final_arg = ft_strdup("");
 	new->left_arg = ft_strdup("");
 	new->right_arg = ft_strdup("");
+	new->size_init = 0;
 	new->size_arg = 0;
 	new->size_farg = 0;
 	new->size_larg = 0;

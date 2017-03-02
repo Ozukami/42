@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/02 03:40:17 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/02 07:45:36 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # define LARG 	((data->arg)->left_arg)
 # define RARG 	((data->arg)->right_arg)
 
+# define L_INIT ((data->arg)->size_init)
 # define L_ARG 	((data->arg)->size_arg)
 # define L_FARG ((data->arg)->size_farg)
 # define L_LARG ((data->arg)->size_larg)
@@ -47,6 +48,7 @@
 # define ZERO	((data->conv)->zero)
 # define LEFT	((data->conv)->left)
 # define SIGN	((data->conv)->sign)
+# define NEG	((data->conv)->neg)
 # define STAR	((data->conv)->star)
 # define FIELD	((data->conv)->field)
 # define POINT	((data->conv)->point)
@@ -77,6 +79,7 @@ typedef struct		s_conv
 	bool			zero;
 	bool			left;
 	bool			sign;
+	bool			neg;
 	bool			star;
 	int				field;
 	bool			point;
@@ -91,6 +94,7 @@ typedef struct		s_arg
 	char			*final_arg;
 	char			*left_arg;
 	char			*right_arg;
+	size_t			size_init;
 	size_t			size_arg;
 	size_t			size_farg;
 	size_t			size_larg;

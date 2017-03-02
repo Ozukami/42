@@ -6,11 +6,16 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/02 06:41:56 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/02 08:24:08 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+void		ft_debug(t_data *data)
+{
+	printf("|%s|%s|%s|\n", LARG, ARG, RARG);
+}
 
 void		ft_get_arg_2(t_data *data)
 {
@@ -54,6 +59,7 @@ void		ft_get_arg_1(t_data *data)
 	else
 		ft_get_arg_2(data);
 	L_ARG = ft_strlen(ARG);
+	L_INIT = ft_strlen(ARG);
 }
 
 /*
@@ -121,12 +127,28 @@ void		ft_get_mod(t_data *data, int i)
 	LEN++;
 }
 
-void		ft_set_base(t_data *data)
+void		ft_adjust(t_data *data)
 {
 	if (TYPE == 'x' || TYPE == 'X' || TYPE == 'p')
 		BASE = 16;
 	else if (TYPE == 'o')
 		BASE = 8;
+	if (TYPE >= 'C' && TYPE <= 'U')
+	{
+		TYPE += 32;
+		MODIF = "l";
+	}
+	if (TYPE == 'i')
+		TYPE = 'd';
+	if (LEFT)
+		ZERO = 0;
+	if (SIGN)
+		SPACE = 0;
+	if (TYPE == 's')
+	{
+		SIGN = 0;
+		PREFIX = 0;
+	}
 }
 
 char		*ft_stradd_char(t_data *data, char *s, int n)
@@ -142,21 +164,48 @@ char		*ft_stradd_char(t_data *data, char *s, int n)
 	return (s);
 }
 
+void		ft_replace_neg(t_data *data)
+{
+	int		i;
+
+	if (PREC > (int)L_INIT)
+		ARG = ft_strjoin("-", ARG);
+	i = 0;
+	if (PREC > (int)L_INIT)
+	{
+		while (ARG[++i])
+		{
+			if (ARG[i] == '-')
+			{
+				ARG[i] = '0';
+				return ;
+			}
+		}
+	}
+}
+
 void		ft_set_size(t_data *data)
 {
-	L_ARG = ((PREC > -1) ? (PREC + SIGN) : L_ARG + SIGN);
+	L_ARG = (((PREC > -1 && TYPE == 's') || PREC >= (int)L_ARG) ?
+			(PREC + SIGN) : L_ARG + SIGN);
 	if (L_ARG > ft_strlen(ARG))
 		ARG = ft_stradd_char(data, ARG, L_ARG - ft_strlen(ARG));
 	if (LEFT && (L_FARG > L_ARG))
 	{
 		L_RARG = L_FARG - L_ARG;
+		L_RARG -= ((PREC > (int)L_INIT) ? NEG : 0);
+		L_RARG -= ((FIELD > (int)L_INIT && FIELD > PREC && LEFT) ? SPACE : 0);
 		RARG = ft_strspace(L_RARG);
 	}
 	else if (L_FARG > L_ARG)
 	{
 		L_LARG = L_FARG - L_ARG;
+		L_LARG -= ((PREC > (int)L_INIT) ? NEG : 0);
+		L_LARG -= ((FIELD > (int)L_INIT && FIELD > PREC && LEFT) ? SPACE : 0);
 		LARG = ft_strspace(L_LARG);
 	}
+	if (NEG && PREC > 0)
+		ft_replace_neg(data);
 }
 
 void		ft_set_sign(t_data *data)
@@ -176,19 +225,29 @@ void		ft_set_sign(t_data *data)
 
 void		ft_process(t_data *data)
 {
-	if (TYPE == 's')
-		SIGN = 0;
 	ft_set_size(data);
 	if (SIGN)
 		ft_set_sign(data);
-	if (PREC > -1)
+	if ((PREC > -1 && TYPE == 's') || PREC > (int)L_ARG)
 		ARG = ft_strsub(ARG, 0, PREC + SIGN);
+	if (SPACE)
+		BUFFER = ft_strjoin(BUFFER, " ");
 	if (LEFT)
 		BUFFER = ft_strjoinf(BUFFER,
 				ft_strjoin(ARG, RARG));
 	else
 		BUFFER = ft_strjoinf(BUFFER,
 				ft_strjoin(LARG, ARG));
+}
+
+void		ft_neg_case(t_data *data)
+{
+	if (ARG[0] == '-')
+	{
+		SIGN = 0;
+		NEG = 1;
+		SPACE = 0;
+	}
 }
 
 /*
@@ -198,6 +257,9 @@ void		ft_process(t_data *data)
 
 void		ft_dispatch(t_data *data)
 {
+	ft_neg_case(data);
+	if (FIELD > (int)L_INIT && FIELD > PREC && !LEFT)
+		SPACE = 0;
 	if (TYPE == 's' || TYPE == 'c')
 	{
 		if (ARG == NULL)
@@ -215,10 +277,7 @@ void		ft_dispatch(t_data *data)
 			L_FARG = (size_t)FIELD;
 	}
 	else
-	{
 		L_FARG = (size_t)ft_max(ft_max(FIELD, PREC), (int)L_ARG);
-	//	ft_process_zero(data);
-	}
 	ft_process(data);
 }
 
@@ -251,7 +310,7 @@ void		ft_get_conv(t_data *data, int i)
 	else
 	{
 		TYPE = FORMAT[i + LEN];
-		ft_set_base(data);
+		ft_adjust(data);
 		ft_get_arg_1(data);
 		ft_dispatch(data);
 	}
