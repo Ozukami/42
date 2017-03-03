@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/03 01:29:09 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/03 04:20:48 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,72 @@
 void		ft_debug(t_data *data)
 {
 	printf("\n|%s|%s|%s|\n", LARG, ARG, RARG);
+}
+
+int			ft_bin_to_dec(char *bin)
+{
+	int		hex;
+	int		i;
+	int		power;
+
+	hex = 0;
+	i = 0;
+	power = 7;
+	while (bin[i])
+		hex += (bin[i++] - '0') * ft_recursive_power(2, power--);
+	return (hex);
+}
+
+void		ft_split_bytes(t_data *data, char *byte)
+{
+	int		i;
+	char	multi_octet[BYTES + 1];
+
+	ARG = ft_strdup("");
+	i = 0;
+	while (i < BYTES)
+	{
+		multi_octet[i] = ft_bin_to_dec(ft_strsub(byte, 8 * i, 8));
+		i++;
+	}
+	multi_octet[BYTES] = '\0';
+	ARG = ft_strjoin(ARG, multi_octet);
+}
+
+void		ft_set_bytes(t_data *data, char *byte, int bytes)
+{
+	int		i;
+	int		j;
+
+	BYTES = bytes;
+	i = BITS - 1;
+	j = ft_strlen(byte) - 1;
+	while (j >= 0)
+	{
+		if (byte[j] == 'x')
+		{
+			if (i >= 0)
+				byte[j] = BIN[i--];
+			else
+				byte[j] = '0';
+		}
+		j--;
+	}
+	ft_split_bytes(data, byte);
+}
+
+void		ft_conv_char(t_data *data, wchar_t c)
+{
+	BIN = ft_itoa_base((int)c, 2, 0);
+	BITS = (int)ft_strlen(BIN);
+	if (BITS < 8)
+		ft_set_bytes(data, B1, 1);
+	else if (BITS < 12)
+		ft_set_bytes(data, B2, 2);
+	else if (BITS < 17)
+		ft_set_bytes(data, B3, 3);
+	else
+		ft_set_bytes(data, B4, 4);
 }
 
 void		ft_get_arg_2(t_data *data)
@@ -47,14 +113,12 @@ void		ft_get_arg_2(t_data *data)
 
 void		ft_get_arg_1(t_data *data)
 {
-	char	c;
-
 	if (TYPE == 's')
 		ARG = va_arg(AP, char *);
 	else if (TYPE == 'c')
 	{
-		c = va_arg(AP, int);
-		ARG = ft_straddchar(ft_strdup(""), c);
+		ft_conv_char(data, va_arg(AP, wchar_t));
+		//ARG = ft_straddchar(ft_strdup(""), c);
 	}
 	else if (TYPE == 'p')
 		ARG = ft_ulltoa_base(va_arg(AP, unsigned long long int), 16, 0);

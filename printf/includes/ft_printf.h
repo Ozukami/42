@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/03 00:05:31 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/03 03:28:30 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,14 @@
 # define MODIF	((data->conv)->mod)
 # define DELI	((data->conv)->delim)
 
+# define BIN	((data->uni)->bin)
+# define BITS	((data->uni)->bits)
+# define BYTES	((data->uni)->bytes)
+# define B1		((data->uni)->byte1)
+# define B2		((data->uni)->byte2)
+# define B3		((data->uni)->byte3)
+# define B4		((data->uni)->byte4)
+
 # define LL		(long long)
 
 /*
@@ -101,6 +109,17 @@ typedef struct		s_arg
 	size_t			size_rarg;
 }					t_arg;
 
+typedef struct		s_uni
+{
+	char			*bin;
+	int				bits;
+	int				bytes;
+	char			*byte1;
+	char			*byte2;
+	char			*byte3;
+	char			*byte4;
+}					t_uni;
+
 /*
 ** len = size from % to delimiter
 */
@@ -117,6 +136,7 @@ typedef struct		s_data
 	size_t			len;
 	t_conv			*conv;
 	t_arg			*arg;
+	t_uni			*uni;
 }					t_data;
 
 void				ft_get_flag(t_data *data, int i);

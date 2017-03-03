@@ -6,14 +6,19 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 04:05:02 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/03 01:03:27 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/03 04:25:59 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include <locale.h>
 
 int		main(void)
 {
+	setlocale(LC_ALL, "");
+	printf("[%05C]\n", 65234);
+	ft_printf("[%05C]\n", 65234);
+
 	printf("[%s]\n", ft_lltoa_base(LL(512), 10, 0));
 
 	/*
