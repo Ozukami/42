@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 04:05:02 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/03 00:41:33 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/03 01:03:27 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 int		main(void)
 {
-	ft_printf("HH : %hhu\n", -455);
-	printf("HH : %hhu\n", -455);
+	printf("[%s]\n", ft_lltoa_base(LL(512), 10, 0));
 
 	/*
 	printf("salut [%.2p] %p\n", &a, &z);

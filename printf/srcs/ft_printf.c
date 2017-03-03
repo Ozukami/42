@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/03 00:53:52 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/03 01:29:09 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,11 @@ void		ft_get_arg_2(t_data *data)
 	else if (ft_strequ(MODIF, "hh"))
 		ARG = ft_lltoa_base(LL((char)va_arg(AP, int)),
 				BASE, ((TYPE == 'X') ? 1 : 0));
-	else if (ft_strequ(MODIF, "h"))
+	else if (ft_strequ(MODIF, "h") && TYPE == 'd')
 		ARG = ft_lltoa_base(LL((short)va_arg(AP, int)),
+				BASE, ((TYPE == 'X') ? 1 : 0));
+	else if (ft_strequ(MODIF, "h") && TYPE != 'd')
+		ARG = ft_lltoa_base(LL((unsigned short)va_arg(AP, int)),
 				BASE, ((TYPE == 'X') ? 1 : 0));
 	else if (ft_strequ(MODIF, "l"))
 		ARG = ft_lltoa_base(LL(va_arg(AP, long)),
@@ -34,9 +37,8 @@ void		ft_get_arg_2(t_data *data)
 	else if (ft_strequ(MODIF, "ll"))
 		ARG = ft_lltoa_base(va_arg(AP, long long),
 				BASE, ((TYPE == 'X') ? 1 : 0));
-	else if (TYPE == 'd'
-			&& (ft_strequ(MODIF, "j") || ft_strequ(MODIF, "z")))
-		ARG = ft_lltoa_base(LL((char)va_arg(AP, int)),
+	else if ((ft_strequ(MODIF, "j") || ft_strequ(MODIF, "z")))
+		ARG = ft_lltoa_base(LL((unsigned int)va_arg(AP, int)),
 				BASE, ((TYPE == 'X') ? 1 : 0));
 	else
 		ARG = ft_ulltoa_base(LL((char)va_arg(AP, int)),
@@ -160,12 +162,6 @@ void		ft_adjust_2(t_data *data)
 
 void		ft_adjust(t_data *data)
 {
-	if (TYPE == 'x' || TYPE == 'X' || TYPE == 'p')
-		BASE = 16;
-	else if (TYPE == 'o')
-		BASE = 8;
-	else
-		BASE = 10;
 	if (TYPE >= 'C' && TYPE <= 'U')
 	{
 		TYPE += 32;
@@ -173,6 +169,12 @@ void		ft_adjust(t_data *data)
 	}
 	if (TYPE == 'i')
 		TYPE = 'd';
+	if (TYPE == 'x' || TYPE == 'X' || TYPE == 'p')
+		BASE = 16;
+	else if (TYPE == 'o')
+		BASE = 8;
+	else
+		BASE = 10;
 	if (LEFT)
 		ZERO = 0;
 	if (SIGN)
@@ -239,6 +241,8 @@ void		ft_adjust_sign(t_data *data)
 
 void		ft_set_size(t_data *data)
 {
+	if (TYPE == 's' && PREC >= (int)L_INIT)
+		PREC = -1;
 	L_ARG = (((PREC > -1 && TYPE == 's') || PREC >= (int)L_ARG) ?
 			(PREC + SIGN) : L_ARG + SIGN);
 	if (L_ARG > ft_strlen(ARG))
@@ -247,9 +251,8 @@ void		ft_set_size(t_data *data)
 	{
 		L_RARG = L_FARG - L_ARG;
 		L_RARG -= ((PREC >= (int)L_INIT) ? NEG : 0);
-		L_RARG -= ((FIELD > (int)L_INIT && FIELD > PREC && LEFT) ? SPACE : 0);
-		L_RARG -= ((FIELD > (int)L_INIT && FIELD > PREC && LEFT)
-				? (PREFIX) : 0);
+		L_RARG -= ((FIELD > (int)L_INIT && FIELD > PREC) ? SPACE : 0);
+		L_RARG -= ((FIELD > (int)L_INIT && FIELD > PREC) ? (PREFIX) : 0);
 		RARG = ((!ZERO) ? ft_strspace(L_RARG) : ft_strzero(L_RARG));
 	}
 	else if (L_FARG > L_ARG)
@@ -257,8 +260,7 @@ void		ft_set_size(t_data *data)
 		L_LARG = L_FARG - L_ARG;
 		L_LARG -= ((PREC >= (int)L_INIT) ? NEG : 0);
 		L_LARG -= ((FIELD > (int)L_INIT && FIELD > PREC) ? SPACE : 0);
-		L_LARG -= ((FIELD > (int)L_INIT && FIELD > PREC)
-				? (PREFIX) : 0);
+		L_LARG -= ((FIELD > (int)L_INIT && FIELD > PREC) ? (PREFIX) : 0);
 		LARG = ((!ZERO) ? ft_strspace(L_LARG) : ft_strzero(L_LARG));
 	}
 	if (NEG && PREC > 0)
