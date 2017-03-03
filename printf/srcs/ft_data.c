@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 00:57:08 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/03 03:29:12 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/04 00:42:57 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ t_uni		*ft_init_uni(void)
 
 	if (!(new = malloc(sizeof(t_uni))))
 		exit(0);
+	new->tmp = 0;
 	new->bin = NULL;
 	new->bits = 0;
 	new->bytes = 0;
@@ -85,5 +86,6 @@ t_data		*ft_init_data(char *format, va_list ap)
 	new->conv = ft_init_conv();
 	new->arg = ft_init_arg();
 	new->uni = ft_init_uni();
+	new->error = 0;
 	return (new);
 }

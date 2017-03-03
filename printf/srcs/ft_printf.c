@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/03 04:20:48 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/04 00:45:36 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,11 +115,14 @@ void		ft_get_arg_1(t_data *data)
 {
 	if (TYPE == 's')
 		ARG = va_arg(AP, char *);
-	else if (TYPE == 'c')
+	else if (TYPE == 'c' && ft_strequ(MODIF, "l"))
 	{
-		ft_conv_char(data, va_arg(AP, wchar_t));
-		//ARG = ft_straddchar(ft_strdup(""), c);
+		TMP = va_arg(AP, wchar_t);
+		ERR = (TMP < 0 || TMP > 2097152) ? 1 : 0;
+		ft_conv_char(data, TMP);
 	}
+	else if (TYPE == 'c')
+		ARG = ft_straddchar(ft_strdup(""), va_arg(AP, int));
 	else if (TYPE == 'p')
 		ARG = ft_ulltoa_base(va_arg(AP, unsigned long long int), 16, 0);
 	else if (TYPE == 'u')
@@ -506,6 +509,8 @@ int			ft_printf(const char *format, ...)
 		}
 	}
 	va_end(ap);
+	if (ERR)
+		return (ERROR);
 	ft_putstr(BUFFER);
 	return ((int)ft_strlen(BUFFER));
 }
@@ -531,5 +536,7 @@ char		*ft_sprintf(const char *format, ...)
 		}
 	}
 	va_end(ap);
+	if (ERR)
+		return ("\0");
 	return (BUFFER);
 }

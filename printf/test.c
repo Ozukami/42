@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 06:18:25 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/03/02 23:17:26 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/04 00:40:04 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 #include <stdio.h>
 #include <locale.h>
 
-#define SUCCESS "\033[32mSUCCESS  \033[0m"
-#define FAILLURE "\033[31mFAILLURE \033[0m"
+#define SUCCESS		"\033[32mSUCCESS  \033[0m"
+#define FAILLURE	"\033[31mFAILLURE \033[0m"
+#define ERROR		"\033[35mWARNING RET ERROR \033[0m"
 
 int		debug = 1;
 int		detail = 1;
@@ -29,36 +30,39 @@ void	ft_test(char *s, int type, ...)
 	char	*s1;
 	char	*s2;
 	static int	i = 1;
+	int		r;
+
+	r = 0;
 	s1 = ft_memalloc(100);
 	va_start(ap, type);
 	if (type == 0)
 	{
 		int	arg = va_arg(ap, int);
-		sprintf(s1, s, arg);
+		r = sprintf(s1, s, arg);
 		s2 = ft_sprintf(s, arg);
 	}
 	else if (type == 1)
 	{
 		int	arg = va_arg(ap, int);
-		sprintf(s1, s, &arg);
+		r = sprintf(s1, s, &arg);
 		s2 = ft_sprintf(s, &arg);
 	}
 	else if (type == 2)
 	{
 		char	*arg = va_arg(ap, char*);
-		sprintf(s1, s, arg);
+		r = sprintf(s1, s, arg);
 		s2 = ft_sprintf(s, arg);
 	}
 	if (type == 3)
 	{
 		long	arg = va_arg(ap, long);
-		sprintf(s1, s, arg);
+		r = sprintf(s1, s, arg);
 		s2 = ft_sprintf(s, arg);
 	}
 	if (type == 4)
 	{
 		short	arg = (short)va_arg(ap, int);
-		sprintf(s1, s, arg);
+		r = sprintf(s1, s, arg);
 		s2 = ft_sprintf(s, arg);
 	}
 	if (ft_strcmp(s1, s2))
@@ -78,6 +82,12 @@ void	ft_test(char *s, int type, ...)
 			if (detail)
 				printf("	s{%s}\n	f{%s}\n", s1, s2);
 		}
+	}
+	if (r == -1)
+	{
+		printf(ERROR);
+		printf("Test %d : %s\n", i, s);
+		printf("	s{%s}\n	f{%s}\n", s1, s2);
 	}
 	tests++;
 	free(s1);
@@ -1362,6 +1372,7 @@ int		main(int ac, char **av)
 		error = 0;
 		char my_c1 = 'a';
 		char my_c2 = 160;
+		wchar_t my_c3 = 160;
 
 		printf("\033[36m{hhd} 1 - SOME TESTS\n\033[0m");
 		ft_test("%hhd", 0, 12);
@@ -1373,6 +1384,11 @@ int		main(int ac, char **av)
 		ft_test("%8.3c", 0, 12);
 		ft_test("%8.3c", 0, my_c1);
 		ft_test("%8.3c", 0, my_c2);
+		ft_test("%c", 0, 161);
+		ft_test("%C", 0, 161);
+		ft_test("%C", 0, my_c2);
+		ft_test("%C", 0, my_c3);
+		ft_test("%c", 0, my_c2);
 		if (debug && !error)
 			printf("\033[33mOK ! :)\n\033[0m");
 		if (debug && error)
@@ -1381,6 +1397,7 @@ int		main(int ac, char **av)
 
 	if (l[0])
 	{
+		error = 0;
 		printf("\033[36m{ld} 1 - SOME TESTS\n\033[0m");
 		ft_test("%ld", 3, (long)(INT_MAX) + 10);
 		ft_test("%ld", 3, -512);
@@ -1398,6 +1415,7 @@ int		main(int ac, char **av)
 
 	if (ll[0])
 	{
+		error = 0;
 		printf("\033[36m{lld} 1 - SOME TESTS\n\033[0m");
 		ft_test("%lld", 3, (long long)(INT_MAX) + 10);
 		ft_test("%lld", 3, -512);
@@ -1415,6 +1433,7 @@ int		main(int ac, char **av)
 
 	if (h[0])
 	{
+		error = 0;
 		printf("\033[36m{hd} 1 - SOME TESTS\n\033[0m");
 		ft_test("%hd", 4, (short)(INT_MAX) + 10);
 		ft_test("%hd", 4, -512);
@@ -1436,6 +1455,7 @@ int		main(int ac, char **av)
 
 	if (l[0])
 	{
+		error = 0;
 		printf("\033[36m{DOU} 1 - SOME TESTS\n\033[0m");
 		ft_test("%D", 0, 512);
 		ft_test("%D", 0, -512);
@@ -1451,6 +1471,7 @@ int		main(int ac, char **av)
 
 	if (l[0])
 	{
+		error = 0;
 		ft_test("%jd", 0, (intmax_t)512); 
 		ft_test("%ju", 0, (uintmax_t)512); 
 		ft_test("%jo", 0, (uintmax_t)512); 

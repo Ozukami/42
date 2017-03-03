@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/03 03:28:30 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/04 00:45:26 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,14 @@
 # include <stdbool.h>
 # include <stdio.h> // !!!!!
 
+# define ERROR	-1
+# define SUCCES	1
+
 # define AP		(data->ap)
 
 # define FORMAT	(data->format)
 # define BUFFER	(data->buff)
+# define ERR	(data->error)
 # define LEN	(data->len)
 
 # define FLAG	(data->flag)
@@ -56,6 +60,7 @@
 # define MODIF	((data->conv)->mod)
 # define DELI	((data->conv)->delim)
 
+# define TMP	((data->uni)->tmp)
 # define BIN	((data->uni)->bin)
 # define BITS	((data->uni)->bits)
 # define BYTES	((data->uni)->bytes)
@@ -111,6 +116,7 @@ typedef struct		s_arg
 
 typedef struct		s_uni
 {
+	wchar_t			tmp;
 	char			*bin;
 	int				bits;
 	int				bytes;
@@ -137,6 +143,7 @@ typedef struct		s_data
 	t_conv			*conv;
 	t_arg			*arg;
 	t_uni			*uni;
+	bool			error;
 }					t_data;
 
 void				ft_get_flag(t_data *data, int i);

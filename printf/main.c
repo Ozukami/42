@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 04:05:02 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/03 04:25:59 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/04 00:36:23 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,36 @@
 int		main(void)
 {
 	setlocale(LC_ALL, "");
+
+	char	c = 160;
+	char	*s1;
+	int		r;
+
+	s1 = malloc(100);
+
+	r = sprintf(s1, "%C", c);
+	printf("[%s] |  r value = {%d}\n", s1, r);
+
+	r = ft_printf("[%C]\n", c);
+	printf("{%d}\n", r);
+
+	/*
+	printf("[%d]\n", 2097153);
+
+	r = printf("HE OH [%C]\n", 2097153);
+	printf("{%d}\n", r);
+	printf("HE OH [%C]\n", -96);
+	r = ft_printf("[%C]\n", 2097153);
+	printf("{%d}\n", r);
+	ft_printf("[%C]\n", -96);
+	*/
+
+	/*
 	printf("[%05C]\n", 65234);
 	ft_printf("[%05C]\n", 65234);
 
 	printf("[%s]\n", ft_lltoa_base(LL(512), 10, 0));
+	*/
 
 	/*
 	printf("salut [%.2p] %p\n", &a, &z);
