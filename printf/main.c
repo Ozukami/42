@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 04:05:02 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/04 05:02:48 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/04 05:52:35 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int		main(void)
 	printf("%zd\n\n", 4294967296);
 	*/
 
+	/*
 	// 0179 (unsigned int)
 	ft_printf("%u\n", -1);
 	printf("%u\n\n", -1);
@@ -47,7 +48,6 @@ int		main(void)
 	ft_printf("%u\n", 4294967296);
 	printf("%u\n\n", 4294967296);
 
-	/*
 	// 0189 (unsigned long)
 	ft_printf("%lu\n", 4294967296);
 	printf("%lu\n\n", 4294967296);

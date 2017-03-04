@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/04 05:06:59 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/04 05:52:04 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -552,6 +552,46 @@ void		ft_reset_conv(t_data *data)
 	MODIF = ft_strdup("");
 }
 
+void		ft_free_the_shit(t_data *data)
+{
+	free(FLAG);
+	free(F_P);
+	free(MOD);
+	free(DELIM);
+	free(BUFFER);
+	free(FORMAT);
+	free(B1);
+	free(B2);
+	free(B3);
+	free(B4);
+	/*
+	if (ARG)
+		printf("ARG |%s|\n", ARG);
+		free(ARG);
+	if (FARG)
+	{
+		printf("FARG |%s|\n", FARG);
+		free(FARG);
+	}
+	if (LARG)
+	{
+		printf("LARG |%s|\n", LARG);
+		free(LARG);
+	}
+	if (RARG)
+	{
+		printf("RARG |%s|\n", RARG);
+		free(RARG);
+	}
+	if (WS_ARG)
+		printf("WS_ARG |%ls|\n", WS_ARG);
+	if (BIN)
+		printf("BIN |%s|\n", BIN);
+	free(WS_ARG);
+	free(BIN);
+	*/
+}
+
 /*
 ** Ne pas oublier de free les struct si mem leaks au filechecker !!!
 */
@@ -561,6 +601,7 @@ int			ft_printf(const char *format, ...)
 	t_data		*data;
 	va_list		ap;
 	int			i;
+	int			r;
 
 	va_start(ap, format);
 	data = ft_init_data((char *)format, ap);
@@ -580,7 +621,9 @@ int			ft_printf(const char *format, ...)
 	if (ERR)
 		return (ERROR);
 	ft_putstr(BUFFER);
-	return ((int)ft_strlen(BUFFER) + L_ADJUST);
+	r = (int)ft_strlen(BUFFER) + L_ADJUST;
+	ft_free_the_shit(data);
+	return (r);
 }
 
 char		*ft_sprintf(const char *format, ...)
