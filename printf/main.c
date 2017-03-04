@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 04:05:02 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/04 05:52:35 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/04 12:38:46 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,29 @@
 int		main(void)
 {
 	setlocale(LC_ALL, "");
+	
+	int		r;
+	char	*s;
+
+	s = malloc(100);
+
+	/*
+	**  SEGV
+	*/	
+
+	printf("[%hhC, %hhC]\n", 0, '米');
+	ft_printf("[%hhC, %hhC]\n", 0, '米');
+
+	/*
+	printf("[%hho, %hho]\n", 0, UCHAR_MAX);
+	ft_printf("[%lo, %lo]\n\n", 0, ULONG_MAX);
+	
+	printf("[%lx, %lx]\n", 0, ULONG_MAX);
+	ft_printf("[%lx, %lx]\n\n", 0, ULONG_MAX);
+	
+	printf("[%lX, %lX]\n", 0, ULONG_MAX);
+	ft_printf("[%lX, %lX]\n\n", 0, ULONG_MAX);
+*/
 
 	/*
 	// 0028 (int)
@@ -37,8 +60,7 @@ int		main(void)
 	// 0154 (ssize_t)
 	ft_printf("%zd\n", 4294967296);
 	printf("%zd\n\n", 4294967296);
-	*/
-
+*/
 	/*
 	// 0179 (unsigned int)
 	ft_printf("%u\n", -1);
