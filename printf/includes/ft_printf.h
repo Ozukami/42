@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/04 02:29:54 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/04 03:15:47 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@
 # define B3			((data->uni)->byte3)
 # define B4			((data->uni)->byte4)
 # define L_BYTES	((data->uni)->len_bytes)
+
+# define L_ADJUST	(data->len_adjust)
 
 # define LL			(long long)
 
@@ -148,6 +150,7 @@ typedef struct		s_data
 	t_arg			*arg;
 	t_uni			*uni;
 	bool			error;
+	int				len_adjust;
 }					t_data;
 
 void				ft_get_flag(t_data *data, int i);

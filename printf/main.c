@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 04:05:02 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/04 02:34:34 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/04 03:33:00 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,43 @@
 int		main(void)
 {
 	setlocale(LC_ALL, "");
+
+	int	r;
+
+	r = ft_printf("|%.0d|\n", 0);
+	r = printf("|%.0d|\n", 0);
+
+	r = printf("|%.0x %.5x %0.1x|\n", 0, 0, 0);
+	printf("%d\n", r);
+	r = ft_printf("|%.x %.5x %0.1x|\n", 0, 0, 0);
+	printf("%d\n", r);
+
+	r = printf("|%.x %d|\n", 1, 0);
+	printf("%d\n", r);
+	r = ft_printf("|%.x %d|\n", 1, 0);
+	printf("%d\n", r);
+
+	/*
+	r = printf("|%5c|\n", 0);
+	printf("%d\n", r);
+	r = ft_printf("|%5c|\n", 0);
+	printf("%d\n", r);
+
+	r = printf("|%1c|\n", 0);
+	printf("%d\n", r);
+	r = ft_printf("|%1c|\n", 0);
+	printf("%d\n", r);
+
+	r = printf("|%1c%c%c%c|\n", 0, 0, 0, 0);
+	printf("%d\n", r);
+	r = ft_printf("|%1c%c%c%c|\n", 0, 0, 0, 0);
+	printf("%d\n", r);
+
+	r = printf("|%#1x%#x%d%d|\n", 0, 0, 0, 0);
+	printf("%d\n", r);
+	r = ft_printf("|%#1x%#x%d%d|\n", 0, 0, 0, 0);
+	printf("%d\n", r);
+	*/
 
 	/*
 	ft_printf("{%.3S}\n",  L"Δικαιοπολις εν αγρω εστιν");

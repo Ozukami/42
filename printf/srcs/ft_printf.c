@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/04 02:33:12 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/04 03:34:55 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,10 +205,15 @@ void		ft_get_flag(t_data *data, int i)
 
 void		ft_get_f_p(t_data *data, int i)
 {
-	if (FORMAT[i + LEN] == '.')
+	if (FORMAT[i + LEN] == '.' && ft_isdigit(FORMAT[i + LEN + 1]))
 	{
 		PREC = ft_atoi(&(FORMAT[i + LEN + 1]));
 		LEN += ft_count_digit(PREC) + 1;
+	}
+	else if (FORMAT[i + LEN] == '.')
+	{
+		PREC = 0;
+		LEN++;
 	}
 	else
 	{
@@ -437,6 +442,23 @@ void		ft_neg_case(t_data *data)
 	}
 }
 
+void		ft_adjust_arg(t_data *data)
+{
+	if (!(ARG[0]))
+	{
+		FIELD--;
+		L_ADJUST++;
+	}
+	if (ARG[0] == '0')
+	{
+		PREFIX = 0;
+		if (PREC == 0)
+			ARG[0] = '\0';
+	}
+	if (ARG == NULL)
+		ARG = ft_strdup("(null)");
+}
+
 /*
 ** Dispatch the process depending of the type
 ** String VS Numbers
@@ -444,6 +466,7 @@ void		ft_neg_case(t_data *data)
 
 void		ft_dispatch(t_data *data)
 {
+	ft_adjust_arg(data);
 	L_ARG = ft_strlen(ARG);
 	L_INIT = ft_strlen(ARG);
 	ft_neg_case(data);
@@ -451,11 +474,6 @@ void		ft_dispatch(t_data *data)
 		SPACE = 0;
 	if (TYPE == 's' || TYPE == 'c')
 	{
-		if (ARG == NULL)
-		{
-			ARG = ft_strdup("(null)");
-			return ;
-		}
 		if (FIELD == -1 && PREC == -1)
 			L_FARG = L_ARG;
 		else if ((FIELD == -1) || (FIELD < PREC && PREC < (int)L_ARG))
@@ -468,6 +486,15 @@ void		ft_dispatch(t_data *data)
 	else
 		L_FARG = (size_t)ft_max(ft_max(FIELD, PREC), (int)L_ARG);
 	ft_process(data);
+}
+
+void		ft_bad_delim(t_data *data, int i)
+{
+	if (!LEFT && FIELD > 0)
+		BUFFER = ft_add_spaces(BUFFER, FIELD - 1);
+	BUFFER = ft_straddchar(BUFFER, FORMAT[i + LEN]);
+	if (LEFT && FIELD > 0)
+		BUFFER = ft_add_spaces(BUFFER, FIELD - 1);
 }
 
 /*
@@ -491,11 +518,7 @@ void		ft_get_conv(t_data *data, int i)
 			ft_get_mod(data, i);
 	}
 	if (!(ft_strchr((const char *)DELIM, FORMAT[i + LEN])))
-	{
-		if (FIELD > 0)
-			BUFFER = ft_add_spaces(BUFFER, FIELD - 1);
-		BUFFER = ft_straddchar(BUFFER, FORMAT[i + LEN]);
-	}
+		ft_bad_delim(data, i);
 	else
 	{
 		TYPE = FORMAT[i + LEN];
@@ -549,7 +572,7 @@ int			ft_printf(const char *format, ...)
 	if (ERR)
 		return (ERROR);
 	ft_putstr(BUFFER);
-	return ((int)ft_strlen(BUFFER));
+	return ((int)ft_strlen(BUFFER) + L_ADJUST);
 }
 
 char		*ft_sprintf(const char *format, ...)
