@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/04 03:34:55 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/04 03:45:35 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -444,19 +444,23 @@ void		ft_neg_case(t_data *data)
 
 void		ft_adjust_arg(t_data *data)
 {
-	if (!(ARG[0]))
+	if (ARG == NULL)
+	{
+		ARG = ft_strdup("(null)");
+		return ;
+	}
+	if (!(ARG[0]) && TYPE != 's')
 	{
 		FIELD--;
 		L_ADJUST++;
 	}
 	if (ARG[0] == '0')
 	{
-		PREFIX = 0;
+		if (TYPE != 'o')
+			PREFIX = 0;
 		if (PREC == 0)
 			ARG[0] = '\0';
 	}
-	if (ARG == NULL)
-		ARG = ft_strdup("(null)");
 }
 
 /*

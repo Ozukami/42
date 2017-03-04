@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 04:05:02 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/04 03:33:00 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/04 03:44:51 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,29 @@ int		main(void)
 
 	int	r;
 
-	r = ft_printf("|%.0d|\n", 0);
-	r = printf("|%.0d|\n", 0);
-
-	r = printf("|%.0x %.5x %0.1x|\n", 0, 0, 0);
+	/*
+	r = printf("|%10s|\n", NULL);
 	printf("%d\n", r);
-	r = ft_printf("|%.x %.5x %0.1x|\n", 0, 0, 0);
+	r = ft_printf("|%10s|\n", NULL);
 	printf("%d\n", r);
 
+	r = printf("|%s|\n", NULL);
+	printf("%d\n", r);
+	r = ft_printf("|%s|\n", NULL);
+	printf("%d\n", r);
+	*/
+
+	r = printf("|%#.o %.5o %0.1o|\n", 0, 0, 0);
+	printf("%d\n", r);
+	r = ft_printf("|%#.o %.5o %0.1o|\n", 0, 0, 0);
+	printf("%d\n", r);
+
+	/*
 	r = printf("|%.x %d|\n", 1, 0);
 	printf("%d\n", r);
 	r = ft_printf("|%.x %d|\n", 1, 0);
 	printf("%d\n", r);
 
-	/*
 	r = printf("|%5c|\n", 0);
 	printf("%d\n", r);
 	r = ft_printf("|%5c|\n", 0);
