@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/04 04:13:29 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/04 05:06:59 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void		ft_get_arg_2(t_data *data)
 		ARG = ft_lltoa_base(va_arg(AP, long long),
 				BASE, ((TYPE == 'X') ? 1 : 0));
 	else if ((ft_strequ(MODIF, "j") || ft_strequ(MODIF, "z")))
-		ARG = ft_lltoa_base(LL((unsigned int)va_arg(AP, int)),
+		ARG = ft_ulltoa_base(LL(va_arg(AP, unsigned long)),
 				BASE, ((TYPE == 'X') ? 1 : 0));
 	else
 		ARG = ft_ulltoa_base(LL((char)va_arg(AP, int)),
@@ -164,12 +164,14 @@ void		ft_get_arg_1(t_data *data)
 		ARG = ft_ulltoa_base(va_arg(AP, unsigned long long int), 16, 0);
 	else if (TYPE == 'u')
 	{
-		if (ft_strequ(MODIF, "hh"))
+		if (ft_strequ(MODIF, ""))
+			ARG = ft_lltoa_base((unsigned int)(va_arg(AP, int)), BASE, 0);
+		else if (ft_strequ(MODIF, "hh"))
 			ARG = ft_lltoa_base((unsigned char)va_arg(AP, int), 10, 0);
 		else if (ft_strequ(MODIF, "h"))
 			ARG = ft_lltoa_base((unsigned short)(va_arg(AP, int)), BASE, 0);
 		else
-			ARG = ft_lltoa_base((unsigned int)(va_arg(AP, int)), BASE, 0);
+			ARG = ft_ulltoa_base((unsigned long)(va_arg(AP, long)), BASE, 0);
 	}
 	else
 		ft_get_arg_2(data);
