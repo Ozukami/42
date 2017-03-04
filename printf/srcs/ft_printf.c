@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/04 04:11:27 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/04 04:13:29 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -458,7 +458,7 @@ void		ft_adjust_arg(t_data *data)
 	{
 		if (TYPE != 'o')
 			PREFIX = 0;
-		if (PREC == 0 || TYPE == 'c')
+		if (PREC == 0)
 			ARG[0] = '\0';
 	}
 }
