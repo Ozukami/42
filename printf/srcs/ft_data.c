@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 00:57:08 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/04 00:42:57 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/04 02:30:59 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ t_uni		*ft_init_uni(void)
 
 	if (!(new = malloc(sizeof(t_uni))))
 		exit(0);
-	new->tmp = 0;
+	new->wc_arg = 0;
+	new->ws_arg = NULL;
 	new->bin = NULL;
 	new->bits = 0;
 	new->bytes = 0;
@@ -66,6 +67,7 @@ t_uni		*ft_init_uni(void)
 	new->byte2 = ft_strdup("110xxxxx10xxxxxx");
 	new->byte3 = ft_strdup("1110xxxx10xxxxxx10xxxxxx");
 	new->byte4 = ft_strdup("11110xxx10xxxxxx10xxxxxx10xxxxxx");
+	new->len_bytes = 0;
 	return (new);
 }
 

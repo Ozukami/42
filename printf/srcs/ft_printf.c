@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/04 00:45:36 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/04 02:33:12 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,18 @@
 void		ft_debug(t_data *data)
 {
 	printf("\n|%s|%s|%s|\n", LARG, ARG, RARG);
+}
+
+void		ft_reset_bytes(t_data *data)
+{
+	free(B1);
+	B1 = ft_strdup("0xxxxxxx");
+	free(B2);
+	B2 = ft_strdup("110xxxxx10xxxxxx");
+	free(B3);
+	B3 = ft_strdup("1110xxxx10xxxxxx10xxxxxx");
+	free(B4);
+	B4 = ft_strdup("11110xxx10xxxxxx10xxxxxx10xxxxxx");
 }
 
 int			ft_bin_to_dec(char *bin)
@@ -36,7 +48,8 @@ void		ft_split_bytes(t_data *data, char *byte)
 	int		i;
 	char	multi_octet[BYTES + 1];
 
-	ARG = ft_strdup("");
+	if (TYPE == 'c')
+		ARG = ft_strdup("");
 	i = 0;
 	while (i < BYTES)
 	{
@@ -52,6 +65,7 @@ void		ft_set_bytes(t_data *data, char *byte, int bytes)
 	int		i;
 	int		j;
 
+	ft_reset_bytes(data);
 	BYTES = bytes;
 	i = BITS - 1;
 	j = ft_strlen(byte) - 1;
@@ -69,18 +83,26 @@ void		ft_set_bytes(t_data *data, char *byte, int bytes)
 	ft_split_bytes(data, byte);
 }
 
-void		ft_conv_char(t_data *data, wchar_t c)
+static void	ft_sub(t_data *data, char *byte, int n)
+{
+	L_BYTES += n;
+	if (TYPE == 's' && L_BYTES > PREC)
+		return ;
+	ft_set_bytes(data, byte, n);
+}
+
+void		ft_conv_wc(t_data *data, wchar_t c)
 {
 	BIN = ft_itoa_base((int)c, 2, 0);
 	BITS = (int)ft_strlen(BIN);
 	if (BITS < 8)
-		ft_set_bytes(data, B1, 1);
+		ft_sub(data, B1, 1);
 	else if (BITS < 12)
-		ft_set_bytes(data, B2, 2);
+		ft_sub(data, B2, 2);
 	else if (BITS < 17)
-		ft_set_bytes(data, B3, 3);
+		ft_sub(data, B3, 3);
 	else
-		ft_set_bytes(data, B4, 4);
+		ft_sub(data, B4, 4);
 }
 
 void		ft_get_arg_2(t_data *data)
@@ -111,15 +133,30 @@ void		ft_get_arg_2(t_data *data)
 				BASE, ((TYPE == 'X') ? 1 : 0));
 }
 
+void		ft_conv_ws(t_data *data, wchar_t *arg)
+{
+	int		i;
+
+	ARG = ft_strdup("");
+	i = 0;
+	while (arg[i])
+	{
+		ft_conv_wc(data, arg[i]);
+		i++;
+	}
+}
+
 void		ft_get_arg_1(t_data *data)
 {
-	if (TYPE == 's')
+	if (TYPE == 's' && ft_strequ(MODIF, "l"))
+		ft_conv_ws(data, (WS_ARG = va_arg(AP, wchar_t *)));
+	else if (TYPE == 's')
 		ARG = va_arg(AP, char *);
 	else if (TYPE == 'c' && ft_strequ(MODIF, "l"))
 	{
-		TMP = va_arg(AP, wchar_t);
-		ERR = (TMP < 0 || TMP > 2097152) ? 1 : 0;
-		ft_conv_char(data, TMP);
+		WC_ARG = va_arg(AP, wchar_t);
+		ERR = (WC_ARG < 0 || WC_ARG > 2097152) ? 1 : 0;
+		ft_conv_wc(data, WC_ARG);
 	}
 	else if (TYPE == 'c')
 		ARG = ft_straddchar(ft_strdup(""), va_arg(AP, int));
@@ -136,8 +173,6 @@ void		ft_get_arg_1(t_data *data)
 	}
 	else
 		ft_get_arg_2(data);
-	L_ARG = ft_strlen(ARG);
-	L_INIT = ft_strlen(ARG);
 }
 
 /*
@@ -409,6 +444,8 @@ void		ft_neg_case(t_data *data)
 
 void		ft_dispatch(t_data *data)
 {
+	L_ARG = ft_strlen(ARG);
+	L_INIT = ft_strlen(ARG);
 	ft_neg_case(data);
 	if (FIELD > (int)L_INIT && FIELD > PREC && !LEFT)
 		SPACE = 0;

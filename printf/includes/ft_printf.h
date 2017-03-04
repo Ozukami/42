@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/04 00:45:26 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/04 02:29:54 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,57 +19,59 @@
 # include <stdbool.h>
 # include <stdio.h> // !!!!!
 
-# define ERROR	-1
-# define SUCCES	1
+# define ERROR		-1
+# define SUCCES		1
 
-# define AP		(data->ap)
+# define AP			(data->ap)
 
-# define FORMAT	(data->format)
-# define BUFFER	(data->buff)
-# define ERR	(data->error)
-# define LEN	(data->len)
+# define FORMAT		(data->format)
+# define BUFFER		(data->buff)
+# define ERR		(data->error)
+# define LEN		(data->len)
 
-# define FLAG	(data->flag)
-# define F_P	(data->f_p)
-# define MOD	(data->mod)
-# define DELIM	(data->delim)
+# define FLAG		(data->flag)
+# define F_P		(data->f_p)
+# define MOD		(data->mod)
+# define DELIM		(data->delim)
 
-# define ARG 	((data->arg)->arg)
-# define FARG 	((data->arg)->final_arg)
-# define LARG 	((data->arg)->left_arg)
-# define RARG 	((data->arg)->right_arg)
+# define ARG 		((data->arg)->arg)
+# define FARG 		((data->arg)->final_arg)
+# define LARG 		((data->arg)->left_arg)
+# define RARG		((data->arg)->right_arg)
 
-# define L_INIT ((data->arg)->size_init)
-# define L_ARG 	((data->arg)->size_arg)
-# define L_FARG ((data->arg)->size_farg)
-# define L_LARG ((data->arg)->size_larg)
-# define L_RARG ((data->arg)->size_rarg)
+# define L_INIT		((data->arg)->size_init)
+# define L_ARG		((data->arg)->size_arg)
+# define L_FARG		((data->arg)->size_farg)
+# define L_LARG		((data->arg)->size_larg)
+# define L_RARG 	((data->arg)->size_rarg)
 
-# define TYPE	((data->conv)->type)
-# define BASE	((data->conv)->base)
-# define SPACE	((data->conv)->space)
-# define PREFIX	((data->conv)->prefix)
-# define ZERO	((data->conv)->zero)
-# define LEFT	((data->conv)->left)
-# define SIGN	((data->conv)->sign)
-# define NEG	((data->conv)->neg)
-# define STAR	((data->conv)->star)
-# define FIELD	((data->conv)->field)
-# define POINT	((data->conv)->point)
-# define PREC	((data->conv)->prec)
-# define MODIF	((data->conv)->mod)
-# define DELI	((data->conv)->delim)
+# define TYPE		((data->conv)->type)
+# define BASE		((data->conv)->base)
+# define SPACE		((data->conv)->space)
+# define PREFIX		((data->conv)->prefix)
+# define ZERO		((data->conv)->zero)
+# define LEFT		((data->conv)->left)
+# define SIGN		((data->conv)->sign)
+# define NEG		((data->conv)->neg)
+# define STAR		((data->conv)->star)
+# define FIELD		((data->conv)->field)
+# define POINT		((data->conv)->point)
+# define PREC		((data->conv)->prec)
+# define MODIF		((data->conv)->mod)
+# define DELI		((data->conv)->delim)
 
-# define TMP	((data->uni)->tmp)
-# define BIN	((data->uni)->bin)
-# define BITS	((data->uni)->bits)
-# define BYTES	((data->uni)->bytes)
-# define B1		((data->uni)->byte1)
-# define B2		((data->uni)->byte2)
-# define B3		((data->uni)->byte3)
-# define B4		((data->uni)->byte4)
+# define WC_ARG		((data->uni)->wc_arg)
+# define WS_ARG		((data->uni)->ws_arg)
+# define BIN		((data->uni)->bin)
+# define BITS		((data->uni)->bits)
+# define BYTES		((data->uni)->bytes)
+# define B1			((data->uni)->byte1)
+# define B2			((data->uni)->byte2)
+# define B3			((data->uni)->byte3)
+# define B4			((data->uni)->byte4)
+# define L_BYTES	((data->uni)->len_bytes)
 
-# define LL		(long long)
+# define LL			(long long)
 
 /*
 ** space = blank after %
@@ -116,7 +118,8 @@ typedef struct		s_arg
 
 typedef struct		s_uni
 {
-	wchar_t			tmp;
+	wchar_t			wc_arg;
+	wchar_t			*ws_arg;
 	char			*bin;
 	int				bits;
 	int				bytes;
@@ -124,6 +127,7 @@ typedef struct		s_uni
 	char			*byte2;
 	char			*byte3;
 	char			*byte4;
+	int				len_bytes;
 }					t_uni;
 
 /*
