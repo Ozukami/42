@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/04 03:45:35 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/04 03:57:29 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,10 +179,10 @@ void		ft_get_arg_1(t_data *data)
 ** Adds n spaces to the string s
 */
 
-char		*ft_add_spaces(char *s, int n)
+char		*ft_add_space_or_zero(char *s, char c, int n)
 {
 	while (n-- > 0)
-		s = ft_straddchar(s, ' ');
+		s = ft_straddchar(s, c);
 	return (s);
 }
 
@@ -495,10 +495,12 @@ void		ft_dispatch(t_data *data)
 void		ft_bad_delim(t_data *data, int i)
 {
 	if (!LEFT && FIELD > 0)
-		BUFFER = ft_add_spaces(BUFFER, FIELD - 1);
+		BUFFER = ft_add_space_or_zero(BUFFER,
+				((ZERO) ? '0' : ' '), FIELD - 1);
 	BUFFER = ft_straddchar(BUFFER, FORMAT[i + LEN]);
 	if (LEFT && FIELD > 0)
-		BUFFER = ft_add_spaces(BUFFER, FIELD - 1);
+		BUFFER = ft_add_space_or_zero(BUFFER,
+				((ZERO) ? '0' : ' '), FIELD - 1);
 }
 
 /*
