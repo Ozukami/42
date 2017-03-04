@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 04:05:02 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/04 03:49:39 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/04 04:10:53 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,16 @@ int		main(void)
 {
 	setlocale(LC_ALL, "");
 
-	int	r;
+	int		r;
+	char	*s;
 
-	r = printf("|%010.5k|\n");
+	s = malloc(100);
+
+	r = sprintf(s, "|%c|\n", 0);
+	printf("%d > %s\n", r, s);
+	r = printf("|%c|\n", 0);
 	printf("%d\n", r);
-	r = ft_printf("|%010.5k|\n");
+	r = ft_printf("|%c|\n", 0);
 	printf("%d\n", r);
 
 	/*
