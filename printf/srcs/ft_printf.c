@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/06 00:00:27 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/06 00:11:51 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,7 @@ void		ft_get_arg_1(t_data *data)
 
 				stock = va_arg(AP, int);
 				if ((unsigned char)stock < UCHAR_MAX)
-					ARG = ft_lltoa_base(stock, BASE, 0);
+					ARG = ft_lltoa_base((unsigned char)stock, BASE, 0);
 				else
 					ARG = ft_ulltoa_base((unsigned char)stock, BASE, 0);
 			}
