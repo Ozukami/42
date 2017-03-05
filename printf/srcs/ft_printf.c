@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/05 22:46:33 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/05 23:00:50 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,9 @@ void		ft_get_arg_2(t_data *data)
 				BASE, ((TYPE == 'X') ? 1 : 0));
 	else if (ft_strequ(MODIF, "ll"))
 		ARG = ft_lltoa_base(va_arg(AP, long long),
+				BASE, ((TYPE == 'X') ? 1 : 0));
+	else if ((ft_strequ(MODIF, "j") && TYPE == 'd'))
+		ARG = ft_lltoa_base(LL(va_arg(AP, unsigned long)),
 				BASE, ((TYPE == 'X') ? 1 : 0));
 	else if ((ft_strequ(MODIF, "j") || ft_strequ(MODIF, "z")))
 		ARG = ft_ulltoa_base(LL(va_arg(AP, unsigned long)),
