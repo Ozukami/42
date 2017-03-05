@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/04 03:15:47 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/05 23:37:25 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,6 @@ void				ft_get_conv(t_data *data, int i);
 t_data				*ft_init_data(char *format, va_list ap);
 
 int					ft_printf(const char *format, ...);
-char				*ft_sprintf(const char *format, ...);
+int					ft_sprintf(char *s, const char *format, ...);
 
 #endif

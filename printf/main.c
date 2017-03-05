@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 04:05:02 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/05 23:07:55 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/05 23:59:22 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,24 +19,73 @@ int		main(void)
 	
 	int		r;
 	char	*s;
+	char	*s2;
 
 	s = malloc(100);
+	s2 = malloc(100);
 
-	printf("%.0p, %.p", 0, 0);
-	printf("\n");
-	ft_printf("%.0p, %.p", 0, 0);
-	printf("\n\n");
+	r = printf("|%o, %ho, %hho|", -42, -42, -42);
+	printf("	(%d)\n", r);
+	r = ft_printf("|%o, %ho, %hho|", -42, -42, -42);
+	printf("	(%d)\n", r);
 
-	printf("%.5p", 0);
-	printf("\n");
-	ft_printf("%.5p", 0);
-	printf("\n\n");
+	/*
+	r = printf("|%zi|", LLONG_MIN);
+	printf("	(%d)\n", r);
+	r = ft_printf("|%zi|", LLONG_MIN);
+	printf("	(%d)\n", r);
+	*/
+
+	/*
+	r = printf("[% 3c] bonjour", 0);
+	printf("	(%d)\n", r);
+	r = ft_printf("[% 3c] bonjour", 0);
+	printf("	(%d)\n\n", r);
+
+	r = sprintf(s, "[% 3c] bonjour", 0);
+	printf("|%s|	(%d)\n", s, r);
+	r = ft_sprintf(s2, "[% 3c] bonjour", 0);
+	printf("|%s|	(%d)\n", s2, r);
+	*/
 
 	/*
 	**  SEGV
 	*/	
 
 	/*
+	
+	// 50
+	r = sprintf(s, "[%3c]\n", 0);
+	printf("|%s| %d\n", s, r);
+	r = printf("[%3c]\n", 0);
+	printf("%d\n", r);
+	r = ft_printf("[%3c]\n", 0);
+	printf("%d\n", r);
+
+	// 52
+	r = sprintf(s, "[%03c]\n", 0);
+	printf("|%s| %d\n", s, r);
+	r = printf("[%03c]\n", 0);
+	printf("%d\n", r);
+	r = ft_printf("[%03c]\n", 0);
+	printf("%d\n", r);
+
+	// 60
+	r = sprintf(s, "[%#o]\n", 0);
+	printf("|%s| %d\n", s, r);
+	r = printf("[%#o]\n", 0);
+	printf("%d\n", r);
+	r = ft_printf("[%#o]\n", 0);
+	printf("%d\n", r);
+
+	// 62
+	r = sprintf(s, "[% c]\n", 0);
+	printf("|%s| %d\n", s, r);
+	r = printf("[% c]\n", 0);
+	printf("%d\n", r);
+	r = ft_printf("[% c]\n", 0);
+	printf("%d\n", r);
+
 	r = sprintf(s, "[%hhC, %hhC]\n", 0, L'米');
 	printf("|%s| %d\n", s, r);
 	r = printf("[%hhC, %hhC]\n", 0, L'米');

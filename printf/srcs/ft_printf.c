@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/05 23:10:10 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/06 00:00:27 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ void		ft_get_arg_2(t_data *data)
 	else if (ft_strequ(MODIF, "ll"))
 		ARG = ft_lltoa_base(va_arg(AP, long long),
 				BASE, ((TYPE == 'X') ? 1 : 0));
-	else if ((ft_strequ(MODIF, "j") && TYPE == 'd'))
+	else if ((ft_strequ(MODIF, "j") || ft_strequ(MODIF, "z")) && TYPE == 'd')
 		ARG = ft_lltoa_base(LL(va_arg(AP, unsigned long)),
 				BASE, ((TYPE == 'X') ? 1 : 0));
 	else if ((ft_strequ(MODIF, "j") || ft_strequ(MODIF, "z")))
@@ -669,11 +669,12 @@ int			ft_printf(const char *format, ...)
 	return (r);
 }
 
-char		*ft_sprintf(const char *format, ...)
+int			ft_sprintf(char *s, const char *format, ...)
 {
 	t_data		*data;
 	va_list		ap;
 	int			i;
+	int			r;
 
 	va_start(ap, format);
 	data = ft_init_data((char *)format, ap);
@@ -691,6 +692,9 @@ char		*ft_sprintf(const char *format, ...)
 	}
 	va_end(ap);
 	if (ERR)
-		return ("\0");
-	return (BUFFER);
+		return (ERROR);
+	r = (int)ft_strlen(BUFFER) + L_ADJUST;
+	s = ft_strcpy(s, BUFFER);
+	ft_free_the_shit(data);
+	return (r);
 }
