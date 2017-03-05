@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 04:05:02 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/04 12:38:46 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/03/05 22:46:25 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,19 @@ int		main(void)
 
 	s = malloc(100);
 
+	r = printf("%%%");
+	printf("- %d \n", r);
+	r = ft_printf("%%%");
+	printf("- %d \n", r);
+
 	/*
 	**  SEGV
 	*/	
 
+	/*
 	printf("[%hhC, %hhC]\n", 0, '米');
 	ft_printf("[%hhC, %hhC]\n", 0, '米');
 
-	/*
 	printf("[%hho, %hho]\n", 0, UCHAR_MAX);
 	ft_printf("[%lo, %lo]\n\n", 0, ULONG_MAX);
 	
@@ -38,7 +43,7 @@ int		main(void)
 	
 	printf("[%lX, %lX]\n", 0, ULONG_MAX);
 	ft_printf("[%lX, %lX]\n\n", 0, ULONG_MAX);
-*/
+	*/
 
 	/*
 	// 0028 (int)

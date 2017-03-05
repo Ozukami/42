@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/04 12:39:01 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/03/05 22:46:33 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -551,9 +551,11 @@ void		ft_bad_delim(t_data *data, int i)
 void		ft_get_conv(t_data *data, int i)
 {
 	LEN = 0;
-	while (ft_strchr((const char *)FLAG, FORMAT[i + LEN])
+	if (!FORMAT[i + LEN])
+		return ;
+	while (FORMAT[i + LEN] && (ft_strchr((const char *)FLAG, FORMAT[i + LEN])
 			|| ft_strchr((const char *)F_P, FORMAT[i + LEN])
-			|| ft_strchr((const char *)MOD, FORMAT[i + LEN]))
+			|| ft_strchr((const char *)MOD, FORMAT[i + LEN])))
 	{
 		if (ft_strchr((const char *)FLAG, FORMAT[i + LEN]))
 			ft_get_flag(data, i);
