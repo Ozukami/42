@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/05 23:00:50 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/05 23:10:10 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -301,10 +301,7 @@ void		ft_adjust_2(t_data *data)
 	if (TYPE == 'c')
 		PREC = -1;
 	if (TYPE == 'p')
-	{
 		PREFIX = 2;
-		PREC = -1;
-	}
 	if (PREC > -1 && TYPE != 's')
 		ZERO = 0;
 }
@@ -414,7 +411,6 @@ void		ft_set_size(t_data *data)
 	}
 	if (NEG && PREC > 0)
 		ft_replace_neg(data);
-	//ft_debug(data);
 }
 
 void		ft_set_sign(t_data *data)
