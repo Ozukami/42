@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/06 04:03:51 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/06 04:26:55 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,21 +157,25 @@ void		ft_get_arg_oux(t_data *data)
 
 void		ft_get_arg_1(t_data *data)
 {
-	if (TYPE == 's' && ft_strequ(MODIF, "l"))
+	if (TYPE == 's')
 	{
 		WS_ARG = va_arg(AP, wchar_t *);
-		ft_conv_ws(data);
-	}
-	else if (TYPE == 's')
-		ARG = va_arg(AP, char *);
-	else if (TYPE == 'c' && ft_strequ(MODIF, "l"))
-	{
-		WC_ARG = va_arg(AP, wchar_t);
-		ERR = (WC_ARG < 0 || WC_ARG > 2097152) ? 1 : 0;
-		ft_conv_wc(data, WC_ARG);
+		if (ft_strequ(MODIF, "l"))
+			ft_conv_ws(data);
+		else
+			ARG = (char *)WS_ARG;
 	}
 	else if (TYPE == 'c')
-		ARG = ft_straddchar(ft_strdup(""), va_arg(AP, int));
+	{
+		if (ft_strequ(MODIF, "l"))
+		{
+			WC_ARG = va_arg(AP, wchar_t);
+			ERR = (WC_ARG < 0 || WC_ARG > 2097152) ? 1 : 0;
+			ft_conv_wc(data, WC_ARG);
+		}
+		else
+			ARG = ft_straddchar(ft_strdup(""), va_arg(AP, int));
+	}
 	else if (TYPE == 'p')
 		ARG = ft_ulltoa_base(va_arg(AP, unsigned long long int), 16, 0);
 	else if (TYPE != 'd')
@@ -229,6 +233,11 @@ void		ft_get_f_p(t_data *data, int i)
 
 void		ft_get_mod(t_data *data, int i)
 {
+	if (ft_strequ(MODIF, "z") || ft_strequ(MODIF, "j"))
+	{
+		LEN++;
+		return ;
+	}
 	if (FORMAT[i + LEN] == 'l' && FORMAT[i + LEN + 1] == 'l')
 	{
 		MODIF = ft_strdup("ll");
@@ -500,8 +509,7 @@ void		ft_bad_delim(t_data *data, int i)
 				((ZERO) ? '0' : ' '), FIELD - 1);
 	BUFFER = ft_straddchar(BUFFER, FORMAT[i + LEN]);
 	if (LEFT && FIELD > 0)
-		BUFFER = ft_add_space_or_zero(BUFFER,
-				((ZERO) ? '0' : ' '), FIELD - 1);
+		BUFFER = ft_add_space_or_zero(BUFFER, ' ', FIELD - 1);
 }
 
 /*
@@ -526,6 +534,8 @@ void		ft_get_conv(t_data *data, int i)
 		if (ft_strchr((const char *)MOD, FORMAT[i + LEN]))
 			ft_get_mod(data, i);
 	}
+	if (!FORMAT[i + LEN])
+		return ;
 	if (!(ft_strchr((const char *)DELIM, FORMAT[i + LEN])))
 		ft_bad_delim(data, i);
 	else
