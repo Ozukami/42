@@ -6,16 +6,11 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/06 23:07:33 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/06 23:44:07 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
-void		ft_debug(t_data *data)
-{
-	printf("\n|%s|%s|%s|\n", LARG, ARG, RARG);
-}
 
 void		ft_reset_bytes(t_data *data)
 {
@@ -159,20 +154,28 @@ void		ft_get_arg_1(t_data *data)
 {
 	if (TYPE == 's')
 	{
+		/*
 		WS_ARG = va_arg(AP, wchar_t *);
 		if (ft_strequ(MODIF, "l"))
 			ft_conv_ws(data);
 		else
+		{
+			printf("1 |%s|\n", (char *)WS_ARG);
+			printf("2 |%S|\n", WS_ARG);
 			ARG = (char *)WS_ARG;
-		/*
+		}
+		*/
 		if (ft_strequ(MODIF, "l"))
 		{
 			WS_ARG = va_arg(AP, wchar_t *);
 			ft_conv_ws(data);
 		}
 		else
-			ARG = ft_strdup(va_arg(AP, char *));
-		*/
+		{
+			char	*tmp = va_arg(AP, char *);
+			if (tmp)
+				ARG = ft_strdup(tmp);
+		}
 	}
 	else if (TYPE == 'c')
 	{
@@ -325,6 +328,32 @@ char		*ft_stradd_char(t_data *data, char *s, int n)
 		n--;
 	}
 	return (s);
+}
+
+char	*ft_strjoin_test(char *s1, char const *s2)
+{
+	char	*join;
+	int		i;
+	int		j;
+
+	if (!s1 || !s2)
+		return (NULL);
+	if (!(join = ft_memalloc(ft_strlen(s1) + ft_strlen(s2) + 1)))
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (s1[i])
+	{
+		join[i] = s1[i];
+		i++;
+	}
+	while (s2[j])
+	{
+		join[i + j] = s2[j];
+		j++;
+	}
+	free(s1);
+	return (join);
 }
 
 void		ft_replace_neg(t_data *data)
@@ -588,11 +617,9 @@ void		ft_free_the_shit(t_data *data)
 	free(B2);
 	free(B3);
 	free(B4);
-	/*
 	free(ARG);
 	free(LARG);
 	free(RARG);
-	*/
 }
 
 /*
