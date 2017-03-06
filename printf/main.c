@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 04:05:02 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/06 00:07:04 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/06 03:51:09 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,16 @@ int		main(void)
 	s = malloc(100);
 	s2 = malloc(100);
 
+	printf("%lu\n", UCHAR_MAX - 1);
+	ft_printf("%lu\n\n", UCHAR_MAX - 1);
+
+	printf("%lu\n", UCHAR_MAX);
+	ft_printf("%lu\n\n", UCHAR_MAX);
+
+	printf("%lu\n", UCHAR_MAX + 1);
+	ft_printf("%lu\n", UCHAR_MAX + 1);
+
+	/*
 	printf("%s\n", ft_lltoa_base((unsigned char)-42, 8, 0));
 	printf("%s\n\n", ft_ulltoa_base((unsigned char)-42, 8, 0));
 
@@ -31,6 +41,7 @@ int		main(void)
 	printf("	(%d)\n", r);
 	r = ft_printf("|%o, %ho, %hho|", -42, -42, -42);
 	printf("	(%d)\n", r);
+	*/
 
 	/*
 	r = printf("|%zi|", LLONG_MIN);

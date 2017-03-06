@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 00:57:08 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/04 05:42:21 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/06 03:57:20 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ t_arg		*ft_init_arg(void)
 	if (!(new = malloc(sizeof(t_conv))))
 		exit(0);
 	new->arg = NULL;
-	//new->final_arg = ft_strdup("");
 	new->final_arg = NULL;
 	new->left_arg = ft_strdup("");
 	new->right_arg = ft_strdup("");

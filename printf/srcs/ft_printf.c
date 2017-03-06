@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/06 01:13:00 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/06 04:03:51 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,76 +123,36 @@ void		ft_conv_ws(t_data *data)
 	}
 }
 
-void		ft_get_arg_3(t_data *data)
+void		ft_get_arg_d(t_data *data)
 {
-	if (ft_strequ(MODIF, ""))
-		ARG = ft_lltoa_base(LL(va_arg(AP, int)),
-				BASE, ((TYPE == 'X') ? 1 : 0));
-	else if (ft_strequ(MODIF, "hh") && (TYPE == 'x' || TYPE == 'X'))
-		ARG = ft_lltoa_base(LL((unsigned char)va_arg(AP, int)),
-				BASE, ((TYPE == 'X') ? 1 : 0));
-	else if (ft_strequ(MODIF, "hh"))
-		ARG = ft_lltoa_base(LL((char)va_arg(AP, int)),
-				BASE, ((TYPE == 'X') ? 1 : 0));
-	else if (ft_strequ(MODIF, "h") && TYPE == 'd')
-		ARG = ft_lltoa_base(LL((short)va_arg(AP, int)),
-				BASE, ((TYPE == 'X') ? 1 : 0));
-	else if (ft_strequ(MODIF, "h") && TYPE != 'd')
-		ARG = ft_lltoa_base(LL((unsigned short)va_arg(AP, int)),
-				BASE, ((TYPE == 'X') ? 1 : 0));
-	else if ((ft_strequ(MODIF, "l") || ft_strequ(MODIF, "ll")) &&
-				(TYPE == 'x' || TYPE == 'X'))
-	{
-		long	stock;
-
-		stock = va_arg(AP, long);
-		if ((unsigned long)stock < ULONG_MAX)
-			ARG = ft_lltoa_base(stock,
-					BASE, ((TYPE == 'X') ? 1 : 0));
-		else
-			ARG = ft_ulltoa_base((unsigned long)stock, BASE,
-						((TYPE == 'X') ? 1 : 0));
-	}
+	if (ft_strequ(MODIF, "hh"))
+		ARG = ft_lltoa_base(((char)va_arg(AP, int)), BASE, 0);
+	else if (ft_strequ(MODIF, "h"))
+		ARG = ft_lltoa_base(((short)va_arg(AP, int)), BASE, 0);
 	else if (ft_strequ(MODIF, "l"))
-		ARG = ft_lltoa_base(LL(va_arg(AP, long)),
-				BASE, ((TYPE == 'X') ? 1 : 0));
+		ARG = ft_lltoa_base((va_arg(AP, long)), BASE, 0);
 	else if (ft_strequ(MODIF, "ll"))
-		ARG = ft_lltoa_base(va_arg(AP, long long),
-				BASE, ((TYPE == 'X') ? 1 : 0));
-	else if ((ft_strequ(MODIF, "j") || ft_strequ(MODIF, "z")) && TYPE == 'd')
-		ARG = ft_lltoa_base(LL(va_arg(AP, unsigned long)),
-				BASE, ((TYPE == 'X') ? 1 : 0));
-	else if ((ft_strequ(MODIF, "j") || ft_strequ(MODIF, "z")))
-		ARG = ft_ulltoa_base(LL(va_arg(AP, unsigned long)),
-				BASE, ((TYPE == 'X') ? 1 : 0));
+		ARG = ft_lltoa_base(va_arg(AP, long), BASE, 0);
+	else if (ft_strequ(MODIF, "j") || ft_strequ(MODIF, "z"))
+		ARG = ft_lltoa_base((va_arg(AP, unsigned long)), BASE, 0);
 	else
-		ARG = ft_ulltoa_base(LL((char)va_arg(AP, int)),
-				BASE, ((TYPE == 'X') ? 1 : 0));
+		ARG = ft_lltoa_base((va_arg(AP, int)), BASE, 0);
 }
 
-void		ft_get_arg_2(t_data *data)
+void		ft_get_arg_oux(t_data *data)
 {
 	if (ft_strequ(MODIF, ""))
-		ARG = ft_lltoa_base((unsigned int)(va_arg(AP, int)), BASE, 0);
+		ARG = ft_lltoa_base((unsigned int)(va_arg(AP, int)),
+				BASE, ((TYPE == 'X') ? 1 : 0));
 	else if (ft_strequ(MODIF, "hh"))
-	{
-		if (TYPE == 'o')
-		{
-			char stock;
-
-			stock = va_arg(AP, int);
-			if ((unsigned char)stock < UCHAR_MAX)
-				ARG = ft_lltoa_base((unsigned char)stock, BASE, 0);
-			else
-				ARG = ft_ulltoa_base((unsigned char)stock, BASE, 0);
-		}
-		else
-			ARG = ft_lltoa_base((unsigned char)va_arg(AP, int), BASE, 0);
-	}
+		ARG = ft_ulltoa_base((unsigned char)va_arg(AP, int),
+				BASE, ((TYPE == 'X') ? 1 : 0));
 	else if (ft_strequ(MODIF, "h"))
-		ARG = ft_lltoa_base((unsigned short)(va_arg(AP, int)), BASE, 0);
+		ARG = ft_lltoa_base((unsigned short)(va_arg(AP, int)),
+				BASE, ((TYPE == 'X') ? 1 : 0));
 	else
-		ARG = ft_ulltoa_base((unsigned long)(va_arg(AP, long)), BASE, 0);
+		ARG = ft_ulltoa_base((va_arg(AP, unsigned long)),
+				BASE, ((TYPE == 'X') ? 1 : 0));
 }
 
 void		ft_get_arg_1(t_data *data)
@@ -214,10 +174,10 @@ void		ft_get_arg_1(t_data *data)
 		ARG = ft_straddchar(ft_strdup(""), va_arg(AP, int));
 	else if (TYPE == 'p')
 		ARG = ft_ulltoa_base(va_arg(AP, unsigned long long int), 16, 0);
-	else if (TYPE == 'u' || TYPE == 'o')
-		ft_get_arg_2(data);
+	else if (TYPE != 'd')
+		ft_get_arg_oux(data);
 	else
-		ft_get_arg_3(data);
+		ft_get_arg_d(data);
 }
 
 /*
@@ -605,37 +565,6 @@ void		ft_free_the_shit(t_data *data)
 	free(B2);
 	free(B3);
 	free(B4);
-	/*
-	if (ARG)
-	{
-		printf("ARG |%s|\n", ARG);
-		free(ARG);
-	}
-	if (LARG)
-	{
-		printf("LARG |%s|\n", LARG);
-		free(LARG);
-	}
-	if (RARG)
-	{
-		printf("RARG |%s|\n", RARG);
-		free(RARG);
-	}
-	if (WS_ARG)
-	{
-		printf("WS_ARG |%ls|\n", WS_ARG);
-		free(WS_ARG);
-	}
-	if (BIN)
-	{
-		printf("BIN |%s|\n", BIN);
-		free(BIN);
-	}
-	*/
-/*
-	free(WS_ARG);
-	free(BIN);
-	*/
 }
 
 /*
