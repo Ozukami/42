@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 04:05:02 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/06 04:28:04 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/06 22:36:04 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,11 @@ int		main(void)
 	char	*s;
 	char	*s2;
 
+	r = 0;
 	s = malloc(100);
 	s2 = malloc(100);
+
+	ft_printf("%s\n", "bonjour");
 
 	/*
 	// 0007 
@@ -32,11 +35,13 @@ int		main(void)
 	printf("\nr = %d\n\n", r);
 	*/
 
+	/*
 	// 0014 (char *)
 	r = printf("|%%   %|", "test");
 	printf("\nr = %d\n", r);
 	r = ft_printf("|%%   %|", "test");
 	printf("\nr = %d\n", r);
+	*/
 
 	/*
 	// 0030 (size_t)

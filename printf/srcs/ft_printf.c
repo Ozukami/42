@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/06 04:26:55 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/06 23:07:33 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,15 @@ void		ft_get_arg_1(t_data *data)
 			ft_conv_ws(data);
 		else
 			ARG = (char *)WS_ARG;
+		/*
+		if (ft_strequ(MODIF, "l"))
+		{
+			WS_ARG = va_arg(AP, wchar_t *);
+			ft_conv_ws(data);
+		}
+		else
+			ARG = ft_strdup(va_arg(AP, char *));
+		*/
 	}
 	else if (TYPE == 'c')
 	{
@@ -412,14 +421,14 @@ void		ft_set_prefix(t_data *data)
 	if (TYPE == 'o' && PREFIX && PREC > (int)L_INIT)
 	{
 		if (FIELD > (int)L_ARG && LEFT)
-			ARG = ft_strjoin(ARG, " ");
+			ARG = ft_strjoinf(ARG, " ");
 		else if (FIELD > (int)L_ARG)
-			ARG = ft_strjoin(" ", ARG);
+			ARG = ft_strjoinf(" ", ARG);
 	}
 	else if (ZERO)
-		LARG = ft_strjoin(s, LARG);
+		LARG = ft_strjoinf(s, LARG);
 	else
-		ARG = ft_strjoin(s, ARG);
+		ARG = ft_strjoinf(s, ARG);
 }
 
 void		ft_process(t_data *data)
@@ -549,6 +558,10 @@ void		ft_get_conv(t_data *data, int i)
 
 void		ft_reset_conv(t_data *data)
 {
+	/*
+	free(ARG);
+	ARG = NULL;
+	*/
 	BASE = 10;
 	SPACE = 0;
 	PREFIX = 0;
@@ -575,7 +588,71 @@ void		ft_free_the_shit(t_data *data)
 	free(B2);
 	free(B3);
 	free(B4);
+	/*
+	free(ARG);
+	free(LARG);
+	free(RARG);
+	*/
 }
+
+/*
+** FREE TEST (not tested yet)
+*/
+
+/*
+void		ft_free_conv(t_conv *conv)
+{
+	free(conv->mod);
+	conv->mod = NULL;
+}
+
+void		ft_free_arg(t_arg *arg)
+{
+	free(arg->arg);
+	arg->arg = NULL;
+	free(arg->final_arg);
+	arg->final_arg = NULL;
+	free(arg->left_arg);
+	arg->left_arg = NULL;
+	free(arg->right_arg);
+	arg->right_arg = NULL;
+}
+
+void		ft_free_uni(t_uni *uni)
+{
+	free(uni->ws_arg);
+	uni->ws_arg = NULL;
+	free(uni->bin);
+	uni->bin = NULL;
+	free(uni->byte1);
+	uni->byte1 = NULL;
+	free(uni->byte2);
+	uni->byte2 = NULL;
+	free(uni->byte3);
+	uni->byte3 = NULL;
+	free(uni->byte4);
+	uni->byte4 = NULL;
+}
+
+void		ft_free_data(t_data *data)
+{
+	ft_free_conv((data->conv));
+	ft_free_arg((data->arg));
+	ft_free_uni((data->uni));
+	free(FLAG);
+	FLAG = NULL;
+	free(F_P);
+	F_P = NULL;
+	free(MOD);
+	MOD = NULL;
+	free(DELIM);
+	DELIM = NULL;
+	free(BUFFER);
+	BUFFER = NULL;
+	free(FORMAT);
+	FORMAT = NULL;
+}
+*/
 
 /*
 ** Ne pas oublier de free les struct si mem leaks au filechecker !!!
