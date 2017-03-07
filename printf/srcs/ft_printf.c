@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/07 05:53:44 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/07 06:08:06 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -337,7 +337,11 @@ char		*ft_stradd_char(t_data *data, char *s, int n)
 		if (LEFT && TYPE == 's')
 			s = ft_strjoin(s, " ");
 		else
+		{
+			PTR = s;
 			s = ft_strjoin(((TYPE == 's') ? " " : "0"), s);
+			ft_strdel(&PTR);
+		}
 		n--;
 	}
 	return (s);
@@ -374,7 +378,7 @@ void		ft_replace_neg(t_data *data)
 	int		i;
 
 	if (PREC >= (int)L_INIT)
-		ARG = ft_strjoin("-", ARG);
+		ARG = ft_strjoin("-", ARG); // !
 	i = 0;
 	if (PREC >= (int)L_INIT)
 	{
@@ -640,6 +644,10 @@ void		ft_free_the_shit(t_data *data)
 	ft_strdel(&LARG);
 	ft_strdel(&RARG);
 	ft_strdel(&BIN);
+	free(data->conv);
+	free(data->arg);
+	free(data->uni);
+	free(data);
 }
 
 /*
