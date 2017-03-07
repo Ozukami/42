@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/07 06:08:06 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/07 06:17:04 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -335,7 +335,7 @@ char		*ft_stradd_char(t_data *data, char *s, int n)
 	while (n > 0)
 	{
 		if (LEFT && TYPE == 's')
-			s = ft_strjoin(s, " ");
+			s = ft_strjoin(s, " "); // !
 		else
 		{
 			PTR = s;
@@ -491,7 +491,11 @@ void		ft_process(t_data *data)
 	if ((PREC > -1 && TYPE == 's') || PREC > (int)L_ARG)
 		ARG = ft_strsub(ARG, 0, PREC + SIGN);
 	if (SPACE)
+	{
+		PTR = BUFFER;
 		BUFFER = ft_strjoin(BUFFER, " ");
+		ft_strdel(&PTR);
+	}
 	if (LEFT)
 		FARG = ft_strjoin(ARG, RARG);
 	else
