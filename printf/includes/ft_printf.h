@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/05 23:37:25 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/07 03:58:24 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define BUFFER		(data->buff)
 # define ERR		(data->error)
 # define LEN		(data->len)
+# define PTR		(data->ptr)
 
 # define FLAG		(data->flag)
 # define F_P		(data->f_p)
@@ -151,6 +152,7 @@ typedef struct		s_data
 	t_uni			*uni;
 	bool			error;
 	int				len_adjust;
+	char			*ptr;
 }					t_data;
 
 void				ft_get_flag(t_data *data, int i);

@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 00:57:08 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/06 22:44:27 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/07 03:57:58 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,6 @@ t_data		*ft_init_data(char *format, va_list ap)
 	new->uni = ft_init_uni();
 	new->error = 0;
 	new->len_adjust = 0;
+	new->ptr = NULL;
 	return (new);
 }

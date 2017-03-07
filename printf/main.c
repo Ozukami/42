@@ -6,27 +6,72 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 04:05:02 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/06 23:45:18 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/07 05:43:33 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include <locale.h>
 
+char	*ft_test(char *s)
+{
+	return (s);
+}
+
 int		main(void)
 {
 	setlocale(LC_ALL, "");
 
+
+	printf("%C\n", 15000);
+	printf("%C %C %C\n", 15000, 14000, 2500);
+		printf("%20.15d\n", 54321);
+		
+	//while (1);
+
+	/*
 	int		r;
 	char	*s;
 	char	*s2;
 
 	r = 0;
-	s = malloc(100);
+	s = ft_strdup("Hello");
 	s2 = malloc(100);
 
-	ft_printf("%s\n", "");
-	printf("%s\n", "");
+	s = ft_test(ft_strdup("Coucou"));
+
+	while (1);
+	*/
+
+	/*
+	char	*test;
+	char	*ptr;
+
+	test = NULL;
+	ptr = NULL;
+	printf("test = %p\n", test);
+	test = ft_strdup("salut");
+	printf("test = %p\n", test);
+	printf("ptr = %p\n", ptr);
+	ptr = test;
+	printf("ptr = %p\n", ptr);
+	test = ft_strdup("hello");
+	printf("test = %p\n", test);
+	printf("test = %s\n", test);
+	//free(ptr);
+	ft_strdel(&ptr);
+	printf("ptr = %p\n", ptr);
+	printf("ptr = %s\n", ptr);
+
+	while(1);
+	*/
+
+	/*
+	ft_printf("|%p|\n", s);
+	ft_printf("%d%d%d\n", 512, NULL, 0);
+	ft_printf("O%ls%ls\n", L"¶² Ý¥", NULL);
+	ft_printf("O%k%%%m\n");
+	*/
 
 	/*
 	r = printf("|%-05%|");

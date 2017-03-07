@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/06 23:44:07 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/07 05:53:44 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int			ft_bin_to_dec(char *bin)
 	power = 7;
 	while (bin[i])
 		hex += (bin[i++] - '0') * ft_recursive_power(2, power--);
+	ft_strdel(&bin);
 	return (hex);
 }
 
@@ -52,7 +53,9 @@ void		ft_split_bytes(t_data *data, char *byte)
 		i++;
 	}
 	multi_octet[BYTES] = '\0';
+	PTR = ARG;
 	ARG = ft_strjoin(ARG, multi_octet);
+	ft_strdel(&PTR);
 }
 
 void		ft_set_bytes(t_data *data, char *byte, int bytes)
@@ -88,6 +91,7 @@ static void	ft_sub(t_data *data, char *byte, int n)
 
 void		ft_conv_wc(t_data *data, wchar_t c)
 {
+	free(BIN);
 	BIN = ft_itoa_base((int)c, 2, 0);
 	BITS = (int)ft_strlen(BIN);
 	if (BITS < 8)
@@ -104,6 +108,7 @@ void		ft_conv_ws(t_data *data)
 {
 	int		i;
 
+	free(ARG);
 	if (WS_ARG == NULL)
 	{
 		ARG = ft_strdup("(null)");
@@ -120,6 +125,7 @@ void		ft_conv_ws(t_data *data)
 
 void		ft_get_arg_d(t_data *data)
 {
+	free(ARG);
 	if (ft_strequ(MODIF, "hh"))
 		ARG = ft_lltoa_base(((char)va_arg(AP, int)), BASE, 0);
 	else if (ft_strequ(MODIF, "h"))
@@ -136,6 +142,7 @@ void		ft_get_arg_d(t_data *data)
 
 void		ft_get_arg_oux(t_data *data)
 {
+	free(ARG);
 	if (ft_strequ(MODIF, ""))
 		ARG = ft_lltoa_base((unsigned int)(va_arg(AP, int)),
 				BASE, ((TYPE == 'X') ? 1 : 0));
@@ -173,12 +180,14 @@ void		ft_get_arg_1(t_data *data)
 		else
 		{
 			char	*tmp = va_arg(AP, char *);
+			free(ARG);
 			if (tmp)
 				ARG = ft_strdup(tmp);
 		}
 	}
 	else if (TYPE == 'c')
 	{
+		free(ARG);
 		if (ft_strequ(MODIF, "l"))
 		{
 			WC_ARG = va_arg(AP, wchar_t);
@@ -250,6 +259,7 @@ void		ft_get_mod(t_data *data, int i)
 		LEN++;
 		return ;
 	}
+	free(MODIF);
 	if (FORMAT[i + LEN] == 'l' && FORMAT[i + LEN + 1] == 'l')
 	{
 		MODIF = ft_strdup("ll");
@@ -268,6 +278,8 @@ void		ft_get_mod(t_data *data, int i)
 		MODIF = ft_strdup("j");
 	else if (FORMAT[i + LEN] == 'z')
 		MODIF = ft_strdup("z");
+	else
+		MODIF = ft_strdup("");
 	LEN++;
 }
 
@@ -295,7 +307,8 @@ void		ft_adjust(t_data *data)
 	if (TYPE >= 'C' && TYPE <= 'U')
 	{
 		TYPE += 32;
-		MODIF = "l";
+		free(MODIF);
+		MODIF = ft_strdup("l");
 	}
 	if (TYPE == 'i')
 		TYPE = 'd';
@@ -409,7 +422,9 @@ void		ft_set_size(t_data *data)
 		L_RARG -= ((PREC >= (int)L_INIT) ? NEG : 0);
 		L_RARG -= ((FIELD > (int)L_INIT && FIELD > PREC) ? SPACE : 0);
 		L_RARG -= ((FIELD > (int)L_INIT && FIELD > PREC) ? (PREFIX) : 0);
+		PTR = RARG;
 		RARG = ((!ZERO) ? ft_strspace(L_RARG) : ft_strzero(L_RARG));
+		ft_strdel(&PTR);
 	}
 	else if (L_FARG > L_ARG)
 	{
@@ -417,7 +432,9 @@ void		ft_set_size(t_data *data)
 		L_LARG -= ((PREC >= (int)L_INIT) ? NEG : 0);
 		L_LARG -= ((FIELD > (int)L_INIT && FIELD > PREC) ? SPACE : 0);
 		L_LARG -= ((FIELD > (int)L_INIT && FIELD > PREC) ? (PREFIX) : 0);
+		PTR = LARG;
 		LARG = ((!ZERO) ? ft_strspace(L_LARG) : ft_strzero(L_LARG));
+		ft_strdel(&PTR);
 	}
 	if (NEG && PREC > 0)
 		ft_replace_neg(data);
@@ -602,24 +619,27 @@ void		ft_reset_conv(t_data *data)
 	FIELD = -1;
 	POINT = 0;
 	PREC = -1;
+	ft_strdel(&MODIF);
 	MODIF = ft_strdup("");
 }
 
 void		ft_free_the_shit(t_data *data)
 {
-	free(FLAG);
-	free(F_P);
-	free(MOD);
-	free(DELIM);
-	free(BUFFER);
-	free(FORMAT);
-	free(B1);
-	free(B2);
-	free(B3);
-	free(B4);
-	free(ARG);
-	free(LARG);
-	free(RARG);
+	ft_strdel(&FLAG);
+	ft_strdel(&F_P);
+	ft_strdel(&MOD);
+	ft_strdel(&DELIM);
+	ft_strdel(&BUFFER);
+	ft_strdel(&FORMAT);
+	ft_strdel(&MODIF);
+	ft_strdel(&B1);
+	ft_strdel(&B2);
+	ft_strdel(&B3);
+	ft_strdel(&B4);
+	ft_strdel(&ARG);
+	ft_strdel(&LARG);
+	ft_strdel(&RARG);
+	ft_strdel(&BIN);
 }
 
 /*
