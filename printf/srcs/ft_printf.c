@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/07 06:17:04 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/10 23:50:31 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,35 +157,28 @@ void		ft_get_arg_oux(t_data *data)
 				BASE, ((TYPE == 'X') ? 1 : 0));
 }
 
-void		ft_get_arg_1(t_data *data)
+void		ft_get_string_arg(t_data *data)
 {
-	if (TYPE == 's')
+	char	*tmp;
+
+	tmp = NULL;
+	if (ft_strequ(MODIF, "l"))
 	{
-		/*
 		WS_ARG = va_arg(AP, wchar_t *);
-		if (ft_strequ(MODIF, "l"))
-			ft_conv_ws(data);
-		else
-		{
-			printf("1 |%s|\n", (char *)WS_ARG);
-			printf("2 |%S|\n", WS_ARG);
-			ARG = (char *)WS_ARG;
-		}
-		*/
-		if (ft_strequ(MODIF, "l"))
-		{
-			WS_ARG = va_arg(AP, wchar_t *);
-			ft_conv_ws(data);
-		}
-		else
-		{
-			char	*tmp = va_arg(AP, char *);
-			free(ARG);
-			if (tmp)
-				ARG = ft_strdup(tmp);
-		}
+		ft_conv_ws(data);
 	}
-	else if (TYPE == 'c')
+	else
+	{
+		tmp = va_arg(AP, char *);
+		free(ARG);
+		if (tmp)
+			ARG = ft_strdup(tmp);
+	}
+}
+
+void		ft_get_arg(t_data *data)
+{
+	if (TYPE == 'c')
 	{
 		free(ARG);
 		if (ft_strequ(MODIF, "l"))
@@ -197,8 +190,12 @@ void		ft_get_arg_1(t_data *data)
 		else
 			ARG = ft_straddchar(ft_strdup(""), va_arg(AP, int));
 	}
+	else if (TYPE == 's')
+		ft_get_string_arg(data);
 	else if (TYPE == 'p')
 		ARG = ft_ulltoa_base(va_arg(AP, unsigned long long int), 16, 0);
+	else if (TYPE == 'b')
+		ARG = ft_lltoa_base(va_arg(AP, long long), 2, 0);
 	else if (TYPE != 'd')
 		ft_get_arg_oux(data);
 	else
@@ -228,15 +225,22 @@ void		ft_get_flag(t_data *data, int i)
 		SIGN = 1;
 	if (FORMAT[i + LEN] == '0')
 		ZERO = 1;
-	if (FORMAT[i + LEN] == '*')
-		STAR = 1;
 	LEN++;
 }
 
 void		ft_get_f_p(t_data *data, int i)
 {
-	if (FORMAT[i + LEN] == '.' && ft_isdigit(FORMAT[i + LEN + 1]))
+	if (FORMAT[i + LEN] == '.' && (ft_isdigit(FORMAT[i + LEN + 1]) ||
+				FORMAT[i + LEN + 1] == '*'))
 	{
+		if (FORMAT[i + LEN + 1] == '*')
+		{
+			PREC = va_arg(AP, int);
+			if (PREC < 0)
+				PREC = -1;
+			LEN += 2;
+			return ;
+		}
 		PREC = ft_atoi(&(FORMAT[i + LEN + 1]));
 		LEN += ft_count_digit(PREC) + 1;
 	}
@@ -247,18 +251,39 @@ void		ft_get_f_p(t_data *data, int i)
 	}
 	else
 	{
-		FIELD = ft_atoi(&(FORMAT[i + LEN]));
-		LEN += ft_count_digit(FIELD);
+		if (FORMAT[i + LEN] == '*')
+		{
+			FIELD = va_arg(AP, int);
+			if (FIELD < 0)
+			{
+				LEFT = 1;
+				FIELD = -FIELD;
+			}
+			LEN++;
+		}
+		else
+		{
+			FIELD = ft_atoi(&(FORMAT[i + LEN]));
+			LEN += ft_count_digit(FIELD);
+		}
 	}
 }
 
-void		ft_get_mod(t_data *data, int i)
+int			ft_multi_mod(t_data *data)
 {
 	if (ft_strequ(MODIF, "z") || ft_strequ(MODIF, "j"))
 	{
 		LEN++;
-		return ;
+		return (1);
 	}
+	return (0);
+}
+
+void		ft_get_mod(t_data *data, int i)
+{
+
+	if (ft_multi_mod(data))
+		return ;
 	free(MODIF);
 	if (FORMAT[i + LEN] == 'l' && FORMAT[i + LEN + 1] == 'l')
 	{
@@ -347,32 +372,6 @@ char		*ft_stradd_char(t_data *data, char *s, int n)
 	return (s);
 }
 
-char	*ft_strjoin_test(char *s1, char const *s2)
-{
-	char	*join;
-	int		i;
-	int		j;
-
-	if (!s1 || !s2)
-		return (NULL);
-	if (!(join = ft_memalloc(ft_strlen(s1) + ft_strlen(s2) + 1)))
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (s1[i])
-	{
-		join[i] = s1[i];
-		i++;
-	}
-	while (s2[j])
-	{
-		join[i + j] = s2[j];
-		j++;
-	}
-	free(s1);
-	return (join);
-}
-
 void		ft_replace_neg(t_data *data)
 {
 	int		i;
@@ -412,14 +411,8 @@ void		ft_adjust_sign(t_data *data)
 	}
 }
 
-void		ft_set_size(t_data *data)
+void		ft_sub_size(t_data *data)
 {
-	if (TYPE == 's' && PREC >= (int)L_INIT)
-		PREC = -1;
-	L_ARG = (((PREC > -1 && TYPE == 's') || PREC >= (int)L_ARG) ?
-			(PREC + SIGN) : L_ARG + SIGN);
-	if (L_ARG > ft_strlen(ARG))
-		ARG = ft_stradd_char(data, ARG, L_ARG - ft_strlen(ARG));
 	if (LEFT && (L_FARG > L_ARG))
 	{
 		L_RARG = L_FARG - L_ARG;
@@ -440,6 +433,17 @@ void		ft_set_size(t_data *data)
 		LARG = ((!ZERO) ? ft_strspace(L_LARG) : ft_strzero(L_LARG));
 		ft_strdel(&PTR);
 	}
+}
+
+void		ft_set_size(t_data *data)
+{
+	if (TYPE == 's' && PREC >= (int)L_INIT)
+		PREC = -1;
+	L_ARG = (((PREC > -1 && TYPE == 's') || PREC >= (int)L_ARG) ?
+			(PREC + SIGN) : L_ARG + SIGN);
+	if (L_ARG > ft_strlen(ARG))
+		ARG = ft_stradd_char(data, ARG, L_ARG - ft_strlen(ARG));
+	ft_sub_size(data);
 	if (NEG && PREC > 0)
 		ft_replace_neg(data);
 }
@@ -600,12 +604,14 @@ void		ft_get_conv(t_data *data, int i)
 	if (!FORMAT[i + LEN])
 		return ;
 	if (!(ft_strchr((const char *)DELIM, FORMAT[i + LEN])))
+	{
 		ft_bad_delim(data, i);
+	}
 	else
 	{
 		TYPE = FORMAT[i + LEN];
 		ft_adjust(data);
-		ft_get_arg_1(data);
+		ft_get_arg(data);
 		ft_dispatch(data);
 	}
 }

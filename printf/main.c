@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 04:05:02 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/07 06:05:10 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/10 23:49:01 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,88 @@ int		main(void)
 {
 	setlocale(LC_ALL, "");
 
+	int		r = 0;
 
+
+	r = ft_printf("[%.-5s]\n", "42");
+	r = printf("[%.-5s]\n", "42");
+	
+
+	r = printf("[%.*s]\n", -5, "42");
+	printf("{r = %d}\n", r);
+	r = ft_printf("[%.*s]\n", -5, "42");
+	printf("{r = %d}\n\n", r);
+	r = printf("[%*d]\n", -5, 42);
+	printf("{r = %d}\n", r);
+	r = ft_printf("[%*d]\n", -5, 42);
+	printf("{r = %d}\n\n", r);
+	r = printf("[%.*c]\n", 0, 0);
+	printf("{r = %d}\n", r);
+	r = ft_printf("[%.*c]\n", 0, 0);
+	printf("{r = %d}\n\n", r);
+	r = printf("[%.*c]\n", -15, 0);
+	printf("{r = %d}\n", r);
+	r = ft_printf("[%.*c]\n", -15, 0);
+	printf("{r = %d}\n", r);
+
+	/*
+	printf("[%*.*d]\n", 25, 20, 512);
+	ft_printf("[%*.*d]\n", 25, 20, 512);
+	printf("[%*.8d]\n", 20, 512);
+	ft_printf("[%*.8d]\n", 20, 512);
+	ft_printf("[%llzjd, %zu]\n", 20, 15);
+	printf("[%zjlld, %zu]\n", 20, 15);
+	*/
+	/*
 	ft_printf("%C\n", 15000);
 	ft_printf("%C %C %C\n", 15000, 14000, 2500);
-	ft_printf("%20.15d\n", 54321);
-		
+	ft_printf("%b\n", -16);
+	ft_printf("%lu\n", ULONG_MAX);
+	*/	
+	//while (1);
+
+	/*
+	int		r;
+	char	*s;
+	char	*s2;
+
+	r = 0;
+	s = ft_strdup("Hello");
+	s2 = malloc(100);
+
+	s = ft_test(ft_strdup("Coucou"));
+
+	r = printf("[%.*s]\n", -5, "42");
+	printf("{r = %d}\n", r);
+	r = ft_printf("[%.*s]\n", -5, "42");
+	printf("{r = %d}\n\n", r);
+	r = printf("[%*d]\n", -5, "42");
+	printf("{r = %d}\n", r);
+	r = ft_printf("[%*d]\n", -5, "42");
+	printf("{r = %d}\n\n", r);
+	r = printf("[%.*c]\n", 0, 0);
+	printf("{r = %d}\n", r);
+	r = ft_printf("[%.*c]\n", 0, 0);
+	printf("{r = %d}\n\n", r);
+	r = printf("[%.*c]\n", -15, 0);
+	printf("{r = %d}\n", r);
+	r = ft_printf("[%.*c]\n", -15, 0);
+	printf("{r = %d}\n", r);
+
+	/*
+	printf("[%*.*d]\n", 25, 20, 512);
+	ft_printf("[%*.*d]\n", 25, 20, 512);
+	printf("[%*.8d]\n", 20, 512);
+	ft_printf("[%*.8d]\n", 20, 512);
+	ft_printf("[%llzjd, %zu]\n", 20, 15);
+	printf("[%zjlld, %zu]\n", 20, 15);
+	*/
+	/*
+	ft_printf("%C\n", 15000);
+	ft_printf("%C %C %C\n", 15000, 14000, 2500);
+	ft_printf("%b\n", -16);
+	ft_printf("%lu\n", ULONG_MAX);
+	*/	
 	//while (1);
 
 	/*

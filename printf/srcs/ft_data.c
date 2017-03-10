@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 00:57:08 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/07 03:57:58 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/10 23:36:51 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,10 @@ t_data		*ft_init_data(char *format, va_list ap)
 
 	if (!(new = malloc(sizeof(t_data))))
 		exit(0);
-	new->flag = ft_strdup(" +-#0*");
-	new->f_p = ft_strdup("123456789.");
+	new->flag = ft_strdup(" +-#0");
+	new->f_p = ft_strdup("123456789.*");
 	new->mod = ft_strdup("hljz");
-	new->delim = ft_strdup("cCsSdDioOuUxXp");
+	new->delim = ft_strdup("cCsSdDioOuUxXpb");
 	new->buff = ft_strdup("");
 	new->format = ft_strdup(format);
 	va_copy(new->ap, ap);
