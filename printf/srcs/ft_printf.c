@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/11 05:35:29 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/11 05:37:51 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -389,7 +389,7 @@ void		ft_replace_neg(t_data *data)
 	{
 		PTR = ARG;
 		ARG = ft_strjoin("-", ARG);
-		ft_strdel(ARG);
+		ft_strdel(&ARG);
 	}
 	i = 0;
 	if (PREC >= (int)L_INIT)
