@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 04:05:02 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/10 23:49:01 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/03/11 00:56:11 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,12 @@ int		main(void)
 	int		r = 0;
 
 
-	r = ft_printf("[%.-5s]\n", "42");
-	r = printf("[%.-5s]\n", "42");
-	
+	printf("{% 03o}\n", 0);
+	ft_printf("{% 03o}\n\n", 0);
 
+	printf("{% 03.5o}}\n\n", 0);
+	printf("{% 3.5o}\n\n", 0);
+	/*
 	r = printf("[%.*s]\n", -5, "42");
 	printf("{r = %d}\n", r);
 	r = ft_printf("[%.*s]\n", -5, "42");
@@ -45,7 +47,7 @@ int		main(void)
 	printf("{r = %d}\n", r);
 	r = ft_printf("[%.*c]\n", -15, 0);
 	printf("{r = %d}\n", r);
-
+*/
 	/*
 	printf("[%*.*d]\n", 25, 20, 512);
 	ft_printf("[%*.*d]\n", 25, 20, 512);

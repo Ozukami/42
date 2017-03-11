@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/10 23:50:31 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/03/11 00:59:09 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,45 +228,51 @@ void		ft_get_flag(t_data *data, int i)
 	LEN++;
 }
 
+void		ft_get_p(t_data *data, int i)
+{
+	if (FORMAT[i + LEN + 1] == '*')
+	{
+		PREC = va_arg(AP, int);
+		if (PREC < 0)
+			PREC = -1;
+		LEN += 2;
+		return ;
+	}
+	PREC = ft_atoi(&(FORMAT[i + LEN + 1]));
+	LEN += ft_count_digit(PREC) + 1;
+}
+
+void		ft_get_f(t_data *data, int i)
+{
+	if (FORMAT[i + LEN] == '*')
+	{
+		FIELD = va_arg(AP, int);
+		if (FIELD < 0)
+		{
+			LEFT = 1;
+			FIELD = -FIELD;
+		}
+		LEN++;
+	}
+	else
+	{
+		FIELD = ft_atoi(&(FORMAT[i + LEN]));
+		LEN += ft_count_digit(FIELD);
+	}
+}
+
 void		ft_get_f_p(t_data *data, int i)
 {
 	if (FORMAT[i + LEN] == '.' && (ft_isdigit(FORMAT[i + LEN + 1]) ||
 				FORMAT[i + LEN + 1] == '*'))
-	{
-		if (FORMAT[i + LEN + 1] == '*')
-		{
-			PREC = va_arg(AP, int);
-			if (PREC < 0)
-				PREC = -1;
-			LEN += 2;
-			return ;
-		}
-		PREC = ft_atoi(&(FORMAT[i + LEN + 1]));
-		LEN += ft_count_digit(PREC) + 1;
-	}
+		ft_get_p(data, i);
 	else if (FORMAT[i + LEN] == '.')
 	{
 		PREC = 0;
 		LEN++;
 	}
 	else
-	{
-		if (FORMAT[i + LEN] == '*')
-		{
-			FIELD = va_arg(AP, int);
-			if (FIELD < 0)
-			{
-				LEFT = 1;
-				FIELD = -FIELD;
-			}
-			LEN++;
-		}
-		else
-		{
-			FIELD = ft_atoi(&(FORMAT[i + LEN]));
-			LEN += ft_count_digit(FIELD);
-		}
-	}
+		ft_get_f(data, i);
 }
 
 int			ft_multi_mod(t_data *data)
@@ -281,7 +287,6 @@ int			ft_multi_mod(t_data *data)
 
 void		ft_get_mod(t_data *data, int i)
 {
-
 	if (ft_multi_mod(data))
 		return ;
 	free(MODIF);
@@ -551,7 +556,7 @@ void		ft_dispatch(t_data *data)
 	L_ARG = ft_strlen(ARG);
 	L_INIT = ft_strlen(ARG);
 	ft_neg_case(data);
-	if (FIELD > (int)L_INIT && FIELD > PREC && !LEFT)
+	if (FIELD > (int)L_INIT && FIELD > PREC && !LEFT && TYPE != 'd')
 		SPACE = 0;
 	if (TYPE == 's' || TYPE == 'c')
 	{
@@ -604,9 +609,7 @@ void		ft_get_conv(t_data *data, int i)
 	if (!FORMAT[i + LEN])
 		return ;
 	if (!(ft_strchr((const char *)DELIM, FORMAT[i + LEN])))
-	{
 		ft_bad_delim(data, i);
-	}
 	else
 	{
 		TYPE = FORMAT[i + LEN];
@@ -618,10 +621,6 @@ void		ft_get_conv(t_data *data, int i)
 
 void		ft_reset_conv(t_data *data)
 {
-	/*
-	free(ARG);
-	ARG = NULL;
-	*/
 	BASE = 10;
 	SPACE = 0;
 	PREFIX = 0;
@@ -719,19 +718,12 @@ void		ft_free_data(t_data *data)
 }
 */
 
-/*
-** Ne pas oublier de free les struct si mem leaks au filechecker !!!
-*/
+// A RENAME
 
-int			ft_printf(const char *format, ...)
+static void		ft_process_2(t_data *data)
 {
-	t_data		*data;
-	va_list		ap;
-	int			i;
-	int			r;
+	int		i;
 
-	va_start(ap, format);
-	data = ft_init_data((char *)format, ap);
 	i = -1;
 	while (FORMAT[++i])
 	{
@@ -744,6 +736,17 @@ int			ft_printf(const char *format, ...)
 			i += LEN;
 		}
 	}
+}
+
+int			ft_printf(const char *format, ...)
+{
+	t_data		*data;
+	va_list		ap;
+	int			r;
+
+	va_start(ap, format);
+	data = ft_init_data((char *)format, ap);
+	ft_process_2(data);
 	va_end(ap);
 	if (ERR)
 		return (ERROR);
@@ -757,23 +760,11 @@ int			ft_sprintf(char *s, const char *format, ...)
 {
 	t_data		*data;
 	va_list		ap;
-	int			i;
 	int			r;
 
 	va_start(ap, format);
 	data = ft_init_data((char *)format, ap);
-	i = -1;
-	while (FORMAT[++i])
-	{
-		if (FORMAT[i] != '%')
-			BUFFER = ft_straddchar(BUFFER, FORMAT[i]);
-		else
-		{
-			ft_reset_conv(data);
-			ft_get_conv(data, ++i);
-			i += LEN;
-		}
-	}
+	ft_process_2(data);
 	va_end(ap);
 	if (ERR)
 		return (ERROR);
