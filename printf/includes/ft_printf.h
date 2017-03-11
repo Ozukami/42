@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/11 02:20:18 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/03/11 03:25:20 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # define ERR		(data->error)
 # define LEN		(data->len)
 # define PTR		(data->ptr)
+# define COLOR		(data->color)
 
 # define FLAG		(data->flag)
 # define F_P		(data->f_p)
@@ -137,7 +138,7 @@ typedef struct		s_color
 {
 	char			*name;
 	char			*code;
-	t_color			*next;
+	struct s_color	*next;
 }					t_color;
 
 typedef struct		s_data

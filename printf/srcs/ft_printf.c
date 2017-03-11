@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/11 02:34:24 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/03/11 04:15:22 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -595,7 +595,6 @@ void		ft_get_conv(t_data *data, int i)
 	LEN = 0;
 	if (!FORMAT[i + LEN])
 		return ;
-
 	while (FORMAT[i + LEN] && (ft_strchr((const char *)FLAG, FORMAT[i + LEN])
 			|| ft_strchr((const char *)F_P, FORMAT[i + LEN])
 			|| ft_strchr((const char *)MOD, FORMAT[i + LEN])))
@@ -637,56 +636,33 @@ void		ft_reset_conv(t_data *data)
 	MODIF = ft_strdup("");
 }
 
-void		ft_free_the_shit(t_data *data)
+void		ft_free_color(t_color *color)
 {
-	ft_strdel(&FLAG);
-	ft_strdel(&F_P);
-	ft_strdel(&MOD);
-	ft_strdel(&DELIM);
-	ft_strdel(&BUFFER);
-	ft_strdel(&FORMAT);
-	ft_strdel(&MODIF);
-	ft_strdel(&B1);
-	ft_strdel(&B2);
-	ft_strdel(&B3);
-	ft_strdel(&B4);
-	ft_strdel(&ARG);
-	ft_strdel(&LARG);
-	ft_strdel(&RARG);
-	ft_strdel(&BIN);
-	free(data->conv);
-	free(data->arg);
-	free(data->uni);
-	free(data);
+	if (color->next)
+		ft_free_color(color->next);
+	free(color);
 }
 
-/*
-** FREE TEST (not tested yet)
-*/
-
-/*
 void		ft_free_conv(t_conv *conv)
 {
 	free(conv->mod);
 	conv->mod = NULL;
+	free(conv);
 }
 
 void		ft_free_arg(t_arg *arg)
 {
 	free(arg->arg);
 	arg->arg = NULL;
-	free(arg->final_arg);
-	arg->final_arg = NULL;
 	free(arg->left_arg);
 	arg->left_arg = NULL;
 	free(arg->right_arg);
 	arg->right_arg = NULL;
+	free(arg);
 }
 
 void		ft_free_uni(t_uni *uni)
 {
-	free(uni->ws_arg);
-	uni->ws_arg = NULL;
 	free(uni->bin);
 	uni->bin = NULL;
 	free(uni->byte1);
@@ -697,6 +673,7 @@ void		ft_free_uni(t_uni *uni)
 	uni->byte3 = NULL;
 	free(uni->byte4);
 	uni->byte4 = NULL;
+	free(uni);
 }
 
 void		ft_free_data(t_data *data)
@@ -704,6 +681,7 @@ void		ft_free_data(t_data *data)
 	ft_free_conv((data->conv));
 	ft_free_arg((data->arg));
 	ft_free_uni((data->uni));
+	ft_free_color(data->color);
 	free(FLAG);
 	FLAG = NULL;
 	free(F_P);
@@ -716,36 +694,53 @@ void		ft_free_data(t_data *data)
 	BUFFER = NULL;
 	free(FORMAT);
 	FORMAT = NULL;
+	free(data);
 }
-*/
 
 // A RENAME
 
 int				ft_color_process(t_data *data, int i)
 {
-	int		len;
-	char	*color;
+	int			len;
+	char		*color_flag;
+	t_color		*current;
 
 	len = 0;
-	while (FORMAT[i + len] != '}' || FORMAT[i + len] != '\0')
+	while (FORMAT[i + len] != '}' && FORMAT[i + len] != '\0')
 		len++;
 	if (FORMAT[i + len] != '}')
 		return (-1);
-	ft_strsub(FORMAT, i, i + len);
+	color_flag = ft_strsub(FORMAT, i, len);
+	current = COLOR;
+	while (current)
+	{
+		if (ft_strequ(color_flag, current->name))
+		{
+			BUFFER = ft_strjoin(BUFFER, current->code);
+			return (len + 1);
+		}
+		current = current->next;
+	}
+	return (0);
 }
 
 static void		ft_process_2(t_data *data)
 {
 	int		i;
+	int		r;
 
 	i = -1;
 	while (FORMAT[++i])
 	{
-		if (FORMAT[i] != '%')
-			BUFFER = ft_straddchar(BUFFER, FORMAT[i]);
 		if (FORMAT[i] == '{')
-			if (!ft_color_process(data, i))
-				ft_straddchar(BUFFER, FORMAT[i]);
+		{
+			if (!(r = ft_color_process(data, i + 1)))
+				BUFFER = ft_straddchar(BUFFER, FORMAT[i]);
+			else
+				i += r;
+		}
+		else if (FORMAT[i] != '%')
+			BUFFER = ft_straddchar(BUFFER, FORMAT[i]);
 		else
 		{
 			ft_reset_conv(data);
@@ -769,7 +764,7 @@ int			ft_printf(const char *format, ...)
 		return (ERROR);
 	ft_putstr(BUFFER);
 	r = (int)ft_strlen(BUFFER) + L_ADJUST;
-	ft_free_the_shit(data);
+	ft_free_data(data);
 	return (r);
 }
 
@@ -787,6 +782,6 @@ int			ft_sprintf(char *s, const char *format, ...)
 		return (ERROR);
 	r = (int)ft_strlen(BUFFER) + L_ADJUST;
 	s = ft_strcpy(s, BUFFER);
-	ft_free_the_shit(data);
+	ft_free_data(data);
 	return (r);
 }

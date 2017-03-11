@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 00:57:08 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/11 03:12:03 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/03/11 04:14:10 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,40 +71,31 @@ t_uni		*ft_init_uni(void)
 	return (new);
 }
 
-char		**ft_init_name()
+t_color		*ft_new_color(t_color *color, char *name, char *code)
 {
-	char		**name;
+	t_color	*new;
 
-	if (!(name = ft_memalloc(sizeof(char *) 9)))
-		exit(0);
-	name[0][0] = ft_strdup("black");
-	name[0][1] = ft_strdup("red");
-	name[0][2] = ft_strdup("green");
-	name[0][3] = ft_strdup("yellow");
-	name[0][4] = ft_strdup("blue");
-	name[0][5] = ft_strdup("purple");
-	name[0][6] = ft_strdup("cyan");
-	name[0][7] = ft_strdup("white");
-	name[0][8] = 0;
-	return (name);
-}
-
-t_color			*ft_init_color(void)
-{
-	t_color		*new;
-	char		**name;
-	int			i;
-
-	i = -1;
-	name = ft_init_name();
 	if (!(new = ft_memalloc(sizeof(t_color))))
 		exit(0);
-	while (++i < 8)
-	{
-		new->name = 
-		new->color = 
-	}
+	new->name = name;
+	new->code = code;
+	new->next = color;
 	return (new);
+}
+
+t_color		*ft_init_color(void)
+{
+	t_color	*color;
+
+	color = ft_new_color(NULL, "white", "\033[37m");
+	color = ft_new_color(color, "cyan", "\033[36m");
+	color = ft_new_color(color, "purple", "\033[35m");
+	color = ft_new_color(color, "blue", "\033[34m");
+	color = ft_new_color(color, "yellow", "\033[33m");
+	color = ft_new_color(color, "green", "\033[32m");
+	color = ft_new_color(color, "red", "\033[31m");
+	color = ft_new_color(color, "black", "\033[30m");
+	return (color);
 }
 
 t_data		*ft_init_data(char *format, va_list ap)
@@ -124,6 +115,7 @@ t_data		*ft_init_data(char *format, va_list ap)
 	new->conv = ft_init_conv();
 	new->arg = ft_init_arg();
 	new->uni = ft_init_uni();
+	new->color = ft_init_color();
 	new->error = 0;
 	new->len_adjust = 0;
 	new->ptr = NULL;

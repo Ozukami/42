@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 04:05:02 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/11 01:45:13 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/03/11 03:54:36 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,31 +23,9 @@ int		main(void)
 	setlocale(LC_ALL, "");
 
 	int		r = 0;
-	double	d = 1.56478188;
-	char	*blue;
 
-	printf("Bonjour\n", r);
-	printf("\033[35m%d\n", 10);
-	printf("Bonjour\n", r);
-	printf("\033[1mBonjour\n\n", r);
+	ft_printf("Il faut {cyan}Bonjour{white} test\n");
 
-	ft_printf(" Il faut \033[35mBonjour test\n");
-	
-	blue = malloc(9);
-	blue = "\033[34m";
-
-	r = write(1, "\033[34mBonjour\n", 13);
-	printf("[%d]\n", r);
-
-	printf("{%'u}\n", 15560);
-	printf("{%3f}\n", d);
-
-	printf("{%-15.28f}\n", 1.56478188);
-	ft_printf("{% 03d}\n\n", 0);
-
-	printf("{% 03.5d}\n\n", 0);
-	printf("{% 3.5d}\n\n", 0);
-	
 	/*
 	r = printf("[%.*s]\n", -5, "42");
 	printf("{r = %d}\n", r);
