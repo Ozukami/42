@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/11 04:59:48 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/11 05:23:21 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,5 +172,49 @@ int					ft_sprintf(char *s, const char *format, ...);
 
 t_color				*ft_new_color(t_color *color, char *name, char *code);
 t_color				*ft_init_color(void);
+
+void				ft_reset_bytes(t_data *data);
+int					ft_bin_to_dec(char *bin);
+void				ft_split_bytes(t_data *data, char *byte);
+void				ft_set_bytes(t_data *data, char *byte, int bytes);
+static void			ft_sub(t_data *data, char *byte, int n);
+void				ft_conv_wc(t_data *data, wchar_t c);
+void				ft_conv_ws(t_data *data);
+void				ft_get_arg_d(t_data *data);
+void				ft_get_arg_oux(t_data *data);
+void				ft_get_string_arg(t_data *data);
+void				ft_get_arg(t_data *data);
+char				*ft_add_space_or_zero(char *s, char c, int n);
+void				ft_get_flag(t_data *data, int i);
+void				ft_get_p(t_data *data, int i);
+void				ft_get_f(t_data *data, int i);
+void				ft_get_f_p(t_data *data, int i);
+int					ft_multi_mod(t_data *data);
+void				ft_get_mod(t_data *data, int i);
+void				ft_adjust_2(t_data *data);
+void				ft_adjust(t_data *data);
+char				*ft_stradd_char(t_data *data, char *s, int n);
+void				ft_replace_neg(t_data *data);
+void				ft_adjust_sign(t_data *data);
+void				ft_sub_size(t_data *data);
+void				ft_set_size(t_data *data);
+void				ft_set_sign(t_data *data);
+void				ft_set_prefix(t_data *data);
+void				ft_process(t_data *data);
+void				ft_neg_case(t_data *data);
+void				ft_adjust_arg(t_data *data);
+void				ft_dispatch(t_data *data);
+void				ft_bad_delim(t_data *data, int i);
+void				ft_get_conv(t_data *data, int i);
+void				ft_reset_conv(t_data *data);
+void				ft_free_color(t_color *color);
+void				ft_free_conv(t_conv *conv);
+void				ft_free_arg(t_arg *arg);
+void				ft_free_uni(t_uni *uni);
+void				ft_free_data(t_data *data);
+int					ft_color_process(t_data *data, int i);
+static void			ft_process_2(t_data *data);
+int					ft_printf(const char *format, ...);
+int					ft_sprintf(char *s, const char *format, ...);
 
 #endif
