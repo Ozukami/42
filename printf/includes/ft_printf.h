@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/11 05:45:35 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/11 06:41:03 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include <stdarg.h>
 # include <limits.h>
 # include <stdbool.h>
-# include <stdio.h> // !!!!!
 
 # define ERROR		-1
 # define SUCCES		1
@@ -199,7 +198,7 @@ void				ft_sub_size(t_data *data);
 void				ft_set_size(t_data *data);
 void				ft_set_sign(t_data *data);
 void				ft_set_prefix(t_data *data);
-void				ft_process(t_data *data);
+void				ft_process_conv(t_data *data);
 void				ft_neg_case(t_data *data);
 void				ft_adjust_arg(t_data *data);
 void				ft_dispatch(t_data *data);

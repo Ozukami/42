@@ -6,13 +6,13 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/11 05:59:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/11 06:05:27 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/11 06:38:07 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void		ft_process(t_data *data)
+void		ft_process_conv(t_data *data)
 {
 	ft_set_size(data);
 	if (SIGN)
@@ -57,7 +57,7 @@ void		ft_dispatch(t_data *data)
 	}
 	else
 		L_FARG = (size_t)ft_max(ft_max(FIELD, PREC), (int)L_ARG);
-	ft_process(data);
+	ft_process_conv(data);
 }
 
 void		ft_bad_delim(t_data *data, int i)
@@ -97,4 +97,29 @@ void		ft_get_conv(t_data *data, int i)
 		ft_get_arg(data);
 		ft_dispatch(data);
 	}
+}
+
+int			ft_color_process(t_data *data, int i)
+{
+	int		len;
+	char	*color_flag;
+	t_color	*current;
+
+	len = 0;
+	while (FORMAT[i + len] != '}' && FORMAT[i + len] != '\0')
+		len++;
+	if (FORMAT[i + len] != '}')
+		return (-1);
+	color_flag = ft_strsub(FORMAT, i, len);
+	current = COLOR;
+	while (current)
+	{
+		if (ft_strequ(color_flag, current->name))
+		{
+			BUFFER = ft_strjoin(BUFFER, current->code);
+			return (len + 1);
+		}
+		current = current->next;
+	}
+	return (0);
 }
