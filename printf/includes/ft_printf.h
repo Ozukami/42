@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/11 05:23:21 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/11 05:25:32 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,6 @@ void				ft_reset_bytes(t_data *data);
 int					ft_bin_to_dec(char *bin);
 void				ft_split_bytes(t_data *data, char *byte);
 void				ft_set_bytes(t_data *data, char *byte, int bytes);
-static void			ft_sub(t_data *data, char *byte, int n);
 void				ft_conv_wc(t_data *data, wchar_t c);
 void				ft_conv_ws(t_data *data);
 void				ft_get_arg_d(t_data *data);
@@ -213,7 +212,6 @@ void				ft_free_arg(t_arg *arg);
 void				ft_free_uni(t_uni *uni);
 void				ft_free_data(t_data *data);
 int					ft_color_process(t_data *data, int i);
-static void			ft_process_2(t_data *data);
 int					ft_printf(const char *format, ...);
 int					ft_sprintf(char *s, const char *format, ...);
 
