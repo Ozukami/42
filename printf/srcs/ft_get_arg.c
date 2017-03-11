@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/11 05:36:49 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/03/11 05:38:26 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/03/11 05:45:59 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void		ft_get_arg_oux(t_data *data)
 				BASE, ((TYPE == 'X') ? 1 : 0));
 }
 
-void		ft_get_string_arg(t_data *data)
+void		ft_get_arg_string(t_data *data)
 {
 	char	*tmp;
 
@@ -80,7 +80,7 @@ void		ft_get_arg(t_data *data)
 			ARG = ft_straddchar(ft_strdup(""), va_arg(AP, int));
 	}
 	else if (TYPE == 's')
-		ft_get_string_arg(data);
+		ft_get_arg_string(data);
 	else if (TYPE == 'p')
 		ARG = ft_ulltoa_base(va_arg(AP, unsigned long long int), 16, 0);
 	else if (TYPE == 'b')

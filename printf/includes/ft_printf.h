@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/11 05:25:32 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/11 05:45:35 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ void				ft_conv_wc(t_data *data, wchar_t c);
 void				ft_conv_ws(t_data *data);
 void				ft_get_arg_d(t_data *data);
 void				ft_get_arg_oux(t_data *data);
-void				ft_get_string_arg(t_data *data);
+void				ft_get_arg_string(t_data *data);
 void				ft_get_arg(t_data *data);
 char				*ft_add_space_or_zero(char *s, char c, int n);
 void				ft_get_flag(t_data *data, int i);
