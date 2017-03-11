@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 04:05:02 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/11 03:54:36 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/11 04:57:19 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ int		main(void)
 {
 	setlocale(LC_ALL, "");
 
-	int		r = 0;
-
-	ft_printf("Il faut {cyan}Bonjour{white} test\n");
+	ft_printf("\033[5mIl faut {cyan}Bonjour{white} test\n");
 
 	/*
+	int		r = 0;
+
 	r = printf("[%.*s]\n", -5, "42");
 	printf("{r = %d}\n", r);
 	r = ft_printf("[%.*s]\n", -5, "42");
@@ -88,7 +88,6 @@ int		main(void)
 	r = ft_printf("[%.*c]\n", -15, 0);
 	printf("{r = %d}\n", r);
 
-	/*
 	printf("[%*.*d]\n", 25, 20, 512);
 	ft_printf("[%*.*d]\n", 25, 20, 512);
 	printf("[%*.8d]\n", 20, 512);
