@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/11 05:57:20 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/11 05:57:21 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/12 00:30:47 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void		ft_get_p(t_data *data, int i)
 {
 	if (FORMAT[i + LEN + 1] == '*')
 	{
+		STAR = 1;
 		PREC = va_arg(AP, int);
 		if (PREC < 0)
 			PREC = -1;
@@ -45,6 +46,7 @@ void		ft_get_f(t_data *data, int i)
 {
 	if (FORMAT[i + LEN] == '*')
 	{
+		STAR = 1;
 		FIELD = va_arg(AP, int);
 		if (FIELD < 0)
 		{

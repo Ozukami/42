@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 04:05:02 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/11 07:10:11 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/12 00:27:15 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,14 @@
 int		main(void)
 {
 	setlocale(LC_ALL, "");
-	ft_printf("\033[5mIl faut {cyan}Bonjour{white} test\n");
-	printf("%zd\n", LLONG_MIN);
-	ft_printf("%zd\n", LLONG_MIN);
-	ft_printf("%%   %", "test");
-	printf("\n%%   %\n", "test");
+	char	*s = malloc(100);
+	ft_printf("{%*c}", -15, 0);
+		printf("\n");
+	printf("{%*c}", -15, 0);
+		printf("\n");
+	int r = sprintf(s, "{%*c}", -15, 0);
+		printf("%s|	> %d\n", s, r);
+	r = ft_sprintf(s, "{%*c}", -15, 0);
+		printf("%s|	> %d\n", s, r);
 	return (0);
 }

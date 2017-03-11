@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/11 06:41:03 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/11 23:40:55 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdarg.h>
 # include <limits.h>
 # include <stdbool.h>
+# include <stdio.h>
 
 # define ERROR		-1
 # define SUCCES		1
@@ -73,6 +74,7 @@
 # define L_BYTES	((data->uni)->len_bytes)
 
 # define L_ADJUST	(data->len_adjust)
+# define POS_C0		(data->pos_c0)
 
 # define LL			(long long)
 
@@ -156,6 +158,7 @@ typedef struct		s_data
 	t_color			*color;
 	bool			error;
 	int				len_adjust;
+	int				pos_c0;
 	char			*ptr;
 }					t_data;
 
@@ -211,7 +214,5 @@ void				ft_free_arg(t_arg *arg);
 void				ft_free_uni(t_uni *uni);
 void				ft_free_data(t_data *data);
 int					ft_color_process(t_data *data, int i);
-int					ft_printf(const char *format, ...);
-int					ft_sprintf(char *s, const char *format, ...);
 
 #endif

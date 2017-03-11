@@ -6,11 +6,21 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/11 05:36:49 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/03/11 05:45:59 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/12 00:11:48 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+int			ft_multi_mod(t_data *data)
+{
+	if (ft_strequ(MODIF, "z") || ft_strequ(MODIF, "j"))
+	{
+		LEN++;
+		return (1);
+	}
+	return (0);
+}
 
 void		ft_get_arg_d(t_data *data)
 {

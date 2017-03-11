@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 00:57:08 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/11 04:59:02 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/11 23:11:40 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ t_data		*ft_init_data(char *format, va_list ap)
 	new->color = ft_init_color();
 	new->error = 0;
 	new->len_adjust = 0;
+	new->pos_c0 = -1;
 	new->ptr = NULL;
 	return (new);
 }

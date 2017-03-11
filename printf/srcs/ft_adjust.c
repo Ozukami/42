@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/11 05:50:32 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/11 05:51:42 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/11 23:53:43 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,15 @@ void		ft_adjust_arg(t_data *data)
 	}
 	if (!(ARG[0]) && TYPE != 's')
 	{
+		if (TYPE == 'c' && POS_C0 == -1)
+			POS_C0 = (int)ft_strlen(BUFFER);
 		FIELD--;
 		L_ADJUST++;
 	}
 	if (ARG[0] == '0')
 	{
+		if (TYPE == 'o' && PREC == -1)
+			PREFIX = 0;
 		if (TYPE != 'o' && TYPE != 'p')
 			PREFIX = 0;
 		if (PREC == 0)
