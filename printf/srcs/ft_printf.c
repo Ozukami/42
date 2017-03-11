@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/11 06:37:08 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/11 07:09:41 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void		ft_reset_conv(t_data *data)
 	MODIF = ft_strdup("");
 }
 
+#include <stdio.h>
 static void	ft_process(t_data *data)
 {
 	int		i;
@@ -46,12 +47,15 @@ static void	ft_process(t_data *data)
 		}
 		else if (FORMAT[i] != '%')
 			BUFFER = ft_straddchar(BUFFER, FORMAT[i]);
+		else if (FORMAT[i] == '%' && !FORMAT[i + 1])
+			return ;
 		else
 		{
 			ft_reset_conv(data);
 			ft_get_conv(data, ++i);
 			i += LEN;
 		}
+		//printf("BUFFER = %c\n", BUFFER[i]);
 	}
 }
 
