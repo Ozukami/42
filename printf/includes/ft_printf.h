@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/10 23:37:00 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/03/11 02:20:18 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,9 +133,12 @@ typedef struct		s_uni
 	int				len_bytes;
 }					t_uni;
 
-/*
-** len = size from % to delimiter
-*/
+typedef struct		s_color
+{
+	char			*name;
+	char			*code;
+	t_color			*next;
+}					t_color;
 
 typedef struct		s_data
 {
@@ -150,6 +153,7 @@ typedef struct		s_data
 	t_conv			*conv;
 	t_arg			*arg;
 	t_uni			*uni;
+	t_color			*color;
 	bool			error;
 	int				len_adjust;
 	char			*ptr;

@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 00:57:08 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/10 23:36:51 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/03/11 03:12:03 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,42 @@ t_uni		*ft_init_uni(void)
 	new->byte3 = ft_strdup("1110xxxx10xxxxxx10xxxxxx");
 	new->byte4 = ft_strdup("11110xxx10xxxxxx10xxxxxx10xxxxxx");
 	new->len_bytes = 0;
+	return (new);
+}
+
+char		**ft_init_name()
+{
+	char		**name;
+
+	if (!(name = ft_memalloc(sizeof(char *) 9)))
+		exit(0);
+	name[0][0] = ft_strdup("black");
+	name[0][1] = ft_strdup("red");
+	name[0][2] = ft_strdup("green");
+	name[0][3] = ft_strdup("yellow");
+	name[0][4] = ft_strdup("blue");
+	name[0][5] = ft_strdup("purple");
+	name[0][6] = ft_strdup("cyan");
+	name[0][7] = ft_strdup("white");
+	name[0][8] = 0;
+	return (name);
+}
+
+t_color			*ft_init_color(void)
+{
+	t_color		*new;
+	char		**name;
+	int			i;
+
+	i = -1;
+	name = ft_init_name();
+	if (!(new = ft_memalloc(sizeof(t_color))))
+		exit(0);
+	while (++i < 8)
+	{
+		new->name = 
+		new->color = 
+	}
 	return (new);
 }
 

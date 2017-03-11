@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/11 00:59:09 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/03/11 02:34:24 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -595,6 +595,7 @@ void		ft_get_conv(t_data *data, int i)
 	LEN = 0;
 	if (!FORMAT[i + LEN])
 		return ;
+
 	while (FORMAT[i + LEN] && (ft_strchr((const char *)FLAG, FORMAT[i + LEN])
 			|| ft_strchr((const char *)F_P, FORMAT[i + LEN])
 			|| ft_strchr((const char *)MOD, FORMAT[i + LEN])))
@@ -720,6 +721,19 @@ void		ft_free_data(t_data *data)
 
 // A RENAME
 
+int				ft_color_process(t_data *data, int i)
+{
+	int		len;
+	char	*color;
+
+	len = 0;
+	while (FORMAT[i + len] != '}' || FORMAT[i + len] != '\0')
+		len++;
+	if (FORMAT[i + len] != '}')
+		return (-1);
+	ft_strsub(FORMAT, i, i + len);
+}
+
 static void		ft_process_2(t_data *data)
 {
 	int		i;
@@ -729,6 +743,9 @@ static void		ft_process_2(t_data *data)
 	{
 		if (FORMAT[i] != '%')
 			BUFFER = ft_straddchar(BUFFER, FORMAT[i]);
+		if (FORMAT[i] == '{')
+			if (!ft_color_process(data, i))
+				ft_straddchar(BUFFER, FORMAT[i]);
 		else
 		{
 			ft_reset_conv(data);
