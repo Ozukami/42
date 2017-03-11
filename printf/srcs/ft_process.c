@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/11 05:59:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/11 06:38:07 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/11 06:48:50 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,10 +116,14 @@ int			ft_color_process(t_data *data, int i)
 	{
 		if (ft_strequ(color_flag, current->name))
 		{
+			PTR = BUFFER;
 			BUFFER = ft_strjoin(BUFFER, current->code);
+			ft_strdel(&PTR);
+			ft_strdel(&color_flag);
 			return (len + 1);
 		}
 		current = current->next;
 	}
+	ft_strdel(&color_flag);
 	return (0);
 }
