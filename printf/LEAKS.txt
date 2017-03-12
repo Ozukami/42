@@ -1,3 +1,0 @@
-/!\ Bien verifier l'allocation de ARG, et des autres chaines
-Cf. ft_get_atg_1 (ligne 162) => ARG = (char *)WS_ARG; (ligne 170)
-	Il faut faire une fonction qui copie en allouant

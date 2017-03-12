@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/12 01:23:04 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/12 03:28:58 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int			ft_printf(const char *format, ...)
 	ft_process(data);
 	va_end(ap);
 	if (ERR)
-		return (ERROR);
+		return (ft_free_data(data));
 	if (POS_C0 != -1)
 	{
 		i = 0;
@@ -99,7 +99,7 @@ int			ft_dprintf(int fd, const char *format, ...)
 	ft_process(data);
 	va_end(ap);
 	if (ERR)
-		return (ERROR);
+		return (ft_free_data(data));
 	if (POS_C0 != -1)
 	{
 		i = 0;
@@ -128,7 +128,7 @@ int			ft_sprintf(char *s, const char *format, ...)
 	ft_process(data);
 	va_end(ap);
 	if (ERR)
-		return (ERROR);
+		return (ft_free_data(data));
 	r = (int)ft_strlen(BUFFER) + L_ADJUST;
 	if (POS_C0 != -1)
 	{

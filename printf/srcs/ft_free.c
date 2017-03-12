@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/11 05:23:41 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/03/12 01:11:53 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/12 03:28:40 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void		ft_free_uni(t_uni *uni)
 	free(uni);
 }
 
-void		ft_free_data(t_data *data)
+int			ft_free_data(t_data *data)
 {
 	ft_free_conv((data->conv));
 	ft_free_arg((data->arg));
@@ -71,4 +71,5 @@ void		ft_free_data(t_data *data)
 	free(FORMAT);
 	FORMAT = NULL;
 	free(data);
+	return (ERROR);
 }

@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/11 05:57:37 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/12 03:12:47 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/12 03:27:14 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,17 +90,9 @@ void		ft_set_prefix(t_data *data)
 	if (TYPE == 'o' && PREFIX && PREC > (int)L_INIT)
 	{
 		if (FIELD > (int)L_ARG && LEFT)
-		{
-			PTR = ARG;
-			ARG = ft_strjoin(ARG, " ");
-			ft_strdel(&PTR);
-		}
+			ARG = ft_strjoinf(ARG, ft_strdup(" "));
 		else if (FIELD > (int)L_ARG)
-		{
-			PTR = ARG;
-			ARG = ft_strjoin(" ", ARG);
-			ft_strdel(&PTR);
-		}
+			ARG = ft_strjoinf(ft_strdup(" "), ARG);
 		ft_strdel(&s);
 	}
 	else if (ZERO)

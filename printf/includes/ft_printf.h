@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/12 01:07:22 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/12 03:28:12 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,7 +213,7 @@ void				ft_free_color(t_color *color);
 void				ft_free_conv(t_conv *conv);
 void				ft_free_arg(t_arg *arg);
 void				ft_free_uni(t_uni *uni);
-void				ft_free_data(t_data *data);
+int					ft_free_data(t_data *data);
 int					ft_color_process(t_data *data, int i);
 
 #endif
