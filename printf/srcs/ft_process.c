@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/11 05:59:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/11 06:58:59 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/12 03:11:09 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,11 @@ void		ft_process_conv(t_data *data)
 	if (PREFIX)
 		ft_set_prefix(data);
 	if ((PREC > -1 && TYPE == 's') || PREC > (int)L_ARG)
+	{
+		PTR = ARG;
 		ARG = ft_strsub(ARG, 0, PREC + SIGN);
+		ft_strdel(&PTR);
+	}
 	if (SPACE)
 	{
 		PTR = BUFFER;

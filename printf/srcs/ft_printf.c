@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/12 00:30:56 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/12 01:23:04 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,35 @@ int			ft_printf(const char *format, ...)
 	}
 	else
 		ft_putstr(BUFFER);
+	r = (int)ft_strlen(BUFFER) + L_ADJUST;
+	ft_free_data(data);
+	return (r);
+}
+
+int			ft_dprintf(int fd, const char *format, ...)
+{
+	t_data		*data;
+	va_list		ap;
+	int			r;
+	int			i;
+
+	va_start(ap, format);
+	data = ft_init_data((char *)format, ap);
+	ft_process(data);
+	va_end(ap);
+	if (ERR)
+		return (ERROR);
+	if (POS_C0 != -1)
+	{
+		i = 0;
+		while (i < POS_C0)
+			ft_putchar_fd(BUFFER[i++], fd);
+		ft_putchar_fd('\0', fd);
+		while (i < (int)ft_strlen(BUFFER))
+			ft_putchar_fd(BUFFER[i++], fd);
+	}
+	else
+		ft_putstr_fd(BUFFER, fd);
 	r = (int)ft_strlen(BUFFER) + L_ADJUST;
 	ft_free_data(data);
 	return (r);
