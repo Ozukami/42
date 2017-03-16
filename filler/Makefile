@@ -6,11 +6,11 @@
 #    By: apoisson <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 11:29:15 by apoisson          #+#    #+#              #
-#    Updated: 2017/02/07 11:03:11 by apoisson         ###   ########.fr        #
+#    Updated: 2017/03/14 02:19:10 by apoisson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = filler
+NAME = apoisson.filler
 FLAGS = -Wall -Wextra -Werror
 SRC = *.c
 
@@ -35,9 +35,9 @@ test: $(NAME)
 
 test_map: $(NAME)
 	@printf "\033[0;31m- Executing filler -\n\033[0m"
-	@rm players/filler
-	@cp filler players/
-	@./filler_vm -f maps/$(ARGS) -p1 players/filler -p2 players/superjeannot.filler
+	@rm players/apoisson.filler
+	@cp apoisson.filler players/
+	@./filler_vm -f maps/$(ARGS) -p1 players/apoisson.filler -p2 players/superjeannot.filler
 	@printf "\033[0;31m-- End of filler --\n\033[0m"
 
 clean:

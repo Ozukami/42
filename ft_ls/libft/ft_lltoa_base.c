@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa_base.c                                     :+:      :+:    :+:   */
+/*   ft_lltoa_base.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: exam <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/13 10:48:38 by exam              #+#    #+#             */
-/*   Updated: 2017/03/01 05:26:43 by apoisson         ###   ########.fr       */
+/*   Created: 2017/01/20 09:22:05 by qumaujea          #+#    #+#             */
+/*   Updated: 2017/03/04 10:45:59 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 
-int		get_size(long value, long base)
+static int		get_size(long long value, long long base)
 {
 	if (value > -base && value <= -1)
 		return (2);
@@ -23,7 +23,7 @@ int		get_size(long value, long base)
 	return (1 + get_size(value / base, base));
 }
 
-int		neg_case(long *nb, int base, char **itoa)
+static int		neg_case(long long *nb, int base, char **itoa)
 {
 	if (*nb < 0 && base == 10)
 	{
@@ -34,30 +34,30 @@ int		neg_case(long *nb, int base, char **itoa)
 	return (0);
 }
 
-char	*ft_itoa_base(int value, int base, int maj)
+char			*ft_lltoa_base(long long value, int base, int maj)
 {
-	char	*itoa;
-	int		size;
-	long	nb;
-	int		neg;
+	char		*itoa;
+	int			size;
+	int			neg;
 
-	nb = (long)value;
-	if (nb < 0 && base != 10)
-		nb = UINT_MAX + 1 + value;
-	size = get_size(nb, (long)base);
+	if (value == LLONG_MIN)
+		return (ft_strdup("-9223372036854775808"));
+	if (value < 0 && base != 10)
+		value = 4294967296 + value;
+	size = get_size(value, (long long)base);
 	if (!(itoa = malloc(sizeof(char) * (size + 1))))
 		return (NULL);
 	itoa[size--] = '\0';
-	neg = neg_case(&nb, base, &itoa);
+	neg = neg_case(&value, base, &itoa);
 	while (size >= neg)
 	{
-		if (nb % (long)base > 9 && maj)
-			itoa[size--] = '7' + nb % (long)base;
-		else if (nb % (long)base > 9)
-			itoa[size--] = '7' + 32 + nb % (long)base;
+		if (value % (long long)base > 9 && maj)
+			itoa[size--] = '7' + value % (long long)base;
+		else if (value % (long long)base > 9)
+			itoa[size--] = '7' + 32 + value % (long long)base;
 		else
-			itoa[size--] = '0' + nb % (long)base;
-		nb = nb / (long)base;
+			itoa[size--] = '0' + value % (long long)base;
+		value = value / (long long)base;
 	}
 	return (itoa);
 }

@@ -1,29 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_straddchar.c                                    :+:      :+:    :+:   */
+/*   ft_strspace.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/15 08:58:34 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/11 07:01:39 by apoisson         ###   ########.fr       */
+/*   Created: 2017/01/19 08:14:50 by apoisson          #+#    #+#             */
+/*   Updated: 2017/01/19 08:28:57 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_straddchar(char *s, char c)
+char	*ft_strspace(size_t size)
 {
-	char		*stack;
-	int			i;
+	char	*str;
 
-	if (!(stack = ft_memalloc(ft_strlen(s) + 2)))
+	if (!(str = malloc(size + 1)))
 		return (NULL);
-	i = -1;
-	while (s[++i])
-		stack[i] = s[i];
-	stack[i] = c;
-	stack[i + 1] = '\0';
-	free(s);
-	return (stack);
+	ft_bspace(str, size + 1);
+	return (str);
 }

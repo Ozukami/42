@@ -1,29 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_straddchar.c                                    :+:      :+:    :+:   */
+/*   ft_strzero.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/15 08:58:34 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/11 07:01:39 by apoisson         ###   ########.fr       */
+/*   Created: 2017/03/02 01:26:49 by qumaujea          #+#    #+#             */
+/*   Updated: 2017/03/11 06:40:34 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_straddchar(char *s, char c)
+char	*ft_strzero(size_t size)
 {
-	char		*stack;
-	int			i;
+	char	*str;
 
-	if (!(stack = ft_memalloc(ft_strlen(s) + 2)))
+	if (!(str = malloc(size + 1)))
 		return (NULL);
-	i = -1;
-	while (s[++i])
-		stack[i] = s[i];
-	stack[i] = c;
-	stack[i + 1] = '\0';
-	free(s);
-	return (stack);
+	ft_fill_zero(str, size + 1);
+	return (str);
 }
