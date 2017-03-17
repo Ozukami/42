@@ -6,18 +6,39 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/26 08:09:08 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/17 05:42:31 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/17 07:45:18 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+void				ft_usage(char c)
+{
+	if (c)
+		ft_printf("ft_ls: illegal option -- %c\n", c);
+	ft_printf("usage: ./ft_ls [-Ralrt] [file ...]\n");
+	exit(0);
+}
+
+void				ft_throw_malloc_error(void)
+{
+	perror("Malloc failed.");
+	exit(0);
+}
+
+void				ft_throw_error(char *s, int i)
+{
+	errno = i;
+	perror(ft_strjoin("ft_ls: ", s));
+	exit(0);
+}
 
 t_fields			*ft_new_fields(void)
 {
 	t_fields		*new;
 
 	if (!(new = malloc(sizeof(t_fields))))
-		exit(0);
+		ft_throw_malloc_error();
 	new->f_mode = 0;
 	new->f_links = 0;
 	new->f_owner = 0;
@@ -71,10 +92,7 @@ char				*ft_get_mode(mode_t st_mode)
 	char			*mode;
 
 	if (!(mode = ft_strfill(10, '-')))
-	{
-		perror("Malloc failed. Not enough memory.");
-		exit(0);
-	}
+		ft_throw_malloc_error();
 	ft_set_mode_file_type(mode, st_mode);
 	ft_set_mode_rights(mode, st_mode);
 	return (mode);
@@ -97,9 +115,10 @@ t_file				*ft_new_file(struct dirent *d)
 	t_file			*new;
 	struct stat		*stat;
 
+	stat = NULL;
 	if (!(new = malloc(sizeof(t_file)))
 			|| !(stat = malloc(sizeof(struct stat))))
-		return (NULL);
+		ft_throw_malloc_error();
 	lstat(d->d_name, stat);
 	new->mode = ft_get_mode(stat->st_mode);
 	new->links = stat->st_nlink;
@@ -116,18 +135,52 @@ t_file_list			*ft_new_file_list(t_file *f)
 	t_file_list		*new;
 
 	if (!(new = malloc(sizeof(t_file_list))))
-		return (NULL);
+		ft_throw_malloc_error();
 	new->file = f;
 	return (new);
 }
 
-void				ft_add(t_file_list **lst, t_file *f)
+void				ft_add_file(t_file_list **lst, t_file *f)
 {
 	t_file_list		*add;
 
 	add = ft_new_file_list(f);
 	add->next = *lst;
 	*lst = add;
+}
+
+
+t_arg_list			*ft_new_arg_list(char *arg)
+{
+	t_arg_list		*new;
+
+	if (!(new = malloc(sizeof(t_arg_list))))
+		ft_throw_malloc_error();
+	new->arg = arg;
+	new->files = NULL;
+	new->next = NULL;
+	return (new);
+}
+
+void				ft_add_arg(t_arg_list **lst, char *arg)
+{
+	t_arg_list		*add;
+
+	add = ft_new_arg_list(arg);
+	add->next = *lst;
+	*lst = add;
+}
+
+t_ls_data			*ft_init_ls_data(void)
+{
+	t_ls_data			*new;
+
+	if (!(new = malloc(sizeof(t_ls_data))))
+		ft_throw_malloc_error();
+	new->options = ft_strdup("");
+	new->args = NULL;
+	new->f = ft_new_fields();
+	return (new);
 }
 
 void				display_dirent_info(struct dirent *d)
@@ -151,7 +204,7 @@ void				display_stat_info(struct stat *info)
 	ft_printf("|		- %d\n", info->st_blocks);
 }
 
-void				ft_update_fields(t_fields *f, t_file_list *lst)
+void				ft_update_fields(t_ls_data *ls_data)
 {
 	F_MODE = ft_max((int)ft_strlen(MODE), F_MODE);
 	F_LINKS = ft_max((int)ft_count_digit(LINKS), F_LINKS);
@@ -162,7 +215,8 @@ void				ft_update_fields(t_fields *f, t_file_list *lst)
 	F_PATH = ft_max((int)ft_strlen(PATHNAME), F_PATH);
 }
 
-int					main(int ac, char **av)
+/*
+int					old_main(int ac, char **av)
 {
 	DIR				*dir;
 	struct dirent	*d;
@@ -175,9 +229,7 @@ int					main(int ac, char **av)
 	blocks = 0;
 	f = ft_new_fields();
 	buf = malloc(sizeof(struct stat));
-	if (!ac)
-		return (-1);
-	ft_printf("| {cyan}Starting ft_ls {white}|\n");
+	if (DEBUG) ft_printf("| {cyan}Starting ft_ls {white}|\n");
 	if (ac == 1)
 	{
 		dir = opendir(".");
@@ -185,7 +237,7 @@ int					main(int ac, char **av)
 		{
 			if ((d->d_name)[0] != '.')
 			{
-				ft_add(&lst, ft_new_file(d));
+				ft_add_file(&lst, ft_new_file(d));
 				ft_update_fields(f, lst);
 				lstat(d->d_name, buf);
 				blocks += buf->st_blocks;
@@ -200,13 +252,102 @@ int					main(int ac, char **av)
 			lst = lst->next;
 		}
 	}
-	if (ac == 2)
-	{
-		dir = opendir(av[1]);
-		while ((d = readdir(dir)))
-			ft_printf("|	{green}File found{white}: %s\n", d->d_name);
-	}
-	ft_printf("| {cyan}End of ft_ls {white}|\n");
+	if (DEBUG) ft_printf("| {cyan}End of ft_ls {white}|\n");
 	closedir(dir);
+	return (0);
+}
+*/
+
+void				ft_set_option(t_ls_data *ls_data, char *option)
+{
+	int				i;
+
+	i = 1;
+	while (option[i])
+	{
+		if (ft_strchr("Ralrt", option[i]))
+		{
+			if (!ft_strchr(OPTIONS, option[i]))
+				OPTIONS = ft_straddchar(OPTIONS, option[i]);
+		}
+		else
+			ft_usage(option[i]);
+		i++;
+	}
+}
+
+int					ft_no_args()
+{
+	DIR				*dir;
+	struct dirent	*d;
+
+	dir = opendir(".");
+	while ((d = readdir(dir)))
+		if ((d->d_name)[0] != '.')
+			ft_printf("%s\n", d->d_name);
+	closedir(dir);
+	return (1);
+}
+
+void				ft_process(t_ls_data *ls_data)
+{
+	t_arg_list		*current;
+	DIR				*dir;
+	struct dirent	*d;
+	struct stat		*buf;
+	int				blocks;
+
+	current = ARGS;
+	while (current)
+	{
+		blocks = 0;
+		buf = malloc(sizeof(struct stat));
+		if (!(dir = opendir(current->arg)))
+			ft_throw_error(current->arg, ENOENT);
+		while ((d = readdir(dir)))
+		{
+			if ((d->d_name)[0] != '.' || ft_strchr(OPTIONS, 'a'))
+			{
+				ft_add_file(&(LST_FILES), ft_new_file(d));
+				ft_update_fields(ls_data);
+				lstat(d->d_name, buf);
+				blocks += buf->st_blocks;
+			}
+		}
+		if (ft_strchr(OPTIONS, 'l'))
+			ft_printf("total %d\n", blocks);
+		while (LST_FILES)
+		{
+			if (ft_strchr(OPTIONS, 'l'))
+				ft_printf("%s  %*d %*s  %*s  %*d  %*s  %s\n",
+						MODE, F_LINKS, LINKS, F_OWNER, OWNER, F_GROUP,
+						GROUP, F_SIZE, SIZE, F_MTIME, MTIME, PATHNAME);
+			else
+				ft_printf("%s\n", PATHNAME);
+			LST_FILES = LST_FILES->next;
+		}
+		closedir(dir);
+		current = current->next;
+	}
+}
+
+int					main(int ac, char **av)
+{
+	int				i;
+	t_ls_data		*ls_data;
+
+	if (!ac || !av)
+		return (-1);
+	i = 1;
+	ls_data = ft_init_ls_data();
+	if (ac == 1)
+		return (ft_no_args());
+	while (av[i] && av[i][0] == '-')
+		ft_set_option(ls_data, av[i++]);
+	if (i == ac)
+		ft_add_arg(&ARGS, ".");
+	while (i < ac)
+		ft_add_arg(&ARGS, av[i++]);
+	ft_process(ls_data);
 	return (0);
 }
