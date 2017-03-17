@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/26 08:09:08 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/17 08:14:27 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/17 08:57:29 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ void				ft_usage(char c)
 	exit(0);
 }
 
-void				ft_throw_malloc_error(void)
+void				ft_throw_ft_memalloc_error(void)
 {
-	perror("Malloc failed.");
+	perror("ft_memalloc failed.");
 	exit(0);
 }
 
@@ -37,8 +37,8 @@ t_fields			*ft_new_fields(void)
 {
 	t_fields		*new;
 
-	if (!(new = malloc(sizeof(t_fields))))
-		ft_throw_malloc_error();
+	if (!(new = ft_memalloc(sizeof(t_fields))))
+		ft_throw_ft_memalloc_error();
 	new->f_mode = 0;
 	new->f_links = 0;
 	new->f_owner = 0;
@@ -92,7 +92,7 @@ char				*ft_get_mode(mode_t st_mode)
 	char			*mode;
 
 	if (!(mode = ft_strfill(10, '-')))
-		ft_throw_malloc_error();
+		ft_throw_ft_memalloc_error();
 	ft_set_mode_file_type(mode, st_mode);
 	ft_set_mode_rights(mode, st_mode);
 	return (mode);
@@ -116,9 +116,9 @@ t_file				*ft_new_file(struct dirent *d)
 	struct stat		*stat;
 
 	stat = NULL;
-	if (!(new = malloc(sizeof(t_file)))
-			|| !(stat = malloc(sizeof(struct stat))))
-		ft_throw_malloc_error();
+	if (!(new = ft_memalloc(sizeof(t_file)))
+			|| !(stat = ft_memalloc(sizeof(struct stat))))
+		ft_throw_ft_memalloc_error();
 	lstat(d->d_name, stat);
 	new->mode = ft_get_mode(stat->st_mode);
 	new->links = stat->st_nlink;
@@ -139,8 +139,8 @@ t_file_list			*ft_new_file_list(t_file *f)
 {
 	t_file_list		*new;
 
-	if (!(new = malloc(sizeof(t_file_list))))
-		ft_throw_malloc_error();
+	if (!(new = ft_memalloc(sizeof(t_file_list))))
+		ft_throw_ft_memalloc_error();
 	new->file = f;
 	return (new);
 }
@@ -159,8 +159,8 @@ t_arg_list			*ft_new_arg_list(char *arg)
 {
 	t_arg_list		*new;
 
-	if (!(new = malloc(sizeof(t_arg_list))))
-		ft_throw_malloc_error();
+	if (!(new = ft_memalloc(sizeof(t_arg_list))))
+		ft_throw_ft_memalloc_error();
 	new->arg = arg;
 	new->files = NULL;
 	new->next = NULL;
@@ -180,8 +180,8 @@ t_ls_data			*ft_init_ls_data(void)
 {
 	t_ls_data			*new;
 
-	if (!(new = malloc(sizeof(t_ls_data))))
-		ft_throw_malloc_error();
+	if (!(new = ft_memalloc(sizeof(t_ls_data))))
+		ft_throw_ft_memalloc_error();
 	new->options = ft_strdup("");
 	new->args = NULL;
 	new->f = ft_new_fields();
@@ -274,7 +274,7 @@ void				ft_process(t_ls_data *ls_data)
 	while (current)
 	{
 		blocks = 0;
-		buf = malloc(sizeof(struct stat));
+		buf = ft_memalloc(sizeof(struct stat));
 		if (!(dir = opendir(current->arg)))
 			ft_throw_error(current->arg, ENOENT);
 		ft_reset_fields(ls_data);
@@ -306,17 +306,20 @@ void				ft_process(t_ls_data *ls_data)
 	}
 }
 
-void				ft_test(void)
+void				ft_test(char *dir_name)
 {
 	DIR				*dir;
 	struct dirent	*d;
 	struct stat		*buf;
 	int				blocks;
 
+	if (!dir_name)
+		dir_name = ft_strdup("dir_test");
 	blocks = 0;
-	buf = malloc(sizeof(struct stat));
-	if (!(dir = opendir("./dir_test")))
-		ft_throw_error("./dir_test", ENOENT);
+	buf = ft_memalloc(sizeof(struct stat));
+	ft_printf("Opening dir... %s\n", dir_name);
+	if (!(dir = opendir(dir_name)))
+		ft_throw_error(dir_name, ENOENT);
 	while ((d = readdir(dir)))
 	{
 		if ((d->d_name)[0] != '.')
@@ -334,6 +337,7 @@ ft_printf("%s  %d %s  %s  %d  %s  %s\n",
 		}
 	}
 	ft_printf("total %d\n", blocks);
+	free(buf);
 	exit(0);
 }
 
@@ -346,7 +350,7 @@ int					main(int ac, char **av)
 		return (-1);
 	i = 1;
 	ls_data = ft_init_ls_data();
-	ft_test();
+	ft_test(av[1]);
 	if (ac == 1)
 		return (ft_no_args());
 	while (av[i] && av[i][0] == '-')
