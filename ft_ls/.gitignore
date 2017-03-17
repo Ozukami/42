@@ -5,3 +5,6 @@ a.out
 test
 *.a
 ft_ls
+*test*
+past
+future
