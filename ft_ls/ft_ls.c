@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/26 08:09:08 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/17 07:45:18 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/17 08:14:27 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,11 @@ t_file				*ft_new_file(struct dirent *d)
 	new->size = stat->st_size;
 	new->mtime = ft_format_time(stat->st_mtimespec.tv_sec);
 	new->pathname = ft_strdup(d->d_name);
+	/*
+ft_printf("%s  %d %s  %s  %d  %s  %s\n",
+		new->mode, new->links, new->owner, new->group,
+		new->size, new->mtime, new->pathname);
+		*/
 	return (new);
 }
 
@@ -215,48 +220,16 @@ void				ft_update_fields(t_ls_data *ls_data)
 	F_PATH = ft_max((int)ft_strlen(PATHNAME), F_PATH);
 }
 
-/*
-int					old_main(int ac, char **av)
+void				ft_reset_fields(t_ls_data *ls_data)
 {
-	DIR				*dir;
-	struct dirent	*d;
-	struct stat		*buf;
-	t_file_list		*lst;
-	int				blocks;
-	t_fields		*f;
-
-	lst = NULL;
-	blocks = 0;
-	f = ft_new_fields();
-	buf = malloc(sizeof(struct stat));
-	if (DEBUG) ft_printf("| {cyan}Starting ft_ls {white}|\n");
-	if (ac == 1)
-	{
-		dir = opendir(".");
-		while ((d = readdir(dir)))
-		{
-			if ((d->d_name)[0] != '.')
-			{
-				ft_add_file(&lst, ft_new_file(d));
-				ft_update_fields(f, lst);
-				lstat(d->d_name, buf);
-				blocks += buf->st_blocks;
-			}
-		}
-		ft_printf("total %d\n", blocks);
-		while (lst)
-		{
-			ft_printf("%s  %*d %*s  %*s  %*d  %*s  %s\n", MODE, F_LINKS,
-					LINKS, F_OWNER, OWNER, F_GROUP, GROUP, F_SIZE, SIZE,
-					F_MTIME, MTIME, PATHNAME);
-			lst = lst->next;
-		}
-	}
-	if (DEBUG) ft_printf("| {cyan}End of ft_ls {white}|\n");
-	closedir(dir);
-	return (0);
+	F_MODE = 0;
+	F_LINKS = 0;
+	F_OWNER = 0;
+	F_GROUP = 0;
+	F_SIZE = 0;
+	F_MTIME = 0;
+	F_PATH = 0;
 }
-*/
 
 void				ft_set_option(t_ls_data *ls_data, char *option)
 {
@@ -304,11 +277,13 @@ void				ft_process(t_ls_data *ls_data)
 		buf = malloc(sizeof(struct stat));
 		if (!(dir = opendir(current->arg)))
 			ft_throw_error(current->arg, ENOENT);
+		ft_reset_fields(ls_data);
 		while ((d = readdir(dir)))
 		{
 			if ((d->d_name)[0] != '.' || ft_strchr(OPTIONS, 'a'))
 			{
-				ft_add_file(&(LST_FILES), ft_new_file(d));
+				ft_printf("test\n");
+				ft_add_file(&(current->files), ft_new_file(d));
 				ft_update_fields(ls_data);
 				lstat(d->d_name, buf);
 				blocks += buf->st_blocks;
@@ -331,6 +306,37 @@ void				ft_process(t_ls_data *ls_data)
 	}
 }
 
+void				ft_test(void)
+{
+	DIR				*dir;
+	struct dirent	*d;
+	struct stat		*buf;
+	int				blocks;
+
+	blocks = 0;
+	buf = malloc(sizeof(struct stat));
+	if (!(dir = opendir("./dir_test")))
+		ft_throw_error("./dir_test", ENOENT);
+	while ((d = readdir(dir)))
+	{
+		if ((d->d_name)[0] != '.')
+		{
+			lstat(d->d_name, buf);
+			blocks += buf->st_blocks;
+ft_printf("%s  %d %s  %s  %d  %s  %s\n",
+	ft_get_mode(buf->st_mode),
+	buf->st_nlink,
+	ft_strdup((getpwuid(buf->st_uid))->pw_name),
+	ft_strdup((getgrgid(buf->st_gid))->gr_name),
+	buf->st_size,
+	ft_format_time(buf->st_mtimespec.tv_sec),
+	ft_strdup(d->d_name));
+		}
+	}
+	ft_printf("total %d\n", blocks);
+	exit(0);
+}
+
 int					main(int ac, char **av)
 {
 	int				i;
@@ -340,6 +346,7 @@ int					main(int ac, char **av)
 		return (-1);
 	i = 1;
 	ls_data = ft_init_ls_data();
+	ft_test();
 	if (ac == 1)
 		return (ft_no_args());
 	while (av[i] && av[i][0] == '-')
