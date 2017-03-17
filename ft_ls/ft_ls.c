@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/26 08:09:08 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/17 02:48:09 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/17 03:53:54 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,19 @@ char				*ft_get_mode(mode_t st_mode)
 	return (mode);
 }
 
+char				*ft_format_time(time_t sec)
+{
+	char			*full_time;
+
+	if (sec < time(NULL) - (6 * 30 * 24 * 60 * 60) ||
+			sec > time(NULL))
+		full_time = ft_strjoin(ft_strsub(ctime(&sec), 4, 7),
+				ft_strsub(ctime(&sec), 20, 4));
+	else
+		full_time = ft_strsub(ctime(&sec), 4, 12);
+	return (full_time);
+}
+
 t_file				*ft_new_file(struct dirent *d)
 {
 	t_file			*new;
@@ -78,7 +91,8 @@ t_file				*ft_new_file(struct dirent *d)
 	new->owner = ft_strdup((getpwuid(stat->st_uid))->pw_name);
 	new->group = ft_strdup((getgrgid(stat->st_gid))->gr_name);
 	new->size = stat->st_size;
-	new->mtime = ft_strdup("N/A");
+	//new->mtime = ctime(&(stat->st_mtimespec.tv_sec));
+	new->mtime = ft_format_time(stat->st_mtimespec.tv_sec);
 	new->pathname = ft_strdup(d->d_name);
 	return (new);
 }
@@ -152,7 +166,7 @@ int					main(int ac, char **av)
 		ft_printf("total %d\n", blocks);
 		while (lst)
 		{
-			ft_printf("%s	%d	%s	%s	%d	%s	%s\n", MODE, LINKS,
+			ft_printf("%s  %d  %s  %s  %d  %s  %s\n", MODE, LINKS,
 					OWNER, GROUP, SIZE, MTIME, PATHNAME);
 			lst = lst->next;
 		}

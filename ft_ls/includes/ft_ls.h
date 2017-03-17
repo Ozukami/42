@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/26 08:10:34 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/17 01:20:23 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/17 02:55:33 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <sys/stat.h>
 # include <grp.h>
 # include <pwd.h>
+# include <time.h>
 
 # define MODE			(lst->file->mode)
 # define LINKS			(lst->file->links)
@@ -48,5 +49,7 @@ typedef struct			s_file_list
 }						t_file_list;
 
 t_file					*ft_new_file(struct dirent *d);
+void					ft_set_mode_file_type(char *mode, mode_t st_mode);
+void					ft_set_mode_rights(char *mode, mode_t st_mode);
 
 #endif
