@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/26 08:10:34 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/16 05:51:15 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/17 01:20:23 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,5 +18,35 @@
 # include <stdio.h>
 # include <errno.h>
 # include <sys/xattr.h>
+# include <sys/stat.h>
+# include <grp.h>
+# include <pwd.h>
+
+# define MODE			(lst->file->mode)
+# define LINKS			(lst->file->links)
+# define OWNER			(lst->file->owner)
+# define GROUP			(lst->file->group)
+# define SIZE			(lst->file->size)
+# define MTIME			(lst->file->mtime)
+# define PATHNAME		(lst->file->pathname)
+
+typedef struct			s_file
+{
+	char				*mode;
+	int					links;
+	char				*owner;
+	char				*group;
+	int					size;
+	char				*mtime;
+	char				*pathname;
+}						t_file;
+
+typedef struct			s_file_list
+{
+	t_file				*file;
+	struct s_file_list	*next;
+}						t_file_list;
+
+t_file					*ft_new_file(struct dirent *d);
 
 #endif
