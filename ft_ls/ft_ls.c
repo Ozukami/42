@@ -6,11 +6,63 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/26 08:09:08 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/17 01:23:53 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/17 02:48:09 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+void				ft_set_mode_file_type(char *mode, mode_t st_mode)
+{
+	if (S_ISDIR(st_mode))
+		mode[0] = 'd';
+	else if (S_ISFIFO(st_mode))
+		mode[0] = 'p';
+	else if (S_ISCHR(st_mode))
+		mode[0] = 'c';
+	else if (S_ISBLK(st_mode))
+		mode[0] = 'b';
+	else if (S_ISSOCK(st_mode))
+		mode[0] = 's';
+	else if (S_ISLNK(st_mode))
+		mode[0] = 'l';
+}
+
+void				ft_set_mode_rights(char *mode, mode_t st_mode)
+{
+	if (st_mode & S_IRUSR)
+		mode[1] = 'r';
+	if (st_mode & S_IWUSR)
+		mode[2] = 'w';
+	if (st_mode & S_IXUSR)
+		mode[3] = 'x';
+	if (st_mode & S_IRGRP)
+		mode[4] = 'r';
+	if (st_mode & S_IWGRP)
+		mode[5] = 'w';
+	if (st_mode & S_IXGRP)
+		mode[6] = 'x';
+	if (st_mode & S_IRUSR)
+		mode[7] = 'r';
+	if (st_mode & S_IWOTH)
+		mode[8] = 'w';
+	if (st_mode & S_IXOTH)
+		mode[9] = 'x';
+}
+
+char				*ft_get_mode(mode_t st_mode)
+{
+	char			*mode;
+
+	if (!(mode = ft_strfill(10, '-')))
+	{
+		perror("Malloc failed. Not enough memory.");
+		exit(0);
+	}
+	ft_set_mode_file_type(mode, st_mode);
+	ft_set_mode_rights(mode, st_mode);
+	return (mode);
+}
 
 t_file				*ft_new_file(struct dirent *d)
 {
@@ -21,7 +73,7 @@ t_file				*ft_new_file(struct dirent *d)
 			|| !(stat = malloc(sizeof(struct stat))))
 		return (NULL);
 	lstat(d->d_name, stat);
-	new->mode = ft_strdup("N/A");
+	new->mode = ft_get_mode(stat->st_mode);
 	new->links = stat->st_nlink;
 	new->owner = ft_strdup((getpwuid(stat->st_uid))->pw_name);
 	new->group = ft_strdup((getgrgid(stat->st_gid))->gr_name);

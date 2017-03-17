@@ -9,6 +9,18 @@ FILE TYPES :
 #define	DT_SOCK		12
 #define	DT_WHT		14
 
+Pour la struct stat :
+	Type de fichier
+		S_ISREG => fichier ordinaire
+		S_ISFIFO => fichier FIFO
+		S_ISCHR => fichier spécial de type caractère
+		S_ISBLK => fichier spécial de type bloc
+		S_ISDIR => répertoire
+	Permissions
+		S_IRUSR S_IWUSR S_IXUSR
+		S_IRGRP S_IWGRP S_IXGRP
+		S_IROTH S_IWOTH S_IXOTH
+
 -a : Include directory entries whose names begin with a dot (.)
 -l : List in long format, total sum for all the file sizes just before the listing
 -R : Recursively list subdirectories

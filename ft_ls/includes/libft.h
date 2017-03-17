@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 10:49:10 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/02 03:34:44 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/17 02:11:20 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ void				ft_bspace(char *s, size_t n);
 char				*ft_strspace(size_t size);
 void				ft_fill_zero(char *s, size_t n);
 char				*ft_strzero(size_t size);
+char				*ft_strfill(size_t size, char c);
 
 size_t				ft_lslen(wchar_t *s);
 
