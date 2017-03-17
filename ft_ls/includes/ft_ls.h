@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/26 08:10:34 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/17 02:55:33 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/17 04:16:21 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,14 @@
 # define MTIME			(lst->file->mtime)
 # define PATHNAME		(lst->file->pathname)
 
+# define F_MODE			(f->f_mode)
+# define F_LINKS		(f->f_links)
+# define F_OWNER		(f->f_owner)
+# define F_GROUP		(f->f_group)
+# define F_SIZE			(f->f_size)
+# define F_MTIME		(f->f_mtime)
+# define F_PATH			(f->f_pathname)
+
 typedef struct			s_file
 {
 	char				*mode;
@@ -47,6 +55,17 @@ typedef struct			s_file_list
 	t_file				*file;
 	struct s_file_list	*next;
 }						t_file_list;
+
+typedef struct			s_fields
+{
+	int					f_mode;
+	int					f_links;
+	int					f_owner;
+	int					f_group;
+	int					f_size;
+	int					f_mtime;
+	int					f_pathname;
+}						t_fields;
 
 t_file					*ft_new_file(struct dirent *d);
 void					ft_set_mode_file_type(char *mode, mode_t st_mode);

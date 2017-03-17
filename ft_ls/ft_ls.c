@@ -6,11 +6,27 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/26 08:09:08 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/17 03:53:54 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/17 05:42:31 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+t_fields			*ft_new_fields(void)
+{
+	t_fields		*new;
+
+	if (!(new = malloc(sizeof(t_fields))))
+		exit(0);
+	new->f_mode = 0;
+	new->f_links = 0;
+	new->f_owner = 0;
+	new->f_group = 0;
+	new->f_size = 0;
+	new->f_mtime = 0;
+	new->f_pathname = 0;
+	return (new);
+}
 
 void				ft_set_mode_file_type(char *mode, mode_t st_mode)
 {
@@ -68,8 +84,7 @@ char				*ft_format_time(time_t sec)
 {
 	char			*full_time;
 
-	if (sec < time(NULL) - (6 * 30 * 24 * 60 * 60) ||
-			sec > time(NULL))
+	if (sec < time(NULL) - (6 * 30 * 24 * 60 * 60) || sec > time(NULL))
 		full_time = ft_strjoin(ft_strsub(ctime(&sec), 4, 7),
 				ft_strsub(ctime(&sec), 20, 4));
 	else
@@ -91,7 +106,6 @@ t_file				*ft_new_file(struct dirent *d)
 	new->owner = ft_strdup((getpwuid(stat->st_uid))->pw_name);
 	new->group = ft_strdup((getgrgid(stat->st_gid))->gr_name);
 	new->size = stat->st_size;
-	//new->mtime = ctime(&(stat->st_mtimespec.tv_sec));
 	new->mtime = ft_format_time(stat->st_mtimespec.tv_sec);
 	new->pathname = ft_strdup(d->d_name);
 	return (new);
@@ -137,6 +151,17 @@ void				display_stat_info(struct stat *info)
 	ft_printf("|		- %d\n", info->st_blocks);
 }
 
+void				ft_update_fields(t_fields *f, t_file_list *lst)
+{
+	F_MODE = ft_max((int)ft_strlen(MODE), F_MODE);
+	F_LINKS = ft_max((int)ft_count_digit(LINKS), F_LINKS);
+	F_OWNER = ft_max((int)ft_strlen(OWNER), F_OWNER);
+	F_GROUP = ft_max((int)ft_strlen(GROUP), F_GROUP);
+	F_SIZE = ft_max((int)ft_count_digit(SIZE), F_SIZE);
+	F_MTIME = ft_max((int)ft_strlen(MTIME), F_MTIME);
+	F_PATH = ft_max((int)ft_strlen(PATHNAME), F_PATH);
+}
+
 int					main(int ac, char **av)
 {
 	DIR				*dir;
@@ -144,9 +169,11 @@ int					main(int ac, char **av)
 	struct stat		*buf;
 	t_file_list		*lst;
 	int				blocks;
+	t_fields		*f;
 
 	lst = NULL;
 	blocks = 0;
+	f = ft_new_fields();
 	buf = malloc(sizeof(struct stat));
 	if (!ac)
 		return (-1);
@@ -159,6 +186,7 @@ int					main(int ac, char **av)
 			if ((d->d_name)[0] != '.')
 			{
 				ft_add(&lst, ft_new_file(d));
+				ft_update_fields(f, lst);
 				lstat(d->d_name, buf);
 				blocks += buf->st_blocks;
 			}
@@ -166,8 +194,9 @@ int					main(int ac, char **av)
 		ft_printf("total %d\n", blocks);
 		while (lst)
 		{
-			ft_printf("%s  %d  %s  %s  %d  %s  %s\n", MODE, LINKS,
-					OWNER, GROUP, SIZE, MTIME, PATHNAME);
+			ft_printf("%s  %*d %*s  %*s  %*d  %*s  %s\n", MODE, F_LINKS,
+					LINKS, F_OWNER, OWNER, F_GROUP, GROUP, F_SIZE, SIZE,
+					F_MTIME, MTIME, PATHNAME);
 			lst = lst->next;
 		}
 	}
