@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/26 08:09:08 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/17 08:57:29 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/24 23:30:51 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,11 +127,9 @@ t_file				*ft_new_file(struct dirent *d)
 	new->size = stat->st_size;
 	new->mtime = ft_format_time(stat->st_mtimespec.tv_sec);
 	new->pathname = ft_strdup(d->d_name);
-	/*
 ft_printf("%s  %d %s  %s  %d  %s  %s\n",
 		new->mode, new->links, new->owner, new->group,
 		new->size, new->mtime, new->pathname);
-		*/
 	return (new);
 }
 
@@ -324,7 +322,7 @@ void				ft_test(char *dir_name)
 	{
 		if ((d->d_name)[0] != '.')
 		{
-			lstat(d->d_name, buf);
+			lstat(ft_strjoin("dir_test/", d->d_name), buf);
 			blocks += buf->st_blocks;
 ft_printf("%s  %d %s  %s  %d  %s  %s\n",
 	ft_get_mode(buf->st_mode),
