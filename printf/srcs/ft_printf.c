@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/25 04:53:36 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/26 00:14:08 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,8 @@ void		ft_reset_conv(t_data *data)
 	STAR = 0;
 	L_LARG = 0;
 	L_RARG = 0;
-	//ft_strdel(&MODIF);
 	MODIF = ft_strdup("");
-	//ft_strdel(&LARG);
 	LARG = ft_strdup("");
-	//ft_strdel(&RARG);
 	RARG = ft_strdup("");
 }
 
@@ -76,7 +73,7 @@ int			ft_printf(const char *format, ...)
 	ft_process(data);
 	va_end(ap);
 	if (ERR)
-		return (ft_free_data(data));
+		return (-1);
 	if (POS_C0 != -1)
 	{
 		i = 0;
@@ -89,7 +86,6 @@ int			ft_printf(const char *format, ...)
 	else
 		ft_putstr(BUFFER);
 	r = (int)ft_strlen(BUFFER) + L_ADJUST;
-	ft_free_data(data);
 	return (r);
 }
 
@@ -105,7 +101,7 @@ int			ft_dprintf(int fd, const char *format, ...)
 	ft_process(data);
 	va_end(ap);
 	if (ERR)
-		return (ft_free_data(data));
+		return (-1);
 	if (POS_C0 != -1)
 	{
 		i = 0;
@@ -118,7 +114,6 @@ int			ft_dprintf(int fd, const char *format, ...)
 	else
 		ft_putstr_fd(BUFFER, fd);
 	r = (int)ft_strlen(BUFFER) + L_ADJUST;
-	ft_free_data(data);
 	return (r);
 }
 
@@ -134,7 +129,7 @@ int			ft_sprintf(char *s, const char *format, ...)
 	ft_process(data);
 	va_end(ap);
 	if (ERR)
-		return (ft_free_data(data));
+		return (-1);
 	r = (int)ft_strlen(BUFFER) + L_ADJUST;
 	if (POS_C0 != -1)
 	{
@@ -147,6 +142,5 @@ int			ft_sprintf(char *s, const char *format, ...)
 	}
 	else
 		s = ft_strcpy(s, BUFFER);
-	ft_free_data(data);
 	return (r);
 }

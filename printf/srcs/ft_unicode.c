@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/11 05:49:32 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/25 02:36:28 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/26 00:17:33 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ static void	ft_sub(t_data *data, char *byte, int n)
 
 void		ft_conv_wc(t_data *data, wchar_t c)
 {
-	//free(BIN);
 	BIN = ft_itoa_base((int)c, 2, 0);
 	BITS = (int)ft_strlen(BIN);
 	if (BITS < 8)
@@ -39,7 +38,6 @@ void		ft_conv_ws(t_data *data)
 {
 	int		i;
 
-	//free(ARG);
 	if (WS_ARG == NULL)
 	{
 		ARG = ft_strdup("(null)");

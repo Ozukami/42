@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/11 05:50:32 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/25 02:34:59 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/26 00:15:52 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void		ft_adjust(t_data *data)
 	if (TYPE >= 'C' && TYPE <= 'U')
 	{
 		TYPE += 32;
-		//ft_strdel(&MODIF);
 		MODIF = ft_strdup("l");
 	}
 	if (TYPE == 'i')

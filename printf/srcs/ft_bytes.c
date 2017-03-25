@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/11 05:48:09 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/25 02:27:37 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/26 00:16:02 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int			ft_bin_to_dec(char *bin)
 	power = 7;
 	while (bin[i])
 		hex += (bin[i++] - '0') * ft_recursive_power(2, power--);
-	//ft_strdel(&bin);
 	return (hex);
 }
 
@@ -53,9 +52,7 @@ void		ft_split_bytes(t_data *data, char *byte)
 		i++;
 	}
 	multi_octet[BYTES] = '\0';
-	//PTR = ARG;
 	ARG = ft_strjoin(ARG, multi_octet);
-	//ft_strdel(&PTR);
 }
 
 void		ft_set_bytes(t_data *data, char *byte, int bytes)

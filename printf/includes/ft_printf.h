@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/10 01:22:47 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/25 04:29:26 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/26 00:27:55 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ typedef struct		s_data
 	char			*buff;
 	char			*format;
 	va_list			ap;
-	int			len;
+	int				len;
 	t_conv			*conv;
 	t_arg			*arg;
 	t_uni			*uni;
@@ -209,11 +209,6 @@ void				ft_dispatch(t_data *data);
 void				ft_bad_delim(t_data *data, int i);
 void				ft_get_conv(t_data *data, int i);
 void				ft_reset_conv(t_data *data);
-void				ft_free_color(t_color *color);
-void				ft_free_conv(t_conv *conv);
-void				ft_free_arg(t_arg *arg);
-void				ft_free_uni(t_uni *uni);
-int					ft_free_data(t_data *data);
 int					ft_color_process(t_data *data, int i);
 
 #endif
