@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/11 05:57:20 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/17 04:43:21 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/25 02:36:02 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void		ft_get_mod(t_data *data, int i)
 {
 	if (ft_multi_mod(data))
 		return ;
-	free(MODIF);
+	//ft_strdel(&MODIF);
 	if (FORMAT[i + LEN] == 'l' && FORMAT[i + LEN + 1] == 'l')
 	{
 		MODIF = ft_strdup("ll");

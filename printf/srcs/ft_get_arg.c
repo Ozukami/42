@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/11 05:36:49 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/03/12 01:18:36 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/25 02:29:12 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int			ft_multi_mod(t_data *data)
 
 void		ft_get_arg_d(t_data *data)
 {
-	free(ARG);
+	//free(ARG);
 	if (ft_strequ(MODIF, "hh"))
 		ARG = ft_lltoa_base(((char)va_arg(AP, int)), BASE, 0);
 	else if (ft_strequ(MODIF, "h"))
@@ -41,7 +41,7 @@ void		ft_get_arg_d(t_data *data)
 
 void		ft_get_arg_oux(t_data *data)
 {
-	free(ARG);
+	//free(ARG);
 	if (ft_strequ(MODIF, ""))
 		ARG = ft_lltoa_base((unsigned int)(va_arg(AP, int)),
 				BASE, ((TYPE == 'X') ? 1 : 0));
@@ -69,7 +69,7 @@ void		ft_get_arg_string(t_data *data)
 	else
 	{
 		tmp = va_arg(AP, char *);
-		free(ARG);
+		//free(ARG);
 		if (tmp)
 			ARG = ft_strdup(tmp);
 	}
@@ -79,11 +79,12 @@ void		ft_get_arg(t_data *data)
 {
 	if (TYPE == 'c')
 	{
-		free(ARG);
+		//free(ARG);
 		if (ft_strequ(MODIF, "l"))
 		{
 			WC_ARG = va_arg(AP, wchar_t);
-			ERR = (WC_ARG < 0 || WC_ARG > 2097152) ? 1 : 0;
+			ERR = (WC_ARG < 0 || WC_ARG > 1114111
+					|| (WC_ARG > 55295 && WC_ARG < 57344)) ? 1 : 0;
 			ft_conv_wc(data, WC_ARG);
 		}
 		else

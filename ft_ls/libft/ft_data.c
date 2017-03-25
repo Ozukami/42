@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 00:57:08 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/17 05:39:57 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/25 01:18:40 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_conv		*ft_init_conv(void)
 {
 	t_conv	*new;
 
-	if (!(new = malloc(sizeof(t_conv))))
+	if (!(new = ft_memalloc(sizeof(t_conv))))
 		exit(0);
 	new->base = 10;
 	new->space = 0;
@@ -29,7 +29,7 @@ t_conv		*ft_init_conv(void)
 	new->field = -1;
 	new->point = 0;
 	new->prec = -1;
-	new->mod = ft_strdup("");
+	new->mod = ft_strnew(0);
 	new->delim = 0;
 	return (new);
 }
@@ -38,12 +38,12 @@ t_arg		*ft_init_arg(void)
 {
 	t_arg	*new;
 
-	if (!(new = malloc(sizeof(t_conv))))
+	if (!(new = ft_memalloc(sizeof(t_conv))))
 		exit(0);
 	new->arg = NULL;
 	new->final_arg = NULL;
-	new->left_arg = ft_strdup("");
-	new->right_arg = ft_strdup("");
+	new->left_arg = ft_strnew(0);
+	new->right_arg = ft_strnew(0);
 	new->size_init = 0;
 	new->size_arg = 0;
 	new->size_farg = 0;
@@ -56,7 +56,7 @@ t_uni		*ft_init_uni(void)
 {
 	t_uni	*new;
 
-	if (!(new = malloc(sizeof(t_uni))))
+	if (!(new = ft_memalloc(sizeof(t_uni))))
 		exit(0);
 	new->wc_arg = 0;
 	new->ws_arg = NULL;
@@ -75,13 +75,13 @@ t_data		*ft_init_data(char *format, va_list ap)
 {
 	t_data	*new;
 
-	if (!(new = malloc(sizeof(t_data))))
+	if (!(new = ft_memalloc(sizeof(t_data))))
 		exit(0);
 	new->flag = ft_strdup(" +-#0");
 	new->f_p = ft_strdup("123456789.*");
 	new->mod = ft_strdup("hljz");
 	new->delim = ft_strdup("cCsSdDioOuUxXpb");
-	new->buff = ft_strdup("");
+	new->buff = ft_strnew(0);
 	new->format = ft_strdup(format);
 	va_copy(new->ap, ap);
 	new->len = 0;

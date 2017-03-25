@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/11 05:48:09 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/11 05:48:28 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/25 02:27:37 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 void		ft_reset_bytes(t_data *data)
 {
-	free(B1);
+	ft_strdel(&B1);
 	B1 = ft_strdup("0xxxxxxx");
-	free(B2);
+	ft_strdel(&B2);
 	B2 = ft_strdup("110xxxxx10xxxxxx");
-	free(B3);
+	ft_strdel(&B3);
 	B3 = ft_strdup("1110xxxx10xxxxxx10xxxxxx");
-	free(B4);
+	ft_strdel(&B4);
 	B4 = ft_strdup("11110xxx10xxxxxx10xxxxxx10xxxxxx");
 }
 
@@ -35,7 +35,7 @@ int			ft_bin_to_dec(char *bin)
 	power = 7;
 	while (bin[i])
 		hex += (bin[i++] - '0') * ft_recursive_power(2, power--);
-	ft_strdel(&bin);
+	//ft_strdel(&bin);
 	return (hex);
 }
 
@@ -53,9 +53,9 @@ void		ft_split_bytes(t_data *data, char *byte)
 		i++;
 	}
 	multi_octet[BYTES] = '\0';
-	PTR = ARG;
+	//PTR = ARG;
 	ARG = ft_strjoin(ARG, multi_octet);
-	ft_strdel(&PTR);
+	//ft_strdel(&PTR);
 }
 
 void		ft_set_bytes(t_data *data, char *byte, int bytes)

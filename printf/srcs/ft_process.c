@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/11 05:59:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/17 04:50:48 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/25 02:38:39 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@ void		ft_process_conv(t_data *data)
 		ft_set_prefix(data);
 	if ((PREC > -1 && TYPE == 's') || PREC > (int)L_ARG)
 	{
-		PTR = ARG;
+		//PTR = ARG;
 		ARG = ft_strsub(ARG, 0, PREC + SIGN);
-		ft_strdel(&PTR);
+		//ft_strdel(&PTR);
 	}
 	if (SPACE)
 	{
-		PTR = BUFFER;
+		//PTR = BUFFER;
 		BUFFER = ft_strjoin(BUFFER, " ");
-		ft_strdel(&PTR);
+		//ft_strdel(&PTR);
 	}
 	if (LEFT)
 		FARG = ft_strjoin(ARG, RARG);
@@ -120,14 +120,14 @@ int			ft_color_process(t_data *data, int i)
 	{
 		if (ft_strequ(color_flag, current->name))
 		{
-			PTR = BUFFER;
+			//PTR = BUFFER;
 			BUFFER = ft_strjoin(BUFFER, current->code);
-			ft_strdel(&PTR);
-			ft_strdel(&color_flag);
+			//ft_strdel(&PTR);
+			//ft_strdel(&color_flag);
 			return (len + 1);
 		}
 		current = current->next;
 	}
-	ft_strdel(&color_flag);
+	//ft_strdel(&color_flag);
 	return (0);
 }

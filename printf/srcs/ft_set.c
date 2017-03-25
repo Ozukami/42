@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/11 05:57:37 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/17 05:50:09 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/25 02:39:19 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ void		ft_sub_size_rarg(t_data *data)
 		L_RARG -= ((PREC >= (int)L_INIT) ? NEG : 0);
 		L_RARG -= ((FIELD > (int)L_INIT && FIELD > PREC) ? SPACE : 0);
 		L_RARG -= ((FIELD > (int)L_INIT && FIELD > PREC) ? (PREFIX) : 0);
-		PTR = RARG;
+		//PTR = RARG;
 		if ((int)L_RARG > -1)
 			RARG = ((!ZERO) ? ft_strspace(L_RARG) : ft_strzero(L_RARG));
 		else
 			RARG = ft_strdup("\0");
-		ft_strdel(&PTR);
+		//ft_strdel(&PTR);
 	}
 }
 
@@ -37,12 +37,12 @@ void		ft_sub_size_larg(t_data *data)
 		L_LARG -= ((PREC >= (int)L_INIT) ? NEG : 0);
 		L_LARG -= ((FIELD > (int)L_INIT && FIELD > PREC) ? SPACE : 0);
 		L_LARG -= ((FIELD > (int)L_INIT && FIELD > PREC) ? (PREFIX) : 0);
-		PTR = LARG;
+		//PTR = LARG;
 		if ((int)L_LARG > -1)
 			LARG = ((!ZERO) ? ft_strspace(L_LARG) : ft_strzero(L_LARG));
 		else
 			LARG = ft_strdup("\0");
-		ft_strdel(&PTR);
+		//ft_strdel(&PTR);
 		if (TYPE == 'c' && !ARG[0] && !STAR)
 			POS_C0 = (int)ft_strlen(BUFFER) + (((int)L_LARG > -1) ?
 					(int)L_LARG : 0);
@@ -93,7 +93,7 @@ void		ft_set_prefix(t_data *data)
 			ARG = ft_strjoinf(ARG, ft_strdup(" "));
 		else if (FIELD > (int)L_ARG)
 			ARG = ft_strjoinf(ft_strdup(" "), ARG);
-		ft_strdel(&s);
+		//ft_strdel(&s);
 	}
 	else if (ZERO)
 		LARG = ft_strjoinf(s, LARG);

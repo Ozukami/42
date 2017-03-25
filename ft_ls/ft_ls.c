@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/26 08:09:08 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/24 23:30:51 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/25 01:17:03 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,7 @@ t_ls_data			*ft_init_ls_data(void)
 	return (new);
 }
 
+/*
 void				display_dirent_info(struct dirent *d)
 {
 	ft_printf("| %s\n", d->d_name);
@@ -206,6 +207,7 @@ void				display_stat_info(struct stat *info)
 	ft_printf("|		- %d\n", info->st_size);
 	ft_printf("|		- %d\n", info->st_blocks);
 }
+*/
 
 void				ft_update_fields(t_ls_data *ls_data)
 {
@@ -313,6 +315,7 @@ void				ft_test(char *dir_name)
 
 	if (!dir_name)
 		dir_name = ft_strdup("dir_test");
+	dir_name = ft_strjoin(dir_name, "/");
 	blocks = 0;
 	buf = ft_memalloc(sizeof(struct stat));
 	ft_printf("Opening dir... %s\n", dir_name);
@@ -322,14 +325,14 @@ void				ft_test(char *dir_name)
 	{
 		if ((d->d_name)[0] != '.')
 		{
-			lstat(ft_strjoin("dir_test/", d->d_name), buf);
+			lstat(ft_strjoin(dir_name, d->d_name), buf);
 			blocks += buf->st_blocks;
 ft_printf("%s  %d %s  %s  %d  %s  %s\n",
 	ft_get_mode(buf->st_mode),
 	buf->st_nlink,
 	ft_strdup((getpwuid(buf->st_uid))->pw_name),
 	ft_strdup((getgrgid(buf->st_gid))->gr_name),
-	buf->st_size,
+	(int)buf->st_size,
 	ft_format_time(buf->st_mtimespec.tv_sec),
 	ft_strdup(d->d_name));
 		}
@@ -343,12 +346,15 @@ int					main(int ac, char **av)
 {
 	int				i;
 	t_ls_data		*ls_data;
+	char			*test;
 
+	test = malloc(10);
+	free(test);
 	if (!ac || !av)
 		return (-1);
 	i = 1;
 	ls_data = ft_init_ls_data();
-	ft_test(av[1]);
+	//ft_test(av[1]);
 	if (ac == 1)
 		return (ft_no_args());
 	while (av[i] && av[i][0] == '-')

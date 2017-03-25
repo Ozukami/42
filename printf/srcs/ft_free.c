@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/11 05:23:41 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/03/12 03:28:40 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/25 04:57:15 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,21 +54,21 @@ void		ft_free_uni(t_uni *uni)
 
 int			ft_free_data(t_data *data)
 {
-	ft_free_conv((data->conv));
-	ft_free_arg((data->arg));
-	ft_free_uni((data->uni));
-	ft_free_color(data->color);
-	free(FLAG);
+	//ft_free_conv((data->conv));
+	//ft_free_arg((data->arg));
+	//ft_free_uni((data->uni));
+	//ft_free_color(data->color);
+	//ft_strdel(&FLAG);
 	FLAG = NULL;
-	free(F_P);
+	//ft_strdel(&F_P);
 	F_P = NULL;
-	free(MOD);
+	//ft_strdel(&MOD);
 	MOD = NULL;
-	free(DELIM);
+	//ft_strdel(&DELIM);
 	DELIM = NULL;
-	free(BUFFER);
+	ft_strdel(&BUFFER);
 	BUFFER = NULL;
-	free(FORMAT);
+	ft_strdel(&FORMAT);
 	FORMAT = NULL;
 	free(data);
 	return (ERROR);

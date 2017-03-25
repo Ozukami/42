@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 23:54:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/17 05:48:37 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/25 04:53:36 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ void		ft_reset_conv(t_data *data)
 	STAR = 0;
 	L_LARG = 0;
 	L_RARG = 0;
-	ft_strdel(&MODIF);
+	//ft_strdel(&MODIF);
 	MODIF = ft_strdup("");
-	ft_strdel(&LARG);
+	//ft_strdel(&LARG);
 	LARG = ft_strdup("");
-	ft_strdel(&RARG);
+	//ft_strdel(&RARG);
 	RARG = ft_strdup("");
 }
 
