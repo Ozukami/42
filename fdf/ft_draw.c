@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 04:41:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/29 03:33:28 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/29 04:11:00 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,44 +17,44 @@
 ** coord2 = incx, incy
 */
 
-void	tmp_name(t_env *env, t_rect *line, t_coord *diff, t_coord *adjust)
+void	draw(t_env *env, t_rect *line, t_coord *diff, t_coord *adjust)
 {
 	int	e;
 	int	i;
 
-	mlx_pixel_put(env->mlx, env->win, L_C1_X, L_C1_Y, color);
+	mlx_pixel_put(env->mlx, env->win, L_X1, L_Y1, color);
 	e = 2 * DIFF_1 - DIFF_2;
 	i = -1;
 	while (++i < DIFF_2)
 	{
 		if (e >= 0)
 		{
-			L_C1_Y += ADJUST_2;
-			e += 2 * (DIFF_1 -DIFF_2);
+			L_Y1 += ADJUST_2;
+			e += 2 * (DIFF_1 - DIFF_2);
 		}
 		else
 			e += 2 * DIFF_1;
-		L_C1_X += ADJUST_1;
-		mlx_pixel_put(env->mlx, env->win, L_C1_X, L_C1_Y, color);
+		L_X1 += ADJUST_1;
+		mlx_pixel_put(env->mlx, env->win, L_X1, L_Y1, color);
 	}
 }
 
-void	ft_draw_line(t_env *env, t_rect *line)
+void	draw_line(t_env *env, t_rect *line)
 {
 	t_coord	*diff;
 	t_coord	*adjust;
 
-	DIFF_1 = x2 - x1;
-	DIFF_2 = y2 - y1;
-	if (DIFF_1 < 0)
-		DIFF_1 = -DIFF_1;
-	if (DIFF_2 < 0)
-		DIFF_2 = -DIFF_2;
-	if (L_C1_X < L_C2_X && L_C1_Y < L_C2_Y)
-	else if (L_C1_X < L_C2_X && L_C2_Y < L_C1_Y)
-	else if (L_C2_X < L_C1_X && L_C1_Y < L_C2_Y)
-	else
-	tmp_name(env, line, diff, adjust);
+	diff = ft_new_coord(L_X2 - L_X1, L_Y2 - LY_1);
+	adjust = ft_new_coord(((L_X1 < L_X2) ? 1 : -1),
+			((L_Y1 < L_Y2) ? 1 : -1));
+	DIFF_1 = ft_absolute(DIFF_1);
+	DIFF_2 = ft_absolute(DIFF_2);
+	ft_set_coord(diff, ((DIFF_1 > DIFF_2) ? DIFF_2 : DIFF_1),
+			((DIFF_1 > DIFF_2) ? DIFF_1 : DIFF_2));
+	draw(env, line, diff, adjust);
+	ft_free_coord(diff);
+	ft_free_coord(adjust);
+	ft_free_rect(line);
 }
 
 void	ft_draw_line(t_env *env, int x1, int y1, int x2, int y2, int color)

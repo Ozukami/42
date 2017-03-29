@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 23:15:20 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/03/29 03:29:02 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/29 04:04:19 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@
 
 # define R			(rect)
 # define L_C1		(line->coord1)
-# define L_C1_X		(line->coord1->x)
-# define L_C1_Y		(line->coord1->y)
+# define L_X1		(line->coord1->x)
+# define L_Y1		(line->coord1->y)
 # define L_C2		(line->coord2)
-# define L_C2_X		(line->coord2->x)
-# define L_C2_Y		(line->coord2->y)
+# define L_X2		(line->coord2->x)
+# define L_Y2		(line->coord2->y)
 # define L_COLOR	(line->color)
 
 # define C_X		(coord->x)
