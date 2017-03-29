@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 23:15:20 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/02/23 00:09:28 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/29 03:29:02 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,24 @@
 # include "mlx.h"
 # include <fcntl.h>
 # include <math.h>
+
+# define R			(rect)
+# define L_C1		(line->coord1)
+# define L_C1_X		(line->coord1->x)
+# define L_C1_Y		(line->coord1->y)
+# define L_C2		(line->coord2)
+# define L_C2_X		(line->coord2->x)
+# define L_C2_Y		(line->coord2->y)
+# define L_COLOR	(line->color)
+
+# define C_X		(coord->x)
+# define C_Y		(coord->y)
+
+# define DIFF_1		(diff->x)
+# define DIFF_2		(diff->y)
+
+# define ADJUST_1	(adjust->x)
+# define ADJUST_2	(adjust->y)
 
 typedef struct	s_data
 {
@@ -40,13 +58,5 @@ typedef struct s_env
 
 t_env			*ft_new_env(char *file, int size);
 
-/*
- *	Brenseham gauche droite
- */
-
-void			ft_draw_shit_x(t_env *env, int x, int y, int x2, int y2, int color);
-void			ft_draw_shit2_x(t_env *env, int x, int y, int x2, int y2, int color);
-void			ft_draw_shit_y(t_env *env, int x, int y, int x2, int y2, int color);
-void			ft_draw_shit2_y(t_env *env, int x, int y, int x2, int y2, int color);
 
 #endif

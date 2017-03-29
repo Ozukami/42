@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 10:49:10 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/11 07:48:47 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/29 03:41:03 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@ typedef struct		s_list
 	size_t			content_size;
 	struct s_list	*next;
 }					t_list;
+
+typedef struct		s_coord
+{
+	int				x;
+	int				y;
+}					t_coord;
 
 /*
 ** PART I
@@ -139,5 +145,8 @@ char				*ft_strspace(size_t size);
 size_t				ft_lslen(wchar_t *s);
 int					ft_atoi_base(const char *str, int base);
 double				ft_atof(const char *str);
+
+void				ft_set_cord(t_coord *coord, int x, int y);
+t_coord				*ft_new_coord(int a, int b);
 
 #endif
