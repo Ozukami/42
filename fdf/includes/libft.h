@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 10:49:10 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/29 03:41:03 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/29 04:33:05 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,13 @@ typedef struct		s_coord
 	int				x;
 	int				y;
 }					t_coord;
+
+typedef struct		s_rect
+{
+	t_coord			*coord1;
+	t_coord			*coord2;
+	int				color;
+}					t_rect;
 
 /*
 ** PART I
@@ -146,7 +153,8 @@ size_t				ft_lslen(wchar_t *s);
 int					ft_atoi_base(const char *str, int base);
 double				ft_atof(const char *str);
 
-void				ft_set_cord(t_coord *coord, int x, int y);
+void				ft_set_coord(t_coord *coord, int x, int y);
 t_coord				*ft_new_coord(int a, int b);
+t_rect				*ft_new_rect(t_coord *coord1, t_coord *coord2, int color);
 
 #endif

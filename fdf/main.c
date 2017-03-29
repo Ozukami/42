@@ -6,12 +6,13 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 23:04:32 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/02/23 05:13:58 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/29 04:26:45 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
+void		draw_line(t_env *env, t_rect *line);
 void		ft_draw_line(t_env *env, int x, int y, int x2, int y2, int color);
 
 int			ft_tab_size(char **tab)
@@ -65,11 +66,22 @@ void		ft_test(t_env *env, int x, int y, int x2, int y2, int color, int z, int z2
 
 int			main(int ac, char **av)
 {
+	/*
 	int		i;
 	int		j;
 	int		fd; 
+	*/
 	t_env	*env;
 
+	env = ft_memalloc(sizeof(t_env));
+	env->mlx = mlx_init();
+	env->win = mlx_new_window(mlx, 500, 500, "Test");
+	draw_line(env, ft_new_rect(
+				ft_new_coord(50,50),
+				ft_new_coord(150,150),
+				0x00FF0000));
+	ft_draw_line(env, 60, 60, 160, 160, 0x0000FF00);
+	/*
 	if (ac < 2)
 		return (0);
 	env = ft_new_env(av[1], 10);
@@ -98,6 +110,7 @@ int			main(int ac, char **av)
 		}
 		i++;
 	}
+	*/
 	mlx_loop(env->mlx);
 	return (0);
 }
