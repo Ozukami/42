@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/05 08:35:46 by apoisson          #+#    #+#             */
-/*   Updated: 2017/02/06 05:03:18 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/04 06:08:59 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*ft_strjoinf(char *s1, char *s2)
 		stack[i] = s1[i];
 	while (s2[++j])
 		stack[i + j] = s2[j];
-	free(s1);
-	free(s2);
+	ft_strdel(&s1);
+	ft_strdel(&s2);
 	return (stack);
 }

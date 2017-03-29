@@ -1,39 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ltoa_unsigned.c                                 :+:      :+:    :+:   */
+/*   ft_count_digit.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/19 12:11:22 by apoisson          #+#    #+#             */
-/*   Updated: 2017/01/24 09:54:14 by qumaujea         ###   ########.fr       */
+/*   Created: 2017/03/01 03:15:15 by apoisson          #+#    #+#             */
+/*   Updated: 2017/03/01 04:04:03 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 
-static int	get_size(unsigned long int value)
+int		ft_count_digit(long value)
 {
-	if (value < 10)
+	if (value > -10 && value <= -1)
+		return (2);
+	if (value >= 0 && value < 10)
 		return (1);
-	return (1 + get_size(value / 10));
-}
-
-char		*ft_ltoa_unsigned(long int value)
-{
-	char				*itoa;
-	int					size;
-	unsigned long int	nb;
-
-	nb = (unsigned long int)value;
-	size = get_size(nb);
-	if (!(itoa = malloc(sizeof(char) * (size + 1))))
-		return (NULL);
-	itoa[size--] = '\0';
-	while (size >= 0)
-	{
-		itoa[size--] = '0' + nb % 10;
-		nb = nb / 10;
-	}
-	return (itoa);
+	if (value < -10)
+		return (2 + ft_count_digit(-value / 10));
+	return (1 + ft_count_digit(value / 10));
 }

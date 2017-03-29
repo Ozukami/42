@@ -1,24 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_u_int.c                                  :+:      :+:    :+:   */
+/*   ft_absolute.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/15 11:10:05 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/15 11:19:36 by apoisson         ###   ########.fr       */
+/*   Created: 2017/03/26 03:26:53 by apoisson          #+#    #+#             */
+/*   Updated: 2017/03/28 23:27:36 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putnbr_u_int(unsigned int n)
+int		ft_absolute(int a)
 {
-	if (n < 10)
-		ft_putchar('0' + n);
-	else
-	{
-		ft_putnbr_u_int(n / 10);
-		ft_putchar('0' + n % 10);
-	}
+	if (a < 0)
+		return (-a);
+	return (a);
 }

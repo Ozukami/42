@@ -6,13 +6,13 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 23:04:32 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/03/29 04:26:45 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/30 01:28:36 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void		draw_line(t_env *env, t_rect *line);
+void		my_draw_line(t_env *env, t_rect *line);
 void		ft_draw_line(t_env *env, int x, int y, int x2, int y2, int color);
 
 int			ft_tab_size(char **tab)
@@ -64,6 +64,18 @@ void		ft_test(t_env *env, int x, int y, int x2, int y2, int color, int z, int z2
 			y2_tmp + (env->win_y * env->win_size / 9) - z2, color);
 }
 
+void		ft_tmp(t_env *env, int x, int y)
+{
+	my_draw_line(env, ft_new_rect(
+				ft_new_coord(250, 250),
+				ft_new_coord(x, y),
+				0x00FF0000));
+	//ft_draw_line(env, 260, 250, 10 + x, y, 0x0000FF00);
+	ft_draw_line(env, 751, 250, 501 + x, y, 0x0000FF00);
+	mlx_do_sync(env->win);
+	sleep(1);
+}
+
 int			main(int ac, char **av)
 {
 	/*
@@ -72,15 +84,44 @@ int			main(int ac, char **av)
 	int		fd; 
 	*/
 	t_env	*env;
+	int		hour;
 
+	(void)ac;
+	(void)av;
 	env = ft_memalloc(sizeof(t_env));
 	env->mlx = mlx_init();
-	env->win = mlx_new_window(mlx, 500, 500, "Test");
-	draw_line(env, ft_new_rect(
-				ft_new_coord(50,50),
-				ft_new_coord(150,150),
-				0x00FF0000));
-	ft_draw_line(env, 60, 60, 160, 160, 0x0000FF00);
+	env->win = mlx_new_window(env->mlx, 1001, 500, "Test");
+	ft_draw_line(env, 501, 0, 501, 500, 0x00FF00FF);
+	hour = 1;
+	switch (hour)
+	{
+		case 1:
+			ft_tmp(env, 250, 100);
+		case 2:
+			ft_tmp(env, 300, 150);
+		case 3:
+			ft_tmp(env, 350, 200);
+		case 4:
+			ft_tmp(env, 400, 250);
+		case 5:
+			ft_tmp(env, 350, 300);
+		case 6:
+			ft_tmp(env, 300, 350);
+		case 7:
+			ft_tmp(env, 250, 400);
+		case 8:
+			ft_tmp(env, 200, 350);
+		case 9:
+			ft_tmp(env, 150, 300);
+		case 10:
+			ft_tmp(env, 100, 250);
+		case 11:
+			ft_tmp(env, 150, 200);
+		case 12:
+			ft_tmp(env, 200, 150);
+		default :
+			break ;
+	}
 	/*
 	if (ac < 2)
 		return (0);

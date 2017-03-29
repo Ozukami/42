@@ -1,24 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_u_long.c                                 :+:      :+:    :+:   */
+/*   ft_fill_zero.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/15 11:07:19 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/15 11:19:21 by apoisson         ###   ########.fr       */
+/*   Created: 2017/03/02 01:29:27 by qumaujea          #+#    #+#             */
+/*   Updated: 2017/03/02 01:30:04 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putnbr_u_long(unsigned long n)
+void	ft_fill_zero(char *s, size_t n)
 {
-	if (n < 10)
-		ft_putchar('0' + n);
-	else
+	size_t	i;
+
+	i = 0;
+	if (n == 0)
+		return ;
+	while (i < n - 1)
 	{
-		ft_putnbr_u_long(n / 10);
-		ft_putchar('0' + n % 10);
+		s[i] = '0';
+		i++;
 	}
+	s[i] = 0;
 }

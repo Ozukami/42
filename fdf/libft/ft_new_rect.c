@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_u_short.c                                :+:      :+:    :+:   */
+/*   ft_new_rect.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/15 11:07:02 by apoisson          #+#    #+#             */
-/*   Updated: 2016/12/15 11:19:07 by apoisson         ###   ########.fr       */
+/*   Created: 2017/03/29 04:28:04 by apoisson          #+#    #+#             */
+/*   Updated: 2017/03/29 04:30:49 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putnbr_u_short(unsigned short n)
+t_rect	*ft_new_rect(t_coord *coord1, t_coord *coord2, int color)
 {
-	if (n < 10)
-		ft_putchar('0' + n);
-	else
-	{
-		ft_putnbr_u_short(n / 10);
-		ft_putchar('0' + n % 10);
-	}
+	t_rect	*new;
+
+	if (!(new = ft_memalloc(sizeof(t_rect))))
+		return (NULL);
+	new->coord1 = coord1;
+	new->coord2 = coord2;
+	new->color = color;
+	return (new);
 }
