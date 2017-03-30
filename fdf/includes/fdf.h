@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 23:15:20 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/03/29 04:04:19 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/30 03:07:12 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,10 @@
 
 # define ADJUST_1	(adjust->x)
 # define ADJUST_2	(adjust->y)
+
+# define WIN_X		(env->win_x)
+# define WIN_Y		(env->win_y)
+# define WIN_SIZE	(env->win_size)
 
 typedef struct	s_data
 {
