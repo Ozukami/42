@@ -6,16 +6,11 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/23 04:41:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/03/30 05:15:58 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/03/30 05:18:14 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-/*
-** diff = d1, d2
-** coord2 = incx, incy
-*/
 
 void	ft_draw_1(t_env *env, t_rect *line, t_coord *diff, t_coord *adjust)
 {
