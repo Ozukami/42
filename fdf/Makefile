@@ -6,13 +6,13 @@
 #    By: apoisson <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 11:29:15 by apoisson          #+#    #+#              #
-#    Updated: 2017/03/29 23:15:39 by apoisson         ###   ########.fr        #
+#    Updated: 2017/04/04 01:05:58 by apoisson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fdf
 FLAGS = -Wall -Wextra -Werror
-SRC = ft_init.c ft_draw.c main.c
+SRC = ft_init.c ft_draw.c main.c free_map.c
 
 all: $(NAME)
 

@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 23:15:20 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/03/30 03:07:12 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/04 01:35:54 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@
 # define ADJUST_1	(adjust->x)
 # define ADJUST_2	(adjust->y)
 
+# define MLX		(env->mlx)
+# define WIN		(env->win)
 # define WIN_X		(env->win_x)
 # define WIN_Y		(env->win_y)
 # define WIN_SIZE	(env->win_size)
@@ -45,7 +47,7 @@ typedef struct	s_data
 {
 	char 		**content_file;
 	char		*buf;
-	double		**map;
+	int			**map;
 }				t_data;
 
 t_data			*ft_new_data();
@@ -61,6 +63,9 @@ typedef struct s_env
 }				t_env;
 
 t_env			*ft_new_env(char *file, int size);
+void			ft_draw_line(t_env *env, t_rect *line);
+void			free_map(char **map);
+void			free_map_int(int **map);
 
 
 #endif

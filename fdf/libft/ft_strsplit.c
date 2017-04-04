@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/16 14:45:38 by apoisson          #+#    #+#             */
-/*   Updated: 2016/11/21 13:17:11 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/04 02:27:50 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static char	*ft_add_word_tab(const char *s, char c, int *i)
 	j = *i;
 	while (s[*i] != c)
 		*i = *i + 1;
-	str = ft_strdup(ft_strsub(s, j, *i - j));
+	str = ft_strsub(s, j, *i - j);
 	while (s[*i] == c)
 		*i = *i + 1;
 	return (str);
