@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 23:15:20 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/04/04 01:35:54 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/05 01:33:49 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@
 # define WIN_X		(env->win_x)
 # define WIN_Y		(env->win_y)
 # define WIN_SIZE	(env->win_size)
+# define Z			(env->zoom)
 
 typedef struct	s_data
 {
@@ -60,6 +61,7 @@ typedef struct s_env
 	int			win_size;
 	int			win_y; // NB LINES
 	int			win_x; // NB COLUMNS
+	int			zoom;
 }				t_env;
 
 t_env			*ft_new_env(char *file, int size);

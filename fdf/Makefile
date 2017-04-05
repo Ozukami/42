@@ -6,7 +6,7 @@
 #    By: apoisson <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 11:29:15 by apoisson          #+#    #+#              #
-#    Updated: 2017/04/04 01:05:58 by apoisson         ###   ########.fr        #
+#    Updated: 2017/04/05 00:59:36 by qumaujea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ all: $(NAME)
 
 $(NAME): libft.a $(SRC)
 	@printf "\033[0;36m> Compiling filler\033[0m"
-	@gcc $(FLAGS) -I includes/ -L. -lft $(SRC) -o $(NAME) -lmlx -framework OpenGL -framework AppKit
+	@gcc $(FLAGS) -g -I includes/ -L. -lft $(SRC) -o $(NAME) -lmlx -framework OpenGL -framework AppKit
 	@printf "\033[0;32m OK\n\033[0m"
 
 libft.a:

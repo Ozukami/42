@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 23:47:04 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/04/04 00:57:00 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/05 01:55:53 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,13 @@ t_env	*ft_new_env(char *file, int size)
 		ft_strdel(&line);
 		i++;
 	}
+	ft_strdel(&line);
 	new->win_y = i;
 	new->data = ft_new_data(new->win_y);
 	new->mlx = mlx_init();
 	new->win_size = size;
 	new->win = NULL;
+	new->zoom = 0;
 	if (close(fd))
 		exit(0);
 	return (new);
