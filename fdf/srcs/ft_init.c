@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 23:47:04 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/04/10 23:42:00 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/10 23:53:40 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,5 +76,7 @@ t_env		*ft_new_env(char *file, int size)
 	new->win_size = size;
 	new->win = NULL;
 	new->zoom = 0;
+	new->offset_x = 0;
+	new->offset_y = 0;
 	return (new);
 }

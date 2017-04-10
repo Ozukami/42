@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/04 00:08:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/04/10 23:48:58 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/11 00:13:40 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,20 @@ void		ft_test_2(t_env *env, t_rect *line, t_coord *z)
 	int x2_tmp;
 	int y2_tmp;
 
+	x_tmp = L_X1;
+	y_tmp = L_Y1;
+	x2_tmp = L_X2;
+	y2_tmp = L_Y2;
+	/*
 	x_tmp = (L_X1 - L_Y1);
 	y_tmp = (L_X1 + L_Y1) / 1.5;
 	x2_tmp = (L_X2 - L_Y2);
 	y2_tmp = (L_X2 + L_Y2) / 1.5;
+	*/
 	ft_draw_line(env, ft_new_rect(
-			ft_new_coord((x_tmp + ((WIN_X * WIN_SIZE) / 1.5)),
+			ft_new_coord((x_tmp + ((WIN_X * WIN_SIZE) / 1)),
 				(y_tmp + (WIN_Y * WIN_SIZE / 9) - z->x)),
-			ft_new_coord((x2_tmp + ((WIN_X * WIN_SIZE) / 1.5)),
+			ft_new_coord((x2_tmp + ((WIN_X * WIN_SIZE) / 1)),
 				(y2_tmp + (WIN_Y * WIN_SIZE / 9) - z->y)),
 			(L_COLOR + (z->y * 700))));
 	ft_free_rect(line);
@@ -93,13 +99,13 @@ void		ft_process(t_env *env)
 		while (j < env->win_x - 1)
 		{
 			ft_test_2(env,
-					ft_new_rect(ft_new_coord(i * (5 + Z), j * (5 + Z)),
-						ft_new_coord((i + 1) * (5 + Z), j * (5 + Z)),
+					ft_new_rect(ft_new_coord(i * (5 + Z) + X, j * (5 + Z) + Y),
+						ft_new_coord((i + 1) * (5 + Z) + X, j * (5 + Z) + Y),
 						0x00007104), ft_new_coord((int)((env->data)->map)[i][j],
 					(int)((env->data)->map)[i + 1][j]));
 			ft_test_2(env,
-					ft_new_rect(ft_new_coord(i * (5 + Z), j * (5 + Z)),
-						ft_new_coord(i * (5 + Z), (j + 1) * (5 + Z)),
+					ft_new_rect(ft_new_coord(i * (5 + Z) + X, j * (5 + Z) + Y),
+						ft_new_coord(i * (5 + Z) + X, (j + 1) * (5 + Z) + Y),
 						0x00007104), ft_new_coord((int)((env->data)->map)[i][j],
 					(int)((env->data)->map)[i][j + 1]));
 			j++;
@@ -133,19 +139,57 @@ int			ft_key_handler(int key, t_env *env)
 		ft_process(env);
 		mlx_do_sync(MLX);
 	}
+	if (key == LEFT)
+	{
+		X = X - 3;
+		mlx_clear_window(MLX, WIN);
+		ft_process(env);
+		mlx_do_sync(MLX);
+	}
+	if (key == RIGHT)
+	{
+		X = X + 3;
+		mlx_clear_window(MLX, WIN);
+		ft_process(env);
+		mlx_do_sync(MLX);
+	}
+	if (key == DOWN)
+	{
+		Y = Y + 3;
+		mlx_clear_window(MLX, WIN);
+		ft_process(env);
+		mlx_do_sync(MLX);
+	}
+	if (key == UP)
+	{
+		Y = Y - 3;
+		mlx_clear_window(MLX, WIN);
+		ft_process(env);
+		mlx_do_sync(MLX);
+	}
 	return (1);
 }
 
 int			main(int ac, char **av)
 {
 	t_env	*env;
+	int		max_x;
+	int		max_y;
 
 	if (ac < 2)
 		return (0);
 	env = ft_new_env(av[1], 10);
 	ft_moulisplit(env);
-	env->win = mlx_new_window(env->mlx, env->win_x * env->win_size,
-			env->win_y * env->win_size, "FdF");
+	max_x = (env->win_x * env->win_size < 2000)
+		? env->win_x * env->win_size : 2000;
+	max_y = (env->win_y * env->win_size < 1250)
+		? env->win_y * env->win_size : 1250;
+	/*
+	env->win = mlx_new_window(env->mlx, max_x,
+			max_y, "FdF");
+			*/
+	env->win = mlx_new_window(env->mlx, 700,
+			700, "FdF");
 	ft_process(env);
 	mlx_hook(env->win, 17, 0, &ft_exit, env);
 	mlx_hook(env->win, 2, 0, &ft_key_handler, env);

@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 23:15:20 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/04/05 01:33:49 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/04/10 23:56:11 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,11 @@
 # include "mlx.h"
 # include <fcntl.h>
 # include <math.h>
+
+# define LEFT		123
+# define RIGHT		124
+# define DOWN		125
+# define UP			126
 
 # define R			(rect)
 # define L_C1		(line->coord1)
@@ -42,6 +47,8 @@
 # define WIN_X		(env->win_x)
 # define WIN_Y		(env->win_y)
 # define WIN_SIZE	(env->win_size)
+# define X			(env->offset_x)
+# define Y			(env->offset_y)
 # define Z			(env->zoom)
 
 typedef struct	s_data
@@ -62,6 +69,8 @@ typedef struct s_env
 	int			win_y; // NB LINES
 	int			win_x; // NB COLUMNS
 	int			zoom;
+	int			offset_x;
+	int			offset_y;
 }				t_env;
 
 t_env			*ft_new_env(char *file, int size);
