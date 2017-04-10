@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/04 00:08:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/04/05 03:24:50 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/04/10 23:48:58 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,13 +94,13 @@ void		ft_process(t_env *env)
 		{
 			ft_test_2(env,
 					ft_new_rect(ft_new_coord(i * (5 + Z), j * (5 + Z)),
-						ft_new_coord((i + 1) *  (5 + Z), j * (5 + Z)), 0x00007104),
-					ft_new_coord((int)((env->data)->map)[i][j],
+						ft_new_coord((i + 1) * (5 + Z), j * (5 + Z)),
+						0x00007104), ft_new_coord((int)((env->data)->map)[i][j],
 					(int)((env->data)->map)[i + 1][j]));
 			ft_test_2(env,
-					ft_new_rect(ft_new_coord(i *  (5 + Z), j * (5 + Z)),
-						ft_new_coord(i *  (5 + Z), (j + 1) * (5 + Z)), 0x00007104),
-					ft_new_coord((int)((env->data)->map)[i][j],
+					ft_new_rect(ft_new_coord(i * (5 + Z), j * (5 + Z)),
+						ft_new_coord(i * (5 + Z), (j + 1) * (5 + Z)),
+						0x00007104), ft_new_coord((int)((env->data)->map)[i][j],
 					(int)((env->data)->map)[i][j + 1]));
 			j++;
 		}
@@ -117,7 +117,6 @@ int			ft_exit(t_env *env)
 
 int			ft_key_handler(int key, t_env *env)
 {
-	printf("%d\n", key);
 	if (key == 53)
 		ft_exit(env);
 	if (key == 69)
@@ -127,7 +126,7 @@ int			ft_key_handler(int key, t_env *env)
 		ft_process(env);
 		mlx_do_sync(MLX);
 	}
-	if (key == 78)
+	if (key == 78 && Z > -2)
 	{
 		Z = Z - 1;
 		mlx_clear_window(MLX, WIN);
@@ -139,25 +138,11 @@ int			ft_key_handler(int key, t_env *env)
 
 int			main(int ac, char **av)
 {
-	int		i;
-	int		fd;
-	char	*line;
 	t_env	*env;
 
 	if (ac < 2)
 		return (0);
 	env = ft_new_env(av[1], 10);
-	if (!(fd = open(av[1], O_RDONLY)))
-		exit(0);
-	env->data->content_file = ft_memalloc(sizeof(char *) * (env->win_y + 1));
-	i = 0;
-	while (get_next_line(fd, &line))
-	{
-		((env->data)->content_file)[i++] = ft_strdup(line);
-		ft_strdel(&line);
-	}
-	if (close(fd))
-		exit(0);
 	ft_moulisplit(env);
 	env->win = mlx_new_window(env->mlx, env->win_x * env->win_size,
 			env->win_y * env->win_size, "FdF");

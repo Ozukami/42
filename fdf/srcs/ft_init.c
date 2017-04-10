@@ -6,13 +6,13 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 23:47:04 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/04/05 01:55:53 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/04/10 23:42:00 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-t_data	*ft_new_data(int y)
+t_data		*ft_new_data(int y)
 {
 	t_data	*new;
 
@@ -24,36 +24,57 @@ t_data	*ft_new_data(int y)
 	return (new);
 }
 
-t_env	*ft_new_env(char *file, int size)
+static void	get_content(t_env *env, char *file)
 {
 	int		i;
-	t_env	*new;
-	char	*line;
 	int		fd;
+	char	*line;
 
-	new = ft_memalloc(sizeof(t_env));
-	line = NULL;
+	env->data->content_file = ft_memalloc(sizeof(char *) * (env->win_y + 1));
 	if (!(fd = open(file, O_RDONLY)))
 		exit(0);
-	i = 1;
-	if (get_next_line(fd, &line))
-	{
-		new->win_x = (int)ft_strlen(line);
-		ft_strdel(&line);
-	}
+	i = 0;
 	while (get_next_line(fd, &line))
 	{
+		(env->data->content_file)[i++] = ft_strdup(line);
 		ft_strdel(&line);
-		i++;
+	}
+	if (close(fd))
+		exit(0);
+}
+
+static void	get_size(t_env *env, char *file)
+{
+	int		i;
+	int		fd;
+	char	*line;
+
+	if (!(fd = open(file, O_RDONLY)))
+		exit(0);
+	i = 0;
+	while (get_next_line(fd, &line))
+	{
+		if (i++ == 0)
+			env->win_x = (int)ft_strlen(line);
+		ft_strdel(&line);
 	}
 	ft_strdel(&line);
-	new->win_y = i;
+	env->win_y = i;
+	if (close(fd))
+		exit(0);
+}
+
+t_env		*ft_new_env(char *file, int size)
+{
+	t_env	*new;
+
+	new = ft_memalloc(sizeof(t_env));
+	get_size(new, file);
 	new->data = ft_new_data(new->win_y);
+	get_content(new, file);
 	new->mlx = mlx_init();
 	new->win_size = size;
 	new->win = NULL;
 	new->zoom = 0;
-	if (close(fd))
-		exit(0);
 	return (new);
 }
