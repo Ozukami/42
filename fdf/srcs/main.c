@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/04 00:08:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/04/11 01:45:53 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/11 04:49:03 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ void		ft_moulisplit(t_env *env)
 		k = env->win_x - 1;
 		split = ft_strsplit(((env->data)->content_file)[i], ' ');
 		env->win_x = ft_tab_size(split);
-		((env->data)->map)[i] = ft_memalloc(sizeof(int) * env->win_x);
+		if (!(((env->data)->map)[i] = ft_memalloc(sizeof(int) * env->win_x)))
+			exit(0);
 		while (split[j])
 		{
 			((env->data)->map)[i][k--] = atoi(split[j]);
@@ -126,7 +127,7 @@ int			ft_key_handler(int key, t_env *env)
 		ft_process(env);
 		mlx_do_sync(MLX);
 	}
-	if (key == 78 && Z > -20)
+	if (key == 78 && Z > -4)
 	{
 		Z = Z - 1;
 		mlx_clear_window(MLX, WIN);
@@ -168,24 +169,19 @@ int			main(int ac, char **av)
 {
 	t_env	*env;
 
-	if (ac < 2)
+	if (ac != 2)
 		return (0);
 	env = ft_new_env(av[1], 10);
 	ft_moulisplit(env);
 	if ((env->win_x * env->win_size > 2000)
 			|| (env->win_y * env->win_size > 1250))
 	{
-		printf("ok\n");
 		env->win_size = 2;
 		env->zoom = -4;
 	}
 	if (!(env->win = mlx_new_window(env->mlx, WIN_X * (WIN_SIZE),
 			WIN_Y * (WIN_SIZE), "FdF")))
 		exit(0);
-	/*
-	env->win = mlx_new_window(env->mlx, 700,
-			700, "FdF");
-			*/
 	ft_process(env);
 	mlx_hook(env->win, 17, 0, &ft_exit, env);
 	mlx_hook(env->win, 2, 0, &ft_key_handler, env);

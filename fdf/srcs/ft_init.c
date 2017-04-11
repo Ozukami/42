@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 23:47:04 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/04/11 01:41:24 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/11 03:58:35 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ t_data		*ft_new_data(int y)
 {
 	t_data	*new;
 
-	new = ft_memalloc(sizeof(t_data));
-	new->content_file = ft_memalloc(sizeof(char *) * (y + 1));
-	new->map = ft_memalloc(sizeof(double *) * (y + 1));
+	if (!(new = ft_memalloc(sizeof(t_data)))
+			|| !(new->content_file = ft_memalloc(sizeof(char *) * (y + 1)))
+			|| !(new->map = ft_memalloc(sizeof(double *) * (y + 1))))
+		exit(0);
 	(new->map)[y + 1] = 0;
-	new->buf = NULL;
 	return (new);
 }
 
@@ -30,7 +30,9 @@ static void	get_content(t_env *env, char *file)
 	int		fd;
 	char	*line;
 
-	env->data->content_file = ft_memalloc(sizeof(char *) * (env->win_y + 1));
+	if (!(env->data->content_file = ft_memalloc(sizeof(char *)
+					* (env->win_y + 1))))
+		exit(0);
 	if (!(fd = open(file, O_RDONLY)))
 		exit(0);
 	i = 0;
@@ -39,6 +41,7 @@ static void	get_content(t_env *env, char *file)
 		(env->data->content_file)[i++] = ft_strdup(line);
 		ft_strdel(&line);
 	}
+	ft_strdel(&line);
 	if (close(fd))
 		exit(0);
 }
@@ -68,8 +71,8 @@ t_env		*ft_new_env(char *file, int size)
 {
 	t_env	*new;
 
-	new = ft_memalloc(sizeof(t_env));
-	if (!(new->mlx = mlx_init()))
+	if (!(new = ft_memalloc(sizeof(t_env)))
+			|| !(new->mlx = mlx_init()))
 		exit(0);
 	get_size(new, file);
 	new->data = ft_new_data(new->win_y);
