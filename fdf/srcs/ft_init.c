@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 23:47:04 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/04/10 23:53:40 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/11 01:41:24 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,11 @@ t_env		*ft_new_env(char *file, int size)
 	t_env	*new;
 
 	new = ft_memalloc(sizeof(t_env));
+	if (!(new->mlx = mlx_init()))
+		exit(0);
 	get_size(new, file);
 	new->data = ft_new_data(new->win_y);
 	get_content(new, file);
-	new->mlx = mlx_init();
 	new->win_size = size;
 	new->win = NULL;
 	new->zoom = 0;

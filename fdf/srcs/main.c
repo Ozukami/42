@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/04 00:08:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/04/11 00:13:40 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/11 01:45:53 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,21 +67,15 @@ void		ft_test_2(t_env *env, t_rect *line, t_coord *z)
 	int x2_tmp;
 	int y2_tmp;
 
-	x_tmp = L_X1;
-	y_tmp = L_Y1;
-	x2_tmp = L_X2;
-	y2_tmp = L_Y2;
-	/*
 	x_tmp = (L_X1 - L_Y1);
 	y_tmp = (L_X1 + L_Y1) / 1.5;
 	x2_tmp = (L_X2 - L_Y2);
 	y2_tmp = (L_X2 + L_Y2) / 1.5;
-	*/
 	ft_draw_line(env, ft_new_rect(
-			ft_new_coord((x_tmp + ((WIN_X * WIN_SIZE) / 1)),
-				(y_tmp + (WIN_Y * WIN_SIZE / 9) - z->x)),
-			ft_new_coord((x2_tmp + ((WIN_X * WIN_SIZE) / 1)),
-				(y2_tmp + (WIN_Y * WIN_SIZE / 9) - z->y)),
+			ft_new_coord((x_tmp + ((WIN_X * WIN_SIZE) / 2)),
+				(y_tmp + ((WIN_Y * WIN_SIZE) / 9) - z->x)),
+			ft_new_coord((x2_tmp + ((WIN_X * WIN_SIZE) / 2)),
+				(y2_tmp + ((WIN_Y * WIN_SIZE) / 9) - z->y)),
 			(L_COLOR + (z->y * 700))));
 	ft_free_rect(line);
 	free(z);
@@ -132,7 +126,7 @@ int			ft_key_handler(int key, t_env *env)
 		ft_process(env);
 		mlx_do_sync(MLX);
 	}
-	if (key == 78 && Z > -2)
+	if (key == 78 && Z > -20)
 	{
 		Z = Z - 1;
 		mlx_clear_window(MLX, WIN);
@@ -173,23 +167,25 @@ int			ft_key_handler(int key, t_env *env)
 int			main(int ac, char **av)
 {
 	t_env	*env;
-	int		max_x;
-	int		max_y;
 
 	if (ac < 2)
 		return (0);
 	env = ft_new_env(av[1], 10);
 	ft_moulisplit(env);
-	max_x = (env->win_x * env->win_size < 2000)
-		? env->win_x * env->win_size : 2000;
-	max_y = (env->win_y * env->win_size < 1250)
-		? env->win_y * env->win_size : 1250;
+	if ((env->win_x * env->win_size > 2000)
+			|| (env->win_y * env->win_size > 1250))
+	{
+		printf("ok\n");
+		env->win_size = 2;
+		env->zoom = -4;
+	}
+	if (!(env->win = mlx_new_window(env->mlx, WIN_X * (WIN_SIZE),
+			WIN_Y * (WIN_SIZE), "FdF")))
+		exit(0);
 	/*
-	env->win = mlx_new_window(env->mlx, max_x,
-			max_y, "FdF");
-			*/
 	env->win = mlx_new_window(env->mlx, 700,
 			700, "FdF");
+			*/
 	ft_process(env);
 	mlx_hook(env->win, 17, 0, &ft_exit, env);
 	mlx_hook(env->win, 2, 0, &ft_key_handler, env);
