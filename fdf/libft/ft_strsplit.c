@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/16 14:45:38 by apoisson          #+#    #+#             */
-/*   Updated: 2017/04/05 01:09:25 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/04/12 03:41:33 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,7 @@ static int	ft_count_word(const char *s, char c)
 	word = 0;
 	while (s[i] != '\0')
 	{
-		if (s[i] != c && s[i + 1] == c)
-			word++;
-		if (s[i] != c && s[i + 1] == '\0')
+		if (s[i] != c && (s[i + 1] == c || s[i + 1] == '\0'))
 			word++;
 		i++;
 	}
@@ -36,10 +34,10 @@ static char	*ft_add_word_tab(const char *s, char c, int *i)
 	char	*str;
 
 	j = *i;
-	while (s[*i] != c)
+	while (s[*i] && s[*i] != c)
 		*i = *i + 1;
 	str = ft_strsub(s, j, *i - j);
-	while (s[*i] == c)
+	while (s[*i] && s[*i] == c)
 		*i = *i + 1;
 	return (str);
 }
@@ -56,7 +54,7 @@ char		**ft_strsplit(char const *s, char c)
 	if (!s || !c)
 		return (NULL);
 	word = ft_count_word(s, c);
-	if (!(tab = (char**)malloc(sizeof(tab) * (word + 1))))
+	if (!(tab = ft_memalloc(sizeof(tab) * (word + 1))))
 		return (NULL);
 	while (s[i] == c)
 		i++;

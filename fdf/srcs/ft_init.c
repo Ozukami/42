@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 23:47:04 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/04/11 03:58:35 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/12 01:22:29 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_data		*ft_new_data(int y)
 
 	if (!(new = ft_memalloc(sizeof(t_data)))
 			|| !(new->content_file = ft_memalloc(sizeof(char *) * (y + 1)))
-			|| !(new->map = ft_memalloc(sizeof(double *) * (y + 1))))
+			|| !(new->map = ft_memalloc(sizeof(int *) * (y + 1))))
 		exit(0);
 	(new->map)[y + 1] = 0;
 	return (new);

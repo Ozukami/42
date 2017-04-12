@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/04 00:08:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/04/11 04:49:03 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/12 05:49:04 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ void		ft_moulisplit(t_env *env)
 	while (i < env->win_y)
 	{
 		j = 0;
-		k = env->win_x - 1;
 		split = ft_strsplit(((env->data)->content_file)[i], ' ');
 		env->win_x = ft_tab_size(split);
+		k = env->win_x - 1;
 		if (!(((env->data)->map)[i] = ft_memalloc(sizeof(int) * env->win_x)))
 			exit(0);
 		while (split[j])
@@ -116,51 +116,31 @@ int			ft_exit(t_env *env)
 	return (1);
 }
 
+void		refresh(t_env *env)
+{
+	mlx_clear_window(MLX, WIN);
+	ft_process(env);
+	mlx_do_sync(MLX);
+}
+
 int			ft_key_handler(int key, t_env *env)
 {
 	if (key == 53)
 		ft_exit(env);
-	if (key == 69)
+	if (key == 69 || (key == 78 && Z > -4))
 	{
-		Z = Z + 1;
-		mlx_clear_window(MLX, WIN);
-		ft_process(env);
-		mlx_do_sync(MLX);
+		Z = (key == 69) ? Z + 1 : Z - 1;
+		refresh(env);
 	}
-	if (key == 78 && Z > -4)
+	if (key == LEFT || key == RIGHT)
 	{
-		Z = Z - 1;
-		mlx_clear_window(MLX, WIN);
-		ft_process(env);
-		mlx_do_sync(MLX);
+		X = (key == LEFT) ? X - 3 : X + 3;
+		refresh(env);
 	}
-	if (key == LEFT)
+	if (key == DOWN || key == UP)
 	{
-		X = X - 3;
-		mlx_clear_window(MLX, WIN);
-		ft_process(env);
-		mlx_do_sync(MLX);
-	}
-	if (key == RIGHT)
-	{
-		X = X + 3;
-		mlx_clear_window(MLX, WIN);
-		ft_process(env);
-		mlx_do_sync(MLX);
-	}
-	if (key == DOWN)
-	{
-		Y = Y + 3;
-		mlx_clear_window(MLX, WIN);
-		ft_process(env);
-		mlx_do_sync(MLX);
-	}
-	if (key == UP)
-	{
-		Y = Y - 3;
-		mlx_clear_window(MLX, WIN);
-		ft_process(env);
-		mlx_do_sync(MLX);
+		Y = (key == DOWN) ? Y + 3 : Y - 3;
+		refresh(env);
 	}
 	return (1);
 }
