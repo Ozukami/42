@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 23:15:20 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/04/14 01:10:55 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/14 01:18:45 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,20 +63,20 @@
 
 typedef struct	s_data
 {
-	char 		**content_file;
+	char		**content_file;
 	int			**map;
 }				t_data;
 
 t_data			*ft_new_data();
 
-typedef struct s_env
+typedef struct	s_env
 {
 	t_data		*data;
 	void		*mlx;
 	void		*win;
 	int			win_size;
-	int			win_y; // NB LINES
-	int			win_x; // NB COLUMNS
+	int			win_y;
+	int			win_x;
 	int			zoom;
 	int			offset_x;
 	int			offset_y;
