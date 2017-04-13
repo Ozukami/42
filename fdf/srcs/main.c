@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/04 00:08:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/04/12 06:08:31 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/14 00:35:03 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void		ft_test_2(t_env *env, t_rect *line, t_coord *z)
 				(y_tmp + ((WIN_Y * WIN_SIZE) / 9) - z->x)),
 			ft_new_coord((x2_tmp + ((WIN_X * WIN_SIZE) / 2)),
 				(y2_tmp + ((WIN_Y * WIN_SIZE) / 9) - z->y)),
-			(L_COLOR + (z->y * 700))));
+			(L_COLOR /*+ (z->y * 700)*/)));
 	ft_free_rect(line);
 	free(z);
 }

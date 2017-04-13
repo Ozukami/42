@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 23:15:20 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/04/12 00:58:40 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/14 00:06:24 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "mlx.h"
 # include <fcntl.h>
 # include <math.h>
+# include <errno.h>
 
 # define LEFT		123
 # define RIGHT		124
