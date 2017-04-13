@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 23:15:20 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/04/14 00:06:24 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/14 01:10:55 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,15 @@
 # include <math.h>
 # include <errno.h>
 
+# define SIZE		10
+
 # define LEFT		123
 # define RIGHT		124
 # define DOWN		125
 # define UP			126
+
+# define NR(a,b,c)	ft_new_rect(a, b, c)
+# define NC(a,b)	ft_new_coord(a, b)
 
 # define R			(rect)
 # define L_C1		(line->coord1)
@@ -52,6 +57,10 @@
 # define Y			(env->offset_y)
 # define Z			(env->zoom)
 
+# define DATA		(env->data)
+# define CONTENT	(env->data->content_file)
+# define MAP		(env->data->map)
+
 typedef struct	s_data
 {
 	char 		**content_file;
@@ -73,9 +82,11 @@ typedef struct s_env
 	int			offset_y;
 }				t_env;
 
+t_data			*ft_new_data(int y);
 t_env			*ft_new_env(char *file, int size);
 void			ft_draw_line(t_env *env, t_rect *line);
 void			free_map(char **map);
 void			free_map_int(int **map);
+void			exit_error(char *err);
 
 #endif
