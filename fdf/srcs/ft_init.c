@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 23:47:04 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/04/14 01:18:48 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/14 02:53:05 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ static void	get_content(t_env *env, char *file)
 	int		fd;
 	char	*line;
 
-	if (!(CONTENT = ft_memalloc(sizeof(char *) * (WIN_Y + 1))))
-		exit_error("Malloc failed");
 	if ((fd = open(file, O_RDONLY)) < 0)
 		exit_error(file);
 	i = 0;
@@ -85,8 +83,8 @@ t_env		*ft_new_env(char *file, int size)
 	get_content(env, file);
 	WIN_SIZE = size;
 	WIN = NULL;
-	Z = 0;
 	X = 0;
 	Y = 0;
+	Z = 0;
 	return (env);
 }

@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 23:15:20 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/04/14 01:54:48 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/14 02:29:44 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,9 @@ typedef struct	s_env
 	int			win_size;
 	int			win_y;
 	int			win_x;
-	int			zoom;
 	int			offset_x;
 	int			offset_y;
+	int			zoom;
 }				t_env;
 
 t_data			*ft_new_data(int y);

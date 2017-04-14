@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/04 00:08:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/04/14 02:23:38 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/14 03:20:09 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,11 @@ void		draw_iso(t_env *env, t_rect *line, t_coord *z)
 	int iso_x2;
 	int iso_y2;
 
-	iso_x1 = L_X1 * (5 + Z) + X - L_Y1 * (5 + Z) + Y;
+	iso_x1 = L_X1 * (5 + Z) + X;
+	iso_x1 -= L_Y1 * (5 + Z) + Y;
 	iso_y1 = ((L_X1 * (5 + Z) + X) + (L_Y1 * (5 + Z) + Y)) / 1.5;
-	iso_x2 = L_X2 * (5 + Z) + X - L_Y2 * (5 + Z) + Y;
+	iso_x2 = L_X2 * (5 + Z) + X;
+	iso_x2 -= L_Y2 * (5 + Z) + Y;
 	iso_y2 = ((L_X2 * (5 + Z) + X) + (L_Y2 * (5 + Z) + Y)) / 1.5;
 	ft_draw_line(env, NR(NC((iso_x1 + (WIN_X * WIN_SIZE / 2)),
 							(iso_y1 + (WIN_Y * WIN_SIZE / 9) - z->x)),
@@ -109,8 +111,6 @@ void		process(t_env *env)
 int			ft_exit(t_env *env)
 {
 	mlx_destroy_window(MLX, WIN);
-	while (1)
-		;
 	exit(0);
 	return (1);
 }
@@ -129,6 +129,12 @@ void		adjust_win_size(t_env *env)
 	{
 		WIN_SIZE = 2;
 		Z = -4;
+	}
+	else if ((WIN_X * WIN_SIZE < 500)
+			|| (WIN_Y * WIN_SIZE < 500))
+	{
+		WIN_SIZE = 40;
+		Z = 12;
 	}
 }
 
@@ -164,16 +170,25 @@ int			main(int ac, char **av)
 	t_env	*env;
 
 	if (ac != 2)
+	{
+		ft_putendl("Usage : ./fdf map_file");
 		return (0);
+	}
+	if (!ft_strstr(av[1], ".fdf"))
+	{
+		ft_putendl("Invalid file");
+		return (0);
+	}
 	env = ft_new_env(av[1], SIZE);
 	moulisplit(env);
 	adjust_win_size(env);
 	if (!(WIN = mlx_new_window(MLX, WIN_X * (WIN_SIZE),
 			WIN_Y * (WIN_SIZE), "FdF")))
 		exit_error("mlx_new_window failed");
+	mlx_do_sync(MLX);
 	process(env);
 	mlx_hook(WIN, 17, 0, &ft_exit, env);
 	mlx_hook(WIN, 2, 0, &key_handler, env);
 	mlx_loop(MLX);
-	return (0);
+	return (1);
 }
