@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/04 00:08:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/04/14 01:20:09 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/14 02:23:38 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,10 @@ void		draw_iso(t_env *env, t_rect *line, t_coord *z)
 	int iso_x2;
 	int iso_y2;
 
-	iso_x1 = ((L_X1 * (5 + Z + X)) - (L_Y1 * (5 + Z + Y)));
-	iso_y1 = ((L_X1 * (5 + Z + X)) + (L_Y1 * (5 + Z + Y))) / 1.5;
-	iso_x2 = ((L_X2 * (5 + Z + X)) - (L_Y2 * (5 + Z + Y)));
-	iso_y2 = ((L_X2 * (5 + Z + X)) + (L_Y2 * (5 + Z + Y))) / 1.5;
+	iso_x1 = L_X1 * (5 + Z) + X - L_Y1 * (5 + Z) + Y;
+	iso_y1 = ((L_X1 * (5 + Z) + X) + (L_Y1 * (5 + Z) + Y)) / 1.5;
+	iso_x2 = L_X2 * (5 + Z) + X - L_Y2 * (5 + Z) + Y;
+	iso_y2 = ((L_X2 * (5 + Z) + X) + (L_Y2 * (5 + Z) + Y)) / 1.5;
 	ft_draw_line(env, NR(NC((iso_x1 + (WIN_X * WIN_SIZE / 2)),
 							(iso_y1 + (WIN_Y * WIN_SIZE / 9) - z->x)),
 					NC((iso_x2 + (WIN_X * WIN_SIZE / 2)),
@@ -96,10 +96,10 @@ void		process(t_env *env)
 		j = 0;
 		while (j < WIN_X - 1)
 		{
-			draw_iso(env, NR(NC(i, j), NC((i + 1), j), 0x00007104),
-					NC((int)(MAP[i][j]), (int)(MAP[i + 1][j])));
-			draw_iso(env, NR(NC(i, j), NC(i, (j + 1)), 0x00007104),
-					NC((int)(MAP[i][j]), (int)(MAP[i][j + 1])));
+			draw_iso(env, NR(NC(i, j), NC(i + 1, j), 0x00007104),
+					NC(MAP[i][j], MAP[i + 1][j]));
+			draw_iso(env, NR(NC(i, j), NC(i, j + 1), 0x00007104),
+					NC(MAP[i][j], MAP[i][j + 1]));
 			j++;
 		}
 		i++;
@@ -109,9 +109,6 @@ void		process(t_env *env)
 int			ft_exit(t_env *env)
 {
 	mlx_destroy_window(MLX, WIN);
-	free(MLX);
-	free(DATA);
-	free(env);
 	while (1)
 		;
 	exit(0);
