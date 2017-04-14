@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/04 00:08:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/04/14 03:20:09 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/14 04:48:26 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,21 +33,21 @@ void		moulisplit(t_env *env)
 	int		j;
 	int		k;
 
-	i = 0;
-	while (i < WIN_Y)
+	i = -1;
+	while (++i < WIN_Y)
 	{
-		j = 0;
 		split = ft_strsplit(CONTENT[i], ' ');
 		WIN_X = tab_size(split);
 		k = WIN_X - 1;
 		if (!(MAP[i] = ft_memalloc(sizeof(int) * WIN_X)))
 			exit_error("Malloc failed");
-		while (split[j])
+		j = -1;
+		while (split[++j])
 		{
 			MAP[i][k--] = atoi(split[j]);
-			j++;
+			MAX_Z = ft_max(MAX_Z, atoi(split[j]));
+			MIN_Z = ft_min(MIN_Z, atoi(split[j]));
 		}
-		i++;
 		free_map(split);
 		free(split);
 	}
@@ -78,7 +78,8 @@ void		draw_iso(t_env *env, t_rect *line, t_coord *z)
 							(iso_y1 + (WIN_Y * WIN_SIZE / 9) - z->x)),
 					NC((iso_x2 + (WIN_X * WIN_SIZE / 2)),
 							(iso_y2 + (WIN_Y * WIN_SIZE / 9) - z->y)),
-			(L_COLOR + (z->y * 700))));
+					(L_COLOR + ((DIFF_Z) ?
+						(z->y * 450) + (z->x * 450) : (z->x * 250)))));
 	ft_free_rect(line);
 	free(z);
 }
@@ -102,6 +103,7 @@ void		process(t_env *env)
 					NC(MAP[i][j], MAP[i + 1][j]));
 			draw_iso(env, NR(NC(i, j), NC(i, j + 1), 0x00007104),
 					NC(MAP[i][j], MAP[i][j + 1]));
+			//mlx_do_sync(MLX);
 			j++;
 		}
 		i++;

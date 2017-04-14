@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 23:15:20 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/04/14 02:29:44 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/14 04:47:30 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@
 
 # define DIFF_1		(diff->x)
 # define DIFF_2		(diff->y)
+# define DIFF_Z		(z->x - z->y)
 
 # define ADJUST_1	(adjust->x)
 # define ADJUST_2	(adjust->y)
@@ -56,6 +57,8 @@
 # define X			(env->offset_x)
 # define Y			(env->offset_y)
 # define Z			(env->zoom)
+# define MAX_Z		(env->max_z)
+# define MIN_Z		(env->min_z)
 
 # define DATA		(env->data)
 # define CONTENT	(env->data->content_file)
@@ -80,6 +83,8 @@ typedef struct	s_env
 	int			offset_x;
 	int			offset_y;
 	int			zoom;
+	int			max_z;
+	int			min_z;
 }				t_env;
 
 t_data			*ft_new_data(int y);
