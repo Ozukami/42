@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/04 00:08:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/04/14 04:48:26 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/14 04:52:07 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,8 @@ void		moulisplit(t_env *env)
 			MIN_Z = ft_min(MIN_Z, atoi(split[j]));
 		}
 		free_map(split);
-		free(split);
 	}
 	free_map(CONTENT);
-	free(CONTENT);
 }
 
 /*
