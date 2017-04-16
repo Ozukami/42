@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/04 00:08:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/04/14 04:52:07 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/17 01:35:39 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,25 @@ void		moulisplit(t_env *env)
 	free_map(CONTENT);
 }
 
+int			get_color(t_env *env, t_coord *z)
+{
+	int		color;
+
+	color = 0x00FF00FF;
+	if (!DIFF_Z)
+	{
+		if (z->x == MIN_Z)
+			color = 0x0021D04A;
+		else if (z->x == MAX_Z)
+			color = 0x00E92525;
+		else
+			color = 0x00007104 + (z->x * 250);
+	}
+	else
+		color = 0x00007104 + (z->y * 450) + (z->x * 450);
+	return (color);
+}
+
 /*
 ** Calcule les coordonnees dans le nouveau plan puis trace
 ** rect = ((x,y) (x2,y2) color)
@@ -76,8 +95,9 @@ void		draw_iso(t_env *env, t_rect *line, t_coord *z)
 							(iso_y1 + (WIN_Y * WIN_SIZE / 9) - z->x)),
 					NC((iso_x2 + (WIN_X * WIN_SIZE / 2)),
 							(iso_y2 + (WIN_Y * WIN_SIZE / 9) - z->y)),
-					(L_COLOR + ((DIFF_Z) ?
-						(z->y * 450) + (z->x * 450) : (z->x * 250)))));
+					/*(L_COLOR + ((DIFF_Z) ?
+						(z->y * 450) + (z->x * 450) : (z->x * 250)))*/
+					get_color(env, z)));
 	ft_free_rect(line);
 	free(z);
 }
@@ -92,15 +112,18 @@ void		process(t_env *env)
 	int		j;
 
 	i = 0;
-	while (i < WIN_Y - 1)
+	while (i < WIN_Y)
 	{
 		j = 0;
-		while (j < WIN_X - 1)
+		while (j < WIN_X)
 		{
-			draw_iso(env, NR(NC(i, j), NC(i + 1, j), 0x00007104),
-					NC(MAP[i][j], MAP[i + 1][j]));
-			draw_iso(env, NR(NC(i, j), NC(i, j + 1), 0x00007104),
-					NC(MAP[i][j], MAP[i][j + 1]));
+			if (i != WIN_Y - 1)
+				draw_iso(env, NR(NC(i, j), NC(i + 1, j), 0x00007104),
+						NC(MAP[i][j], MAP[i + 1][j]));
+			//mlx_do_sync(MLX);
+			if (j != WIN_X - 1)
+				draw_iso(env, NR(NC(i, j), NC(i, j + 1), 0x00007104),
+						NC(MAP[i][j], MAP[i][j + 1]));
 			//mlx_do_sync(MLX);
 			j++;
 		}
