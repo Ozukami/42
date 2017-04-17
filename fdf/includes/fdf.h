@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 23:15:20 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/04/14 04:47:30 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/17 04:13:12 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,5 @@ int				tab_size(char **tab);
 void			moulisplit(t_env *env);
 void			draw_iso(t_env *env, t_rect *line, t_coord *z);
 void			process(t_env *env);
-int				ft_exit(t_env *env);
-void			refresh(t_env *env);
-void			adjust_win_size(t_env *env);
-int				key_handler(int key, t_env *env);
 
 #endif
