@@ -6,7 +6,7 @@
 #    By: apoisson <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 11:29:15 by apoisson          #+#    #+#              #
-#    Updated: 2017/04/17 04:13:22 by apoisson         ###   ########.fr        #
+#    Updated: 2017/04/17 04:21:07 by apoisson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ SRC = process.c ft_init.c ft_draw.c main.c free_map.c
 all: $(NAME)
 
 $(NAME): libft.a $(addprefix srcs/, $(SRC))
-	@printf "\033[0;36m> Compiling filler\033[0m"
+	@printf "\033[0;36m> Compiling fdf\033[0m"
 	@gcc $(FLAGS) -I includes/ -L. -lft $(addprefix srcs/, $(SRC)) -o $(NAME) -lmlx -framework OpenGL -framework AppKit
 	@printf "\033[0;32m OK\n\033[0m"
 

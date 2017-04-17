@@ -6,16 +6,16 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/10 23:15:20 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/04/17 04:13:12 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/17 04:20:30 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 
-# include <stdio.h> // !!
 # include "libft.h"
 # include "mlx.h"
+# include <stdio.h>
 # include <fcntl.h>
 # include <math.h>
 # include <errno.h>
