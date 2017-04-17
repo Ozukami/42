@@ -6,14 +6,13 @@
 #    By: apoisson <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/26 11:58:55 by apoisson          #+#    #+#              #
-#    Updated: 2017/04/17 05:18:41 by apoisson         ###   ########.fr        #
+#    Updated: 2017/04/17 05:42:03 by apoisson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
 FLAGS = -Wall -Wextra -Werror
-PRINTFSRC = ft_printf.c ft_data.c ft_color.c ft_get_arg.c ft_adjust.c\
-ft_get_format.c ft_process.c ft_set.c ft_case.c
+PRINTFSRC = tiny_printf.c
 LFTSRC = ft_absolute.c ft_memccpy.c ft_strequ.c ft_atoi.c ft_memchr.c ft_striter.c\
 ft_atoi_base.c ft_memcmp.c ft_striteri.c ft_bspace.c ft_memcpy.c ft_strjoin.c\
 ft_bzero.c ft_memdel.c ft_strjoinf.c ft_check_spaces.c ft_memmove.c ft_strlcat.c\
