@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/17 04:12:39 by apoisson          #+#    #+#             */
-/*   Updated: 2017/04/17 04:12:42 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/19 23:50:56 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,9 @@ void		draw_iso(t_env *env, t_rect *line, t_coord *z)
 	iso_x2 -= L_Y2 * (5 + Z) + Y;
 	iso_y2 = ((L_X2 * (5 + Z) + X) + (L_Y2 * (5 + Z) + Y)) / 1.5;
 	ft_draw_line(env, NR(NC((iso_x1 + (WIN_X * WIN_SIZE / 2)),
-							(iso_y1 + (WIN_Y * WIN_SIZE / 9) - z->x)),
+							(iso_y1 + (WIN_Y * WIN_SIZE / 4) - z->x * 5)),
 					NC((iso_x2 + (WIN_X * WIN_SIZE / 2)),
-							(iso_y2 + (WIN_Y * WIN_SIZE / 9) - z->y)),
+							(iso_y2 + (WIN_Y * WIN_SIZE / 4) - z->y * 5)),
 					get_color(env, z)));
 	ft_free_rect(line);
 	free(z);
