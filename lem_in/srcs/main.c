@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:18:21 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/04/20 10:41:01 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/20 10:50:52 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int			is_room(char *line)
 			|| split[0][0] == '#')
 	{
 		free_map(split);
-		ft_perror("ERROR");
+		ft_perror("ERROR 1");
 	}
 	free_map(split);
 	return (1);
@@ -120,7 +120,7 @@ int			is_pipe(char *line, t_room_list *room_list)
 		return (0);
 	}
 	if (!room_list)
-		ft_perror("ERROR");
+		ft_perror("ERROR 2");
 	if (!is_in_list(split[0], room_list) || !is_in_list(split[1], room_list))
 	{
 		free_map(split);
@@ -197,7 +197,7 @@ int			get_role(char **line)
 	ft_strdel(line);
 	get_next_line(0, line);
 	if (line[0][0] == '\0')
-		ft_perror("ERROR");
+		ft_perror("ERROR 3");
 	return (i);
 }
 
@@ -251,11 +251,14 @@ void		get_room(t_lemin *lemin)
 		if (line[0] == '#')
 			;
 		else if (is_room(line))
+		{
 			add_room_list(&LIST, line, id++, role);
+			printf("	|%s|\n", LIST->room->name);
+		}
 		else if (is_pipe(line, LIST))
 			break ;
 		else
-			ft_perror("ERROR");
+			ft_perror("ERROR 4");
 		ft_strdel(&line);
 	}
 	room_list_to_tab(lemin);
@@ -295,7 +298,7 @@ void		add_room_list(t_room_list **begin, char *line, int id, int role)
 		ft_perror("Error: Malloc Failed");
 	room_list->room = create_room(line, id, role);
 	room_list->next = *begin;
-	begin = &room_list;
+	*begin = room_list;
 }
 
 t_lemin		*init_lemin(void)
