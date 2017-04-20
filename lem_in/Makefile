@@ -6,13 +6,13 @@
 #    By: apoisson <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 11:29:15 by apoisson          #+#    #+#              #
-#    Updated: 2017/04/20 00:14:45 by qumaujea         ###   ########.fr        #
+#    Updated: 2017/04/20 09:33:42 by apoisson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = lem-in
 FLAGS = -Wall -Wextra -Werror
-SRC = process.c ft_init.c ft_draw.c main.c free_map.c
+SRC = main.c
 
 all: $(NAME)
 
