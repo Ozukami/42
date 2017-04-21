@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:18:21 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/04/20 10:50:52 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/21 23:49:33 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,8 @@ void		room_list_to_tab(t_lemin *lemin)
 	if (!(TAB = ft_memalloc(sizeof(t_room_list) * (nb_room + 1)))
 			|| !(INDEX = ft_memalloc(sizeof(char *) * (nb_room + 1))))
 		ft_perror("Error: Malloc Failed");
+	while (--nb_room != -1)
+		INDEX[nb_room] = ft_strdup("");
 	while (current)
 	{
 		TAB[current->room->id] = current->room;
@@ -194,10 +196,17 @@ int			get_role(char **line)
 		i = END;
 	else
 		return (0);
-	ft_strdel(line);
-	get_next_line(0, line);
-	if (line[0][0] == '\0')
-		ft_perror("ERROR 3");
+	while (line[0][0] == '#')
+	{
+		ft_strdel(line);
+		get_next_line(0, line);
+		if (line[0][0] == '\0')
+			ft_perror("ERROR 3");
+		if (ft_strequ(*line, "##start"))
+			i = START;
+		else if (ft_strequ(*line, "##end"))
+			i = END;
+	}
 	return (i);
 }
 
@@ -218,10 +227,10 @@ void		set_index(t_lemin *lemin, char *line)
 		if (ft_strequ((TAB[i])->name, split[1]))
 			id_1 = i;
 	}
-	INDEX[id_0] = ft_strjoin(ft_itoa(id_1), "_");
-	INDEX[id_1] = ft_strjoin(ft_itoa(id_0), "_");
+	INDEX[id_0] = ft_strjoin(INDEX[id_0], ft_strjoin(ft_itoa(id_1), "_"));
+	INDEX[id_1] = ft_strjoin(INDEX[id_1], ft_strjoin(ft_itoa(id_0), "_"));
 	free_map(split);
-}	
+}
 
 void		get_pipe(t_lemin *lemin)
 {
@@ -251,10 +260,7 @@ void		get_room(t_lemin *lemin)
 		if (line[0] == '#')
 			;
 		else if (is_room(line))
-		{
-			add_room_list(&LIST, line, id++, role);
-			printf("	|%s|\n", LIST->room->name);
-		}
+			add_room_list(lemin, line, id++, role);
 		else if (is_pipe(line, LIST))
 			break ;
 		else
@@ -285,20 +291,26 @@ t_room		*create_room(char *line, int id, int role)
 	room->nb_link = -1;
 	room->x = ft_atoi(split[1]);
 	room->y = ft_atoi(split[2]);
-	printf("	> ROOM = %s (%d) %d [%d][%d]\n", room->name, room->id, room->role,
-			room->x, room->y);
+	printf("	> ROOM = %s (%d) %d [%d][%d]\n", room->name, room->id,
+			room->role, room->x, room->y);
 	return (room);
 }
 
-void		add_room_list(t_room_list **begin, char *line, int id, int role)
+void		add_room_list(t_lemin *lemin, char *line, int id, int role)
 {
 	t_room_list	*room_list;
 
+	if (role == START && !V_START)
+		V_START++;
+	else if (role == END && !V_END)
+		V_END++;
+	else if (role == START || role == END)
+		ft_perror("ERROR");
 	if (!(room_list = ft_memalloc(sizeof(t_room_list))))
 		ft_perror("Error: Malloc Failed");
 	room_list->room = create_room(line, id, role);
-	room_list->next = *begin;
-	*begin = room_list;
+	room_list->next = LIST;
+	LIST = room_list;
 }
 
 t_lemin		*init_lemin(void)
@@ -332,7 +344,23 @@ int			main(int ac, char **av)
 	get_room(lemin);
 	get_pipe(lemin);
 	update_tab(lemin);
+	printf("Processing...\n");
 	//process(lemin);
 	//free LIST
+	
+	int		i = -1;
+	printf("\nINDEX :\n");
+	while (INDEX[++i])
+		printf("[%d] %s\n", i, INDEX[i]);
+	printf("\nLIST\n");
+	while (LIST)
+	{
+		printf("%s\n", LIST->room->name);
+		LIST = LIST->next;
+	}
+	printf("\nTAB\n");
+	i = -1;
+	while (TAB[++i])
+		printf("[%d] %s\n", i, (TAB[i])->name);
 	return (0);
 }

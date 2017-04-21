@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:15:38 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/04/20 09:48:27 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/21 23:49:10 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # define TAB 			(lemin->tab)
 # define INDEX 			(lemin->index)
 # define NB_ANT 		(lemin->nb_ant)
+# define V_START 		(lemin->verif_start)
+# define V_END 			(lemin->verif_end)
 
 # define T_LINKS(i) 	(((lemin->tab)[i])->links)
 # define T_NBLINK(i) 	(((lemin->tab)[i])->nb_link)
@@ -52,9 +54,11 @@ typedef struct		s_lemin
 	t_room			**tab;
 	char			**index;
 	int				nb_ant;
+	int				verif_start;
+	int				verif_end;
 }					t_lemin;
 
-void				add_room_list(t_room_list **begin, char *line,
+void				add_room_list(t_lemin *lemin, char *line,
 		int id, int role);
 
 #endif

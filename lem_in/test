@@ -1,0 +1,15 @@
+15
+coucou 1 10
+##start
+##end
+##start
+##endlol
+start 10 10
+salut 10 10
+lol 10 1
+##end
+end 10 5
+start-coucou
+start-salut
+coucou-lol
+lol-end
