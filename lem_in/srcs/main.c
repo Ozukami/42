@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:18:21 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/04/22 00:01:17 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/22 01:19:15 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,13 +140,15 @@ void		room_list_to_tab(t_lemin *lemin)
 	current = LIST;
 	nb_room = list_len(LIST);
 	if (!(TAB = ft_memalloc(sizeof(t_room_list) * (nb_room + 1)))
-			|| !(INDEX = ft_memalloc(sizeof(char *) * (nb_room + 1))))
+			|| !(INDEX = ft_memalloc(sizeof(char *) * (nb_room + 1)))
+			|| !(ID_NAME = ft_memalloc(sizeof(char *) * (nb_room + 1))))
 		ft_perror("Error: Malloc Failed");
 	while (--nb_room != -1)
 		INDEX[nb_room] = ft_strdup("");
 	while (current)
 	{
 		TAB[current->room->id] = current->room;
+		ID_NAME[current->room->id] = ft_strdup(current->room->name);
 		current = current->next;
 	}
 }
@@ -274,6 +276,32 @@ void		get_room(t_lemin *lemin)
 		set_index(lemin, line);
 }
 
+void		display_data(t_lemin *lemin)
+{
+	int		i;
+	int		j;
+	char	**split;
+
+	printf("%d\n", NB_ANT);
+	i = -1;
+	while (TAB[++i])
+	{
+		if (T_ROLE(i) == START || T_ROLE(i) == END)
+			printf("%s\n", ((T_ROLE(i) == START) ? "##start" : "##end"));
+		printf("%s %d %d\n", T_NAME(i), T_X(i), T_Y(i));
+	}
+	i = -1;
+	while (INDEX[++i])
+	{
+		split = ft_strsplit(INDEX[i], '_');
+		j = -1;
+		while (split[++j])
+			if (ft_atoi(split[j]) > i)
+				printf("%s-%s\n", ID_NAME[i], ID_NAME[ft_atoi(split[j])]);
+		free_map(split);
+	}
+}
+
 /*
 **	INIT FUCTIONS
 */
@@ -311,8 +339,7 @@ t_room		*create_room(t_lemin *lemin, char *line, int id, int role)
 	room->nb_link = -1;
 	room->x = ft_atoi(split[1]);
 	room->y = ft_atoi(split[2]);
-	printf("	> ROOM = %s (%d) %d [%d][%d]\n", room->name, room->id,
-			room->role, room->x, room->y);
+	room->empty = TRUE;
 	return (room);
 }
 
@@ -342,6 +369,7 @@ t_lemin		*init_lemin(void)
 	lemin->list = NULL;
 	lemin->tab = NULL;
 	lemin->index = NULL;
+	lemin->id_name = NULL;
 	lemin->nb_ant = 0;
 	return (lemin);
 }
@@ -360,27 +388,11 @@ int			main(int ac, char **av)
 	lemin = init_lemin();
 	if (!(NB_ANT = ft_absolute(get_nb_ant())))
 		ft_perror("Invalid ant number");
-	printf("	> NB_ANT = %d\n", NB_ANT);
 	get_room(lemin);
 	get_pipe(lemin);
 	update_tab(lemin);
-	printf("Processing...\n");
+	display_data(lemin);
 	//process(lemin);
 	//free LIST
-	
-	int		i = -1;
-	printf("\nINDEX :\n");
-	while (INDEX[++i])
-		printf("[%d] %s\n", i, INDEX[i]);
-	printf("\nLIST\n");
-	while (LIST)
-	{
-		printf("%s\n", LIST->room->name);
-		LIST = LIST->next;
-	}
-	printf("\nTAB\n");
-	i = -1;
-	while (TAB[++i])
-		printf("[%d] %s\n", i, (TAB[i])->name);
 	return (0);
 }
