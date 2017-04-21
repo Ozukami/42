@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:18:21 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/04/21 23:49:33 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/21 23:51:44 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,8 @@ void		room_list_to_tab(t_lemin *lemin)
 	int			nb_room;
 	t_room_list	*current;
 
+	if (!V_START || !V_END)
+		ft_perror("ERROR");
 	current = LIST;
 	nb_room = list_len(LIST);
 	if (!(TAB = ft_memalloc(sizeof(t_room_list) * (nb_room + 1)))
