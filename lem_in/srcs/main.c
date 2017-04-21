@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:18:21 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/04/21 23:51:44 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/22 00:01:17 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -278,7 +278,23 @@ void		get_room(t_lemin *lemin)
 **	INIT FUCTIONS
 */
 
-t_room		*create_room(char *line, int id, int role)
+int			verif_room(t_lemin *lemin, char *name, int x, int y)
+{
+	t_room_list	*current;
+
+	current = LIST;
+	while (current)
+	{
+		if (ft_strequ(name, current->room->name))
+			return (0);
+		if (x == current->room->x && y == current->room->y)
+			return (0);
+		current = current->next;
+	}
+	return (1);
+}
+
+t_room		*create_room(t_lemin *lemin, char *line, int id, int role)
 {
 	t_room		*room;
 	char		**split;
@@ -286,6 +302,8 @@ t_room		*create_room(char *line, int id, int role)
 	if (!(room = ft_memalloc(sizeof(t_room))))
 		ft_perror("Error: Malloc Failed");
 	split = ft_strsplit(line, ' ');
+	if (!verif_room(lemin, split[0], ft_atoi(split[1]), ft_atoi(split[2])))
+		ft_perror("ERROR");
 	room->name = ft_strdup(split[0]);
 	room->id = id;
 	room->role = role;
@@ -310,7 +328,7 @@ void		add_room_list(t_lemin *lemin, char *line, int id, int role)
 		ft_perror("ERROR");
 	if (!(room_list = ft_memalloc(sizeof(t_room_list))))
 		ft_perror("Error: Malloc Failed");
-	room_list->room = create_room(line, id, role);
+	room_list->room = create_room(lemin, line, id, role);
 	room_list->next = LIST;
 	LIST = room_list;
 }
