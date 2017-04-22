@@ -1,18 +1,14 @@
 15
 coucou 1 10
 ##start
-##end
-##start
-##endlol
 start 10 10
 salut 5 10
 lol 10 1
 ##end
 end 10 5
-start-coucou
-start-salut
-start-salut
+coucou-start
 coucou-lol
+start-salut
+start-salut
 lol-end
-fubouwbwbguwb
-lol-start
+Processing...
