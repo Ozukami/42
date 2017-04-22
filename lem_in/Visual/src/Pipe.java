@@ -1,23 +1,27 @@
 
 public class Pipe {
 	
-	private Room room1;
-	private Room room2;
+	private String name1, name2;
 	
-	public Room getRoom1() {
-		return room1;
-	}
-	
-	public void setRoom1(Room room1) {
-		this.room1 = room1;
-	}
-	
-	public Room getRoom2() {
-		return room2;
-	}
-	
-	public void setRoom2(Room room2) {
-		this.room2 = room2;
+	public Pipe(String name1, String name2) {
+		this.setName1(name1);
+		this.setName2(name2);
 	}
 
+	public String getName1() {
+		return name1;
+	}
+
+	public void setName1(String name1) {
+		this.name1 = name1;
+	}
+
+	public String getName2() {
+		return name2;
+	}
+
+	public void setName2(String name2) {
+		this.name2 = name2;
+	}
+	
 }

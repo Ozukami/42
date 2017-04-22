@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:18:21 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/04/22 01:19:15 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/04/22 06:52:36 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,8 +231,11 @@ void		set_index(t_lemin *lemin, char *line)
 		if (ft_strequ((TAB[i])->name, split[1]))
 			id_1 = i;
 	}
-	INDEX[id_0] = ft_strjoin(INDEX[id_0], ft_strjoin(ft_itoa(id_1), "_"));
-	INDEX[id_1] = ft_strjoin(INDEX[id_1], ft_strjoin(ft_itoa(id_0), "_"));
+	if (!ft_strchr(INDEX[id_0], id_1 + '0'))
+	{
+		INDEX[id_0] = ft_strjoin(INDEX[id_0], ft_strjoin(ft_itoa(id_1), "_"));
+		INDEX[id_1] = ft_strjoin(INDEX[id_1], ft_strjoin(ft_itoa(id_0), "_"));
+	}
 	free_map(split);
 }
 

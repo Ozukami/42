@@ -1,12 +1,12 @@
+import javafx.scene.shape.Rectangle;
 
 public class Room {
 
-	private String	name;
 	private static int count = 0;
-	private int	id;
-	private int	role;
-	private int x;
-	private int y;
+	private String	name;
+	private int	id,	role, x, y;
+	private Rectangle rectangle;
+	private Anchor northL, northR, east, west, southL, southR;
 	
 	public Room()
 	{
@@ -14,23 +14,8 @@ public class Room {
 		this.setX(0);
 		this.setY(0);
 		this.setRole(0);
-	}
-	
-	public Room(String name)
-	{
-		this.setName(name);
-		this.setX(0);
-		this.setY(0);
-		this.setRole(0);
-	}
-	
-	public Room(String name, int x, int y)
-	{
-		this.setName(name);
-		this.setX(x);
-		this.setY(y);
-		this.setRole(0);
 		this.id = count++;
+		this.setRectangle(new Rectangle());
 	}
 	
 	public Room(String name, int x, int y, int role)
@@ -39,6 +24,8 @@ public class Room {
 		this.setX(x);
 		this.setY(y);
 		this.setRole(role);
+		this.id = count++;
+		this.setRectangle(new Rectangle());
 	}
 	
 	public String getName()
@@ -81,5 +68,69 @@ public class Room {
 
 	public void setY(int y) {
 		this.y = y;
+	}
+
+	public Rectangle getRectangle() {
+		return rectangle;
+	}
+
+	public void setRectangle(Rectangle rectangle) {
+		this.rectangle = rectangle;
+	}
+	
+	public static int getCount() {
+		return count;
+	}
+
+	public static void setCount(int count) {
+		Room.count = count;
+	}
+
+	public Anchor getNorthL() {
+		return northL;
+	}
+
+	public void setNorthL(Anchor northL) {
+		this.northL = northL;
+	}
+
+	public Anchor getNorthR() {
+		return northR;
+	}
+
+	public void setNorthR(Anchor northR) {
+		this.northR = northR;
+	}
+
+	public Anchor getEast() {
+		return east;
+	}
+
+	public void setEast(Anchor east) {
+		this.east = east;
+	}
+
+	public Anchor getWest() {
+		return west;
+	}
+
+	public void setWest(Anchor west) {
+		this.west = west;
+	}
+
+	public Anchor getSouthL() {
+		return southL;
+	}
+
+	public void setSouthL(Anchor southL) {
+		this.southL = southL;
+	}
+
+	public Anchor getSouthR() {
+		return southR;
+	}
+
+	public void setSouthR(Anchor southR) {
+		this.southR = southR;
 	}
 }
