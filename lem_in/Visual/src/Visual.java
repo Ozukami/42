@@ -1,4 +1,6 @@
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.Scanner;
 import javafx.application.Application;
@@ -9,7 +11,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class Visual extends Application {
@@ -26,56 +27,52 @@ public class Visual extends Application {
 		int	i = 0;
 		int ant = 0;
 		int role = 0;
+		int x_min = 0;
 		int x_max = 0;
+		int y_min = 0;
 		int y_max = 0;
 		String line;
 		String split[];
 		LinkedList<Pipe> pipeList = new LinkedList<Pipe>();
-		Scanner sc = new Scanner(System.in);
-		while (sc.hasNext())
-		{
-			if (i++ == 0)
-				ant = sc.nextInt();
-			else
+        try {
+			while (sc.hasNext())
 			{
-				line = sc.nextLine();
-				if (line.equals("##start") || line.equals("##end"))
+				if (i++ == 0)
+					ant = sc.nextInt();
+				else
 				{
-					role = (line.equals("##start")) ? 1 : 2;
 					line = sc.nextLine();
+					if (line.equals("##start") || line.equals("##end"))
+					{
+						role = (line.equals("##start")) ? 1 : 2;
+						line = sc.nextLine();
+					}
+					if (!(line.startsWith("#")) && line.contains(" "))
+					{
+						split = line.split(" ");
+						roomList.add(new Room(split[0], Integer.parseInt(split[1]), Integer.parseInt(split[2]), role));
+						x_min = Math.min(x_min, Integer.parseInt(split[1]));
+						x_max = Math.max(x_max, Integer.parseInt(split[1]));
+						y_min = Math.min(y_min, Integer.parseInt(split[2]));
+						y_max = Math.max(y_max, Integer.parseInt(split[2]));
+					}
+					else if (!(line.startsWith("#")) && line.contains("-"))
+					{
+						split = line.split("-");
+						pipeList.add(new Pipe(split[0], split[1]));
+					}
+					role = 0;
 				}
-				if (!(line.startsWith("#")) && line.contains(" "))
-				{
-					split = line.split(" ");
-					roomList.add(new Room(split[0], Integer.parseInt(split[1]), Integer.parseInt(split[2]), role));
-					x_max = Math.max(x_max, Integer.parseInt(split[1]));
-					y_max = Math.max(y_max, Integer.parseInt(split[2]));
-				}
-				else if (!(line.startsWith("#")) && line.contains("-"))
-				{
-					split = line.split("-");
-					pipeList.add(new Pipe(split[0], split[1]));
-				}
-				role = 0;
 			}
+			sc.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		}
-		sc.close();
 		primaryStage.setTitle("Title");
 		Group root = new Group();
-		Scene scene = new Scene(root, ((x_max >= y_max) ? 1280 : 720), ((y_max >= x_max) ? 1280 : 720), Color.GREY);
+		Scene scene = new Scene(root, ((x_max >= y_max) ? 1080 : 720), ((y_max >= x_max) ? 1080 : 720), Color.GREY);
 		System.out.printf("\nAnt = %d\n", ant);
 		roomList.forEach(elem -> {
-			//    		System.out.printf("%d %s %d %d %s\n", elem.getId(), elem.getName(), elem.getX(), elem.getY(),
-			//    				((elem.getRole() == 1) ? "Start" : (elem.getRole() == 2) ? "End" : "None"));
-			elem.getRectangle().setX(elem.getX() * 50);
-			elem.getRectangle().setY(elem.getY() * 50);
-			elem.getRectangle().setHeight(50);
-			elem.getRectangle().setWidth(75);
-			elem.getRectangle().setFill(((elem.getRole() == 1) ? Color.RED : (elem.getRole() == 2) ? Color.GREEN : Color.BLUE));
-			elem.getRectangle().setStroke(Color.rgb(200, 200, 200));
-			elem.getRectangle().setStrokeWidth(5);
-			elem.getRectangle().setArcHeight(30);
-			elem.getRectangle().setArcWidth(30);
 			root.getChildren().add(elem.getRectangle());
 		});
 		pipeList.forEach(elem -> {
@@ -90,26 +87,24 @@ public class Visual extends Application {
 					System.out.println(event.getCharacter());
 			}
 		});
-		        scene.setOnMousePressed(new EventHandler<MouseEvent>() {
-		            @Override
-		            public void handle(MouseEvent event) {
-		            	x = event.getSceneX();
-		            	y = event.getSceneY();
-		            }
+		scene.setOnMousePressed(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				x = event.getSceneX();
+				y = event.getSceneY();
+			}
+		});
+		scene.setOnMouseDragged(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				roomList.forEach(elem -> {
+					elem.getRectangle().setX(elem.getRectangle().getX() + event.getSceneX() - x);
+					elem.getRectangle().setY(elem.getRectangle().getY() + event.getSceneY() - y);
 				});
-		        scene.setOnMouseDragged(new EventHandler<MouseEvent>() {
-		            @Override
-		            public void handle(MouseEvent event) {
-		            	roomList.forEach(elem -> {
-							double deltaX = event.getSceneX() - x ;
-							double deltaY = event.getSceneY() - y ;
-		            		elem.getRectangle().setX(elem.getRectangle().getX() + deltaX);
-		            		elem.getRectangle().setY(elem.getRectangle().getY() + deltaY);
-		            	});
-		            	x = event.getSceneX();
-		            	y = event.getSceneY();
-		            }
-				});
+				x = event.getSceneX();
+				y = event.getSceneY();
+			}
+		});
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}

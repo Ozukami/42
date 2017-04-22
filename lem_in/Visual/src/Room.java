@@ -1,3 +1,4 @@
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Room {
@@ -26,6 +27,15 @@ public class Room {
 		this.setRole(role);
 		this.id = count++;
 		this.setRectangle(new Rectangle());
+		this.rectangle.setX(x * 50);
+		this.rectangle.setY(y * 50);
+		this.rectangle.setHeight(50);
+		this.rectangle.setWidth(75);
+		this.rectangle.setFill(((role == 1) ? Color.RED : (role == 2) ? Color.GREEN : Color.BLUE));
+		this.rectangle.setStroke(Color.rgb(200, 200, 200));
+		this.rectangle.setStrokeWidth(5);
+		this.rectangle.setArcHeight(30);
+		this.rectangle.setArcWidth(30);
 	}
 	
 	public String getName()
