@@ -35,6 +35,7 @@ public class Visual extends Application {
 		String split[];
 		LinkedList<Pipe> pipeList = new LinkedList<Pipe>();
         try {
+			Scanner sc = new Scanner (new File (System.getProperty("user.dir") + "/src/test"));
 			while (sc.hasNext())
 			{
 				if (i++ == 0)
