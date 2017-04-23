@@ -5,12 +5,25 @@ import java.util.LinkedList;
 import java.util.Scanner;
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.CubicCurve;
@@ -86,8 +99,35 @@ public class Visual extends Application {
 			e.printStackTrace();
 		}
 		primaryStage.setTitle("Lem-in");
+		primaryStage.setMinWidth(720);
+		primaryStage.setMinHeight(720);
 		Group root = new Group();
+		Group map_container = new Group();
+		Group map = new Group();
 		Scene scene = new Scene(root, ((x_max >= y_max) ? 1080 : 720), ((y_max >= x_max) ? 1080 : 720), Color.GREY);
+		root.getChildren().add(map_container);
+		Rectangle background = new Rectangle(1080, 1080, Color.GREY);
+		map_container.getChildren().add(background);
+		map_container.getChildren().add(map);
+		String cssLayout = "-fx-border-color: darkgrey;\n" + "-fx-border-insets: 5;\n" +
+                "-fx-border-width: 3;\n" + "-fx-background-color: darkgrey;\n";
+		VBox pipes = new VBox(5);
+		ScrollPane sp = new ScrollPane(pipes);
+		sp.setLayoutX(20);
+		sp.setLayoutY(20);
+		sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		root.getChildren().add(sp);
+		pipes.setStyle(cssLayout);
+		sp.setStyle(cssLayout);
+		sp.setFitToWidth(true);
+		pipes.setLayoutX(20);
+		pipes.setLayoutY(20);
+		pipes.setMaxHeight(200);
+		pipes.setMinHeight(100);
+		pipes.setMinWidth(146);
+		sp.setMaxHeight(200);
+		sp.setMinWidth(180);
+		map.requestFocus();
 		System.out.printf("\nAnt = %d\n", ant);
 		roomList.forEach(elem -> {
 			roomList.forEach(elem2 -> {
@@ -111,10 +151,11 @@ public class Visual extends Application {
 			pipe.setLine(new Line(roomList.get(pipe.getId1()).getX_mid(), roomList.get(pipe.getId1()).getY_mid(),
 					roomList.get(pipe.getId2()).getX_mid(), roomList.get(pipe.getId2()).getY_mid()));
 			pipe.getLine().setStrokeWidth(10);
-			root.getChildren().add(pipe.getLine());
+			map.getChildren().add(pipe.getLine());
+			pipes.getChildren().add(new Button(pipe.getName1() + "-" + pipe.getName2()));
 		});
-		roomList.forEach(elem -> {
-			root.getChildren().add(elem.getRectangle());
+		roomList.forEach(room -> {
+			map.getChildren().add(room.getRectangle());
 		});
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
@@ -135,26 +176,25 @@ public class Visual extends Application {
 		scene.setOnMouseDragged(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				root.setLayoutX(root.getLayoutX() + event.getSceneX() - x);
-				root.setLayoutY(root.getLayoutY() + event.getSceneY() - y);
+				map.setLayoutX(map.getLayoutX() + event.getSceneX() - x);
+				map.setLayoutY(map.getLayoutY() + event.getSceneY() - y);
 				x = event.getSceneX();
 				y = event.getSceneY();
 			}
 		});
-		scene.setOnScroll(new EventHandler<ScrollEvent>() {
+		map_container.setOnScroll(new EventHandler<ScrollEvent>() {
 			@Override
 			public void handle(ScrollEvent event) {
-				// TODO Auto-generated method stub
-				if (event.getDeltaY() > 0)
-				{
-					root.setScaleX(root.getScaleX() * 1.2);
-					root.setScaleY(root.getScaleY() * 1.2);
-				}
-				if (event.getDeltaY() < 0)
-				{
-					root.setScaleX(root.getScaleX() * 0.8);
-					root.setScaleY(root.getScaleY() * 0.8);
-				}
+					if (event.getDeltaY() > 0)
+					{
+						map.setScaleX(map.getScaleX() * 1.2);
+						map.setScaleY(map.getScaleY() * 1.2);
+					}
+					if (event.getDeltaY() < 0)
+					{
+						map.setScaleX(map.getScaleX() * 0.8);
+						map.setScaleY(map.getScaleY() * 0.8);
+					}
 			}
 		});
 		primaryStage.setScene(scene);
