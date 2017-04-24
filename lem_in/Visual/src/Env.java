@@ -5,12 +5,12 @@ import java.util.LinkedList;
 import java.util.Scanner;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeLineCap;
 
 public class Env {
 
@@ -76,15 +76,7 @@ public class Env {
 				else if (line.contains("-"))
 				{
 					split = line.split("-");
-					Pipe pipe = new Pipe(split[0], split[1]);
-					for (Room room:roomList)
-					{
-						if (room.getName().equals(split[0]))
-							pipe.setId1(room.getId());
-						if (room.getName().equals(split[1]))
-							pipe.setId2(room.getId());
-					}
-					pipeList.add(pipe);
+					pipeList.add(new Pipe(split[0], split[1]));
 				}
 			}
 			sc.close();
@@ -138,11 +130,13 @@ public class Env {
 	// Affiche les pipes connectant les rooms et ajoute les boutons correspondants
 	public void displayPipes() {
 		pipeList.forEach(pipe -> {
-			pipe.setLine(new Line(roomList.get(pipe.getId1()).getX_mid(), roomList.get(pipe.getId1()).getY_mid(),
-					roomList.get(pipe.getId2()).getX_mid(), roomList.get(pipe.getId2()).getY_mid()));
-			pipe.getLine().setStrokeWidth(10);
-			map.getChildren().add(pipe.getLine());
-			pipes.getChildren().add(new Button(pipe.getName1() + "-" + pipe.getName2()));
+			pipe.setLink(new Line(this.getRoom(pipe.getName1()).getX_mid(), this.getRoom(pipe.getName1()).getY_mid(),
+					this.getRoom(pipe.getName2()).getX_mid(), this.getRoom(pipe.getName2()).getY_mid()));
+			pipe.getLink().setStrokeWidth(10);
+			pipe.getLink().setSmooth(true);
+			pipe.getLink().setStrokeLineCap(StrokeLineCap.ROUND);
+			map.getChildren().add(pipe.getLink());
+			pipes.getChildren().add(pipe.getButton());
 		});
 	}
 
@@ -167,6 +161,13 @@ public class Env {
 
 	public LinkedList<Room> getRoomList() {
 		return roomList;
+	}
+
+	public Room getRoom(String name) {
+		for (Room room: this.roomList)
+			if (room.getName().equals(name))
+				return room;
+		return null;
 	}
 
 	public Group getRoot() {

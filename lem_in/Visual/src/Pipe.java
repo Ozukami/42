@@ -1,17 +1,40 @@
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 public class Pipe {
 	
 	private String name1, name2;
-	private int id1, id2;
-	private Line line;
+	private Line link;
+	private Button button;
+	private int clicked;
 
 	public Pipe(String name1, String name2) {
 		this.setName1(name1);
 		this.setName2(name2);
-		this.setId1(-1);
-		this.setId2(-1);
+		this.setButton(new Button(name1 + "-" + name2));
+		this.clicked = 0;
+		this.button.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				if (clicked == 0)
+				{
+					getLink().setStroke(Color.DARKORANGE);
+					getLink().toFront();
+					clicked = 1;
+				}
+				else
+				{
+					getLink().setStroke(Color.BLACK);
+					getLink().toBack();
+					clicked = 0;
+				}
+			}
+		});
 	}
 
 	public String getName1() {
@@ -29,28 +52,20 @@ public class Pipe {
 	public void setName2(String name2) {
 		this.name2 = name2;
 	}
-	
-	public int getId1() {
-		return id1;
+
+	public Line getLink() {
+		return link;
 	}
 
-	public void setId1(int id1) {
-		this.id1 = id1;
+	public void setLink(Line link) {
+		this.link = link;
 	}
 
-	public int getId2() {
-		return id2;
+	public Button getButton() {
+		return button;
 	}
 
-	public void setId2(int id2) {
-		this.id2 = id2;
-	}
-
-	public Line getLine() {
-		return line;
-	}
-
-	public void setLine(Line line) {
-		this.line = line;
+	public void setButton(Button button) {
+		this.button = button;
 	}
 }
