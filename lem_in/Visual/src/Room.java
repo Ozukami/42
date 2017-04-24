@@ -1,3 +1,4 @@
+
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -5,10 +6,8 @@ public class Room {
 
 	private static int count = 0;
 	private String	name;
-	private int	id,	role, x, y; // x,y = coordonnees d'ancrage
+	private int	id,	role, x, y;
 	private Rectangle rectangle;
-	private Anchor northL, northR, east, west, southL, southR;
-	private int x_mid, y_mid;
 	private int scale_x, scale_y;
 
 	public Room()
@@ -33,8 +32,6 @@ public class Room {
 		this.rectangle.setY(y * scale_y);
 		this.setScale_x(scale_x);
 		this.setScale_y(scale_y);
-		this.setX_mid(x + ((int)this.getRectangle().getHeight() / 2));
-		this.setY_mid(y + ((int)this.getRectangle().getWidth() / 2));
 	}
 	
 	public void setRectangle(int x, int y, int height, int width) {
@@ -51,19 +48,11 @@ public class Room {
 	}
 	
 	public int getX_mid() {
-		return x_mid;
-	}
-
-	public void setX_mid(int x_mid) {
-		this.x_mid = x_mid;
+		return ((int)(this.getRectangle().getX() + (this.getRectangle().getWidth() / 2)));
 	}
 
 	public int getY_mid() {
-		return y_mid;
-	}
-
-	public void setY_mid(int y_mid) {
-		this.y_mid = y_mid;
+		return ((int)(this.getRectangle().getY() + (this.getRectangle().getHeight() / 2)));
 	}
 
 	public String getName()
@@ -114,62 +103,6 @@ public class Room {
 
 	public void setRectangle(Rectangle rectangle) {
 		this.rectangle = rectangle;
-	}
-	
-	public static int getCount() {
-		return count;
-	}
-
-	public static void setCount(int count) {
-		Room.count = count;
-	}
-
-	public Anchor getNorthL() {
-		return northL;
-	}
-
-	public void setNorthL(Anchor northL) {
-		this.northL = northL;
-	}
-
-	public Anchor getNorthR() {
-		return northR;
-	}
-
-	public void setNorthR(Anchor northR) {
-		this.northR = northR;
-	}
-
-	public Anchor getEast() {
-		return east;
-	}
-
-	public void setEast(Anchor east) {
-		this.east = east;
-	}
-
-	public Anchor getWest() {
-		return west;
-	}
-
-	public void setWest(Anchor west) {
-		this.west = west;
-	}
-
-	public Anchor getSouthL() {
-		return southL;
-	}
-
-	public void setSouthL(Anchor southL) {
-		this.southL = southL;
-	}
-
-	public Anchor getSouthR() {
-		return southR;
-	}
-
-	public void setSouthR(Anchor southR) {
-		this.southR = southR;
 	}
 	
 	public int getScale_x() {
