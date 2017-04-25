@@ -8,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineCap;
 
@@ -130,8 +129,10 @@ public class Env {
 	// Affiche les pipes connectant les rooms et ajoute les boutons correspondants
 	public void displayPipes() {
 		pipeList.forEach(pipe -> {
-			pipe.setLink(new Line(this.getRoom(pipe.getName1()).getX_mid(), this.getRoom(pipe.getName1()).getY_mid(),
-					this.getRoom(pipe.getName2()).getX_mid(), this.getRoom(pipe.getName2()).getY_mid()));
+			pipe.getLink().setStartX(this.getRoom(pipe.getName1()).getX_mid());
+			pipe.getLink().setStartY(this.getRoom(pipe.getName1()).getY_mid());
+			pipe.getLink().setEndX(this.getRoom(pipe.getName2()).getX_mid());
+			pipe.getLink().setEndY(this.getRoom(pipe.getName2()).getY_mid());
 			pipe.getLink().setStrokeWidth(10);
 			pipe.getLink().setSmooth(true);
 			pipe.getLink().setStrokeLineCap(StrokeLineCap.ROUND);
