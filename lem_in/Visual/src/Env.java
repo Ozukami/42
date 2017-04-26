@@ -9,12 +9,13 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.StrokeLineCap;
+import javafx.stage.Stage;
 
 public class Env {
 
 	private LinkedList<Room> roomList;
 	private LinkedList<Pipe> pipeList;
+	private Stage window;
 	private Scene scene;
 	private Group root;
 	private Group map_container;
@@ -24,26 +25,30 @@ public class Env {
 	private ScrollPane sp;
 	private int x_min = 0, y_min = 0;
 	private int x_max = 0, y_max = 0;
-	private int ant = 0;
 	private int ppe_x = 3, ppe_y = 3;
+	private int ant = 0;
 	
-	public Env() {
-		roomList = new LinkedList<Room>();
-		pipeList = new LinkedList<Pipe>();
+	public Env(Stage window) {
+		this.roomList = new LinkedList<Room>();
+		this.pipeList = new LinkedList<Pipe>();
 		this.getData();
 		
-		scene = new Scene(root = new Group(), ((x_max >= y_max) ? 1080 : 720), ((y_max >= x_max) ? 1080 : 720), Color.GREY);
-		map_container = new Group();
-		map = new Group();
-		background = new Rectangle(1080, 1080, Color.GREY);
+		this.setWindow(window);
+		this.scene = new Scene(root = new Group(), ((this.x_max >= this.y_max) ? 1080 : 720),
+				((this.y_max >= this.x_max) ? 1080 : 720), Color.GREY);
+		this.map_container = new Group();
+		this.map = new Group();
+		this.background = new Rectangle(1080, 1080, Color.GREY);
+		this.background.widthProperty().bind(this.scene.widthProperty());
+		this.background.heightProperty().bind(this.scene.heightProperty());
 		
 		this.initPipes();
 		this.initSP();
 		
-		root.getChildren().addAll(map_container, sp);
-		map_container.getChildren().addAll(background, map);
+		this.root.getChildren().addAll(this.map_container, this.sp);
+		this.map_container.getChildren().addAll(this.background, this.map);
 		
-		map.requestFocus();
+		this.map.requestFocus();
 	}
 	
 	private void getData() {
@@ -69,13 +74,15 @@ public class Env {
 				{
 					split = line.split(" ");
 					roomList.add(new Room(split[0], Integer.parseInt(split[1]), Integer.parseInt(split[2]), 40, 40, role));
-					x_min = Math.min(x_min, Integer.parseInt(split[1])); y_min = Math.min(y_min, Integer.parseInt(split[2]));
-					x_max = Math.max(x_max, Integer.parseInt(split[1])); y_max = Math.max(y_max, Integer.parseInt(split[2]));
+					this.x_min = Math.min(this.x_min, Integer.parseInt(split[1]));
+					this.y_min = Math.min(this.y_min, Integer.parseInt(split[2]));
+					this.x_max = Math.max(this.x_max, Integer.parseInt(split[1]));
+					this.y_max = Math.max(this.y_max, Integer.parseInt(split[2]));
 				}
 				else if (line.contains("-"))
 				{
 					split = line.split("-");
-					pipeList.add(new Pipe(split[0], split[1]));
+					this.pipeList.add(new Pipe(this.getRoom(split[0]), this.getRoom(split[1])));
 				}
 			}
 			sc.close();
@@ -87,64 +94,58 @@ public class Env {
 	private void initPipes() {
 		String cssLayout = "-fx-border-color: darkgrey;" + "\n-fx-border-insets: 5;\n" +
                 "-fx-border-width: 3;\n" + "-fx-background-color: darkgrey;\n";
-		pipes = new VBox(5);
-		pipes.setStyle(cssLayout);
-		pipes.setLayoutX(20);
-		pipes.setLayoutY(20);
-		pipes.setMinHeight(100);
-		pipes.setMinWidth(146);
+		this.pipes = new VBox(5);
+		this.pipes.setStyle(cssLayout);
+		this.pipes.setLayoutX(20);
+		this.pipes.setLayoutY(20);
+		this.pipes.setMinHeight(100);
+		this.pipes.setMinWidth(146);
 	}
 	
 	private void initSP() {
 		String cssLayout = "-fx-border-color: darkgrey;" + "\n-fx-border-insets: 5;\n" +
                 "-fx-border-width: 3;\n" + "-fx-background-color: darkgrey;\n";
-		sp = new ScrollPane(pipes);
-		sp.setLayoutX(20);
-		sp.setLayoutY(20);
-		sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-		sp.setStyle(cssLayout);
-		sp.setFitToWidth(true);
-		sp.setMaxHeight(200);
-		sp.setMinWidth(180);
+		this.sp = new ScrollPane(pipes);
+		this.sp.setLayoutX(20);
+		this.sp.setLayoutY(20);
+		this.sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		this.sp.setStyle(cssLayout);
+		this.sp.setFitToWidth(true);
+		this.sp.setMaxHeight(200);
+		this.sp.setMinWidth(180);
 	}
 
 	// Recherche les plus petits ecarts en x et en y puis ajuste la distance entre les rooms
 	public void ppe() {
-		roomList.forEach(elem -> {
-			roomList.forEach(elem2 -> {
-				if (elem.getX() != elem2.getX())
-					ppe_x = Math.min(ppe_x, Math.abs(elem.getX() - elem2.getX()));
-				if (elem.getY() != elem2.getY())
-					ppe_y = Math.min(ppe_y, Math.abs(elem.getY() - elem2.getY()));
+		this.roomList.forEach(room1 -> {
+			this.roomList.forEach(room2 -> {
+				if (room1.getX() != room2.getX())
+					this.ppe_x = Math.min(this.ppe_x, Math.abs(room1.getX() - room2.getX()));
+				if (room1.getY() != room2.getY())
+					this.ppe_y = Math.min(this.ppe_y, Math.abs(room1.getY() - room2.getY()));
 			});
 		});
 		roomList.forEach(room -> {
-			if (ppe_x < 3)
-				room.getRectangle().setX(room.getX() * (100 - (ppe_x * 30)));
-			if (ppe_y < 3)
-				room.getRectangle().setY(room.getY() * (100 - (ppe_y * 30)));
+			if (this.ppe_x < 3)
+				room.getRectangle().setX(room.getX() * (100 - (this.ppe_x * 30)));
+			if (this.ppe_y < 3)
+				room.getRectangle().setY(room.getY() * (100 - (this.ppe_y * 30)));
 		});
 	}
 
 	// Affiche les pipes connectant les rooms et ajoute les boutons correspondants
 	public void displayPipes() {
-		pipeList.forEach(pipe -> {
-			pipe.getLink().setStartX(this.getRoom(pipe.getName1()).getX_mid());
-			pipe.getLink().setStartY(this.getRoom(pipe.getName1()).getY_mid());
-			pipe.getLink().setEndX(this.getRoom(pipe.getName2()).getX_mid());
-			pipe.getLink().setEndY(this.getRoom(pipe.getName2()).getY_mid());
-			pipe.getLink().setStrokeWidth(10);
-			pipe.getLink().setSmooth(true);
-			pipe.getLink().setStrokeLineCap(StrokeLineCap.ROUND);
-			map.getChildren().add(pipe.getLink());
-			pipes.getChildren().add(pipe.getButton());
+		this.pipeList.forEach(pipe -> {
+			pipe.display();
+			this.map.getChildren().add(pipe.getLink());
+			this.pipes.getChildren().add(pipe.getButton());
 		});
 	}
 
 	// Affiche les rooms
 	public void displayRooms() {
-		roomList.forEach(room -> {
-			map.getChildren().add(room.getRectangle());
+		this.roomList.forEach(room -> {
+			this.map.getChildren().add(room.getRectangle());
 		});
 	}
 
@@ -185,6 +186,14 @@ public class Env {
 
 	public Scene getScene() {
 		return scene;
+	}
+
+	public Stage getWindow() {
+		return window;
+	}
+
+	public void setWindow(Stage window) {
+		this.window = window;
 	}
 
 	public VBox getPipes() {

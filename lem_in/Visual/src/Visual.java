@@ -1,8 +1,9 @@
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -19,17 +20,43 @@ public class Visual extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-		Env env = new Env();
+		Env env = new Env(primaryStage);
 		System.out.printf("\nAnt = %d\n", env.getAnt());
-		
+
 		env.ppe();
 		env.displayPipes();
 		env.displayRooms();
+
+		keyHandlers(env);
+		mouseHandlers(env);
 		
-		// Key handlers
-		keyHandlers(env.getScene());
-		
-		// Mouse handlers
+		env.getWindow().setTitle("Lem-in");
+		env.getWindow().setMinWidth((env.getX_max() >= env.getY_max()) ? 1080 : 720);
+		env.getWindow().setMinHeight((env.getY_max() >= env.getX_max()) ? 1080 : 720);
+		env.getWindow().setScene(env.getScene());
+		env.getWindow().setFullScreenExitKeyCombination(new KeyCodeCombination(KeyCode.ESCAPE, KeyCombination.CONTROL_DOWN));
+		env.getWindow().setFullScreenExitHint("ESCAPE to exit Full Screen");
+		env.getWindow().show();
+	}
+
+	public void keyHandlers(Env env) {
+		env.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if (event.getCode() == KeyCode.ESCAPE)
+					if (env.getWindow().isFullScreen())
+						env.getWindow().setFullScreen(false);
+					else
+						System.exit(0);
+				else if (event.getCode() == KeyCode.M && event.isControlDown())
+					env.getWindow().setFullScreen(true);
+				else
+					System.out.println(event.getCharacter());
+			}
+		});
+	}
+
+	public void mouseHandlers(Env env) {
 		env.getScene().setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -49,41 +76,17 @@ public class Visual extends Application {
 		env.getMap_container().setOnScroll(new EventHandler<ScrollEvent>() {
 			@Override
 			public void handle(ScrollEvent event) {
-					if (event.getDeltaY() > 0)
-					{
-						env.getMap().setScaleX(env.getMap().getScaleX() * 1.2);
-						env.getMap().setScaleY(env.getMap().getScaleY() * 1.2);
-					}
-					if (event.getDeltaY() < 0)
-					{
-						env.getMap().setScaleX(env.getMap().getScaleX() * 0.8);
-						env.getMap().setScaleY(env.getMap().getScaleY() * 0.8);
-					}
-			}
-		});
-		primaryStage.setTitle("Lem-in");
-		primaryStage.setMinWidth((env.getX_max() >= env.getY_max()) ? 1080 : 720);
-		primaryStage.setMinHeight((env.getY_max() >= env.getX_max()) ? 1080 : 720);
-		primaryStage.setScene(env.getScene());
-		primaryStage.show();
-	}
-	
-	public void keyHandlers(Scene scene) {
-		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent event) {
-				if (event.getCode() == KeyCode.ESCAPE)
+				if (event.getDeltaY() > 0)
 				{
-					System.out.println("ESCAPE KeyCode received, exiting...");
-					System.exit(0);
+					env.getMap().setScaleX(env.getMap().getScaleX() * 1.2);
+					env.getMap().setScaleY(env.getMap().getScaleY() * 1.2);
 				}
-				else
-					System.out.println(event.getCharacter());
+				if (event.getDeltaY() < 0)
+				{
+					env.getMap().setScaleX(env.getMap().getScaleX() * 0.8);
+					env.getMap().setScaleY(env.getMap().getScaleY() * 0.8);
+				}
 			}
 		});
-	}
-	
-	public void mouseHandlers(Scene scene) {
-		// TODO
 	}
 }
