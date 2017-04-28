@@ -3,12 +3,14 @@ public class Move {
 
 	private int turn;
 	private int ant_id;
-	private Room room;
+	private Room fromRoom;
+	private Room toRoom;
 
-	public Move(int turn, int ant_id, Room room) {
+	public Move(int turn, int ant_id, Room toRoom, Room fromRoom) {
 		this.turn = turn;
 		this.ant_id = ant_id;
-		this.room = room;
+		this.toRoom = toRoom;
+		this.fromRoom = fromRoom;
 	}
 
 	public int getTurn() {
@@ -19,7 +21,11 @@ public class Move {
 		return ant_id;
 	}
 
-	public Room getRoom() {
-		return room;
+	public Room getToRoom() {
+		return toRoom;
+	}
+
+	public Room getFromRoom() {
+		return fromRoom;
 	}
 }

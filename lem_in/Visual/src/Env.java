@@ -64,8 +64,10 @@ public class Env {
 
 		int t = 1000;
 		for (Move move : this.moveList) {
+			System.out.printf("[%d] Ant n°%d moves from %s to %s\n", move.getTurn(), move.getAnt_id(),
+					move.getFromRoom().getName(), move.getToRoom().getName());
 			this.timeLine.getKeyFrames().add(new KeyFrame(new Duration(t), actionEvent -> {
-				move.getRoom().getRectangle().setFill(Color.BLUEVIOLET);
+				move.getToRoom().getRectangle().setFill(Color.BLUEVIOLET);
 			}));
 			t += 1000;
 		}
@@ -102,10 +104,15 @@ public class Env {
 				}
 				if (line.startsWith("L")) {
 					String split2[];
+					Room fromRoom = this.getStart();
 					split = line.split(" ");
 					for (String move : split) {
 						split2 = move.substring(1, move.length()).split("-");
-						moveList.add(new Move(turn, Integer.parseInt(split2[0]), this.getRoom(split2[1])));
+						for (Move elem : moveList) {
+							if (elem.getAnt_id() == Integer.parseInt(split2[1]))
+								fromRoom = elem.getToRoom();
+						}
+						moveList.add(new Move(turn, Integer.parseInt(split2[0]), this.getRoom(split2[1]), fromRoom));
 					}
 					turn++;
 				} else if (line.contains(" ")) {
@@ -206,6 +213,13 @@ public class Env {
 	public Room getRoom(String name) {
 		for (Room room : this.roomList)
 			if (room.getName().equals(name))
+				return room;
+		return null;
+	}
+
+	public Room getStart() {
+		for (Room room : this.roomList)
+			if (room.getRole() == 1)
 				return room;
 		return null;
 	}
