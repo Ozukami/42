@@ -19,10 +19,6 @@ public class Move {
 		return ant_id;
 	}
 
-	public String getRoom_name() {
-		return room_name;
-	}
-
 	public Room getRoom() {
 		return room;
 	}
