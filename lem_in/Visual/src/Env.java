@@ -4,19 +4,27 @@ import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+import javafx.animation.Animation.Status;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class Env {
 
 	private LinkedList<Room> roomList;
 	private LinkedList<Pipe> pipeList;
 	private LinkedList<Move> moveList;
+	private Timeline timeLine;
 	private Stage window;
 	private Scene scene;
 	private Group root;
@@ -34,6 +42,7 @@ public class Env {
 		this.roomList = new LinkedList<Room>();
 		this.pipeList = new LinkedList<Pipe>();
 		this.moveList = new LinkedList<Move>();
+		this.timeLine = new Timeline();
 		this.getData();
 
 		this.setWindow(window);
@@ -52,6 +61,27 @@ public class Env {
 		this.map_container.getChildren().addAll(this.background, this.map);
 
 		this.map.requestFocus();
+
+		int t = 1000;
+		for (Move move : this.moveList) {
+			this.timeLine.getKeyFrames().add(new KeyFrame(new Duration(t), actionEvent -> {
+				move.getRoom().getRectangle().setFill(Color.BLUEVIOLET);
+			}));
+			t += 1000;
+		}
+
+		root.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if (event.getCode() == KeyCode.SPACE) {
+					if (timeLine.getStatus() == Status.RUNNING)
+						timeLine.pause();
+					else if (!timeLine.getCurrentTime().equals(Duration.seconds(8)))
+						timeLine.playFrom(timeLine.getCurrentTime());
+				}
+			}
+		});
+		timeLine.play();
 	}
 
 	private void getData() {
