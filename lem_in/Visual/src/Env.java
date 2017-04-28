@@ -7,6 +7,7 @@ import java.util.Scanner;
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -15,6 +16,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -67,7 +69,14 @@ public class Env {
 			System.out.printf("[%d] Ant n°%d moves from %s to %s\n", move.getTurn(), move.getAnt_id(),
 					move.getFromRoom().getName(), move.getToRoom().getName());
 			this.timeLine.getKeyFrames().add(new KeyFrame(new Duration(t), actionEvent -> {
-				move.getToRoom().getRectangle().setFill(Color.BLUEVIOLET);
+				Circle circle = new Circle(move.getFromRoom().getX_mid(), move.getFromRoom().getY_mid(), 10,
+						Color.BLUEVIOLET);
+				TranslateTransition tT = new TranslateTransition(new Duration(750), circle);
+				tT.setByX(move.getToRoom().getRectangle().getX() - move.getFromRoom().getRectangle().getX());
+				tT.setByY(move.getToRoom().getRectangle().getY() - move.getFromRoom().getRectangle().getY());
+				tT.play();
+				root.getChildren().add(circle);
+				// move.getToRoom().getRectangle().setFill(Color.BLUEVIOLET);
 			}));
 			t += 1000;
 		}
