@@ -21,7 +21,6 @@ public class Visual extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		Env env = new Env(primaryStage);
-		System.out.printf("\nAnt = %d\n", env.getAnt());
 
 		env.ppe();
 		env.displayPipes();

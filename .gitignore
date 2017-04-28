@@ -1,2 +1,7 @@
 .metadata/
 .recommenders/
+*.o
+*.class
+*.class
+lem_in/Visual/bin/Visual.class
+*.a

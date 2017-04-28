@@ -82,9 +82,8 @@ public class Env {
 					@Override
 					public void handle(ActionEvent event) {
 						circle.setVisible(false);
-						if (move.getToRoom().getRole() == 0) {
+						if (move.getToRoom().getRole() == 0)
 							move.getToRoom().getRectangle().setFill(Color.BLUEVIOLET);
-						}
 					}
 				});
 			}));
