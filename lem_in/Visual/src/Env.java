@@ -67,15 +67,13 @@ public class Env {
 
 		int t = 1000;
 		for (Move move : this.moveList) {
-			System.out.printf("[%d] Ant n°%d moves from %s to %s\n", move.getTurn(), move.getAnt_id(),
-					move.getFromRoom().getName(), move.getToRoom().getName());
 			this.timeLine.getKeyFrames().add(new KeyFrame(new Duration(t), actionEvent -> {
 				if (move.getFromRoom().getRole() == 0) {
 					move.getFromRoom().getRectangle().setFill(Color.BLUE);
 				}
 				Circle circle = new Circle(move.getFromRoom().getX_mid(), move.getFromRoom().getY_mid(), 10,
 						Color.BLUEVIOLET);
-				root.getChildren().add(circle);
+				map.getChildren().add(circle);
 				TranslateTransition tT = new TranslateTransition(new Duration(750), circle);
 				tT.setByX(move.getToRoom().getRectangle().getX() - move.getFromRoom().getRectangle().getX());
 				tT.setByY(move.getToRoom().getRectangle().getY() - move.getFromRoom().getRectangle().getY());
@@ -89,7 +87,6 @@ public class Env {
 						}
 					}
 				});
-				// move.getToRoom().getRectangle().setFill(Color.BLUEVIOLET);
 			}));
 			t += 1000;
 		}
