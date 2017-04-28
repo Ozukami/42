@@ -12,7 +12,7 @@ import javafx.scene.shape.StrokeLineCap;
 import javafx.util.Duration;
 
 public class Pipe {
-	
+
 	private Room room1, room2;
 	private String name1, name2;
 	private StackPane link;
@@ -35,11 +35,10 @@ public class Pipe {
 		this.rT = new RotateTransition(Duration.seconds(0.5), this.link);
 		this.sT = new ScaleTransition(Duration.seconds(0.5), this.button);
 		this.button.setOnAction(new EventHandler<ActionEvent>() {
-			
+
 			@Override
 			public void handle(ActionEvent event) {
-				if (button.isSelected())
-				{
+				if (button.isSelected()) {
 					rT.setByAngle(180);
 					sT.setByX(0.3);
 					sT.setByY(0.3);
@@ -49,9 +48,7 @@ public class Pipe {
 					sT.play();
 					getOuter().setStroke(Color.DARKORANGE);
 					getLink().toFront();
-				}
-				else
-				{
+				} else {
 					rT.setByAngle(-180);
 					sT.setByX(-0.3);
 					sT.setByY(-0.3);
@@ -65,7 +62,7 @@ public class Pipe {
 			}
 		});
 	}
-	
+
 	public void display() {
 		this.getLink().setLayoutX(Math.min(this.getRoom1().getX_mid() - 5, this.getRoom2().getX_mid() - 5));
 		this.getLink().setLayoutY(Math.min(this.getRoom1().getY_mid() - 5, this.getRoom2().getY_mid() - 5));
@@ -73,7 +70,7 @@ public class Pipe {
 		this.initLine(this.getOuter(), Color.BLACK, 10);
 		this.initLine(this.getInner(), Color.RED, 4);
 	}
-	
+
 	public void initLine(Line line, Paint color, int strokeWidth) {
 		line.setStroke(color);
 		line.setStartX(this.getRoom1().getX_mid());

@@ -1,4 +1,5 @@
 
+import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -32,6 +33,7 @@ public class Room {
 		this.rectangle.setY(y * scale_y);
 		this.setScale_x(scale_x);
 		this.setScale_y(scale_y);
+		Tooltip.install(this.getRectangle(), new Tooltip(this.getName()));
 	}
 	
 	public void setRectangle(int x, int y, int height, int width) {
