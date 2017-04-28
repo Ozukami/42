@@ -8,6 +8,7 @@ import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -71,11 +72,17 @@ public class Env {
 			this.timeLine.getKeyFrames().add(new KeyFrame(new Duration(t), actionEvent -> {
 				Circle circle = new Circle(move.getFromRoom().getX_mid(), move.getFromRoom().getY_mid(), 10,
 						Color.BLUEVIOLET);
+				root.getChildren().add(circle);
 				TranslateTransition tT = new TranslateTransition(new Duration(750), circle);
 				tT.setByX(move.getToRoom().getRectangle().getX() - move.getFromRoom().getRectangle().getX());
 				tT.setByY(move.getToRoom().getRectangle().getY() - move.getFromRoom().getRectangle().getY());
 				tT.play();
-				root.getChildren().add(circle);
+				tT.setOnFinished(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						circle.setVisible(false);
+					}
+				});
 				// move.getToRoom().getRectangle().setFill(Color.BLUEVIOLET);
 			}));
 			t += 1000;
