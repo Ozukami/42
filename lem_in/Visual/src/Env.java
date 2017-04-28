@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.Scanner;
+
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
@@ -15,6 +16,7 @@ public class Env {
 
 	private LinkedList<Room> roomList;
 	private LinkedList<Pipe> pipeList;
+	private LinkedList<Move> moveList;
 	private Stage window;
 	private Scene scene;
 	private Group root;
@@ -27,12 +29,13 @@ public class Env {
 	private int x_max = 0, y_max = 0;
 	private int ppe_x = 3, ppe_y = 3;
 	private int ant = 0;
-	
+
 	public Env(Stage window) {
 		this.roomList = new LinkedList<Room>();
 		this.pipeList = new LinkedList<Pipe>();
+		this.moveList = new LinkedList<Move>();
 		this.getData();
-		
+
 		this.setWindow(window);
 		this.scene = new Scene(root = new Group(), ((this.x_max >= this.y_max) ? 1080 : 720),
 				((this.y_max >= this.x_max) ? 1080 : 720), Color.GREY);
@@ -41,46 +44,49 @@ public class Env {
 		this.background = new Rectangle(1080, 1080, Color.GREY);
 		this.background.widthProperty().bind(this.scene.widthProperty());
 		this.background.heightProperty().bind(this.scene.heightProperty());
-		
+
 		this.initPipes();
 		this.initSP();
-		
+
 		this.root.getChildren().addAll(this.map_container, this.sp);
 		this.map_container.getChildren().addAll(this.background, this.map);
-		
+
 		this.map.requestFocus();
 	}
-	
+
 	private void getData() {
 		String line;
 		String split[];
 		int role;
-		
-        try {
-			Scanner sc = new Scanner (new File (System.getProperty("user.dir") + "/src/test2"));
+		int turn = 1;
+
+		try {
+			Scanner sc = new Scanner(new File(System.getProperty("user.dir") + "/src/test2"));
 			this.ant = sc.nextInt();
-			while (sc.hasNext())
-			{
+			while (sc.hasNext()) {
 				line = sc.nextLine();
-				if (line.startsWith("L"))
-					break ;
 				role = 0;
-				while (line.startsWith("#"))
-				{
+				while (line.startsWith("#")) {
 					role = (line.equals("##start")) ? 1 : ((line.equals("##end")) ? 2 : 0);
 					line = sc.nextLine();
 				}
-				if (line.contains(" "))
-				{
+				if (line.startsWith("L")) {
+					String split2[];
 					split = line.split(" ");
-					roomList.add(new Room(split[0], Integer.parseInt(split[1]), Integer.parseInt(split[2]), 40, 40, role));
+					for (String move : split) {
+						split2 = move.substring(1, move.length()).split("-");
+						moveList.add(new Move(turn, Integer.parseInt(split2[0]), this.getRoom(split2[1])));
+					}
+					turn++;
+				} else if (line.contains(" ")) {
+					split = line.split(" ");
+					roomList.add(
+							new Room(split[0], Integer.parseInt(split[1]), Integer.parseInt(split[2]), 40, 40, role));
 					this.x_min = Math.min(this.x_min, Integer.parseInt(split[1]));
 					this.y_min = Math.min(this.y_min, Integer.parseInt(split[2]));
 					this.x_max = Math.max(this.x_max, Integer.parseInt(split[1]));
 					this.y_max = Math.max(this.y_max, Integer.parseInt(split[2]));
-				}
-				else if (line.contains("-"))
-				{
+				} else if (line.contains("-")) {
 					split = line.split("-");
 					this.pipeList.add(new Pipe(this.getRoom(split[0]), this.getRoom(split[1])));
 				}
@@ -90,10 +96,10 @@ public class Env {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void initPipes() {
-		String cssLayout = "-fx-border-color: darkgrey;" + "\n-fx-border-insets: 5;\n" +
-                "-fx-border-width: 3;\n" + "-fx-background-color: darkgrey;\n";
+		String cssLayout = "-fx-border-color: darkgrey;" + "\n-fx-border-insets: 5;\n" + "-fx-border-width: 3;\n"
+				+ "-fx-background-color: darkgrey;\n";
 		this.pipes = new VBox(5);
 		this.pipes.setStyle(cssLayout);
 		this.pipes.setLayoutX(20);
@@ -101,10 +107,10 @@ public class Env {
 		this.pipes.setMinHeight(100);
 		this.pipes.setMinWidth(146);
 	}
-	
+
 	private void initSP() {
-		String cssLayout = "-fx-border-color: darkgrey;" + "\n-fx-border-insets: 5;\n" +
-                "-fx-border-width: 3;\n" + "-fx-background-color: darkgrey;\n";
+		String cssLayout = "-fx-border-color: darkgrey;" + "\n-fx-border-insets: 5;\n" + "-fx-border-width: 3;\n"
+				+ "-fx-background-color: darkgrey;\n";
 		this.sp = new ScrollPane(pipes);
 		this.sp.setLayoutX(20);
 		this.sp.setLayoutY(20);
@@ -115,7 +121,8 @@ public class Env {
 		this.sp.setMinWidth(180);
 	}
 
-	// Recherche les plus petits ecarts en x et en y puis ajuste la distance entre les rooms
+	// Recherche les plus petits ecarts en x et en y puis ajuste la distance
+	// entre les rooms
 	public void ppe() {
 		this.roomList.forEach(room1 -> {
 			this.roomList.forEach(room2 -> {
@@ -133,7 +140,8 @@ public class Env {
 		});
 	}
 
-	// Affiche les pipes connectant les rooms et ajoute les boutons correspondants
+	// Affiche les pipes connectant les rooms et ajoute les boutons
+	// correspondants
 	public void displayPipes() {
 		this.pipeList.forEach(pipe -> {
 			pipe.display();
@@ -166,10 +174,14 @@ public class Env {
 	}
 
 	public Room getRoom(String name) {
-		for (Room room: this.roomList)
+		for (Room room : this.roomList)
 			if (room.getName().equals(name))
 				return room;
 		return null;
+	}
+
+	public LinkedList<Move> getMoveList() {
+		return moveList;
 	}
 
 	public Group getRoot() {

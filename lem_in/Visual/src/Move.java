@@ -3,13 +3,12 @@ public class Move {
 
 	private int turn;
 	private int ant_id;
-	private String room_name;
 	private Room room;
 
-	public Move(int turn, int ant_id, String room_name) {
+	public Move(int turn, int ant_id, Room room) {
 		this.turn = turn;
 		this.ant_id = ant_id;
-		this.room_name = room_name;
+		this.room = room;
 	}
 
 	public int getTurn() {
@@ -22,5 +21,9 @@ public class Move {
 
 	public String getRoom_name() {
 		return room_name;
+	}
+
+	public Room getRoom() {
+		return room;
 	}
 }

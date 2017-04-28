@@ -29,12 +29,13 @@ public class Visual extends Application {
 
 		keyHandlers(env);
 		mouseHandlers(env);
-		
+
 		env.getWindow().setTitle("Lem-in");
 		env.getWindow().setMinWidth((env.getX_max() >= env.getY_max()) ? 1080 : 720);
 		env.getWindow().setMinHeight((env.getY_max() >= env.getX_max()) ? 1080 : 720);
 		env.getWindow().setScene(env.getScene());
-		env.getWindow().setFullScreenExitKeyCombination(new KeyCodeCombination(KeyCode.ESCAPE, KeyCombination.CONTROL_DOWN));
+		env.getWindow()
+				.setFullScreenExitKeyCombination(new KeyCodeCombination(KeyCode.ESCAPE, KeyCombination.CONTROL_DOWN));
 		env.getWindow().setFullScreenExitHint("ESCAPE to exit Full Screen");
 		env.getWindow().show();
 	}
@@ -76,13 +77,11 @@ public class Visual extends Application {
 		env.getMap_container().setOnScroll(new EventHandler<ScrollEvent>() {
 			@Override
 			public void handle(ScrollEvent event) {
-				if (event.getDeltaY() > 0)
-				{
+				if (event.getDeltaY() > 0) {
 					env.getMap().setScaleX(env.getMap().getScaleX() * 1.2);
 					env.getMap().setScaleY(env.getMap().getScaleY() * 1.2);
 				}
-				if (event.getDeltaY() < 0)
-				{
+				if (event.getDeltaY() < 0) {
 					env.getMap().setScaleX(env.getMap().getScaleX() * 0.8);
 					env.getMap().setScaleY(env.getMap().getScaleY() * 0.8);
 				}
