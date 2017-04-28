@@ -70,6 +70,9 @@ public class Env {
 			System.out.printf("[%d] Ant n°%d moves from %s to %s\n", move.getTurn(), move.getAnt_id(),
 					move.getFromRoom().getName(), move.getToRoom().getName());
 			this.timeLine.getKeyFrames().add(new KeyFrame(new Duration(t), actionEvent -> {
+				if (move.getFromRoom().getRole() == 0) {
+					move.getFromRoom().getRectangle().setFill(Color.BLUE);
+				}
 				Circle circle = new Circle(move.getFromRoom().getX_mid(), move.getFromRoom().getY_mid(), 10,
 						Color.BLUEVIOLET);
 				root.getChildren().add(circle);
@@ -81,6 +84,9 @@ public class Env {
 					@Override
 					public void handle(ActionEvent event) {
 						circle.setVisible(false);
+						if (move.getToRoom().getRole() == 0) {
+							move.getToRoom().getRectangle().setFill(Color.BLUEVIOLET);
+						}
 					}
 				});
 				// move.getToRoom().getRectangle().setFill(Color.BLUEVIOLET);
