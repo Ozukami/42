@@ -104,12 +104,13 @@ public class Env {
 				}
 				if (line.startsWith("L")) {
 					String split2[];
-					Room fromRoom = this.getStart();
+					Room fromRoom;
 					split = line.split(" ");
 					for (String move : split) {
 						split2 = move.substring(1, move.length()).split("-");
+						fromRoom = this.getStart();
 						for (Move elem : moveList) {
-							if (elem.getAnt_id() == Integer.parseInt(split2[1]))
+							if (elem.getAnt_id() == Integer.parseInt(split2[0]))
 								fromRoom = elem.getToRoom();
 						}
 						moveList.add(new Move(turn, Integer.parseInt(split2[0]), this.getRoom(split2[1]), fromRoom));
