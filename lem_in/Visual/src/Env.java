@@ -28,6 +28,7 @@ public class Env {
 	private LinkedList<Pipe> pipeList;
 	private LinkedList<Move> moveList;
 	private Timeline timeLine;
+	private TranslateTransition tT;
 	private Stage window;
 	private Scene scene;
 	private Group root;
@@ -46,6 +47,7 @@ public class Env {
 		this.pipeList = new LinkedList<Pipe>();
 		this.moveList = new LinkedList<Move>();
 		this.timeLine = new Timeline();
+		this.tT = new TranslateTransition(new Duration(750));
 		this.getData();
 
 		this.setWindow(window);
@@ -74,7 +76,7 @@ public class Env {
 				Circle circle = new Circle(move.getFromRoom().getX_mid(), move.getFromRoom().getY_mid(), 10,
 						Color.BLUEVIOLET);
 				map.getChildren().add(circle);
-				TranslateTransition tT = new TranslateTransition(new Duration(750), circle);
+				tT.setNode(circle);
 				tT.setByX(move.getToRoom().getRectangle().getX() - move.getFromRoom().getRectangle().getX());
 				tT.setByY(move.getToRoom().getRectangle().getY() - move.getFromRoom().getRectangle().getY());
 				tT.play();
@@ -94,10 +96,14 @@ public class Env {
 			@Override
 			public void handle(KeyEvent event) {
 				if (event.getCode() == KeyCode.SPACE) {
-					if (timeLine.getStatus() == Status.RUNNING)
+					if (timeLine.getStatus() == Status.RUNNING) {
 						timeLine.pause();
-					else if (!timeLine.getCurrentTime().equals(Duration.seconds(8)))
+						if (tT.getStatus() == Status.RUNNING)
+							tT.pause();
+					} else if (!timeLine.getCurrentTime().equals(Duration.seconds(moveList.size())))
 						timeLine.playFrom(timeLine.getCurrentTime());
+					if (tT.getStatus() == Status.PAUSED)
+						tT.play();
 				}
 			}
 		});
