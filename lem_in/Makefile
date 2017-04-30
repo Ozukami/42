@@ -6,13 +6,15 @@
 #    By: apoisson <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 11:29:15 by apoisson          #+#    #+#              #
-#    Updated: 2017/04/20 09:33:42 by apoisson         ###   ########.fr        #
+#    Updated: 2017/05/01 01:22:41 by apoisson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = lem-in
+VISUAL = Visu.jar
 FLAGS = -Wall -Wextra -Werror
 SRC = main.c
+CLASSES = Env.java Move.java Pipe.java Room.java Visual.java
 
 all: $(NAME)
 
@@ -26,10 +28,21 @@ libft.a:
 	@mv libft/libft.a .
 	@make clean -C libft/
 
+$(VISUAL):
+	@printf "\033[0;36m> Compiling Visual\033[0m"
+	@javac -d . $(addprefix Visual/src/, $(CLASSES))
+	@jar cmf META-INF/MANIFEST.MF Visu.jar *.class
+	@rm *.class
+	@printf "\033[0;32m OK\n\033[0m"
+
+run: $(VISUAL)
+	@java -jar Visu.jar
+
 clean:
 	@rm -f libft.a
 
 fclean: clean
 	@rm -f $(NAME)
+	@rm -f $(VISUAL)
 
 re: fclean all

@@ -117,7 +117,7 @@ public class Env {
 		int turn = 1;
 
 		try {
-			Scanner sc = new Scanner(new File(System.getProperty("user.dir") + "/src/test2"));
+			Scanner sc = new Scanner(new File(System.getProperty("user.dir") + "/test2"));
 			this.ant = sc.nextInt();
 			while (sc.hasNext()) {
 				line = sc.nextLine();
@@ -155,7 +155,8 @@ public class Env {
 			}
 			sc.close();
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			System.out.println("No such file or directory");
+			System.exit(0);
 		}
 	}
 
