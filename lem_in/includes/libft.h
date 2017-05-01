@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 10:49:10 by apoisson          #+#    #+#             */
-/*   Updated: 2017/04/17 04:18:31 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/05/01 06:32:10 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 ** EXTRA
 */
 
+int					ft_count_digit(long digit);
 int					ft_isupper(int c);
 int					ft_islower(int c);
 int					ft_isspace(int c);

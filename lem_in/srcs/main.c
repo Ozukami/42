@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:18:21 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/04/22 06:52:36 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/05/01 07:48:10 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,10 +245,15 @@ void		get_pipe(t_lemin *lemin)
 
 	while (get_next_line(0, &line))
 	{
-		if (is_pipe(line, LIST))
+		if (line[0] == '#')
+			ft_strdel(&line);
+		else if (is_pipe(line, LIST))
 			set_index(lemin, line);
 		else
+		{
+			ft_strdel(&line);
 			break ;
+		}
 	}
 }
 
@@ -343,6 +348,7 @@ t_room		*create_room(t_lemin *lemin, char *line, int id, int role)
 	room->x = ft_atoi(split[1]);
 	room->y = ft_atoi(split[2]);
 	room->empty = TRUE;
+	room->visited = FALSE;
 	return (room);
 }
 
@@ -351,9 +357,15 @@ void		add_room_list(t_lemin *lemin, char *line, int id, int role)
 	t_room_list	*room_list;
 
 	if (role == START && !V_START)
+	{
 		V_START++;
+		ID_START = id;
+	}
 	else if (role == END && !V_END)
+	{
 		V_END++;
+		ID_END = id;
+	}
 	else if (role == START || role == END)
 		ft_perror("ERROR");
 	if (!(room_list = ft_memalloc(sizeof(t_room_list))))
@@ -361,6 +373,18 @@ void		add_room_list(t_lemin *lemin, char *line, int id, int role)
 	room_list->room = create_room(lemin, line, id, role);
 	room_list->next = LIST;
 	LIST = room_list;
+}
+
+void		add_new_way(t_lemin *lemin, char *path, int weight)
+{
+	t_way	*way;
+
+	if (!(way = ft_memalloc(sizeof(t_way))))
+		ft_perror("Error: Malloc Failed");
+	way->path = ft_strdup(path);
+	way->weight = weight;
+	way->next = WAYS;
+	WAYS = way;
 }
 
 t_lemin		*init_lemin(void)
@@ -371,15 +395,64 @@ t_lemin		*init_lemin(void)
 		ft_perror("Error: Malloc Failed");
 	lemin->list = NULL;
 	lemin->tab = NULL;
+	lemin->ways = NULL;
 	lemin->index = NULL;
 	lemin->id_name = NULL;
 	lemin->nb_ant = 0;
+	lemin->nb_max_way = 0;
+	lemin->id_start = 0;
+	lemin->id_end = 0;
+	lemin->current_weight = 0;
+	lemin->current_path = ft_memalloc(1);
 	return (lemin);
 }
 
 /*
 **	Main
 */
+
+void		get_ways(t_lemin *lemin, t_room *current)
+{
+	int		i;
+
+	if (current->visited == TRUE)
+		return ;
+	current->visited = TRUE;
+	CURR_PATH = ft_strjoinf(CURR_PATH, ft_strjoin(ft_itoa(current->id), "_"));
+	CURR_WEIGHT++;
+	i = -1;
+	while (++i < current->nb_link)
+	{
+		if ((TAB[current->links[i]])->role == END)
+		{
+			add_new_way(lemin, ft_strjoin(CURR_PATH, ft_itoa(ID_END)), CURR_WEIGHT);
+			current->visited = FALSE;
+			CURR_PATH = ft_strsub(CURR_PATH, 0, (int)ft_strlen(CURR_PATH)
+					- ft_count_digit(current->id) - 1);
+			CURR_WEIGHT--;
+			break ;
+		}
+		get_ways(lemin, TAB[current->links[i]]);
+	}
+	current->visited = FALSE;
+}
+
+void		process(t_lemin *lemin)
+{
+	char **split;
+	MAX_WAY = ft_min(T_NBLINK(ID_START), T_NBLINK(ID_END));
+	get_ways(lemin, TAB[ID_START]);
+	while (WAYS)
+	{
+		printf("{%p} [%s] (%d) |-> {%p}\n", WAYS, WAYS->path,
+				WAYS->weight, WAYS->next);
+		split = ft_strsplit(WAYS->path, '_');
+		WAYS = WAYS->next;
+	}
+	printf("\n");
+	//ant_per_way(lemin);
+	//send_ant(lemin);
+}
 
 int			main(int ac, char **av)
 {
@@ -394,8 +467,8 @@ int			main(int ac, char **av)
 	get_room(lemin);
 	get_pipe(lemin);
 	update_tab(lemin);
-	display_data(lemin);
-	//process(lemin);
+	//display_data(lemin);
+	process(lemin);
 	//free LIST
 	return (0);
 }
