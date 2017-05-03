@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:18:21 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/05/03 23:52:39 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/05/04 01:43:33 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,9 +137,9 @@ void		room_list_to_tab(t_lemin *lemin)
 
 	if (!V_START || !V_END)
 		ft_perror("ERROR");
-	current = LIST;
-	nb_room = list_len(LIST);
-	if (!(TAB = ft_memalloc(sizeof(t_room_list) * (nb_room + 1)))
+	current = L_ROOM;
+	nb_room = list_len(L_ROOM);
+	if (!(T_ROOM = ft_memalloc(sizeof(t_room_list) * (nb_room + 1)))
 			|| !(INDEX = ft_memalloc(sizeof(char *) * (nb_room + 1)))
 			|| !(ID_NAME = ft_memalloc(sizeof(char *) * (nb_room + 1))))
 		ft_perror("Error: Malloc Failed");
@@ -147,7 +147,7 @@ void		room_list_to_tab(t_lemin *lemin)
 		INDEX[nb_room] = ft_strdup("");
 	while (current)
 	{
-		TAB[current->room->id] = current->room;
+		T_ROOM[current->room->id] = current->room;
 		ID_NAME[current->room->id] = ft_strdup(current->room->name);
 		current = current->next;
 	}
@@ -169,6 +169,7 @@ void		update_tab(t_lemin *lemin)
 		j = -1;
 		while (split[++j])
 			(T_LINKS(i))[j] = ft_atoi(split[j]);
+		free_map(split);
 	}
 }
 
@@ -224,17 +225,19 @@ void		set_index(t_lemin *lemin, char *line)
 	split = ft_strsplit(line, '-');
 	ft_strdel(&line);
 	i = -1;
-	while (TAB[++i])
+	while (T_ROOM[++i])
 	{
-		if (ft_strequ((TAB[i])->name, split[0]))
+		if (ft_strequ((T_ROOM[i])->name, split[0]))
 			id_0 = i;
-		if (ft_strequ((TAB[i])->name, split[1]))
+		if (ft_strequ((T_ROOM[i])->name, split[1]))
 			id_1 = i;
 	}
 	if (!ft_strchr(INDEX[id_0], id_1 + '0'))
 	{
-		INDEX[id_0] = ft_strjoin(INDEX[id_0], ft_strjoin(ft_itoa(id_1), "_"));
-		INDEX[id_1] = ft_strjoin(INDEX[id_1], ft_strjoin(ft_itoa(id_0), "_"));
+		INDEX[id_0] = ft_strjoinf(INDEX[id_0], ft_strjoinf(ft_itoa(id_1),
+					ft_strdup("_")));
+		INDEX[id_1] = ft_strjoinf(INDEX[id_1], ft_strjoinf(ft_itoa(id_0),
+					ft_strdup("_")));
 	}
 	free_map(split);
 }
@@ -247,7 +250,7 @@ void		get_pipe(t_lemin *lemin)
 	{
 		if (line[0] == '#')
 			ft_strdel(&line);
-		else if (is_pipe(line, LIST))
+		else if (is_pipe(line, L_ROOM))
 			set_index(lemin, line);
 		else
 		{
@@ -273,7 +276,7 @@ void		get_room(t_lemin *lemin)
 			;
 		else if (is_room(line))
 			add_room_list(lemin, line, id++, role);
-		else if (is_pipe(line, LIST))
+		else if (is_pipe(line, L_ROOM))
 			break ;
 		else
 			ft_perror("ERROR 4");
@@ -292,7 +295,7 @@ void		display_data(t_lemin *lemin)
 
 	printf("%d\n", NB_ANT);
 	i = -1;
-	while (TAB[++i])
+	while (T_ROOM[++i])
 	{
 		if (T_ROLE(i) == START || T_ROLE(i) == END)
 			printf("%s\n", ((T_ROLE(i) == START) ? "##start" : "##end"));
@@ -318,7 +321,7 @@ int			verif_room(t_lemin *lemin, char *name, int x, int y)
 {
 	t_room_list	*current;
 
-	current = LIST;
+	current = L_ROOM;
 	while (current)
 	{
 		if (ft_strequ(name, current->room->name))
@@ -349,6 +352,7 @@ t_room		*create_room(t_lemin *lemin, char *line, int id, int role)
 	room->y = ft_atoi(split[2]);
 	room->empty = TRUE;
 	room->visited = FALSE;
+	free_map(split);
 	return (room);
 }
 
@@ -371,8 +375,8 @@ void		add_room_list(t_lemin *lemin, char *line, int id, int role)
 	if (!(room_list = ft_memalloc(sizeof(t_room_list))))
 		ft_perror("Error: Malloc Failed");
 	room_list->room = create_room(lemin, line, id, role);
-	room_list->next = LIST;
-	LIST = room_list;
+	room_list->next = L_ROOM;
+	L_ROOM = room_list;
 }
 
 void		insert_way(t_way *way, t_way *next)
@@ -385,7 +389,7 @@ void		add_sort(t_lemin *lemin, t_way *way)
 {
 	t_way	*current;
 
-	current = WAYS;
+	current = L_WAYS;
 	while (current)
 	{
 		if (current->weight < way->weight)
@@ -409,14 +413,15 @@ void		add_new_way(t_lemin *lemin, char *path, int weight)
 {
 	t_way	*way;
 
+	NB_WAY++;
 	if (!(way = ft_memalloc(sizeof(t_way))))
 		ft_perror("Error: Malloc Failed");
 	way->path = ft_strdup(path);
 	way->weight = weight;
-	if (!WAYS)
+	if (!L_WAYS)
 	{
-		way->next = WAYS;
-		WAYS = way;
+		way->next = L_WAYS;
+		L_WAYS = way;
 		return ;
 	}
 	else
@@ -429,17 +434,20 @@ t_lemin		*init_lemin(void)
 
 	if (!(lemin = ft_memalloc(sizeof(t_lemin))))
 		ft_perror("Error: Malloc Failed");
-	lemin->list = NULL;
-	lemin->tab = NULL;
-	lemin->ways = NULL;
-	lemin->index = NULL;
-	lemin->id_name = NULL;
-	lemin->nb_ant = 0;
-	lemin->nb_max_way = 0;
-	lemin->id_start = 0;
-	lemin->id_end = 0;
-	lemin->current_weight = 0;
-	lemin->current_path = ft_memalloc(1);
+	L_ROOM = NULL;
+	T_ROOM = NULL;
+	L_WAYS = NULL;
+	T_WAYS = NULL;
+	S_WAYS = NULL;
+	INDEX = NULL;
+	ID_NAME = NULL;
+	NB_ANT = 0;
+	NB_WAY = 0;
+	MAX_WAY = 0;
+	ID_START = 0;
+	ID_END = 0;
+	CURR_WEIGHT = 0;
+	CURR_PATH = ft_memalloc(1);
 	return (lemin);
 }
 
@@ -454,43 +462,67 @@ void		get_ways(t_lemin *lemin, t_room *current)
 	if (current->visited == TRUE)
 		return ;
 	current->visited = TRUE;
-	CURR_PATH = ft_strjoinf(CURR_PATH, ft_strjoin(ft_itoa(current->id), "_"));
+	CURR_PATH = ft_strjoinf(CURR_PATH, ft_strjoinf(ft_itoa(current->id),
+				ft_strdup("_")));
 	CURR_WEIGHT++;
 	if (current->role == END)
 	{
 		CURR_WEIGHT--;
 		add_new_way(lemin, CURR_PATH, CURR_WEIGHT);
 		current->visited = FALSE;
-		CURR_PATH = ft_strsub(CURR_PATH, 0, (int)ft_strlen(CURR_PATH)
+		CURR_PATH = ft_strsubf(CURR_PATH, 0, (int)ft_strlen(CURR_PATH)
 				- ft_count_digit(current->id) - 1);
 		return ;
 	}
 	i = -1;
 	while (++i < current->nb_link)
-		get_ways(lemin, TAB[current->links[i]]);
+		get_ways(lemin, T_ROOM[current->links[i]]);
 	current->visited = FALSE;
-	CURR_PATH = ft_strsub(CURR_PATH, 0, (int)ft_strlen(CURR_PATH)
+	CURR_PATH = ft_strsubf(CURR_PATH, 0, (int)ft_strlen(CURR_PATH)
 			- ft_count_digit(current->id) - 1);
 	CURR_WEIGHT--;
 }
 
+void		select_ways(t_lemin *lemin)
+{
+	t_way	*current;
+
+	current = L_WAYS;
+	while (current)
+	{
+		
+	}
+}
+
+void		l_to_t_ways(t_lemin *lemin)
+{
+	t_way	*current;
+	int		i;
+
+	current = L_WAYS;
+	i = 0;
+	while (current)
+	{
+		T_WAYS[i++] = current;
+		current = current->next;
+	}
+}
+
 void		process(t_lemin *lemin)
 {
-	char **split;
-	int	nb;
+	int		i = -1;
 
-	nb = 0;
 	MAX_WAY = ft_min(T_NBLINK(ID_START), T_NBLINK(ID_END));
-	get_ways(lemin, TAB[ID_START]);
-	while (WAYS)
-	{
-		nb++;
-		printf("{%p} [%s] (%d) |-> {%p}\n", WAYS, WAYS->path,
-				WAYS->weight, WAYS->next);
-		split = ft_strsplit(WAYS->path, '_');
-		WAYS = WAYS->next;
-	}
-	printf("%d\n", nb);
+	get_ways(lemin, T_ROOM[ID_START]);
+	if (!(S_WAYS = ft_memalloc(sizeof(t_way) * (MAX_WAY + 1))) ||
+			!(T_WAYS = ft_memalloc(sizeof(t_way) * (NB_WAY + 1))))
+		ft_perror("Error: Malloc Failed");
+	l_to_t_ways(lemin);
+	while (T_WAYS[++i])
+		printf("{%p} [%s] (%d) |-> {%p}\n", T_WAYS[i], (T_WAYS[i])->path,
+				(T_WAYS[i])->weight, (T_WAYS[i])->next);
+	printf("%d\n", NB_WAY);
+	select_ways(lemin);
 	//ant_per_way(lemin);
 	//send_ant(lemin);
 }
@@ -510,6 +542,6 @@ int			main(int ac, char **av)
 	update_tab(lemin);
 	//display_data(lemin);
 	process(lemin);
-	//free LIST
+	//free L_ROOM
 	return (0);
 }

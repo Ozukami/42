@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 10:49:10 by apoisson          #+#    #+#             */
-/*   Updated: 2017/05/01 06:32:10 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/05/04 01:20:12 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,5 +146,7 @@ t_rect				*ft_new_rect(t_coord *coord1, t_coord *coord2, int color);
 void				ft_free_rect(t_rect *rect);
 
 int					ft_absolute(int a);
+
+char				*ft_strsubf(char *s, unsigned int start, size_t len);
 
 #endif
