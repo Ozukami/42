@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:18:21 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/05/03 23:07:07 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/05/03 23:52:39 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -375,6 +375,36 @@ void		add_room_list(t_lemin *lemin, char *line, int id, int role)
 	LIST = room_list;
 }
 
+void		insert_way(t_way *way, t_way *next)
+{
+	way->next = next->next;
+	next->next = way;
+}
+
+void		add_sort(t_lemin *lemin, t_way *way)
+{
+	t_way	*current;
+
+	current = WAYS;
+	while (current)
+	{
+		if (current->weight < way->weight)
+		{
+			if (!(current->next))
+			{
+				way->next = NULL;
+				current->next = way;
+				break ;
+			}
+			else if (current->next->weight > way->weight)
+				return (insert_way(way, current));
+			current = current->next;
+		}
+		else
+			return (insert_way(way, current));
+	}
+}
+
 void		add_new_way(t_lemin *lemin, char *path, int weight)
 {
 	t_way	*way;
@@ -383,8 +413,14 @@ void		add_new_way(t_lemin *lemin, char *path, int weight)
 		ft_perror("Error: Malloc Failed");
 	way->path = ft_strdup(path);
 	way->weight = weight;
-	way->next = WAYS;
-	WAYS = way;
+	if (!WAYS)
+	{
+		way->next = WAYS;
+		WAYS = way;
+		return ;
+	}
+	else
+		add_sort(lemin, way);
 }
 
 t_lemin		*init_lemin(void)
@@ -441,16 +477,20 @@ void		get_ways(t_lemin *lemin, t_room *current)
 void		process(t_lemin *lemin)
 {
 	char **split;
+	int	nb;
+
+	nb = 0;
 	MAX_WAY = ft_min(T_NBLINK(ID_START), T_NBLINK(ID_END));
 	get_ways(lemin, TAB[ID_START]);
 	while (WAYS)
 	{
+		nb++;
 		printf("{%p} [%s] (%d) |-> {%p}\n", WAYS, WAYS->path,
 				WAYS->weight, WAYS->next);
 		split = ft_strsplit(WAYS->path, '_');
 		WAYS = WAYS->next;
 	}
-	printf("\n");
+	printf("%d\n", nb);
 	//ant_per_way(lemin);
 	//send_ant(lemin);
 }
