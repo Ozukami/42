@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:18:21 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/05/01 07:48:10 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/05/03 23:07:07 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -420,21 +420,22 @@ void		get_ways(t_lemin *lemin, t_room *current)
 	current->visited = TRUE;
 	CURR_PATH = ft_strjoinf(CURR_PATH, ft_strjoin(ft_itoa(current->id), "_"));
 	CURR_WEIGHT++;
+	if (current->role == END)
+	{
+		CURR_WEIGHT--;
+		add_new_way(lemin, CURR_PATH, CURR_WEIGHT);
+		current->visited = FALSE;
+		CURR_PATH = ft_strsub(CURR_PATH, 0, (int)ft_strlen(CURR_PATH)
+				- ft_count_digit(current->id) - 1);
+		return ;
+	}
 	i = -1;
 	while (++i < current->nb_link)
-	{
-		if ((TAB[current->links[i]])->role == END)
-		{
-			add_new_way(lemin, ft_strjoin(CURR_PATH, ft_itoa(ID_END)), CURR_WEIGHT);
-			current->visited = FALSE;
-			CURR_PATH = ft_strsub(CURR_PATH, 0, (int)ft_strlen(CURR_PATH)
-					- ft_count_digit(current->id) - 1);
-			CURR_WEIGHT--;
-			break ;
-		}
 		get_ways(lemin, TAB[current->links[i]]);
-	}
 	current->visited = FALSE;
+	CURR_PATH = ft_strsub(CURR_PATH, 0, (int)ft_strlen(CURR_PATH)
+			- ft_count_digit(current->id) - 1);
+	CURR_WEIGHT--;
 }
 
 void		process(t_lemin *lemin)
