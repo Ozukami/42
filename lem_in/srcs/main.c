@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:18:21 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/05/04 01:43:33 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/05/04 04:13:27 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -483,14 +483,50 @@ void		get_ways(t_lemin *lemin, t_room *current)
 	CURR_WEIGHT--;
 }
 
+int			test(char *comp, char *path)
+{
+	char	**split;
+	int		i;
+
+	split = ft_strsplit(ft_strsub(path, 2, ft_strlen(path) - 4), '_');
+	i = -1;
+	while (split[++i])
+		if (ft_strstr(comp, split[i]))
+			return (0);
+	return (1);
+}
+
+int			backtrack_ways(t_lemin *lemin, char *comp, int n)
+{
+	int		i;
+
+	if (n == MAX_WAY)
+		return (1);
+	i = -1;
+	while (T_WAYS[++i])
+	{
+		if (test(comp, (T_WAYS[i])->path))
+		{
+			S_WAYS[n] = T_WAYS[i];
+			if (backtrack_ways(lemin, ft_strjoin(comp,
+							(S_WAYS[n])->path), n + 1))
+				return (1);
+			S_WAYS[n] = NULL;
+		}
+	}
+	return (0);
+}
+
 void		select_ways(t_lemin *lemin)
 {
-	t_way	*current;
+	int		i;
 
-	current = L_WAYS;
-	while (current)
+	while (MAX_WAY > 0)
 	{
-		
+		if (!backtrack_ways(lemin, "", 0))
+			MAX_WAY--;
+		else
+			break ;
 	}
 }
 

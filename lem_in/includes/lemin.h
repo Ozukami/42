@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:15:38 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/05/04 01:42:41 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/05/04 03:48:00 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ typedef struct		s_lemin
 	t_room			**tab_room;
 	t_way			*list_ways;
 	t_way			**tab_ways;
-	t_way			*selected_ways;
+	t_way			**selected_ways;
 	char			**index;
 	char			**id_name;
 	int				nb_ant;
