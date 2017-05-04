@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:18:21 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/05/04 04:13:27 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/05/04 06:19:04 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -533,7 +533,6 @@ void		select_ways(t_lemin *lemin)
 void		l_to_t_ways(t_lemin *lemin)
 {
 	t_way	*current;
-	int		i;
 
 	current = L_WAYS;
 	i = 0;
