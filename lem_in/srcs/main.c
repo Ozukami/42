@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:18:21 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/05/04 06:19:04 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/05/04 06:19:58 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -519,7 +519,6 @@ int			backtrack_ways(t_lemin *lemin, char *comp, int n)
 
 void		select_ways(t_lemin *lemin)
 {
-	int		i;
 
 	while (MAX_WAY > 0)
 	{
@@ -532,6 +531,8 @@ void		select_ways(t_lemin *lemin)
 
 void		l_to_t_ways(t_lemin *lemin)
 {
+	int		i;
+
 	t_way	*current;
 
 	current = L_WAYS;
