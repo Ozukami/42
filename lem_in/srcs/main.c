@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:18:21 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/05/04 06:19:58 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/05/17 01:21:47 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -385,27 +385,41 @@ void		insert_way(t_way *way, t_way *next)
 	next->next = way;
 }
 
+void		add_last(t_way *way, t_way *next)
+{
+	way->next = NULL;
+	next->next = way;
+}
+
+void		add_first(t_lemin *lemin, t_way *way, t_way *current)
+{
+	way->next = current;
+	L_WAYS = way;
+}
+
 void		add_sort(t_lemin *lemin, t_way *way)
 {
 	t_way	*current;
+	int		i;
 
 	current = L_WAYS;
-	while (current)
+	i = -1;
+	while (current && ++i > -1)
 	{
-		if (current->weight < way->weight)
-		{
-			if (!(current->next))
-			{
-				way->next = NULL;
-				current->next = way;
-				break ;
-			}
-			else if (current->next->weight > way->weight)
-				return (insert_way(way, current));
-			current = current->next;
-		}
-		else
+		if (!(current->next) && way->weight > current->weight)
+			return (add_last(way, current));
+		else if (way->weight > current->weight && 
+				way->weight <= current->next->weight)
 			return (insert_way(way, current));
+		else if (!current->next && current->weight < way->weight)
+			return (insert_way(way, current));
+		else if (!current->next && !i)
+			return (add_first(lemin, way, current));
+		else if (way->weight < current->next->weight && !i)
+			return (add_first(lemin, way, current));
+		else if (way->weight < current->next->weight)
+			return (insert_way(way, current));
+		current = current->next;
 	}
 }
 
@@ -519,7 +533,6 @@ int			backtrack_ways(t_lemin *lemin, char *comp, int n)
 
 void		select_ways(t_lemin *lemin)
 {
-
 	while (MAX_WAY > 0)
 	{
 		if (!backtrack_ways(lemin, "", 0))
@@ -532,7 +545,6 @@ void		select_ways(t_lemin *lemin)
 void		l_to_t_ways(t_lemin *lemin)
 {
 	int		i;
-
 	t_way	*current;
 
 	current = L_WAYS;
@@ -546,8 +558,9 @@ void		l_to_t_ways(t_lemin *lemin)
 
 void		process(t_lemin *lemin)
 {
-	int		i = -1;
+	int		i;
 
+	i = -1;
 	MAX_WAY = ft_min(T_NBLINK(ID_START), T_NBLINK(ID_END));
 	get_ways(lemin, T_ROOM[ID_START]);
 	if (!(S_WAYS = ft_memalloc(sizeof(t_way) * (MAX_WAY + 1))) ||
