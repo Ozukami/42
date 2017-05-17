@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:18:21 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/05/17 03:20:02 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/05/17 05:47:19 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -539,7 +539,6 @@ int			test(char *comp, char *path)
 	{
 		if (ft_strstr(comp, ft_strjoin("_", ft_strjoin(split[i], "_"))))
 		{
-			printf("{%s} comp = %s\n", split[i], comp);
 			free_map(split);
 			return (0);
 		}
@@ -558,15 +557,6 @@ int			backtrack_ways(t_lemin *lemin, char *comp, int n)
 	i = -1;
 	while (T_WAYS[++i])
 	{
-		if (n == 0)
-		{
-			printf("\ncomp = {%s}\n", comp);
-			printf("%s\n", (T_WAYS[i])->path);
-		}
-		if (n == 1)
-			printf("	%s\n", (T_WAYS[i])->path);
-		if (n == 2)
-			printf("		%s\n", (T_WAYS[i])->path);
 		if (test(comp, (T_WAYS[i])->path))
 		{
 			S_WAYS[n] = T_WAYS[i];
@@ -580,19 +570,21 @@ int			backtrack_ways(t_lemin *lemin, char *comp, int n)
 
 void		select_ways(t_lemin *lemin)
 {
+	int		i;
+
 	while (MAX_WAY > 0)
 	{
 		if (!backtrack_ways(lemin, ft_strdup("_"), 0))
-		{
-			printf("	[--]\n");
 			MAX_WAY--;
-		}
 		else
-		{
-			printf("end\n");
 			break ;
-		}
 	}
+	i = -1;
+	while (++i < MAX_WAY)
+		SW_A(i) = NB_ANT / MAX_WAY;
+	i = -1;
+	while (++i < NB_ANT % MAX_WAY)
+		SW_A(i) += 1;
 }
 
 void		l_to_t_ways(t_lemin *lemin)
@@ -606,6 +598,69 @@ void		l_to_t_ways(t_lemin *lemin)
 	{
 		T_WAYS[i++] = current;
 		current = current->next;
+	}
+}
+
+/*
+** WARNING modulo
+*/
+
+int			get_pgt(t_lemin *lemin)
+{
+	int		i;
+	int		pgt;
+
+	i = 0;
+	pgt = SW_A(i) + SW_W(i);
+	while (++i < MAX_WAY)
+		pgt = ft_max(pgt, SW_A(i) + SW_W(i));
+	return (pgt);
+}
+
+int			get_ppt(t_lemin *lemin)
+{
+	int		i;
+	int		ppt;
+
+	i = 0;
+	ppt = SW_A(i) + SW_W(i);
+	while (++i < MAX_WAY)
+		ppt = ft_min(ppt, SW_A(i) + SW_W(i));
+	return (ppt);
+}
+
+t_way		*get_pgt_way(t_lemin *lemin)
+{
+	int		i;
+	t_way	*pgt_way;
+
+	i = 0;
+	pgt_way = SW(i);
+	while (++i < MAX_WAY)
+		if (SW_A(i) + SW_W(i) > pgt_way->ant_to_send + pgt_way->weight)
+			pgt_way = SW(i);
+	return (pgt_way);
+}
+
+t_way		*get_ppt_way(t_lemin *lemin)
+{
+	int		i;
+	t_way	*ppt_way;
+
+	i = 0;
+	ppt_way = SW(i);
+	while (++i < MAX_WAY)
+		if (SW_A(i) + SW_W(i) < ppt_way->ant_to_send + ppt_way->weight)
+			ppt_way = SW(i);
+	return (ppt_way);
+}
+
+void		ant_per_way(t_lemin *lemin)
+{
+	while (get_pgt(lemin) > get_ppt(lemin) + 1)
+	{
+		(get_pgt_way(lemin))->ant_to_send--;
+		(get_ppt_way(lemin))->ant_to_send++;
 	}
 }
 
@@ -627,8 +682,14 @@ void		process(t_lemin *lemin)
 	select_ways(lemin);
 	i = -1;
 	while (S_WAYS[++i])
-		printf("{%p} [%s]\n", S_WAYS[i], (S_WAYS[i])->path);
-	//ant_per_way(lemin);
+		printf("{%p} [%s] (%d) ant = %d\n", S_WAYS[i], (S_WAYS[i])->path,
+				(S_WAYS[i])->weight, SW_A(i));
+	printf("%d\n", MAX_WAY);
+	ant_per_way(lemin);
+	i = -1;
+	while (S_WAYS[++i])
+		printf("{%p} [%s] (%d) ant = %d\n", S_WAYS[i], (S_WAYS[i])->path,
+				(S_WAYS[i])->weight, SW_A(i));
 	//send_ant(lemin);
 }
 

@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:15:38 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/05/04 03:48:00 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/05/17 05:42:53 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@
 # define ID_END 		(lemin->id_end)
 # define CURR_WEIGHT	(lemin->current_weight)
 # define CURR_PATH		(lemin->current_path)
+
+# define SW(i)			((lemin->selected_ways)[i])
+# define SW_W(i)		(((lemin->selected_ways)[i])->weight)
+# define SW_P(i)		(((lemin->selected_ways)[i])->path)
+# define SW_A(i)		(((lemin->selected_ways)[i])->ant_to_send)
 
 # define T_NAME(i) 		(((lemin->tab_room)[i])->name)
 # define T_ID(i) 		(((lemin->tab_room)[i])->id)
@@ -74,6 +79,7 @@ typedef struct		s_way
 	char			*path;
 	int				weight;
 	struct s_way	*next;
+	int				ant_to_send;
 }					t_way;
 
 typedef struct		s_lemin
