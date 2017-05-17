@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:18:21 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/05/17 05:47:19 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/05/17 23:15:21 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,10 +234,8 @@ void		set_index(t_lemin *lemin, char *line)
 	}
 	if (!ft_strchr(INDEX[id_0], id_1 + '0'))
 	{
-		INDEX[id_0] = ft_strjoinf(INDEX[id_0], ft_strjoinf(ft_itoa(id_1),
-					ft_strdup("_")));
-		INDEX[id_1] = ft_strjoinf(INDEX[id_1], ft_strjoinf(ft_itoa(id_0),
-					ft_strdup("_")));
+		INDEX[id_0] = ft_strjoinf(INDEX[id_0], ft_strjoinf_l(ft_itoa(id_1), "_"));
+		INDEX[id_1] = ft_strjoinf(INDEX[id_1], ft_strjoinf_l(ft_itoa(id_0), "_"));
 	}
 	free_map(split);
 }
@@ -253,10 +251,7 @@ void		get_pipe(t_lemin *lemin)
 		else if (is_pipe(line, L_ROOM))
 			set_index(lemin, line);
 		else
-		{
-			ft_strdel(&line);
-			break ;
-		}
+			return (ft_strdel(&line));
 	}
 }
 
@@ -529,6 +524,7 @@ int			test(char *comp, char *path)
 {
 	char	**split;
 	char	*to_split;
+	char	*to_comp;
 	int		i;
 
 	to_split = ft_strsub(path, to_tronc(path, 1),
@@ -537,11 +533,15 @@ int			test(char *comp, char *path)
 	i = -1;
 	while (split[++i])
 	{
-		if (ft_strstr(comp, ft_strjoin("_", ft_strjoin(split[i], "_"))))
+		to_comp = ft_strjoinf_r("_", ft_strjoin(split[i], "_"));
+		if (ft_strstr(comp, to_comp))
 		{
 			free_map(split);
+			ft_strdel(&to_comp);
+			ft_strdel(&to_split);
 			return (0);
 		}
+		ft_strdel(&to_comp);
 	}
 	free_map(split);
 	ft_strdel(&to_split);
@@ -553,7 +553,10 @@ int			backtrack_ways(t_lemin *lemin, char *comp, int n)
 	int		i;
 
 	if (n == MAX_WAY)
+	{
+		ft_strdel(&comp);
 		return (1);
+	}
 	i = -1;
 	while (T_WAYS[++i])
 	{
@@ -561,12 +564,20 @@ int			backtrack_ways(t_lemin *lemin, char *comp, int n)
 		{
 			S_WAYS[n] = T_WAYS[i];
 			if (backtrack_ways(lemin, ft_strjoin(comp, (S_WAYS[n])->path), n + 1))
+			{
+				ft_strdel(&comp);
 				return (1);
+			}
 			S_WAYS[n] = NULL;
 		}
 	}
+	ft_strdel(&comp);
 	return (0);
 }
+
+/*
+** LEAKS
+*/
 
 void		select_ways(t_lemin *lemin)
 {
@@ -664,33 +675,37 @@ void		ant_per_way(t_lemin *lemin)
 	}
 }
 
-void		process(t_lemin *lemin)
+void		display_debug(t_way **tab, char *str, int opt)
 {
 	int		i;
 
+	printf("\n	%s\n", str);
 	i = -1;
+	if (opt)
+		while (tab[++i])
+			printf("{%p} [%s] (%d)\n", tab[i], (tab[i])->path,
+					(tab[i])->weight);
+	else
+		while (tab[++i])
+			printf("[%s] (%d) ant_to_send = %d\n", (tab[i])->path,
+					(tab[i])->weight, (tab[i])->ant_to_send);
+}
+
+void		process(t_lemin *lemin)
+{
 	MAX_WAY = ft_min(T_NBLINK(ID_START), T_NBLINK(ID_END));
+	printf("\nMax way = %d\n", MAX_WAY);
 	get_ways(lemin, T_ROOM[ID_START]);
 	if (!(S_WAYS = ft_memalloc(sizeof(t_way) * (MAX_WAY + 1))) ||
 			!(T_WAYS = ft_memalloc(sizeof(t_way) * (NB_WAY + 1))))
 		ft_perror("Error: Malloc Failed");
 	l_to_t_ways(lemin);
-	while (T_WAYS[++i])
-		printf("{%p} [%s] (%d) |-> {%p}\n", T_WAYS[i], (T_WAYS[i])->path,
-				(T_WAYS[i])->weight, (T_WAYS[i])->next);
-	printf("%d\n", NB_WAY);
+	display_debug(T_WAYS, "Available ways", 1);
 	select_ways(lemin);
-	i = -1;
-	while (S_WAYS[++i])
-		printf("{%p} [%s] (%d) ant = %d\n", S_WAYS[i], (S_WAYS[i])->path,
-				(S_WAYS[i])->weight, SW_A(i));
-	printf("%d\n", MAX_WAY);
+	display_debug(S_WAYS, "Selected ways", 0);
 	ant_per_way(lemin);
-	i = -1;
-	while (S_WAYS[++i])
-		printf("{%p} [%s] (%d) ant = %d\n", S_WAYS[i], (S_WAYS[i])->path,
-				(S_WAYS[i])->weight, SW_A(i));
-	//send_ant(lemin);
+	display_debug(S_WAYS, "Selected ways with balanced ant", 0);
+	send_ant(lemin);
 }
 
 int			main(int ac, char **av)
@@ -706,7 +721,7 @@ int			main(int ac, char **av)
 	get_room(lemin);
 	get_pipe(lemin);
 	update_tab(lemin);
-	//display_data(lemin);
+	display_data(lemin);
 	process(lemin);
 	//free L_ROOM
 	//while (1);
