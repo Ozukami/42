@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:18:21 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/05/17 01:21:47 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/05/17 03:20:02 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -497,16 +497,55 @@ void		get_ways(t_lemin *lemin, t_room *current)
 	CURR_WEIGHT--;
 }
 
+int			to_tronc(char *path, int opt)
+{
+	int		i;
+	int		rep;
+	int		verif;
+
+	i = -1;
+	verif = 1;
+	rep = 1;
+	while (path[++i])
+	{
+		if (path[i] != '_' && verif)
+			rep++;
+		if (path[i] == '_')
+			verif = 0;
+	}
+	if (opt)
+		return (rep);
+	i--;
+	while (path[--i] != '_' && i > -1)
+		rep++;
+	return (++rep);
+}
+
+/* WARNING
+** - 4 pas toujours good
+*/
+
 int			test(char *comp, char *path)
 {
 	char	**split;
+	char	*to_split;
 	int		i;
 
-	split = ft_strsplit(ft_strsub(path, 2, ft_strlen(path) - 4), '_');
+	to_split = ft_strsub(path, to_tronc(path, 1),
+			ft_strlen(path) - to_tronc(path, 0));
+	split = ft_strsplit(to_split, '_');
 	i = -1;
 	while (split[++i])
-		if (ft_strstr(comp, split[i]))
+	{
+		if (ft_strstr(comp, ft_strjoin("_", ft_strjoin(split[i], "_"))))
+		{
+			printf("{%s} comp = %s\n", split[i], comp);
+			free_map(split);
 			return (0);
+		}
+	}
+	free_map(split);
+	ft_strdel(&to_split);
 	return (1);
 }
 
@@ -519,11 +558,19 @@ int			backtrack_ways(t_lemin *lemin, char *comp, int n)
 	i = -1;
 	while (T_WAYS[++i])
 	{
+		if (n == 0)
+		{
+			printf("\ncomp = {%s}\n", comp);
+			printf("%s\n", (T_WAYS[i])->path);
+		}
+		if (n == 1)
+			printf("	%s\n", (T_WAYS[i])->path);
+		if (n == 2)
+			printf("		%s\n", (T_WAYS[i])->path);
 		if (test(comp, (T_WAYS[i])->path))
 		{
 			S_WAYS[n] = T_WAYS[i];
-			if (backtrack_ways(lemin, ft_strjoin(comp,
-							(S_WAYS[n])->path), n + 1))
+			if (backtrack_ways(lemin, ft_strjoin(comp, (S_WAYS[n])->path), n + 1))
 				return (1);
 			S_WAYS[n] = NULL;
 		}
@@ -535,10 +582,16 @@ void		select_ways(t_lemin *lemin)
 {
 	while (MAX_WAY > 0)
 	{
-		if (!backtrack_ways(lemin, "", 0))
+		if (!backtrack_ways(lemin, ft_strdup("_"), 0))
+		{
+			printf("	[--]\n");
 			MAX_WAY--;
+		}
 		else
+		{
+			printf("end\n");
 			break ;
+		}
 	}
 }
 
@@ -572,6 +625,9 @@ void		process(t_lemin *lemin)
 				(T_WAYS[i])->weight, (T_WAYS[i])->next);
 	printf("%d\n", NB_WAY);
 	select_ways(lemin);
+	i = -1;
+	while (S_WAYS[++i])
+		printf("{%p} [%s]\n", S_WAYS[i], (S_WAYS[i])->path);
 	//ant_per_way(lemin);
 	//send_ant(lemin);
 }
@@ -592,5 +648,6 @@ int			main(int ac, char **av)
 	//display_data(lemin);
 	process(lemin);
 	//free L_ROOM
+	//while (1);
 	return (0);
 }

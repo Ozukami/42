@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 10:49:10 by apoisson          #+#    #+#             */
-/*   Updated: 2017/05/04 01:20:12 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/05/17 01:45:11 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,8 @@ char				*ft_lltoa_base(long long value, int base, int maj);
 char				*ft_ulltoa_base(unsigned long long value, int base,
 		int maj);
 char				*ft_strjoinf(char *s1, char *s2);
+char				*ft_strjoinf_r(char *s1, char *s2);
+char				*ft_strjoinf_l(char *s1, char *s2);
 char				*ft_straddchar(char *s, char c);
 int					ft_recursive_power(int nb, int power);
 void				ft_bspace(char *s, size_t n);
