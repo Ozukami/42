@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:15:38 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/05/17 05:42:53 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/05/18 00:05:05 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "libft.h"
 # include <stdio.h>
 
+# define L_ANT	 		(lemin->list_ant)
 # define L_ROOM 		(lemin->list_room)
 # define T_ROOM 		(lemin->tab_room)
 # define L_WAYS 		(lemin->list_ways)
@@ -24,6 +25,7 @@
 # define INDEX 			(lemin->index)
 # define ID_NAME 		(lemin->id_name)
 # define NB_ANT 		(lemin->nb_ant)
+# define ANT_END 		(lemin->ant_end)
 # define V_START 		(lemin->verif_start)
 # define V_END 			(lemin->verif_end)
 # define NB_WAY 		(lemin->nb_way)
@@ -82,8 +84,18 @@ typedef struct		s_way
 	int				ant_to_send;
 }					t_way;
 
+typedef struct		s_ant
+{
+	int				id;
+	int				pos;
+	int				turn;
+	char			**way;
+	struct s_ant	*next;
+}					t_ant;
+
 typedef struct		s_lemin
 {
+	t_ant			*list_ant;
 	t_room_list		*list_room;
 	t_room			**tab_room;
 	t_way			*list_ways;
@@ -92,6 +104,7 @@ typedef struct		s_lemin
 	char			**index;
 	char			**id_name;
 	int				nb_ant;
+	int				ant_end;
 	int				verif_start;
 	int				verif_end;
 	int				nb_way;

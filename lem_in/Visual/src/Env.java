@@ -115,6 +115,50 @@ public class Env {
 		String split[];
 		int role;
 		int turn = 1;
+		Scanner sc = new Scanner(System.in);
+		this.ant = sc.nextInt();
+		while (sc.hasNext()) {
+			line = sc.nextLine();
+			role = 0;
+			while (line.startsWith("#")) {
+				role = (line.equals("##start")) ? 1 : ((line.equals("##end")) ? 2 : 0);
+				line = sc.nextLine();
+			}
+			if (line.startsWith("L")) {
+				String split2[];
+				Room fromRoom;
+				split = line.split(" ");
+				for (String move : split) {
+					split2 = move.substring(1, move.length()).split("-");
+					fromRoom = this.getStart();
+					for (Move elem : moveList) {
+						if (elem.getAnt_id() == Integer.parseInt(split2[0]))
+							fromRoom = elem.getToRoom();
+					}
+					moveList.add(new Move(turn, Integer.parseInt(split2[0]), this.getRoom(split2[1]), fromRoom));
+				}
+				turn++;
+			} else if (line.contains(" ")) {
+				split = line.split(" ");
+				roomList.add(
+						new Room(split[0], Integer.parseInt(split[1]), Integer.parseInt(split[2]), 40, 40, role));
+				this.x_min = Math.min(this.x_min, Integer.parseInt(split[1]));
+				this.y_min = Math.min(this.y_min, Integer.parseInt(split[2]));
+				this.x_max = Math.max(this.x_max, Integer.parseInt(split[1]));
+				this.y_max = Math.max(this.y_max, Integer.parseInt(split[2]));
+			} else if (line.contains("-")) {
+				split = line.split("-");
+				this.pipeList.add(new Pipe(this.getRoom(split[0]), this.getRoom(split[1])));
+			}
+		}
+		sc.close();
+	}
+
+	private void getDataFromFile() {
+		String line;
+		String split[];
+		int role;
+		int turn = 1;
 
 		try {
 			Scanner sc = new Scanner(new File(System.getProperty("user.dir") + "/test2"));

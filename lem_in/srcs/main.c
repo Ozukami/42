@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:18:21 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/05/17 23:15:21 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/05/18 04:15:23 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -448,9 +448,11 @@ t_lemin		*init_lemin(void)
 	L_WAYS = NULL;
 	T_WAYS = NULL;
 	S_WAYS = NULL;
+	L_ANT = NULL;
 	INDEX = NULL;
 	ID_NAME = NULL;
 	NB_ANT = 0;
+	ANT_END = 0;
 	NB_WAY = 0;
 	MAX_WAY = 0;
 	ID_START = 0;
@@ -691,21 +693,132 @@ void		display_debug(t_way **tab, char *str, int opt)
 					(tab[i])->weight, (tab[i])->ant_to_send);
 }
 
+t_ant		*new_ant(int id, int turn, char *path)
+{
+	t_ant	*ant;
+
+	if (!(ant = ft_memalloc(sizeof(t_ant))))
+		ft_perror("Error: Malloc Failed");
+	ant->id = id;
+	ant->pos = 0;
+	ant->turn = turn;
+	ant->way = ft_strsplit(path, '_');
+	ant->next = NULL;
+	return (ant);
+}
+
+void		add_ant(t_lemin *lemin, int id, int turn, char *path)
+{
+	t_ant	*current;
+
+	if (!L_ANT)
+	{
+		L_ANT = new_ant(id, turn, path);
+		return ;
+	}
+	current = L_ANT;
+	while (current->next)
+		current = current->next;
+	current->next = new_ant(id, turn, path);
+}
+
+void		send_ant(t_lemin *lemin)
+{
+	int		i;
+	int		ant;
+	int		turn;
+
+	ant = 0;
+	turn = 1;
+	while (ant < NB_ANT)
+	{
+		i = -1;
+		while (++i < MAX_WAY)
+		{
+			if (SW_A(i)-- > 0)
+				add_ant(lemin, ++ant, turn, SW_P(i));
+		}
+		turn++;
+	}
+}
+
+void		move_ant(t_lemin *lemin)
+{
+	t_ant	*current;
+	int		turn;
+
+	turn = 1;
+	while (ANT_END < NB_ANT)
+	{
+		current = L_ANT;
+		while (ft_atoi((current->way)[current->pos + 1]) == ID_END)
+		{
+			ANT_END++;
+			printf("L%d-%s ", current->id,
+					(T_ROOM[ft_atoi((current->way)
+									[current->pos + 1])])->name);
+			if (!current->next)
+			{
+				printf("\n");
+				return ;
+			}
+			current = current->next;
+			L_ANT = current;
+			//FREE
+		}
+		while (current)
+		{
+			printf("L%d-%s ", current->id,
+					(T_ROOM[ft_atoi((current->way)[current->pos + 1])])->name);
+			current->pos++;
+			if (!current->next || current->next->turn > turn)
+				break ;
+			while (ft_atoi((current->next->way)[current->next->pos + 1]) == ID_END)
+			{
+				ANT_END++;
+				printf("L%d-%s ", current->next->id,
+						(T_ROOM[ft_atoi((current->next->way)
+										[current->next->pos + 1])])->name);
+				if (!current->next)
+				{
+					printf("\n");
+					return ;
+				}
+				current->next = current->next->next;
+				//FREE
+			}
+			current = current->next;
+		}
+		turn++;
+		printf("\n");
+	}
+}
+
 void		process(t_lemin *lemin)
 {
 	MAX_WAY = ft_min(T_NBLINK(ID_START), T_NBLINK(ID_END));
-	printf("\nMax way = %d\n", MAX_WAY);
+	//printf("\nMax way = %d\n", MAX_WAY);
+	ft_putendl("");
 	get_ways(lemin, T_ROOM[ID_START]);
 	if (!(S_WAYS = ft_memalloc(sizeof(t_way) * (MAX_WAY + 1))) ||
 			!(T_WAYS = ft_memalloc(sizeof(t_way) * (NB_WAY + 1))))
 		ft_perror("Error: Malloc Failed");
 	l_to_t_ways(lemin);
-	display_debug(T_WAYS, "Available ways", 1);
+	//display_debug(T_WAYS, "Available ways", 1);
 	select_ways(lemin);
-	display_debug(S_WAYS, "Selected ways", 0);
+	//display_debug(S_WAYS, "Selected ways", 0);
 	ant_per_way(lemin);
-	display_debug(S_WAYS, "Selected ways with balanced ant", 0);
+	//display_debug(S_WAYS, "Selected ways with balanced ant", 0);
 	send_ant(lemin);
+	move_ant(lemin);
+	/*
+	t_ant	*current = L_ANT;
+	while (current)
+	{
+		printf("L%d-%d\n", current->id, current->turn);
+		current = current->next;
+	}
+	*/
 }
 
 int			main(int ac, char **av)
