@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:15:38 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/05/18 00:05:05 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/05/18 05:19:24 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@
 
 # define TRUE			1
 # define FALSE			0
+
+int	bite = 0;
 
 typedef struct		s_room
 {

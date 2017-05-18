@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:18:21 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/05/18 04:15:23 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/05/18 05:19:33 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -479,6 +479,7 @@ void		get_ways(t_lemin *lemin, t_room *current)
 	if (current->role == END)
 	{
 		CURR_WEIGHT--;
+		printf("way added %d\n", bite++);
 		add_new_way(lemin, CURR_PATH, CURR_WEIGHT);
 		current->visited = FALSE;
 		CURR_PATH = ft_strsubf(CURR_PATH, 0, (int)ft_strlen(CURR_PATH)
@@ -796,19 +797,25 @@ void		move_ant(t_lemin *lemin)
 
 void		process(t_lemin *lemin)
 {
+	printf("start\n");
 	MAX_WAY = ft_min(T_NBLINK(ID_START), T_NBLINK(ID_END));
 	//printf("\nMax way = %d\n", MAX_WAY);
 	ft_putendl("");
+	printf("get_ways\n");
 	get_ways(lemin, T_ROOM[ID_START]);
 	if (!(S_WAYS = ft_memalloc(sizeof(t_way) * (MAX_WAY + 1))) ||
 			!(T_WAYS = ft_memalloc(sizeof(t_way) * (NB_WAY + 1))))
 		ft_perror("Error: Malloc Failed");
+	printf("l_to_t_ways\n");
 	l_to_t_ways(lemin);
 	//display_debug(T_WAYS, "Available ways", 1);
+	printf("select_ways\n");
 	select_ways(lemin);
 	//display_debug(S_WAYS, "Selected ways", 0);
+	printf("ant_per_ways\n");
 	ant_per_way(lemin);
 	//display_debug(S_WAYS, "Selected ways with balanced ant", 0);
+	printf("send_ant\n");
 	send_ant(lemin);
 	move_ant(lemin);
 	/*
