@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:15:38 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/05/18 05:19:24 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/05/20 01:45:00 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "libft.h"
 # include <stdio.h>
 
+# define BFS	 		(lemin->bfs)
 # define L_ANT	 		(lemin->list_ant)
 # define L_ROOM 		(lemin->list_room)
 # define T_ROOM 		(lemin->tab_room)
@@ -34,6 +35,7 @@
 # define ID_END 		(lemin->id_end)
 # define CURR_WEIGHT	(lemin->current_weight)
 # define CURR_PATH		(lemin->current_path)
+# define NB_ROOM		(lemin->nb_room)
 
 # define SW(i)			((lemin->selected_ways)[i])
 # define SW_W(i)		(((lemin->selected_ways)[i])->weight)
@@ -58,6 +60,15 @@
 # define FALSE			0
 
 int	bite = 0;
+
+typedef struct		s_bfs
+{
+	int				id;
+	char			*path;
+	int				weight;
+	int				id_father;
+	struct s_bfs	*next;
+}					t_bfs;
 
 typedef struct		s_room
 {
@@ -97,6 +108,7 @@ typedef struct		s_ant
 
 typedef struct		s_lemin
 {
+	t_bfs			*bfs;
 	t_ant			*list_ant;
 	t_room_list		*list_room;
 	t_room			**tab_room;
@@ -115,6 +127,7 @@ typedef struct		s_lemin
 	int				id_end;
 	int				current_weight;
 	char			*current_path;
+	int				nb_room;
 }					t_lemin;
 
 void				add_room_list(t_lemin *lemin, char *line,
