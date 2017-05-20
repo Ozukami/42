@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:18:21 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/05/20 01:55:37 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/05/20 03:28:49 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,19 @@ int			list_len(t_room_list *list)
 int			is_number(char *line)
 {
 	int		i;
+	long	verif;
 
 	if (!line)
 		return (0);
+	verif = ft_atol(line);
+	if (verif >= INT_MAX || verif < 0)
+		ft_perror("Error");
 	i = -1;
 	while (line[++i])
 		if (!ft_isdigit(line[i]))
 			return (0);
+	if (i > 10)
+		ft_perror("Error");
 	return (1);
 }
 
@@ -485,7 +491,6 @@ void		get_ways(t_lemin *lemin, t_room *current)
 	if (current->role == END)
 	{
 		CURR_WEIGHT--;
-		//printf("way added %d\n", bite++);
 		add_new_way(lemin, CURR_PATH, CURR_WEIGHT);
 		current->visited = FALSE;
 		CURR_PATH = ft_strsubf(CURR_PATH, 0, (int)ft_strlen(CURR_PATH)
@@ -686,22 +691,6 @@ void		ant_per_way(t_lemin *lemin)
 	}
 }
 
-void		display_debug(t_way **tab, char *str, int opt)
-{
-	int		i;
-
-	printf("\n	%s\n", str);
-	i = -1;
-	if (opt)
-		while (tab[++i])
-			printf("{%p} [%s] (%d)\n", tab[i], (tab[i])->path,
-					(tab[i])->weight);
-	else
-		while (tab[++i])
-			printf("[%s] (%d) ant_to_send = %d\n", (tab[i])->path,
-					(tab[i])->weight, (tab[i])->ant_to_send);
-}
-
 t_ant		*new_ant(int id, int turn, char *path)
 {
 	t_ant	*ant;
@@ -788,7 +777,7 @@ void		move_ant(t_lemin *lemin)
 				printf("L%d-%s ", current->next->id,
 						(T_ROOM[ft_atoi((current->next->way)
 										[current->next->pos + 1])])->name);
-				if (!current->next)
+				if (!current->next->next)
 				{
 					printf("\n");
 					return ;
@@ -865,7 +854,6 @@ void		shortest_way(t_lemin *lemin)
 void		process(t_lemin *lemin)
 {
 	MAX_WAY = ft_min(T_NBLINK(ID_START), T_NBLINK(ID_END));
-	//printf("\nMax way = %d\n", MAX_WAY);
 	if (NB_ROOM > 100)
 		shortest_way(lemin);
 	else
@@ -874,22 +862,11 @@ void		process(t_lemin *lemin)
 			!(T_WAYS = ft_memalloc(sizeof(t_way) * (NB_WAY + 1))))
 		ft_perror("Error: Malloc Failed");
 	l_to_t_ways(lemin);
-	//display_debug(T_WAYS, "Available ways", 1);
 	select_ways(lemin);
-	//display_debug(S_WAYS, "Selected ways", 0);
 	ant_per_way(lemin);
-	//display_debug(S_WAYS, "Selected ways with balanced ant", 0);
 	display_data(lemin);
 	send_ant(lemin);
 	move_ant(lemin);
-	/*
-	t_ant	*current = L_ANT;
-	while (current)
-	{
-		printf("L%d-%d\n", current->id, current->turn);
-		current = current->next;
-	}
-	*/
 }
 
 int			main(int ac, char **av)
@@ -908,7 +885,6 @@ int			main(int ac, char **av)
 	get_pipe(lemin);
 	update_tab(lemin);
 	process(lemin);
-	//free L_ROOM
-	//while (1);
+	while (1);
 	return (0);
 }

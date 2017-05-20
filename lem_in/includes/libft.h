@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 10:49:10 by apoisson          #+#    #+#             */
-/*   Updated: 2017/05/17 01:45:11 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/05/20 03:07:01 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,5 +150,7 @@ void				ft_free_rect(t_rect *rect);
 int					ft_absolute(int a);
 
 char				*ft_strsubf(char *s, unsigned int start, size_t len);
+
+long				ft_atol(const char *s);
 
 #endif
