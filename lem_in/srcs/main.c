@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:18:21 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/05/20 03:28:49 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/05/20 04:35:29 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	free_map(char **map)
 
 void	ft_perror(char *error)
 {
-	perror(error);
+	ft_my_printf("%s\n", error);
 	exit(0);
 }
 
@@ -98,7 +98,7 @@ int			is_room(char *line)
 			|| split[0][0] == '#')
 	{
 		free_map(split);
-		ft_perror("ERROR 1");
+		ft_perror("Error");
 	}
 	free_map(split);
 	return (1);
@@ -126,7 +126,7 @@ int			is_pipe(char *line, t_room_list *room_list)
 		return (0);
 	}
 	if (!room_list)
-		ft_perror("ERROR 2");
+		ft_perror("Error");
 	if (!is_in_list(split[0], room_list) || !is_in_list(split[1], room_list))
 	{
 		free_map(split);
@@ -142,7 +142,7 @@ void		room_list_to_tab(t_lemin *lemin)
 	t_room_list	*current;
 
 	if (!V_START || !V_END)
-		ft_perror("ERROR");
+		ft_perror("Error");
 	current = L_ROOM;
 	nb_room = list_len(L_ROOM);
 	if (!(T_ROOM = ft_memalloc(sizeof(t_room_list) * (nb_room + 1)))
@@ -212,7 +212,7 @@ int			get_role(char **line)
 		ft_strdel(line);
 		get_next_line(0, line);
 		if (line[0][0] == '\0')
-			ft_perror("ERROR 3");
+			ft_perror("Error");
 		if (ft_strequ(*line, "##start"))
 			i = START;
 		else if (ft_strequ(*line, "##end"))
@@ -259,6 +259,7 @@ void		get_pipe(t_lemin *lemin)
 		else
 			return (ft_strdel(&line));
 	}
+	ft_strdel(&line);
 }
 
 void		get_room(t_lemin *lemin)
@@ -271,7 +272,7 @@ void		get_room(t_lemin *lemin)
 	while (get_next_line(0, &line))
 	{
 		if (!line[0] || line[0] == ' ')
-			ft_perror("ERROR 4");
+			ft_perror("Error");
 		role = get_role(&line);
 		if (line[0] == '#')
 			;
@@ -280,7 +281,7 @@ void		get_room(t_lemin *lemin)
 		else if (is_pipe(line, L_ROOM))
 			break ;
 		else
-			ft_perror("ERROR 4");
+			ft_perror("Error");
 		ft_strdel(&line);
 	}
 	room_list_to_tab(lemin);
@@ -295,13 +296,13 @@ void		display_data(t_lemin *lemin)
 	int		j;
 	char	**split;
 
-	printf("%d\n", NB_ANT);
+	ft_my_printf("%d\n", NB_ANT);
 	i = -1;
 	while (T_ROOM[++i])
 	{
 		if (T_ROLE(i) == START || T_ROLE(i) == END)
-			printf("%s\n", ((T_ROLE(i) == START) ? "##start" : "##end"));
-		printf("%s %d %d\n", T_NAME(i), T_X(i), T_Y(i));
+			ft_my_printf("%s\n", ((T_ROLE(i) == START) ? "##start" : "##end"));
+		ft_my_printf("%s %d %d\n", T_NAME(i), T_X(i), T_Y(i));
 	}
 	i = -1;
 	while (INDEX[++i])
@@ -310,7 +311,7 @@ void		display_data(t_lemin *lemin)
 		j = -1;
 		while (split[++j])
 			if (ft_atoi(split[j]) > i)
-				printf("%s-%s\n", ID_NAME[i], ID_NAME[ft_atoi(split[j])]);
+				ft_my_printf("%s-%s\n", ID_NAME[i], ID_NAME[ft_atoi(split[j])]);
 		free_map(split);
 	}
 	ft_putendl("");
@@ -345,7 +346,7 @@ t_room		*create_room(t_lemin *lemin, char *line, int id, int role)
 		ft_perror("Error: Malloc Failed");
 	split = ft_strsplit(line, ' ');
 	if (!verif_room(lemin, split[0], ft_atoi(split[1]), ft_atoi(split[2])))
-		ft_perror("ERROR");
+		ft_perror("Error");
 	room->name = ft_strdup(split[0]);
 	room->id = id;
 	room->role = role;
@@ -374,7 +375,7 @@ void		add_room_list(t_lemin *lemin, char *line, int id, int role)
 		ID_END = id;
 	}
 	else if (role == START || role == END)
-		ft_perror("ERROR");
+		ft_perror("Error");
 	if (!(room_list = ft_memalloc(sizeof(t_room_list))))
 		ft_perror("Error: Malloc Failed");
 	room_list->room = create_room(lemin, line, id, role);
@@ -480,9 +481,7 @@ void		get_ways(t_lemin *lemin, t_room *current)
 {
 	int		i;
 
-	if (NB_WAY > 200)
-		return ;
-	if (current->visited == TRUE)
+	if (NB_WAY > 200 || current->visited == TRUE)
 		return ;
 	current->visited = TRUE;
 	CURR_PATH = ft_strjoinf(CURR_PATH, ft_strjoinf(ft_itoa(current->id),
@@ -740,6 +739,55 @@ void		send_ant(t_lemin *lemin)
 	}
 }
 
+int			current_at_end(t_lemin *lemin)
+{
+	t_ant	*current;
+	t_ant	*tmp;
+
+	current = L_ANT;
+	while (ft_atoi((current->way)[current->pos + 1]) == ID_END)
+	{
+		ANT_END++;
+		ft_my_printf("L%d-%s ", current->id,
+				(T_ROOM[ft_atoi((current->way)
+								[current->pos + 1])])->name);
+		if (!current->next)
+		{
+			ft_my_printf("\n");
+			return (0);
+		}
+		tmp = current;
+		current = current->next;
+		L_ANT = current;
+		free_map(tmp->way);
+		free(tmp);
+	}
+	return (1);
+}
+
+int			next_at_end(t_lemin *lemin, t_ant *current)
+{
+	t_ant	*tmp;
+
+	while (ft_atoi((current->next->way)[current->next->pos + 1]) == ID_END)
+	{
+		ANT_END++;
+		ft_my_printf("L%d-%s ", current->next->id,
+				(T_ROOM[ft_atoi((current->next->way)
+								[current->next->pos + 1])])->name);
+		if (!current->next->next)
+		{
+			ft_my_printf("\n");
+			return (0);
+		}
+		tmp = current->next;
+		current->next = current->next->next;
+		free_map(tmp->way);
+		free(tmp);
+	}
+	return (1);
+}
+
 void		move_ant(t_lemin *lemin)
 {
 	t_ant	*current;
@@ -748,47 +796,22 @@ void		move_ant(t_lemin *lemin)
 	turn = 1;
 	while (ANT_END < NB_ANT)
 	{
+		if (!current_at_end(lemin))
+			return ;
 		current = L_ANT;
-		while (ft_atoi((current->way)[current->pos + 1]) == ID_END)
-		{
-			ANT_END++;
-			printf("L%d-%s ", current->id,
-					(T_ROOM[ft_atoi((current->way)
-									[current->pos + 1])])->name);
-			if (!current->next)
-			{
-				printf("\n");
-				return ;
-			}
-			current = current->next;
-			L_ANT = current;
-			//FREE
-		}
 		while (current)
 		{
-			printf("L%d-%s ", current->id,
+			ft_my_printf("L%d-%s ", current->id,
 					(T_ROOM[ft_atoi((current->way)[current->pos + 1])])->name);
 			current->pos++;
 			if (!current->next || current->next->turn > turn)
 				break ;
-			while (ft_atoi((current->next->way)[current->next->pos + 1]) == ID_END)
-			{
-				ANT_END++;
-				printf("L%d-%s ", current->next->id,
-						(T_ROOM[ft_atoi((current->next->way)
-										[current->next->pos + 1])])->name);
-				if (!current->next->next)
-				{
-					printf("\n");
-					return ;
-				}
-				current->next = current->next->next;
-				//FREE
-			}
+			if (!next_at_end(lemin, current))
+				return ;
 			current = current->next;
 		}
 		turn++;
-		printf("\n");
+		ft_my_printf("\n");
 	}
 }
 
@@ -878,9 +901,9 @@ int			main(int ac, char **av)
 		ft_perror("Usage : ./lem-in");
 	lemin = init_lemin();
 	if (!(NB_ANT = ft_absolute(get_nb_ant())))
-		ft_perror("Invalid ant number");
+		ft_perror("Error");
 	if (NB_ANT < 0)
-		ft_perror("Invalid ant number");
+		ft_perror("Error");
 	get_room(lemin);
 	get_pipe(lemin);
 	update_tab(lemin);

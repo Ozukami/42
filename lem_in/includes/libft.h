@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 10:49:10 by apoisson          #+#    #+#             */
-/*   Updated: 2017/05/20 03:07:01 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/05/20 03:47:07 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <limits.h>
 # include <stdint.h>
 # include "get_next_line.h"
+# include <stdarg.h>
 
 typedef struct		s_list
 {
@@ -152,5 +153,6 @@ int					ft_absolute(int a);
 char				*ft_strsubf(char *s, unsigned int start, size_t len);
 
 long				ft_atol(const char *s);
+void				ft_my_printf(char *format, ...);
 
 #endif
