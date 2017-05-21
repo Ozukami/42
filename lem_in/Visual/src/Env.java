@@ -14,7 +14,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -24,9 +23,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 public class Env {
@@ -160,35 +157,8 @@ public class Env {
 							move.getToRoom().getRectangle().setFill(Color.BLUEVIOLET);
 						if (move.getToRoom().getRole() == 2)
 							nbAnt.setText(String.format("Ant: %d/%d", ++ant_end, ant));
-						if (ant == ant_end) {
-							// TODO
-							Stage popUp = new Stage();
-							Text text = new Text(10, 10, String.format("Les %d fourmis ", ant_end)
-									+ String.format("sont arrivées en %d tours !", nb_turn));
-							Button exit = new Button("Exit");
-							Scene dialscene = new Scene(new Group(text, exit));
-							exit.setLayoutX(150);
-							exit.setLayoutY(25);
-							popUp.setWidth(350);
-							popUp.setHeight(100);
-							popUp.initStyle(StageStyle.UTILITY);
-							popUp.setScene(dialscene);
-							popUp.show();
-							exit.setOnAction(new EventHandler<ActionEvent>() {
-								@Override
-								public void handle(ActionEvent event) {
-									System.exit(1);
-								}
-							});
-							dialscene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-								@Override
-								public void handle(KeyEvent event) {
-									if (event.getCode() == KeyCode.ESCAPE) {
-										System.exit(1);
-									}
-								}
-							});
-						}
+						if (ant == ant_end)
+							new PopUp(ant_end, nb_turn);
 					}
 				});
 			}));
