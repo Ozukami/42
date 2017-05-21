@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:18:21 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/05/20 04:35:29 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/05/20 05:40:11 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -908,6 +908,5 @@ int			main(int ac, char **av)
 	get_pipe(lemin);
 	update_tab(lemin);
 	process(lemin);
-	while (1);
 	return (0);
 }
