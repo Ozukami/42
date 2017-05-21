@@ -6,7 +6,7 @@
 #    By: apoisson <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 11:29:15 by apoisson          #+#    #+#              #
-#    Updated: 2017/05/21 04:51:18 by apoisson         ###   ########.fr        #
+#    Updated: 2017/05/21 05:40:50 by apoisson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ VISUAL = Visu.jar
 FLAGS = -Wall -Wextra -Werror
 SRC = ant.c check.c main.c ppt_pgt.c way.c\
 bfs.c get_data.c misc.c room.c way_list.c
-CLASSES = Env.java Move.java Pipe.java Room.java Visual.java
+CLASSES = SpriteAnimation.java Env.java Move.java Pipe.java Room.java Visual.java
 
 all: $(NAME)
 
@@ -37,7 +37,7 @@ $(VISUAL):
 	@printf "\033[0;32m OK\n\033[0m"
 
 run: $(VISUAL)
-	@java -jar Visu.jar
+	./lem-in < $(ARGS) | java -jar Visu.jar
 
 clean:
 	@rm -f libft.a

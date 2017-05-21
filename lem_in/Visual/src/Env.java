@@ -3,9 +3,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.Scanner;
-
-import com.sun.xml.internal.bind.v2.runtime.reflect.Accessor.GetterOnlyReflection;
-
 import javafx.animation.Animation.Status;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -24,7 +21,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
