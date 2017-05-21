@@ -200,7 +200,13 @@ public class Env {
 		int role;
 		int turn = 1;
 		Scanner sc = new Scanner(System.in);
-		this.ant = sc.nextInt();
+		line = sc.nextLine();
+		if (line.startsWith("Error"))
+		{
+			System.out.println(line);
+			System.exit(0);
+		}
+		this.ant = Integer.parseInt(line);
 		while (sc.hasNext()) {
 			line = sc.nextLine();
 			role = 0;

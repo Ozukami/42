@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:18:21 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/05/20 05:40:11 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/05/21 03:50:17 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,13 @@ int			is_number(char *line)
 		return (0);
 	verif = ft_atol(line);
 	if (verif >= INT_MAX || verif < 0)
-		ft_perror("Error");
+		ft_perror(ft_strjoin("Error: invalid number ", line));
 	i = -1;
 	while (line[++i])
 		if (!ft_isdigit(line[i]))
 			return (0);
 	if (i > 10)
-		ft_perror("Error");
+		ft_perror(ft_strjoin("Error: invalid number", line));
 	return (1);
 }
 
@@ -98,7 +98,7 @@ int			is_room(char *line)
 			|| split[0][0] == '#')
 	{
 		free_map(split);
-		ft_perror("Error");
+		ft_perror(ft_strjoin("Error: ", line));
 	}
 	free_map(split);
 	return (1);
@@ -126,7 +126,7 @@ int			is_pipe(char *line, t_room_list *room_list)
 		return (0);
 	}
 	if (!room_list)
-		ft_perror("Error");
+		ft_perror(ft_strjoin("Error: ", line));
 	if (!is_in_list(split[0], room_list) || !is_in_list(split[1], room_list))
 	{
 		free_map(split);
@@ -142,7 +142,8 @@ void		room_list_to_tab(t_lemin *lemin)
 	t_room_list	*current;
 
 	if (!V_START || !V_END)
-		ft_perror("Error");
+		ft_perror(ft_strjoin("Error: ", ((!V_START) ? "no start found"
+						: "no end found")));
 	current = L_ROOM;
 	nb_room = list_len(L_ROOM);
 	if (!(T_ROOM = ft_memalloc(sizeof(t_room_list) * (nb_room + 1)))
@@ -189,6 +190,8 @@ int			get_nb_ant(void)
 	int		nb;
 
 	get_next_line(0, &line);
+	if (!line[0])
+		ft_perror("Error: empty file");
 	if (!is_number(line))
 		return (0);
 	nb = ft_atoi(line);
@@ -212,7 +215,7 @@ int			get_role(char **line)
 		ft_strdel(line);
 		get_next_line(0, line);
 		if (line[0][0] == '\0')
-			ft_perror("Error");
+			ft_perror("Error: empty line");
 		if (ft_strequ(*line, "##start"))
 			i = START;
 		else if (ft_strequ(*line, "##end"))
@@ -272,7 +275,8 @@ void		get_room(t_lemin *lemin)
 	while (get_next_line(0, &line))
 	{
 		if (!line[0] || line[0] == ' ')
-			ft_perror("Error");
+			ft_perror(ft_strjoin("Error: ", ((!line[0]) ? "empty line"
+							: "space at the begining of the line")));
 		role = get_role(&line);
 		if (line[0] == '#')
 			;
@@ -281,7 +285,7 @@ void		get_room(t_lemin *lemin)
 		else if (is_pipe(line, L_ROOM))
 			break ;
 		else
-			ft_perror("Error");
+			ft_perror("Error: no pipe found");
 		ft_strdel(&line);
 	}
 	room_list_to_tab(lemin);
@@ -321,7 +325,7 @@ void		display_data(t_lemin *lemin)
 **	INIT FUCTIONS
 */
 
-int			verif_room(t_lemin *lemin, char *name, int x, int y)
+void		verif_room(t_lemin *lemin, char *name, int x, int y)
 {
 	t_room_list	*current;
 
@@ -329,12 +333,11 @@ int			verif_room(t_lemin *lemin, char *name, int x, int y)
 	while (current)
 	{
 		if (ft_strequ(name, current->room->name))
-			return (0);
+			ft_perror("Error: room with same name");
 		if (x == current->room->x && y == current->room->y)
-			return (0);
+			ft_perror("Error: room with same coords");
 		current = current->next;
 	}
-	return (1);
 }
 
 t_room		*create_room(t_lemin *lemin, char *line, int id, int role)
@@ -345,8 +348,7 @@ t_room		*create_room(t_lemin *lemin, char *line, int id, int role)
 	if (!(room = ft_memalloc(sizeof(t_room))))
 		ft_perror("Error: Malloc Failed");
 	split = ft_strsplit(line, ' ');
-	if (!verif_room(lemin, split[0], ft_atoi(split[1]), ft_atoi(split[2])))
-		ft_perror("Error");
+	verif_room(lemin, split[0], ft_atoi(split[1]), ft_atoi(split[2]));
 	room->name = ft_strdup(split[0]);
 	room->id = id;
 	room->role = role;
@@ -375,7 +377,8 @@ void		add_room_list(t_lemin *lemin, char *line, int id, int role)
 		ID_END = id;
 	}
 	else if (role == START || role == END)
-		ft_perror("Error");
+		ft_perror(ft_strjoin("Error: ", ((role == START) ? "too many start room"
+						: "too many end room")));
 	if (!(room_list = ft_memalloc(sizeof(t_room_list))))
 		ft_perror("Error: Malloc Failed");
 	room_list->room = create_room(lemin, line, id, role);
@@ -617,7 +620,7 @@ void		l_to_t_ways(t_lemin *lemin)
 	t_way	*current;
 
 	if (!L_WAYS)
-		ft_perror("Error");
+		ft_perror("Error: no way found");
 	current = L_WAYS;
 	i = 0;
 	while (current)
@@ -820,7 +823,7 @@ t_bfs		*new_bfs(int id, char *path, int weight, int father)
 	t_bfs	*bfs;
 
 	if (!(bfs = ft_memalloc(sizeof(t_bfs))))
-		ft_perror("Error");
+		ft_perror("Error: Malloc Failed");
 	bfs->id = id;
 	if (!path)
 		bfs->path = ft_strjoin(ft_itoa(id), "_");
@@ -900,10 +903,8 @@ int			main(int ac, char **av)
 	if (ac != 1)
 		ft_perror("Usage : ./lem-in");
 	lemin = init_lemin();
-	if (!(NB_ANT = ft_absolute(get_nb_ant())))
-		ft_perror("Error");
-	if (NB_ANT < 0)
-		ft_perror("Error");
+	if (!(NB_ANT = ft_absolute(get_nb_ant())) || NB_ANT < 0)
+		ft_perror("Error: invalid number of ant");
 	get_room(lemin);
 	get_pipe(lemin);
 	update_tab(lemin);
