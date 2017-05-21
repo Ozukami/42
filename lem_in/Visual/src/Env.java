@@ -3,8 +3,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.Scanner;
-import javafx.animation.Animation.Status;
+
 import javafx.animation.Animation;
+import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
@@ -47,9 +48,9 @@ public class Env {
 	private int x_max = 0, y_max = 0;
 	private int ppe_x = 3, ppe_y = 3;
 	private int ant = 0;
-    private int ant_end = 0;
-    final ImageView imageView = new ImageView(new Image("ant.png"));
-    private Animation animation;
+	private int ant_end = 0;
+	final ImageView imageView = new ImageView(new Image("/ant.png"));
+	private Animation animation;
 
 	public Env(Stage window) {
 		this.roomList = new LinkedList<Room>();
@@ -58,7 +59,7 @@ public class Env {
 		this.timeLine = new Timeline();
 		this.tT = new TranslateTransition(new Duration(750));
 		this.getData();
-		//this.getDataFromFile();
+		// this.getDataFromFile();
 
 		this.setWindow(window);
 		this.scene = new Scene(root = new Group(), ((this.x_max >= this.y_max) ? 1080 : 720),
@@ -90,11 +91,11 @@ public class Env {
 		this.root.getChildren().add(stats);
 
 		this.map.requestFocus();
-        
-        imageView.setScaleX(imageView.getScaleX() - 0.8);
-        imageView.setScaleY(imageView.getScaleY() - 0.8);
-        imageView.setVisible(false);
-        
+
+		imageView.setScaleX(imageView.getScaleX() - 0.8);
+		imageView.setScaleY(imageView.getScaleY() - 0.8);
+		imageView.setVisible(false);
+
 		map.getChildren().add(imageView);
 
 		int t = 1000;
@@ -109,7 +110,7 @@ public class Env {
 				int y1 = move.getFromRoom().getY_mid();
 				int x2 = move.getToRoom().getX_mid();
 				int y2 = move.getToRoom().getY_mid();
-				
+
 				if (x1 < x2 && y1 < y2)
 					imageView.setRotate(135);
 				else if (x1 > x2 && y1 > y2)
@@ -122,37 +123,26 @@ public class Env {
 					imageView.setRotate(90);
 				else if (x1 > x2 && y1 == y2)
 					imageView.setRotate(-90);
-				else if (x1 == x2 && y1 < y2) 
+				else if (x1 == x2 && y1 < y2)
 					imageView.setRotate(180);
 				else if (x1 == x2 && y1 > y2)
 					imageView.setRotate(0);
-				
-		        imageView.setLayoutX(move.getFromRoom().getX_mid());
-		        imageView.setLayoutY(move.getFromRoom().getY_mid());
-		        
-		        imageView.setTranslateX(-256);
-		        imageView.setTranslateY(-256);
-		        
-		        imageView.setViewport(new Rectangle2D(0, 0, 512, 512));
 
-		        animation = new SpriteAnimation(
-		                imageView,
-		                Duration.millis(350),
-		                6, 2,
-		                0, 0,
-		                512, 512
-		        );
-		        animation.setCycleCount(Animation.INDEFINITE);
+				imageView.setLayoutX(move.getFromRoom().getX_mid());
+				imageView.setLayoutY(move.getFromRoom().getY_mid());
 
-		        imageView.setVisible(true);
-		        imageView.toFront();
-		        animation.play();
-		        
-		        /*
-				Circle circle = new Circle(move.getFromRoom().getX_mid(), move.getFromRoom().getY_mid(), 10,
-						Color.BLUEVIOLET);
-						*/
-				
+				imageView.setTranslateX(-256);
+				imageView.setTranslateY(-256);
+
+				imageView.setViewport(new Rectangle2D(0, 0, 512, 512));
+
+				animation = new SpriteAnimation(imageView, Duration.millis(350), 6, 2, 0, 0, 512, 512);
+				animation.setCycleCount(Animation.INDEFINITE);
+
+				imageView.setVisible(true);
+				imageView.toFront();
+				animation.play();
+
 				tT.setNode(imageView);
 				tT.setByX(move.getToRoom().getRectangle().getX() - move.getFromRoom().getRectangle().getX());
 				tT.setByY(move.getToRoom().getRectangle().getY() - move.getFromRoom().getRectangle().getY());
@@ -166,6 +156,9 @@ public class Env {
 							move.getToRoom().getRectangle().setFill(Color.BLUEVIOLET);
 						if (move.getToRoom().getRole() == 2)
 							nbAnt.setText(String.format("Ant: %d/%d", ++ant_end, ant));
+						if (ant == ant_end) {
+							// TODO
+						}
 					}
 				});
 			}));
@@ -197,8 +190,7 @@ public class Env {
 		int turn = 1;
 		Scanner sc = new Scanner(System.in);
 		line = sc.nextLine();
-		if (line.startsWith("Error"))
-		{
+		if (line.startsWith("Error")) {
 			System.out.println(line);
 			System.exit(0);
 		}
@@ -226,8 +218,7 @@ public class Env {
 				turn++;
 			} else if (line.contains(" ")) {
 				split = line.split(" ");
-				roomList.add(
-						new Room(split[0], Integer.parseInt(split[1]), Integer.parseInt(split[2]), 40, 40, role));
+				roomList.add(new Room(split[0], Integer.parseInt(split[1]), Integer.parseInt(split[2]), 40, 40, role));
 				this.x_min = Math.min(this.x_min, Integer.parseInt(split[1]));
 				this.y_min = Math.min(this.y_min, Integer.parseInt(split[2]));
 				this.x_max = Math.max(this.x_max, Integer.parseInt(split[1]));
@@ -247,7 +238,7 @@ public class Env {
 		int turn = 1;
 
 		try {
-			Scanner sc = new Scanner(new File(System.getProperty("user.dir") + "/test2"));
+			Scanner sc = new Scanner(new File(System.getProperty("user.dir") + "../../tests/test2"));
 			this.ant = sc.nextInt();
 			while (sc.hasNext()) {
 				line = sc.nextLine();
