@@ -14,6 +14,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -23,7 +24,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 public class Env {
@@ -49,6 +52,7 @@ public class Env {
 	private int ppe_x = 3, ppe_y = 3;
 	private int ant = 0;
 	private int ant_end = 0;
+	private int nb_turn = 0;
 	final ImageView imageView = new ImageView(new Image("/ant.png"));
 	private Animation animation;
 
@@ -105,7 +109,7 @@ public class Env {
 					move.getFromRoom().getRectangle().setFill(Color.BLUE);
 				}
 
-				this.turn.setText(String.format("Turn: %d", move.getTurn()));
+				this.turn.setText(String.format("Turn: %d", nb_turn = move.getTurn()));
 				int x1 = move.getFromRoom().getX_mid();
 				int y1 = move.getFromRoom().getY_mid();
 				int x2 = move.getToRoom().getX_mid();
@@ -158,6 +162,32 @@ public class Env {
 							nbAnt.setText(String.format("Ant: %d/%d", ++ant_end, ant));
 						if (ant == ant_end) {
 							// TODO
+							Stage popUp = new Stage();
+							Text text = new Text(10, 10, String.format("Les %d fourmis ", ant_end)
+									+ String.format("sont arrivées en %d tours !", nb_turn));
+							Button exit = new Button("Exit");
+							Scene dialscene = new Scene(new Group(text, exit));
+							exit.setLayoutX(150);
+							exit.setLayoutY(25);
+							popUp.setWidth(350);
+							popUp.setHeight(100);
+							popUp.initStyle(StageStyle.UTILITY);
+							popUp.setScene(dialscene);
+							popUp.show();
+							exit.setOnAction(new EventHandler<ActionEvent>() {
+								@Override
+								public void handle(ActionEvent event) {
+									System.exit(1);
+								}
+							});
+							dialscene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+								@Override
+								public void handle(KeyEvent event) {
+									if (event.getCode() == KeyCode.ESCAPE) {
+										System.exit(1);
+									}
+								}
+							});
 						}
 					}
 				});
