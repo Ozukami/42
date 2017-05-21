@@ -231,6 +231,7 @@ public class Env {
 		sc.close();
 	}
 
+	@SuppressWarnings("unused")
 	private void getDataFromFile() {
 		String line;
 		String split[];
