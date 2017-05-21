@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:15:38 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/05/20 03:10:13 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/05/21 05:02:59 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,41 @@ typedef struct			s_lemin
 	int					nb_room;
 }						t_lemin;
 
+void					ft_perror(char *error);
+int						to_tronc(char *path, int opt);
+
 void					add_room_list(t_lemin *lemin, char *line,
 		int id, int role);
+int						is_number(char *line);
+int						is_room(char *line);
+int						is_in_list(char *name, t_room_list *list);
+int						is_pipe(char *line, t_room_list *list);
+int						is_overcross(char *comp, char *path);
+
+void					add_ant(t_lemin *lemin, int id, int turn, char *path);
+
+int						current_at_end(t_lemin *lemin);
+int						next_at_end(t_lemin *lemin, t_ant *current);
+void					shortest_way(t_lemin *lemin);
+void					get_ways(t_lemin *lemin, t_room *room);
+void					l_to_t_ways(t_lemin *lemin);
+void					select_ways(t_lemin *lemin);
+void					ant_per_way(t_lemin *lemin);
+void					display_data(t_lemin *lemin);
+t_lemin					*init_lemin(void);
+int						get_nb_ant(void);
+void					get_room(t_lemin *lemin);
+void					get_pipe(t_lemin *lemin);
+void					update_tab(t_lemin *lemin);
+
+int						get_pgt(t_lemin *lemin);
+int						get_ppt(t_lemin *lemin);
+t_way					*get_pgt_way(t_lemin *lemin);
+t_way					*get_ppt_way(t_lemin *lemin);
+
+void					add_new_way(t_lemin *lemin, char *path, int weight);
+
+void					add_bfs(t_lemin *lemin, t_bfs *bfs, int id);
+void					room_list_to_tab(t_lemin *lemin);
 
 #endif

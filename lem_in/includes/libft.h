@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 10:49:10 by apoisson          #+#    #+#             */
-/*   Updated: 2017/05/20 03:47:07 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/05/21 04:50:23 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,5 +154,10 @@ char				*ft_strsubf(char *s, unsigned int start, size_t len);
 
 long				ft_atol(const char *s);
 void				ft_my_printf(char *format, ...);
+
+int					tab_size(char **tab);
+void				free_map(char **map);
+
+void				ft_perror(char *err);
 
 #endif
