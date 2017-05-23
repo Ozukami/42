@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/21 04:27:41 by apoisson          #+#    #+#             */
-/*   Updated: 2017/05/21 04:27:50 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/05/24 01:20:23 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,9 @@ int			next_at_end(t_lemin *lemin, t_ant *current)
 								[current->next->pos + 1])])->name);
 		if (!current->next->next)
 		{
-			ft_my_printf("\n");
+			free_map(current->next->way);
+			free(current->next);
+			current->next = NULL;
 			return (0);
 		}
 		tmp = current->next;

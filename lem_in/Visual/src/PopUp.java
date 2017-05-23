@@ -18,7 +18,7 @@ public class PopUp extends Stage {
 
 	public PopUp(int ant_end, int nb_turn) {
 		this.text = new Text(10, 10,
-				String.format("Les %d fourmis ", ant_end) + String.format("sont arrivées en %d tours !", nb_turn));
+				String.format("Les %d fourmis ", ant_end) + String.format("sont arrivees en %d tours !", nb_turn));
 		this.button = new Button("Exit");
 		scene = new Scene(new Group(text, button));
 		button.setLayoutX(150);

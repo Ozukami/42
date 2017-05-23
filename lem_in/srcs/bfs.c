@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/21 04:40:05 by apoisson          #+#    #+#             */
-/*   Updated: 2017/05/21 04:43:06 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/05/24 01:51:14 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,19 @@ void		add_bfs(t_lemin *lemin, t_bfs *bfs, int id)
 	}
 }
 
+int			is_visited(t_bfs *current, int id)
+{
+	char	**split;
+	int		i;
+
+	split = ft_strsplit(current->path, '_');
+	i = -1;
+	while (split[++i])
+		if (ft_atoi(split[i]) == id)
+			return (0);
+	return (1);
+}
+
 void		shortest_way(t_lemin *lemin)
 {
 	t_bfs	*current;
@@ -65,7 +78,7 @@ void		shortest_way(t_lemin *lemin)
 		}
 		i = -1;
 		while (++i < (T_ROOM[current->id])->nb_link)
-			if ((T_ROOM[current->id])->links[i] != current->id_father)
+			if (is_visited(current, (T_ROOM[current->id])->links[i]))
 				add_bfs(lemin, current, (T_ROOM[current->id])->links[i]);
 		current = current->next;
 	}

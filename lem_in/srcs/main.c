@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 00:18:21 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/05/21 04:49:46 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/05/24 01:36:26 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void		move_ant(t_lemin *lemin)
 			if (!current->next || current->next->turn > turn)
 				break ;
 			if (!next_at_end(lemin, current))
-				return ;
+				break ;
 			current = current->next;
 		}
 		turn++;
@@ -62,7 +62,7 @@ void		move_ant(t_lemin *lemin)
 void		process(t_lemin *lemin)
 {
 	MAX_WAY = ft_min(T_NBLINK(ID_START), T_NBLINK(ID_END));
-	if (NB_ROOM > 100)
+	if (NB_ROOM > 90)
 		shortest_way(lemin);
 	else
 		get_ways(lemin, T_ROOM[ID_START]);
@@ -83,7 +83,7 @@ int			main(int ac, char **av)
 
 	(void)av;
 	if (ac != 1)
-		ft_perror("Usage : ./lem-in");
+		ft_perror("Usage : ./lem-in < map");
 	lemin = init_lemin();
 	if (!(NB_ANT = ft_absolute(get_nb_ant())) || NB_ANT < 0)
 		ft_perror("Error: invalid number of ant");
