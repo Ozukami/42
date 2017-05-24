@@ -218,7 +218,13 @@ public class Env {
 				turn++;
 			} else if (line.contains(" ")) {
 				split = line.split(" ");
-				roomList.add(new Room(split[0], Integer.parseInt(split[1]), Integer.parseInt(split[2]), 40, 40, role));
+				int x = Integer.parseInt(split[1]);
+				int y = Integer.parseInt(split[2]);
+				if (x > 1000)
+					x = x / 100;
+				if (y > 1000)
+					y = y / 100;
+				roomList.add(new Room(split[0], x, y, 40, 40, role));
 				this.x_min = Math.min(this.x_min, Integer.parseInt(split[1]));
 				this.y_min = Math.min(this.y_min, Integer.parseInt(split[2]));
 				this.x_max = Math.max(this.x_max, Integer.parseInt(split[1]));
@@ -338,6 +344,11 @@ public class Env {
 	// Affiche les rooms
 	public void displayRooms() {
 		this.roomList.forEach(room -> {
+			if (room.getId() == 0 && ((room.getX() * room.getScale_x()) > 720) && ((room.getY() * room.getScale_y()) > 720))
+			{
+				this.getMap().setLayoutX(this.getMap().getLayoutX() - (room.getX() * room.getScale_x()));
+				this.getMap().setLayoutY(this.getMap().getLayoutY() - (room.getY() * room.getScale_y()));
+			}
 			this.map.getChildren().add(room.getRectangle());
 		});
 	}

@@ -51,7 +51,7 @@ public class Visual extends Application {
 				else if (event.getCode() == KeyCode.M && event.isControlDown())
 					env.getWindow().setFullScreen(true);
 				else
-					System.out.println(event.getCharacter());
+					System.out.printf(event.getCharacter());
 			}
 		});
 	}
