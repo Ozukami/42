@@ -17,12 +17,15 @@ public class PopUp extends Stage {
 	private Scene scene;
 
 	public PopUp(int ant_end, int nb_turn) {
-		this.text = new Text(10, 10,
-				String.format("Les %d fourmis ", ant_end) + String.format("sont arrivees en %d tours !", nb_turn));
+		if (ant_end > 1)
+			this.text = new Text(20, 20,
+					String.format("Les %d fourmis ", ant_end) + String.format("sont arrivees en %d tours !", nb_turn));
+		else
+			this.text = new Text(20, 20, String.format("La fourmis est arrivee en %d tours !", nb_turn));
 		this.button = new Button("Exit");
 		scene = new Scene(new Group(text, button));
 		button.setLayoutX(150);
-		button.setLayoutY(25);
+		button.setLayoutY(40);
 		this.setWidth(350);
 		this.setHeight(100);
 		this.initStyle(StageStyle.UTILITY);

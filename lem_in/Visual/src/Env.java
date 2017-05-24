@@ -3,7 +3,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.Scanner;
-
 import javafx.animation.Animation;
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
@@ -50,7 +49,7 @@ public class Env {
 	private int ant = 0;
 	private int ant_end = 0;
 	private int nb_turn = 0;
-	final ImageView imageView = new ImageView(new Image("/ant.png"));
+	private final ImageView imageView = new ImageView(new Image("file://" + System.getProperty("user.dir") + "/ant.png"));
 	private Animation animation;
 
 	public Env(Stage window) {
