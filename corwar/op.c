@@ -13,6 +13,19 @@
 
 #include "op.h"
 
+typedef struct	s_op
+{
+	char		*op;
+	int			nb_arg;
+	int			args;
+	int			opcode;
+	int			cycles;
+	char		*des;
+	int			ocp;
+	int			carry;
+	int			label_size;
+}				t_op;
+
 t_op    op_tab[17] =
 {
 	{"live", 1, {T_DIR}, 1, 10, "alive", 0, 0},
