@@ -2,7 +2,7 @@
 .comment "__UNDERSCORE_S__"
 
 first:
-	ld		%0, r2
+	ld  	%0, r2
 	zjmp	%:begin
 	zjmp	%-511
 defdessus:
