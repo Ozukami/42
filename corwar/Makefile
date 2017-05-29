@@ -6,11 +6,12 @@
 #    By: apoisson <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 11:29:15 by apoisson          #+#    #+#              #
-#    Updated: 2017/05/29 04:35:14 by apoisson         ###   ########.fr        #
+#    Updated: 2017/05/29 04:44:33 by qumaujea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-ASM = corewar-asm
+ASM = asm
+MV = corewar
 FLAGS = -Wall -Wextra
 SRCASM = *.c
 
@@ -28,7 +29,7 @@ libft.a:
 
 run: $(ASM)
 ifeq ($(ARGS),)
-	./$(ASM) < fichier
+	./$(ASM) < test_champ.s
 else
 	./$(ASM) < $(ARGS)
 endif

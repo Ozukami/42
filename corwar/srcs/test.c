@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/29 00:34:46 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/05/29 04:26:51 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/05/29 04:45:34 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int		main(int ac, char **av)
 {
 	char 	*line;
 
+	(void)av;
 	if (!ac)
 		return (1);
 	while (get_next_line(0, &line))
