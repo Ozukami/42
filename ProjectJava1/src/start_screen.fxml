@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+
+
+<Group xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <FlowPane alignment="CENTER" hgap="20000.0" prefHeight="720.0" prefWidth="1000.0">
+         <children>
+            <Label alignment="BOTTOM_CENTER" prefHeight="210.0" prefWidth="239.0" text="GATE">
+               <FlowPane.margin>
+                  <Insets />
+               </FlowPane.margin>
+               <font>
+                  <Font name="Krungthep" size="96.0" />
+               </font>
+            </Label>
+            <VBox alignment="CENTER" prefHeight="387.0" prefWidth="334.0" spacing="30.0">
+               <children>
+                  <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="150.0" text="New Game" />
+                  <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="150.0" text="Continue..." />
+                  <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="150.0" text="Exit" />
+               </children>
+               <FlowPane.margin>
+                  <Insets />
+               </FlowPane.margin>
+            </VBox>
+            <Label alignment="BOTTOM_CENTER" prefHeight="103.0" prefWidth="148.0" text="2017 © Credit Ozuk &amp; Q" />
+         </children>
+      </FlowPane>
+   </children>
+</Group>
