@@ -1,5 +1,6 @@
 
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -12,20 +13,35 @@ public class Game extends Stage {
 
 	// private Map map;
 	// private Player p1;
+	private int currentScreen; // 1 = start ; 2 = end ; 0 = game
 	private Scene scene;
 	private Group gameScreen;
-	private StartScreen startScreen;
+	private Group startScreen;
 	private Group endScreen;
-	private int currentScreen; // 1 = start ; 2 = end ; 0 = game
+	private Controller controller;
+	private FXMLLoader fxmlLoader;
 
 	public Game() {
 		this.setWindow();
+		fxmlLoader = new FXMLLoader();
 		this.currentScreen = 1;
-		this.startScreen = new StartScreen(new Rectangle(500, 500, Color.BLUE));
 		this.endScreen = new Group(new Rectangle(500, 500, Color.RED));
 		this.gameScreen = new Group(new Rectangle(500, 500, Color.ORANGE));
-		this.scene = new Scene(this.startScreen);
 
+		try {
+			fxmlLoader.load(getClass().getResourceAsStream("/start_screen.fxml"));
+			this.startScreen = fxmlLoader.<Group>getRoot();
+			// fxmlLoader.load(getClass().getResourceAsStream("/game_screen.fxml"));
+			// this.gameScreen = fxmlLoader.<Group>getRoot();
+			// fxmlLoader.load(getClass().getResourceAsStream("/end_screen.fxml"));
+			// this.endScreen = fxmlLoader.<Group>getRoot();
+		} catch (Exception ex) {
+			System.err.println("Erreur au chargement: " + ex);
+		}
+
+		controller = fxmlLoader.getController();
+
+		this.scene = new Scene(this.startScreen);
 		this.setScene(scene);
 		this.show();
 
@@ -44,14 +60,16 @@ public class Game extends Stage {
 						scene.setRoot(endScreen);
 						currentScreen = 2;
 					}
+				} else if (event.getCode().equals(KeyCode.ESCAPE)) {
+					controller.ExitGame();
 				}
 			}
 		});
 	}
 
 	private void setWindow() {
-		this.setWidth(1000);
-		this.setHeight(720);
+		// this.setWidth(1080);
+		// this.setHeight(740);
 		this.setResizable(false);
 	}
 
