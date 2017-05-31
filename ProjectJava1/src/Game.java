@@ -49,17 +49,15 @@ public class Game extends Stage {
 			@Override
 			public void handle(KeyEvent event) {
 				// TODO Auto-generated method stub
-				if (event.getCode().equals(KeyCode.SPACE)) {
-					if (currentScreen == 1) {
-						scene.setRoot(gameScreen);
-						currentScreen = 0;
-					} else if (currentScreen == 2) {
-						scene.setRoot(startScreen);
-						currentScreen = 1;
-					} else if (currentScreen == 0) {
-						scene.setRoot(endScreen);
-						currentScreen = 2;
-					}
+				if (event.getCode().equals(KeyCode.F1)) {
+					scene.setRoot(startScreen);
+					currentScreen = 1;
+				} else if (event.getCode().equals(KeyCode.F2)) {
+					scene.setRoot(gameScreen);
+					currentScreen = 2;
+				} else if (event.getCode().equals(KeyCode.F3)) {
+					scene.setRoot(endScreen);
+					currentScreen = 3;
 				} else if (event.getCode().equals(KeyCode.ESCAPE)) {
 					controller.ExitGame();
 				}
