@@ -1,4 +1,5 @@
 
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Entity extends Rectangle {
@@ -6,8 +7,10 @@ public class Entity extends Rectangle {
 	private int x;
 	private int y;
 
-	public Entity() {
-
+	public Entity(Color color, double size) {
+		this.setFill(color);
+		this.setWidth(size);
+		this.setHeight(size);
 	}
 
 }

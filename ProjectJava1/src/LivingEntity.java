@@ -1,6 +1,8 @@
+import javafx.scene.paint.Color;
 
 public abstract class LivingEntity extends Entity {
 
+	private Floor floor;
 	private String name;
 	private int expLevel;
 	private int expPoints;
@@ -24,6 +26,19 @@ public abstract class LivingEntity extends Entity {
 	private int strength;
 	private int intelligence;
 	private int agility;
+
+	public LivingEntity(Color color, double size) {
+		super(color, size);
+		// TODO Auto-generated constructor stub
+	}
+
+	public Floor getFloor() {
+		return floor;
+	}
+
+	public void setFloor(Floor floor) {
+		this.floor = floor;
+	}
 
 	public String getName() {
 		return name;
