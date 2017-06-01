@@ -3,6 +3,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.SplitPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
@@ -15,7 +16,7 @@ public class Game extends Stage {
 	// private Player p1;
 	private int currentScreen; // 1 = start ; 2 = end ; 0 = game
 	private Scene scene;
-	private Group gameScreen;
+	private SplitPane gameScreen;
 	private Group startScreen;
 	private Group endScreen;
 	private Controller controller;
@@ -26,17 +27,19 @@ public class Game extends Stage {
 		fxmlLoader = new FXMLLoader();
 		this.currentScreen = 1;
 		this.endScreen = new Group(new Rectangle(500, 500, Color.RED));
-		this.gameScreen = new Group(new Rectangle(500, 500, Color.ORANGE));
+		// this.gameScreen = new Group(new Rectangle(500, 500, Color.ORANGE));
 
 		try {
 			fxmlLoader.load(getClass().getResourceAsStream("/start_screen.fxml"));
 			this.startScreen = fxmlLoader.<Group>getRoot();
-			// fxmlLoader.load(getClass().getResourceAsStream("/game_screen.fxml"));
-			// this.gameScreen = fxmlLoader.<Group>getRoot();
+			fxmlLoader = new FXMLLoader();
+			fxmlLoader.load(getClass().getResourceAsStream("/game_screen.fxml"));
+			this.gameScreen = fxmlLoader.<SplitPane>getRoot();
+			// fxmlLoader = new FXMLLoader();
 			// fxmlLoader.load(getClass().getResourceAsStream("/end_screen.fxml"));
 			// this.endScreen = fxmlLoader.<Group>getRoot();
 		} catch (Exception ex) {
-			System.err.println("Erreur au chargement: " + ex);
+			System.err.println("Erreur au chargement 1: " + ex);
 		}
 
 		controller = fxmlLoader.getController();
