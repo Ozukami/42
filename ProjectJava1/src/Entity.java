@@ -7,6 +7,7 @@ public class Entity extends Rectangle {
 	private int x;
 	private int y;
 	private int collision = 0;
+	private int passifDmg = 0;
 
 	public Entity(Color color, double size, int x, int y) {
 		this.setFill(color);
@@ -40,6 +41,14 @@ public class Entity extends Rectangle {
 
 	public void setCollision(int collision) {
 		this.collision = collision;
+	}
+
+	public int getPassifDmg() {
+		return passifDmg;
+	}
+
+	public void setPassifDmg(int passifDmg) {
+		this.passifDmg = passifDmg;
 	}
 
 }

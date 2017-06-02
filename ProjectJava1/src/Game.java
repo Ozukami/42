@@ -57,9 +57,13 @@ public class Game extends Stage {
 		this.controller.getEventLayer().setLayoutY(84);
 		this.controller.getEventLayer().setPrefWidth(600);
 		this.controller.getEventLayer().setPrefHeight(600);
+
+		this.controller.getHpBar().setVisible(false);
+		this.controller.getManaBar().setVisible(false);
+
 		this.map = new Map(this.controller.getMapLayer(), this.controller.getEventLayer(), this.controller.getpLayer());
 
-		this.keyHandler = new KeyHandler(this);
+		this.keyHandler = new KeyHandler(this, controller);
 		this.getScene().setOnKeyPressed(this.keyHandler);
 	}
 

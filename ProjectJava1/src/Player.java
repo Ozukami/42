@@ -12,6 +12,12 @@ public class Player extends LivingEntity implements Motion {
 
 	public Player(Color color, double size, int x, int y) {
 		super(color, size, x, y);
+
+		this.setHealthPoints(100);
+		this.setHealthPointsMax(100);
+		this.setManaPoints(100);
+		this.setManaPointsMax(100);
+
 		this.move = new TranslateTransition(new Duration(250));
 		this.move.setNode(this);
 	}
@@ -19,43 +25,55 @@ public class Player extends LivingEntity implements Motion {
 	@Override
 	public void move(KeyCode k) {
 		// TODO Auto-generated method stub
-		if (k == KeyCode.UP && this.getYMap() > 1) {
-			System.out.printf("UP : [%d,%d]", this.getXMap(), this.getYMap());
+		if (k == KeyCode.UP) {
+			this.setOrientation(1);
 			this.setYMap(this.getYMap() - 1);
-			this.setTranslateY(this.getTranslateY() - 30);
+			this.setY(this.getY() - 30);
 			// this.move.setByX(0);
 			// this.move.setByY(-30);
 			// this.toFront();
 			// this.move.play();
-			System.out.printf(" --> [%d,%d]\n", this.getXMap(), this.getYMap());
-		} else if (k == KeyCode.DOWN && this.getYMap() < 18) {
-			System.out.printf("DOWN : [%d,%d]", this.getXMap(), this.getYMap());
+		} else if (k == KeyCode.DOWN) {
+			this.setOrientation(2);
 			this.setYMap(this.getYMap() + 1);
-			this.setTranslateY(this.getTranslateY() + 30);
+			this.setY(this.getY() + 30);
 			// this.move.setByX(0);
 			// this.move.setByY(30);
 			// this.toFront();
 			// this.move.play();
-			System.out.printf(" --> [%d,%d]\n", this.getXMap(), this.getYMap());
-		} else if (k == KeyCode.LEFT && this.getXMap() > 1) {
-			System.out.printf("LEFT : [%d,%d]", this.getXMap(), this.getYMap());
+		} else if (k == KeyCode.LEFT) {
+			this.setOrientation(3);
 			this.setXMap(this.getXMap() - 1);
-			this.setTranslateX(this.getTranslateX() - 30);
+			this.setX(this.getX() - 30);
 			// this.move.setByX(-30);
 			// this.move.setByY(0);
 			// this.toFront();
 			// this.move.play();
-			System.out.printf(" --> [%d,%d]\n", this.getXMap(), this.getYMap());
-		} else if (k == KeyCode.RIGHT && this.getXMap() < 18) {
-			System.out.printf("RIGHT : [%d,%d]", this.getXMap(), this.getYMap());
+		} else if (k == KeyCode.RIGHT) {
+			this.setOrientation(4);
 			this.setXMap(this.getXMap() + 1);
-			this.setTranslateX(this.getTranslateX() + 30);
+			this.setX(this.getX() + 30);
 			// this.move.setByX(30);
 			// this.move.setByY(0);
 			// this.toFront();
 			// this.move.play();
-			System.out.printf(" --> [%d,%d]\n", this.getXMap(), this.getYMap());
 		}
+	}
+
+	public Rectangle getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(Rectangle avatar) {
+		this.avatar = avatar;
+	}
+
+	public TranslateTransition getMove() {
+		return move;
+	}
+
+	public void setMove(TranslateTransition move) {
+		this.move = move;
 	}
 
 }

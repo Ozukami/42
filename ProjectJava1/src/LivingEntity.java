@@ -4,6 +4,7 @@ public abstract class LivingEntity extends Entity {
 
 	private Floor floor;
 	private String name;
+	private int orientation = 1; // Up = 1, Down = 2, Left = 3, Right = 4
 	private int expLevel;
 	private int expPoints;
 	private int expPointsMax;
@@ -46,6 +47,14 @@ public abstract class LivingEntity extends Entity {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public int getOrientation() {
+		return orientation;
+	}
+
+	public void setOrientation(int orientation) {
+		this.orientation = orientation;
 	}
 
 	public int getExpLevel() {

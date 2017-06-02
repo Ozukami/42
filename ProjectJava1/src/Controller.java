@@ -3,6 +3,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.shape.Line;
 
 public class Controller {
 
@@ -20,6 +21,10 @@ public class Controller {
 	private TilePane eventLayer;
 	@FXML
 	private AnchorPane pLayer;
+	@FXML
+	private Line hpBar;
+	@FXML
+	private Line manaBar;
 
 	public void StartNewGame() {
 		game.getScene().setRoot(game.getGameScreen());
@@ -65,5 +70,21 @@ public class Controller {
 
 	public void setpLayer(AnchorPane pLayer) {
 		this.pLayer = pLayer;
+	}
+
+	public Line getHpBar() {
+		return hpBar;
+	}
+
+	public void setHpBar(Line hpBar) {
+		this.hpBar = hpBar;
+	}
+
+	public Line getManaBar() {
+		return manaBar;
+	}
+
+	public void setManaBar(Line manaBar) {
+		this.manaBar = manaBar;
 	}
 }

@@ -37,14 +37,14 @@
                            <children>
                               <Line endX="100.0" startX="-100.0" strokeWidth="14.0" />
                               <Line endX="100.0" startX="-100.0" stroke="RED" strokeWidth="10.0" />
-                              <Line layoutX="100.0" startX="-40.0" stroke="#a1a1a1" strokeWidth="10.0" />
+                              <Line id="hpBar" fx:id="hpBar" layoutX="100.0" startX="-40.0" stroke="#a1a1a1" strokeWidth="10.0" />
                            </children>
                         </Group>
                         <Group layoutX="142.0" layoutY="50.0">
                            <children>
                               <Line endX="100.0" startX="-100.0" strokeWidth="14.0" />
                               <Line endX="100.0" startX="-100.0" stroke="#0070ff" strokeWidth="10.0" />
-                              <Line layoutX="100.0" startX="-40.0" stroke="#a1a1a1" strokeWidth="10.0" />
+                              <Line id="manaBar" fx:id="manaBar" layoutX="100.0" startX="-40.0" stroke="#a1a1a1" strokeWidth="10.0" />
                            </children>
                         </Group>
                         <Group layoutX="142.0" layoutY="77.0">

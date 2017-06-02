@@ -35,9 +35,20 @@ public class Map {
 					this.eventLayer[x][y].setCollision(1);
 					eventLayer.getChildren().add(this.eventLayer[x][y]);
 				} else {
-					this.eventLayer[x][y] = new Entity(Color.BLACK, this.cellSize, x, y);
-					this.eventLayer[x][y].setVisible(false);
-					eventLayer.getChildren().add(this.eventLayer[x][y]);
+					int randomNum = 0 + (int) (Math.random() * 50);
+					if (randomNum == 5) {
+						this.eventLayer[x][y] = new Entity(Color.ORANGE, this.cellSize, x, y);
+						this.eventLayer[x][y].setCollision(1);
+						eventLayer.getChildren().add(this.eventLayer[x][y]);
+					} else if (randomNum == 10) {
+						this.eventLayer[x][y] = new Entity(Color.RED, this.cellSize, x, y);
+						this.eventLayer[x][y].setPassifDmg(1);
+						eventLayer.getChildren().add(this.eventLayer[x][y]);
+					} else {
+						this.eventLayer[x][y] = new Entity(Color.BLACK, this.cellSize, x, y);
+						this.eventLayer[x][y].setVisible(false);
+						eventLayer.getChildren().add(this.eventLayer[x][y]);
+					}
 				}
 			}
 		}
