@@ -17,6 +17,7 @@ public class Game extends Stage {
 	private Controller controller;
 	private FXMLLoader fxmlLoader;
 	private KeyHandler keyHandler;
+	private int state; // 1 = running
 
 	public Game() {
 		this.setWindow();
@@ -44,14 +45,19 @@ public class Game extends Stage {
 			System.err.println("Erreur au chargement 1: " + ex);
 		}
 
+		this.state = 0;
 		this.setScene(new Scene(this.startScreen));
 		this.show();
 
-		this.controller.getMapContainer().setLayoutX(34);
-		this.controller.getMapContainer().setLayoutY(84);
-		this.controller.getMapContainer().setPrefWidth(600);
-		this.controller.getMapContainer().setPrefHeight(600);
-		this.map = new Map(this.controller.getMapContainer());
+		this.controller.getMapLayer().setLayoutX(34);
+		this.controller.getMapLayer().setLayoutY(84);
+		this.controller.getMapLayer().setPrefWidth(600);
+		this.controller.getMapLayer().setPrefHeight(600);
+		this.controller.getEventLayer().setLayoutX(34);
+		this.controller.getEventLayer().setLayoutY(84);
+		this.controller.getEventLayer().setPrefWidth(600);
+		this.controller.getEventLayer().setPrefHeight(600);
+		this.map = new Map(this.controller.getMapLayer(), this.controller.getEventLayer(), this.controller.getpLayer());
 
 		this.keyHandler = new KeyHandler(this);
 		this.getScene().setOnKeyPressed(this.keyHandler);
@@ -125,6 +131,14 @@ public class Game extends Stage {
 
 	public void setKeyHandler(KeyHandler keyHandler) {
 		this.keyHandler = keyHandler;
+	}
+
+	public int getState() {
+		return state;
+	}
+
+	public void setState(int state) {
+		this.state = state;
 	}
 
 }

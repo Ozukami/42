@@ -17,7 +17,13 @@
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
          <children>
-            <TilePane id="mapContainer" fx:id="mapContainer" alignment="CENTER" layoutY="50.0" prefHeight="668.0" prefWidth="668.0" />
+            <StackPane layoutX="34.0" layoutY="85.0" prefHeight="600.0" prefWidth="600.0">
+               <children>
+                  <TilePane id="mapLayer" fx:id="mapLayer" alignment="CENTER" layoutX="20.0" layoutY="20.0" prefHeight="668.0" prefWidth="668.0" />
+                  <TilePane id="eventLayer" fx:id="eventLayer" alignment="CENTER" layoutX="20.0" layoutY="20.0" prefHeight="668.0" prefWidth="668.0" />
+                  <AnchorPane id="pLayer" fx:id="pLayer" prefHeight="600.0" prefWidth="600.0" />
+               </children>
+            </StackPane>
          </children></AnchorPane>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
          <children>

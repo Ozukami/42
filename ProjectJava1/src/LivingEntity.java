@@ -27,8 +27,8 @@ public abstract class LivingEntity extends Entity {
 	private int intelligence;
 	private int agility;
 
-	public LivingEntity(Color color, double size) {
-		super(color, size);
+	public LivingEntity(Color color, double size, int x, int y) {
+		super(color, size, x, y);
 		// TODO Auto-generated constructor stub
 	}
 

@@ -1,63 +1,85 @@
 
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 
 public class Map {
 
-	private Entity gameMap[][];
+	private Floor mapLayer[][];
+	private Entity eventLayer[][];
 	private int mapSize; // entity * entity
 	private int cellSize;
-	private int xPlayer;
-	private int yPlayer;
+	private Player player;
 
-	public Map(TilePane mapContainer) {
-		this.xPlayer = 50;
-		this.yPlayer = 50;
+	public Map(TilePane mapLayer, TilePane eventLayer, AnchorPane pLayer) {
 		this.mapSize = 20;
 		this.cellSize = 30;
-		this.gameMap = new Entity[this.mapSize][this.mapSize];
-		this.newGameMap(mapContainer);
+		this.mapLayer = new Floor[this.mapSize][this.mapSize];
+		this.eventLayer = new Entity[this.mapSize][this.mapSize];
+		this.player = new Player(Color.DODGERBLUE, this.cellSize, mapSize / 2, mapSize / 2);
+		this.newGameMap(mapLayer, eventLayer);
+		pLayer.getChildren().add(player);
 	}
 
-	private void newGameMap(TilePane mapContainer) {
+	private void newGameMap(TilePane mapLayer, TilePane eventLayer) {
+		for (int y = 0; y < this.mapSize; y++) {
+			for (int x = 0; x < this.mapSize; x++) {
+				this.mapLayer[x][y] = new Floor(Color.FORESTGREEN, this.cellSize, x, y);
+				mapLayer.getChildren().add(this.mapLayer[x][y]);
+			}
+		}
 		for (int y = 0; y < this.mapSize; y++) {
 			for (int x = 0; x < this.mapSize; x++) {
 				if (x == 0 || x == this.mapSize - 1 || y == 0 || y == this.mapSize - 1) {
-					this.gameMap[x][y] = new Entity(Color.DARKGRAY, this.cellSize);
+					this.eventLayer[x][y] = new Entity(Color.DARKGRAY, this.cellSize, x, y);
+					this.eventLayer[x][y].setCollision(1);
+					eventLayer.getChildren().add(this.eventLayer[x][y]);
 				} else {
-					this.gameMap[x][y] = new Entity(Color.ORANGE, this.cellSize);
+					this.eventLayer[x][y] = new Entity(Color.BLACK, this.cellSize, x, y);
+					this.eventLayer[x][y].setVisible(false);
+					eventLayer.getChildren().add(this.eventLayer[x][y]);
 				}
-				this.gameMap[x][y].setVisible(true);
-				mapContainer.getChildren().add(this.gameMap[x][y]);
 			}
 		}
 	}
 
-	public Entity[][] getGameMap() {
-		return gameMap;
+	public Floor[][] getMapLayer() {
+		return mapLayer;
 	}
 
-	public void setGameMap(Entity[][] gameMap) {
-		this.gameMap = gameMap;
+	public void setMapLayer(Floor[][] mapLayer) {
+		this.mapLayer = mapLayer;
 	}
 
-	public int getxPlayer() {
-		return xPlayer;
+	public Entity[][] getEventLayer() {
+		return eventLayer;
 	}
 
-	public void setxPlayer(int xPlayer) {
-		this.xPlayer = xPlayer;
+	public void setEventLayer(Entity[][] eventLayer) {
+		this.eventLayer = eventLayer;
 	}
 
-	public int getyPlayer() {
-		return yPlayer;
+	public int getMapSize() {
+		return mapSize;
 	}
 
-	public void setyPlayer(int yPlayer) {
-		this.yPlayer = yPlayer;
+	public void setMapSize(int mapSize) {
+		this.mapSize = mapSize;
+	}
+
+	public int getCellSize() {
+		return cellSize;
+	}
+
+	public void setCellSize(int cellSize) {
+		this.cellSize = cellSize;
 	}
 
 	public Player getPlayer() {
-		return ((Player) this.gameMap[this.xPlayer][this.yPlayer]);
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 }

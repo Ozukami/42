@@ -14,9 +14,8 @@ public class KeyHandler implements EventHandler<KeyEvent> {
 	@Override
 	public void handle(KeyEvent event) {
 		// TODO Auto-generated method stub
-		if (event.getCode().isArrowKey()) {
-			// game.getMap().getPlayer().move(event.getCode());
-			System.out.println(event.getCode());
+		if (event.getCode().isArrowKey() && game.getState() == 1) {
+			game.getMap().getPlayer().move(event.getCode());
 		} else if (event.getCode().isFunctionKey()) {
 			if (event.getCode().equals(KeyCode.F1)) {
 				game.getScene().setRoot(game.getStartScreen());
