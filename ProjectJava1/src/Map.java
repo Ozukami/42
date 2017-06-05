@@ -30,6 +30,7 @@ public class Map {
 		pLayer.getChildren().add(player);
 
 		this.ennemyTimeline = new Timeline();
+		this.ennemyTimeline.setCycleCount(500);
 		ActionEvent aE = new ActionEvent();
 
 		ennemyTimeline.getKeyFrames().add(new KeyFrame(new Duration(1000), actionEvent -> {
