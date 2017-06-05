@@ -19,32 +19,24 @@ public class KeyHandler implements EventHandler<KeyEvent> {
 		this.controller = controller;
 	}
 
-	public boolean testCollision(KeyEvent event) {
+	public boolean testCollision(KeyEvent event, Entity e) {
 		if (event.getCode() == KeyCode.UP)
-			return ((game.getMap().getEventLayer())[game.getMap().getPlayer().getXMap()][game.getMap().getPlayer()
-					.getYMap() - 1].getCollision() == 0);
+			return ((game.getMap().getEventLayer())[e.getXMap()][e.getYMap() - 1].getCollision() == 0);
 		if (event.getCode() == KeyCode.DOWN)
-			return ((game.getMap().getEventLayer())[game.getMap().getPlayer().getXMap()][game.getMap().getPlayer()
-					.getYMap() + 1].getCollision() == 0);
+			return ((game.getMap().getEventLayer())[e.getXMap()][e.getYMap() + 1].getCollision() == 0);
 		if (event.getCode() == KeyCode.LEFT)
-			return ((game.getMap().getEventLayer())[game.getMap().getPlayer().getXMap() - 1][game.getMap().getPlayer()
-					.getYMap()].getCollision() == 0);
-		return ((game.getMap().getEventLayer())[game.getMap().getPlayer().getXMap() + 1][game.getMap().getPlayer()
-				.getYMap()].getCollision() == 0);
+			return ((game.getMap().getEventLayer())[e.getXMap() - 1][e.getYMap()].getCollision() == 0);
+		return ((game.getMap().getEventLayer())[e.getXMap() + 1][e.getYMap()].getCollision() == 0);
 	}
 
-	public boolean testPassifDmg(KeyEvent event) {
+	public boolean testPassifDmg(KeyEvent event, Entity e) {
 		if (event.getCode() == KeyCode.UP)
-			return ((game.getMap().getEventLayer())[game.getMap().getPlayer().getXMap()][game.getMap().getPlayer()
-					.getYMap() - 1].getPassifDmg() == 1);
+			return ((game.getMap().getEventLayer())[e.getXMap()][e.getYMap() - 1].getPassifDmg() == 1);
 		if (event.getCode() == KeyCode.DOWN)
-			return ((game.getMap().getEventLayer())[game.getMap().getPlayer().getXMap()][game.getMap().getPlayer()
-					.getYMap() + 1].getPassifDmg() == 1);
+			return ((game.getMap().getEventLayer())[e.getXMap()][e.getYMap() + 1].getPassifDmg() == 1);
 		if (event.getCode() == KeyCode.LEFT)
-			return ((game.getMap().getEventLayer())[game.getMap().getPlayer().getXMap() - 1][game.getMap().getPlayer()
-					.getYMap()].getPassifDmg() == 1);
-		return ((game.getMap().getEventLayer())[game.getMap().getPlayer().getXMap() + 1][game.getMap().getPlayer()
-				.getYMap()].getPassifDmg() == 1);
+			return ((game.getMap().getEventLayer())[e.getXMap() - 1][e.getYMap()].getPassifDmg() == 1);
+		return ((game.getMap().getEventLayer())[e.getXMap() + 1][e.getYMap()].getPassifDmg() == 1);
 	}
 
 	public void applyDmg(int dmg) {
@@ -79,8 +71,8 @@ public class KeyHandler implements EventHandler<KeyEvent> {
 		if (cast) {
 
 		} else if (event.getCode().isArrowKey() && game.getState() == 1) {
-			if (testCollision(event)) {
-				if (testPassifDmg(event))
+			if (testCollision(event, game.getMap().getPlayer())) {
+				if (testPassifDmg(event, game.getMap().getPlayer()))
 					applyDmg(20);
 				game.getMap().getPlayer().move(event.getCode());
 			}

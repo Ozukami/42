@@ -30,6 +30,7 @@ public class Controller {
 		game.getScene().setRoot(game.getGameScreen());
 		game.setCurrentScreen(2);
 		game.setState(1);
+		game.getMap().getEnnemyTimeline().play();
 	}
 
 	public void ContinueGame() {
