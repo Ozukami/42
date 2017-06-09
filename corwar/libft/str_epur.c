@@ -1,32 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strsub.c                                        :+:      :+:    :+:   */
+/*   str_epur.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/07 05:10:06 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/09 07:33:41 by apoisson         ###   ########.fr       */
+/*   Created: 2017/06/09 08:18:35 by apoisson          #+#    #+#             */
+/*   Updated: 2017/06/09 08:28:51 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strsub(char const *s, unsigned int start, size_t len)
+char		*str_epur(char *str)
 {
-	char	*sub;
-	size_t	i;
+	char	*epur;
+	char	**split;
+	int		i;
 
-	if (len > ft_strlen(s))
-		return (NULL);
-	if (!(sub = (char *)ft_memalloc(len + 1)) || !s)
-		return (NULL);
+	if (!(split = ft_strsplit_whitespaces((const char *)str, ' ', '\t')))
+		ft_perror("Malloc failed");
 	i = 0;
-	while (i < len)
+	epur = ft_strdup(split[i]);
+	while (split[++i])
 	{
-		sub[i] = s[start + i];
-		i++;
+		epur = ft_straddchar(epur, ' ');
+		epur = ft_strjoinf_l(epur, split[i]);
 	}
-	sub[len] = '\0';
-	return (sub);
+	free_map(split);
+	ft_strdel(&str);
+	return (epur);
 }
