@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/09 06:08:07 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/09 06:08:08 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/09 10:07:20 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,14 @@
 t_state			*new_state(int id, int status, char *transitions)
 {
 	t_state		*state;
-	
+
 	if (!(state = ft_memalloc(sizeof(t_state))))
 		ft_perror("Malloc failled !");
 	state->id = id;
 	state->status = status;
 	state->transitions = transitions;
-	if (!(state->next = ft_memalloc(sizeof(t_state) * (ft_strlen(transitions) + 1))))
+	if (!(state->next = ft_memalloc(sizeof(t_state) *
+					(ft_strlen(transitions) + 1))))
 		ft_perror("Malloc failled !");
 	return (state);
 }

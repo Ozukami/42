@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 10:49:10 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/09 08:27:19 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/09 10:03:30 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,13 @@ void				ft_striteri(char *s, void (*f)(unsigned int, char *));
 char				*ft_strmap(char const *s, char (*f)(char));
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 int					ft_strequ(char const *s1, char const *s2);
+int					ft_strequf_l(char *s1, char const *s2);
 int					ft_strnequ(char const *s1, char const *s2, size_t n);
 char				*ft_strsub(char const *s, unsigned int start, size_t len);
 char				*ft_strjoin(char const *s1, char const *s2);
 char				*ft_strtrim(char const *s);
 char				**ft_strsplit(char const *s, char c);
+char				**ft_strsplitf(char *s, char c);
 char				**ft_strsplit_whitespaces(char const *s, char c1, char c2);
 char				*ft_itoa(int n);
 void				ft_putchar(char c);
