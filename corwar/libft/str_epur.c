@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/09 08:18:35 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/09 08:28:51 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/09 09:11:36 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,11 @@ char		*str_epur(char *str)
 	int		i;
 
 	if (!(split = ft_strsplit_whitespaces((const char *)str, ' ', '\t')))
-		ft_perror("Malloc failed");
+		return (NULL);
+	if (!split[0])
+		return (NULL);
+	epur = ft_strdup(split[0]);
 	i = 0;
-	epur = ft_strdup(split[i]);
 	while (split[++i])
 	{
 		epur = ft_straddchar(epur, ' ');
