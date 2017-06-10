@@ -6,12 +6,11 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/09 06:08:07 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/09 10:07:20 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/10 04:47:18 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
-#include "libft.h"
 
 t_state			*new_state(int id, int status, char *transitions)
 {
@@ -28,7 +27,7 @@ t_state			*new_state(int id, int status, char *transitions)
 	return (state);
 }
 
-void			init_automaton()
+t_state			*init_automaton()
 {
 	t_state		*automaton;
 
@@ -87,6 +86,5 @@ void			init_automaton()
 	((automaton->next)[6]->next)[0] = new_state(37, 0, "m");
 	(((automaton->next)[6]->next)[0]->next)[0] = new_state(38, 0, "p");
 	((((automaton->next)[6]->next)[0]->next)[0]->next)[0] = new_state(9, FINAL, "");
-
-	return (1);
+	return (automaton);
 }
