@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/29 00:34:46 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/06/12 04:21:21 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/12 05:17:23 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,19 @@ int		check_reg(char *str)
 	return (1);
 }
 
+void	add_label(t_champ *champ, char *str)
+{
+	t_label_list	*label;
+	int				i;
+
+	if (!(label = ft_memalloc(sizeof(t_label_list))))
+		ft_perror("Error: malloc failed");
+	i = (str[0] == DIRECT_CHAR) ? 2 : 1;
+	label->label = ft_strsub(str, i, ft_strlen(str) - i);
+	label->next = L_LABEL;
+	L_LABEL = label;
+}
+
 /*
 ** T_DIR
 ** starts with '%'
@@ -120,7 +133,7 @@ int		check_reg(char *str)
 ** can be negative
 */
 
-int		check_ind_dir(char *str)
+int		check_ind_dir(t_champ *champ, char *str)
 {
 	int		i;
 	int		label;
@@ -135,6 +148,7 @@ int		check_ind_dir(char *str)
 		while (str[++i])
 			if (!ft_strchr(LABEL_CHARS, str[i]))
 				ft_perror("Error: syntax error");
+		add_label(champ, str);
 	}
 	else
 		while (str[i])
@@ -148,7 +162,7 @@ int		check_ind_dir(char *str)
 ** and stock it into instruction
 */
 
-int		get_args(char *str, t_instruction *instruction)
+int		get_args(t_champ *champ, char *str, t_instruction *instruction)
 {
 	int		i;
 	int		arg;
@@ -163,7 +177,7 @@ int		get_args(char *str, t_instruction *instruction)
 		if (I_ARGS[i][0] == 'r')
 			arg = check_reg(I_ARGS[i]);
 		else
-			arg = check_ind_dir(I_ARGS[i]);
+			arg = check_ind_dir(champ, I_ARGS[i]);
 		if (!arg || !(arg & g_op_tab[I_OP - 1].args[i]))
 			ft_perror("Error: syntax error");
 	}
@@ -184,7 +198,7 @@ t_instruction	*get_instruction(char *line, t_champ *champ)
 	if ((i = get_op(line, instruction, champ)) < 1)
 		ft_perror("Error: syntax error");
 	line = str_epur(ft_strsubf(line, i, ft_strlen(line) - i));
-	if ((i = get_args(line, instruction)) < 1)
+	if ((i = get_args(champ, line, instruction)) < 1)
 		ft_perror("Error: syntax error");
 	return (instruction);
 }
@@ -219,7 +233,6 @@ int		check_header(t_champ *champ, char *line)
 {
 	static int	verif = 0;
 
-//	printf("|%s|\n", line);
 	if (!line)
 		return (0);
 	if (line[0] == COMMENT_CHAR)
@@ -238,11 +251,51 @@ int		check_header(t_champ *champ, char *line)
 	return (0);
 }
 
+void	build_instruction_list(t_champ *champ)
+{
+	char		*line;
+	t_instruction	*current;
+
+	current = L_INST;
+	while (get_next_line(FD, &line))
+	{
+		line = str_epur(line);
+		if (line && line[0] && line[0] != COMMENT_CHAR)
+		{
+			current->next = get_instruction(line, champ);
+			current = current->next;
+		}
+		else
+			ft_strdel(&line);
+	}
+	ft_strdel(&line);
+}
+
+void	check_label(t_champ *champ)
+{
+	t_label_list	*curr_label;
+	t_instruction	*curr_instruction;
+
+	curr_label = L_LABEL;
+	while (curr_label)
+	{
+		curr_instruction = L_INST;
+		while (curr_instruction)
+		{
+			if (ft_strequ(curr_label->label, curr_instruction->label))
+				break ;
+			curr_instruction = curr_instruction->next;
+			if (!curr_instruction->next)
+				ft_perror("Error: syntax error");
+		}
+		curr_label = curr_label->next;
+	}
+}
+
 void	parse_file(t_champ *champ)
 {
 	int			r;
 	char		*line;
-	t_instruction	*current;
 
 	r = 0;
 	while (r != 4 && get_next_line(FD, &line))
@@ -254,20 +307,8 @@ void	parse_file(t_champ *champ)
 		ft_strdel(&line);
 	}
 	L_INST = get_instruction(line, champ);
-	current = L_INST;
-	while (get_next_line(FD, &line))
-	{
-		line = str_epur(line);
-		printf("%p : %s\n", line, line);
-		if (line && line[0] && line[0] != COMMENT_CHAR)
-		{
-			current->next = get_instruction(line, champ);
-			current = current->next;
-		}
-		else
-			ft_strdel(&line);
-	}
-	ft_strdel(&line);
+	build_instruction_list(champ);
+	check_label(champ);
 }
 
 t_champ	*init_champ(void)
@@ -281,6 +322,7 @@ t_champ	*init_champ(void)
 		ft_perror("Error: malloc failed");
 	AUTOMATON = init_automaton();
 	L_INST = NULL;
+	L_LABEL = NULL;
 	return (champ);
 }
 

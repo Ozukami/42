@@ -13,4 +13,3 @@ l2:		sti r1,%:live,%1
 #fejfiwe
 live: 	live%1
 		zjmp %:live
-#fejfiwe
