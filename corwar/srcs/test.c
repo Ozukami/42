@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/29 00:34:46 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/06/12 05:17:23 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/12 05:42:52 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,9 +195,12 @@ t_instruction	*get_instruction(char *line, t_champ *champ)
 	instruction->next = NULL;
 	if ((i = get_label(line, instruction)) > 0)
 		line = str_epur(ft_strsubf(line, i + 1, ft_strlen(line) - i));
+	if (!line)
+		return (instruction);
 	if ((i = get_op(line, instruction, champ)) < 1)
 		ft_perror("Error: syntax error");
 	line = str_epur(ft_strsubf(line, i, ft_strlen(line) - i));
+	// split sur '#' pour les coms en fin de ligne
 	if ((i = get_args(champ, line, instruction)) < 1)
 		ft_perror("Error: syntax error");
 	return (instruction);
@@ -205,6 +208,12 @@ t_instruction	*get_instruction(char *line, t_champ *champ)
 
 int		get_name(t_champ *champ, char **split, int verif)
 {
+	if (!split[1])
+	{
+		(HEADER->prog_name)[0] = '\0';
+		free_map(split);
+		return (1);
+	}
 	if (split[2])
 		ft_perror("Error: lexical error");
 	if (verif == 2)
@@ -218,8 +227,14 @@ int		get_name(t_champ *champ, char **split, int verif)
 
 int		get_comment(t_champ *champ, char **split, int verif)
 {
+	if (!split[1])
+	{
+		(HEADER->comment)[0] = '\0';
+		free_map(split);
+		return (3);
+	}
 	if (split[2])
-		ft_perror("Error: lexical error");
+		ft_perror("Error: lexical error ici");
 	if (verif == 6)
 		ft_perror("Error: too many .comment");
 	if (ft_strlen(split[1]) > COMMENT_LENGTH)

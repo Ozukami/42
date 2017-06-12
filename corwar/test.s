@@ -1,5 +1,6 @@
 .comment"comment"
 .name"name"
+label:
 sti r1,%:loop,%1
 and %:loop,r2,r2
 fork %:loop
