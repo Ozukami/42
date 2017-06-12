@@ -6,11 +6,38 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/29 00:34:46 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/06/10 06:03:24 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/12 04:21:21 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
+
+t_op	g_op_tab[17] =
+{
+	{"live", 1, {T_DIR}, 1, 10, "alive", 0, 0, 4},
+	{"ld", 2, {T_DIR | T_IND, T_REG}, 2, 5, "load", 1, 1, 4},
+	{"st", 2, {T_REG, T_IND | T_REG}, 3, 5, "store", 1, 1, 0},
+	{"add", 3, {T_REG, T_REG, T_REG}, 4, 10, "addition", 1, 1, 0},
+	{"sub", 3, {T_REG, T_REG, T_REG}, 5, 10, "soustraction", 1, 1, 0},
+	{"and", 3, {T_REG | T_DIR | T_IND, T_REG | T_IND | T_DIR, T_REG}, 6, 6,
+		"et (and  r1, r2, r3   r1&r2 -> r3", 1, 1, 4},
+	{"or", 3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG}, 7, 6,
+		"ou  (or   r1, r2, r3   r1 | r2 -> r3", 1, 1, 4},
+	{"xor", 3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG}, 8, 6,
+		"ou (xor  r1, r2, r3   r1^r2 -> r3", 1, 1, 4},
+	{"zjmp", 1, {T_DIR}, 9, 20, "jump if zero", 0, 0, 2},
+	{"ldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG}, 10, 25,
+		"load index", 1, 0, 2},
+	{"sti", 3, {T_REG, T_REG | T_DIR | T_IND, T_DIR | T_REG}, 11, 25,
+		"store index", 1, 0, 2},
+	{"fork", 1, {T_DIR}, 12, 800, "fork", 0, 0, 2},
+	{"lld", 2, {T_DIR | T_IND, T_REG}, 13, 10, "long load", 1, 1, 4},
+	{"lldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG}, 14, 50,
+		"long load index", 1, 1, 2},
+	{"lfork", 1, {T_DIR}, 15, 1000, "long fork", 0, 0, 2},
+	{"aff", 1, {T_REG}, 16, 2, "aff", 1, 0, 0},
+	{0, 0, {0}, 0, 0, 0, 0, 0, 0}
+};
 
 int		get_label(char *str, t_instruction *instruction)
 {
@@ -48,7 +75,7 @@ int		check_op(t_state *state, char *str, int i)
 {
 	if (!str || !str[i])
 		ft_perror("Error: syntax error");
-	if (STATUS == FINAL && (str[i + 1] == ' ' || str[i + 1] == DIRECT_CHAR))
+	if (STATUS == FINAL && (str[i] == ' ' || str[i] == DIRECT_CHAR))
 		return (ID);
 	if (!ft_strchr(TRANSITION, str[i]))
 		ft_perror("Error: syntax error");
@@ -62,12 +89,58 @@ int		check_op(t_state *state, char *str, int i)
 
 int		get_op(char *str, t_instruction *instruction, t_champ *champ)
 {
-	printf("[get_op] str = {%s}\n", str);
+	instruction->op = check_op(AUTOMATON, str, 0);
+	return (ft_strlen(g_op_tab[instruction->op - 1].op));
+}
 
-	(void)str;
-	(void)instruction;
-	(void)champ;
+/*
+** T_REG 1 or 2 digits after 'r'
+*/
+
+int		check_reg(char *str)
+{
+	int		i;
+
+	i = 0;
+	while (str[++i])
+		if (!ft_isdigit(str[i++]) || i > 2)
+			ft_perror("Error: syntax error");
+	if (i < 2)
+		ft_perror("Error: syntax error");
 	return (1);
+}
+
+/*
+** T_DIR
+** starts with '%'
+** then have ':' (for label) or digits
+** can't overflow, max is ff ff
+** can be negative
+** T_IND can overflow
+** can be negative
+*/
+
+int		check_ind_dir(char *str)
+{
+	int		i;
+	int		label;
+
+	i = 0;
+	if (str[i] == DIRECT_CHAR)
+		i++;
+	i += (str[i] == '-') ? 1 : 0;
+	label = (str[i] == LABEL_CHAR) ? 1 : 0;
+	if (label)
+	{
+		while (str[++i])
+			if (!ft_strchr(LABEL_CHARS, str[i]))
+				ft_perror("Error: syntax error");
+	}
+	else
+		while (str[i])
+			if (!ft_isdigit(str[i++]))
+				ft_perror("Error: syntax error");
+	return ((str[0] == DIRECT_CHAR) ? 2 : 4);
 }
 
 /*
@@ -77,9 +150,23 @@ int		get_op(char *str, t_instruction *instruction, t_champ *champ)
 
 int		get_args(char *str, t_instruction *instruction)
 {
+	int		i;
+	int		arg;
 
-	(void)str;
-	(void)instruction;
+	I_ARGS = ft_strsplitf(str, SEPARATOR_CHAR);
+	if (tab_size(I_ARGS) != g_op_tab[I_OP - 1].nb_arg)
+		ft_perror("Error: syntax error");
+	i = -1;
+	while (I_ARGS[++i])
+	{
+		I_ARGS[i] = str_epur(I_ARGS[i]);
+		if (I_ARGS[i][0] == 'r')
+			arg = check_reg(I_ARGS[i]);
+		else
+			arg = check_ind_dir(I_ARGS[i]);
+		if (!arg || !(arg & g_op_tab[I_OP - 1].args[i]))
+			ft_perror("Error: syntax error");
+	}
 	return (1);
 }
 
@@ -96,7 +183,7 @@ t_instruction	*get_instruction(char *line, t_champ *champ)
 		line = str_epur(ft_strsubf(line, i + 1, ft_strlen(line) - i));
 	if ((i = get_op(line, instruction, champ)) < 1)
 		ft_perror("Error: syntax error");
-	line = str_epur(ft_strsubf(line, i + 1, ft_strlen(line) - i));
+	line = str_epur(ft_strsubf(line, i, ft_strlen(line) - i));
 	if ((i = get_args(line, instruction)) < 1)
 		ft_perror("Error: syntax error");
 	return (instruction);
@@ -166,16 +253,21 @@ void	parse_file(t_champ *champ)
 			break ;
 		ft_strdel(&line);
 	}
-	L_INST = get_instruction(str_epur(line), champ);
+	L_INST = get_instruction(line, champ);
 	current = L_INST;
 	while (get_next_line(FD, &line))
 	{
-		if (line[0] && line[0] != COMMENT_CHAR)
+		line = str_epur(line);
+		printf("%p : %s\n", line, line);
+		if (line && line[0] && line[0] != COMMENT_CHAR)
 		{
-			current->next = get_instruction(str_epur(line), champ);
+			current->next = get_instruction(line, champ);
 			current = current->next;
 		}
+		else
+			ft_strdel(&line);
 	}
+	ft_strdel(&line);
 }
 
 t_champ	*init_champ(void)
