@@ -74,11 +74,11 @@ int		get_i_next(char *str, char c)
 int		check_op(t_state *state, char *str, int i)
 {
 	if (!str || !str[i])
-		ft_perror("Error: syntax error");
+		ft_perror("Error: syntax error 1");
 	if (STATUS == FINAL && (str[i] == ' ' || str[i] == DIRECT_CHAR))
 		return (ID);
 	if (!ft_strchr(TRANSITION, str[i]))
-		ft_perror("Error: syntax error");
+		ft_perror("Error: syntax error 2");
 	return (check_op(T_NEXT[get_i_next(TRANSITION, str[i])], str, i + 1));
 }
 
@@ -104,9 +104,9 @@ int		check_reg(char *str)
 	i = 0;
 	while (str[++i])
 		if (!ft_isdigit(str[i++]) || i > 2)
-			ft_perror("Error: syntax error");
+			ft_perror("Error: syntax error 3");
 	if (i < 2)
-		ft_perror("Error: syntax error");
+		ft_perror("Error: syntax error 4");
 	return (1);
 }
 
@@ -147,13 +147,13 @@ int		check_ind_dir(t_champ *champ, char *str)
 	{
 		while (str[++i])
 			if (!ft_strchr(LABEL_CHARS, str[i]))
-				ft_perror("Error: syntax error");
+				ft_perror("Error: syntax error 5");
 		add_label(champ, str);
 	}
 	else
 		while (str[i])
 			if (!ft_isdigit(str[i++]))
-				ft_perror("Error: syntax error");
+				ft_perror("Error: syntax error 6");
 	return ((str[0] == DIRECT_CHAR) ? 2 : 4);
 }
 
@@ -169,7 +169,7 @@ int		get_args(t_champ *champ, char *str, t_instruction *instruction)
 
 	I_ARGS = ft_strsplitf(str, SEPARATOR_CHAR);
 	if (tab_size(I_ARGS) != g_op_tab[I_OP - 1].nb_arg)
-		ft_perror("Error: syntax error");
+		ft_perror("Error: syntax error 7");
 	i = -1;
 	while (I_ARGS[++i])
 	{
@@ -179,7 +179,7 @@ int		get_args(t_champ *champ, char *str, t_instruction *instruction)
 		else
 			arg = check_ind_dir(champ, I_ARGS[i]);
 		if (!arg || !(arg & g_op_tab[I_OP - 1].args[i]))
-			ft_perror("Error: syntax error");
+			ft_perror("Error: syntax error 8");
 	}
 	return (1);
 }
@@ -220,11 +220,11 @@ t_instruction	*get_instruction(char *line, t_champ *champ)
 	if (!line)
 		return (instruction);
 	if ((i = get_op(line, instruction, champ)) < 1)
-		ft_perror("Error: syntax error");
+		ft_perror("Error: syntax error 9");
 	line = str_epur(ft_strsubf(line, i, ft_strlen(line) - i));
 	line = str_epur(check_com_arg(line));
 	if ((i = get_args(champ, line, instruction)) < 1)
-		ft_perror("Error: syntax error");
+		ft_perror("Error: syntax error 10");
 	return (instruction);
 }
 
@@ -237,7 +237,7 @@ int		get_name(t_champ *champ, char **split, int verif)
 		return (1);
 	}
 	if (split[2])
-		ft_perror("Error: lexical error");
+		ft_perror("Error: lexical error 1");
 	if (verif == 2)
 		ft_perror("Error: too many .name");
 	if (ft_strlen(split[1]) > PROG_NAME_LENGTH)
@@ -281,10 +281,10 @@ int		check_header(t_champ *champ, char *line)
 		else if (ft_strequf_l(ft_strsub(line, 0, 5), NAME_CMD_STRING))
 			return (get_name(champ, ft_strsplitf(line, '\"'), verif += 1));
 		else
-			ft_perror("Error: lexical error");
+			ft_perror("Error: lexical error 2");
 	}
 	else if (verif != 4)
-		ft_perror("Error: lexical error");
+		ft_perror("Error: lexical error 3");
 	return (0);
 }
 
@@ -321,9 +321,9 @@ void	check_label(t_champ *champ)
 		{
 			if (ft_strequ(curr_label->label, curr_instruction->label))
 				break ;
-			curr_instruction = curr_instruction->next;
 			if (!curr_instruction->next)
-				ft_perror("Error: syntax error");
+				ft_perror("Error: syntax error 11");
+			curr_instruction = curr_instruction->next;
 		}
 		curr_label = curr_label->next;
 	}
