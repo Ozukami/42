@@ -1,6 +1,6 @@
 .comment"comment"
 .name"name"
-label:
+label: #lol
 sti r1,%:loop,%1 #lol
 and %:loop,r2,r2 ##XDMDIFHHEIUQHIU
 fork %:loop ;mdrlinejesuisuncom

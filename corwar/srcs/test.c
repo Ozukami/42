@@ -193,9 +193,9 @@ char	*check_com_arg(char *str)
 	i = -1;
 	while (str[++i])
 	{
-		if (str[i] == '#')
+		if (str[i] == '#' || str[i] == ';')
 		{
-			split = ft_strsplit(str, '#');
+			split = (str[i] = '#') ? ft_strsplit(str, '#') : ft_strsplit(str, ';');
 			ft_strdel(&str);
 			line = ft_strdup(split[0]);
 			free_map(split);
@@ -217,7 +217,7 @@ t_instruction	*get_instruction(char *line, t_champ *champ)
 	instruction->next = NULL;
 	if ((i = get_label(line, instruction)) > 0)
 		line = str_epur(ft_strsubf(line, i + 1, ft_strlen(line) - i));
-	if (!line)
+	if (!line || line[0] == COMMENT_CHAR || line[0] == ';')
 		return (instruction);
 	if ((i = get_op(line, instruction, champ)) < 1)
 		ft_perror("Error: syntax error 9");
@@ -272,7 +272,7 @@ int		check_header(t_champ *champ, char *line)
 
 	if (!line)
 		return (0);
-	if (line[0] == COMMENT_CHAR)
+	if (line[0] == COMMENT_CHAR || line[0] == ';')
 		return (0);
 	if (line[0] == '.')
 	{
@@ -339,7 +339,7 @@ void	parse_file(t_champ *champ)
 		r += check_header(champ, str_epur(line));
 	while (get_next_line(FD, &line))
 	{
-		if ((line = str_epur(line)) && line[0] != COMMENT_CHAR)
+		if ((line = str_epur(line)) && line[0] != COMMENT_CHAR && line[0] != ';')
 			break ;
 		ft_strdel(&line);
 	}
