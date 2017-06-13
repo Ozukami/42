@@ -184,7 +184,7 @@ int		get_args(t_champ *champ, char *str, t_instruction *instruction)
 	return (1);
 }
 
-void	check_com_arg(char *str)
+int	check_com_arg(char *str)
 {
 	int	i;
 	char	**split;
@@ -198,8 +198,10 @@ void	check_com_arg(char *str)
 			ft_strdel(&str);
 			str = ft_strdup(split[0]);
 			free_map(split);
+			return (1);
 		}
 	}
+	return (0);
 }
 
 
@@ -220,8 +222,8 @@ t_instruction	*get_instruction(char *line, t_champ *champ)
 		ft_perror("Error: syntax error");
 	line = str_epur(ft_strsubf(line, i, ft_strlen(line) - i));
 	// split sur '#' pour les coms en fin de ligne
-	check_com_arg(line);
-	line = str_epur(line);
+	if (check_com_arg(line))
+		line = str_epur(line);
 	if ((i = get_args(champ, line, instruction)) < 1)
 		ft_perror("Error: syntax error");
 	return (instruction);
