@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "corewar.h"
+#include "sys/types.h"
 
 t_op	g_op_tab[17] =
 {
@@ -218,7 +219,11 @@ t_instruction	*get_instruction(char *line, t_champ *champ)
 	if ((i = get_label(line, instruction)) > 0)
 		line = str_epur(ft_strsubf(line, i + 1, ft_strlen(line) - i));
 	if (!line || line[0] == COMMENT_CHAR || line[0] == ';')
+	{
+		if (line[0])
+			ft_strdel(&line);
 		return (instruction);
+	}
 	if ((i = get_op(line, instruction, champ)) < 1)
 		ft_perror("Error: syntax error 9");
 	line = str_epur(ft_strsubf(line, i, ft_strlen(line) - i));
@@ -363,17 +368,43 @@ t_champ	*init_champ(void)
 	return (champ);
 }
 
+char		*set_name(char *str)
+{
+	char	*name;
+	int	i;
+
+	i = ft_strlen(str);
+	name = NULL;
+	while (str[--i])
+	{
+		if (str[i] == '.')
+			name = ft_strsub(str, 0, i);
+	}
+	return (ft_strjoinf_l(name, ".cor"));
+}
+
 int		main(int ac, char **av)
 {
 	t_champ		*champ;
+	int		i;
+	char		*exe_name;
 
 	if (ac < 2)
 		ft_perror("usage: ./asm champ.s");
 	champ = init_champ();
-	if ((FD = open(av[1], O_RDONLY)) == -1)
+	i = 0;
+	while (i < ac - 1)
+		i++;
+	if ((FD = open(av[i], O_RDONLY)) == -1)
 		ft_perror("Error: open failed");
 	parse_file(champ);
+	if ((lseek(FD, 0, SEEK_SET) < 0))
+		ft_perror("Error: lseek failed");
+	exe_name = set_name(av[i]);
+	if (!(fopen(exe_name, "w+")))
+		ft_perror("Error: open failed");
 	if (close(FD) == -1)
 		ft_perror("Error: close failed");
+	//while (1);
 	return (0);
 }
