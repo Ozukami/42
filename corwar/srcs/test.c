@@ -380,7 +380,13 @@ char		*set_name(char *str)
 		if (str[i] == '.')
 			name = ft_strsub(str, 0, i);
 	}
-	return (ft_strjoinf_l(name, ".cor"));
+	if (name)
+		return (ft_strjoinf_l(name, ".cor"));
+	else
+	{
+		name = ft_strdup(".cor");
+		return (name);
+	}
 }
 
 int		main(int ac, char **av)
@@ -405,6 +411,6 @@ int		main(int ac, char **av)
 		ft_perror("Error: open failed");
 	if (close(FD) == -1)
 		ft_perror("Error: close failed");
-	//while (1);
+	while (1);
 	return (0);
 }
