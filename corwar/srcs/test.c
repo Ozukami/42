@@ -184,10 +184,11 @@ int		get_args(t_champ *champ, char *str, t_instruction *instruction)
 	return (1);
 }
 
-int	check_com_arg(char *str)
+char	*check_com_arg(char *str)
 {
 	int	i;
 	char	**split;
+	char	*line;
 
 	i = -1;
 	while (str[++i])
@@ -196,12 +197,12 @@ int	check_com_arg(char *str)
 		{
 			split = ft_strsplit(str, '#');
 			ft_strdel(&str);
-			str = ft_strdup(split[0]);
+			line = ft_strdup(split[0]);
 			free_map(split);
-			return (1);
+			return (line);
 		}
 	}
-	return (0);
+	return (str);
 }
 
 
@@ -221,9 +222,7 @@ t_instruction	*get_instruction(char *line, t_champ *champ)
 	if ((i = get_op(line, instruction, champ)) < 1)
 		ft_perror("Error: syntax error");
 	line = str_epur(ft_strsubf(line, i, ft_strlen(line) - i));
-	// split sur '#' pour les coms en fin de ligne
-	if (check_com_arg(line))
-		line = str_epur(line);
+	line = str_epur(check_com_arg(line));
 	if ((i = get_args(champ, line, instruction)) < 1)
 		ft_perror("Error: syntax error");
 	return (instruction);
@@ -376,6 +375,5 @@ int		main(int ac, char **av)
 	parse_file(champ);
 	if (close(FD) == -1)
 		ft_perror("Error: close failed");
-	while (1);
 	return (0);
 }
