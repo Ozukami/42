@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/29 00:34:46 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/06/14 02:02:24 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/14 06:03:01 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,14 +91,15 @@ int		check_op(t_state *state, char *str, int i)
 int		get_op(char *str, t_instruction *instruction, t_champ *champ)
 {
 	instruction->op = check_op(AUTOMATON, str, 0);
-	return (ft_strlen(g_op_tab[instruction->op - 1].op));
+	PROG_SIZE += 1 + (g_op_tab[I_OP - 1]).ocp;
+	return (ft_strlen(g_op_tab[I_OP - 1].op));
 }
 
 /*
 ** T_REG 1 or 2 digits after 'r'
 */
 
-int		check_reg(char *str)
+int		check_reg(t_champ *champ, char *str)
 {
 	int		i;
 
@@ -108,6 +109,7 @@ int		check_reg(char *str)
 			ft_perror("Error: syntax error 3");
 	if (i < 2)
 		ft_perror("Error: syntax error 4");
+	PROG_SIZE += 1;
 	return (1);
 }
 
@@ -134,7 +136,7 @@ void	add_label(t_champ *champ, char *str)
 ** can be negative
 */
 
-int		check_ind_dir(t_champ *champ, char *str)
+int		check_ind_dir(t_instruction *instruction, t_champ *champ, char *str)
 {
 	int		i;
 	int		label;
@@ -155,6 +157,10 @@ int		check_ind_dir(t_champ *champ, char *str)
 		while (str[i])
 			if (!ft_isdigit(str[i++]))
 				ft_perror("Error: syntax error 6");
+	if (str[0] == DIRECT_CHAR)
+		PROG_SIZE += (g_op_tab[I_OP - 1]).label_size;
+	else
+		PROG_SIZE += 2;
 	return ((str[0] == DIRECT_CHAR) ? 2 : 4);
 }
 
@@ -176,9 +182,9 @@ int		get_args(t_champ *champ, char *str, t_instruction *instruction)
 	{
 		I_ARGS[i] = str_epur(I_ARGS[i]);
 		if (I_ARGS[i][0] == 'r')
-			arg = check_reg(I_ARGS[i]);
+			arg = check_reg(champ, I_ARGS[i]);
 		else
-			arg = check_ind_dir(champ, I_ARGS[i]);
+			arg = check_ind_dir(instruction, champ, I_ARGS[i]);
 		if (!arg || !(arg & g_op_tab[I_OP - 1].args[i]))
 			ft_perror("Error: syntax error 8");
 	}
@@ -366,6 +372,7 @@ t_champ	*init_champ(void)
 	AUTOMATON = init_automaton();
 	L_INST = NULL;
 	L_LABEL = NULL;
+	PROG_SIZE = 0;
 	return (champ);
 }
 
@@ -384,6 +391,67 @@ char		*set_name(char *str)
 	else
 		name = ft_strdup(".cor");
 	return (name);
+}
+
+void	write_prog_name(t_champ *champ)
+{
+	char	*name;
+	int		i;
+
+	if (!(name = ft_memalloc(ft_strlen(HEADER->prog_name))))
+		ft_perror("Error: malloc failed");
+	i = -1;
+	while ((HEADER->prog_name)[++i])
+		name[i] = (HEADER->prog_name)[i];
+	write(FD, name, ft_strlen(HEADER->prog_name));
+	ft_strdel(&name);
+}
+
+void	write_comment(t_champ *champ)
+{
+	char	*comment;
+	int		i;
+
+	if (!(comment = ft_memalloc(ft_strlen(HEADER->comment))))
+		ft_perror("Error: malloc failed");
+	i = -1;
+	while ((HEADER->comment)[++i])
+		comment[i] = (HEADER->comment)[i];
+	lseek(FD, 0x8c, SEEK_SET);
+	write(FD, comment, ft_strlen(HEADER->comment));
+	ft_strdel(&comment);
+}
+
+void	write_prog_size(t_champ *champ)
+{
+	char	*prog_size;
+
+	if (!(prog_size = ft_memalloc(4)))
+		ft_perror("Error: malloc failed");
+	prog_size[3] = PROG_SIZE & 0xff;
+	prog_size[2] = (PROG_SIZE >> 8) & 0xff;
+	prog_size[1] = (PROG_SIZE >> 16) & 0xff;
+	prog_size[0] = (PROG_SIZE >> 24) & 0xff;
+	lseek(FD, 0x88, SEEK_SET);
+	write(FD, prog_size, 4);
+	ft_strdel(&prog_size);
+}
+
+void	write_header(t_champ *champ)
+{
+	int		*magic;
+	char	c;
+
+	if (!(magic = ft_memalloc(sizeof(int))))
+		ft_perror("Error: malloc failed");
+	magic[0] = 0xf383ea00;
+	write(FD, magic, 4);
+	write_prog_name(champ);
+	write_comment(champ);
+	write_prog_size(champ);
+	lseek(FD, 0x88F, SEEK_SET);
+	c = 0x0;
+	write(FD, &c, 1);
 }
 
 int		main(int ac, char **av)
@@ -406,32 +474,7 @@ int		main(int ac, char **av)
 	if ((FD = open(NAME, O_CREAT | O_WRONLY | O_TRUNC,
 					S_IRUSR | S_IWUSR)) == -1)
 		ft_perror("Error: open failed");
-
-	int		*magic;
-	magic = ft_memalloc(sizeof(int));
-	magic[0] = 0xf383ea00;
-	write(FD, magic, 4);
-
-	char	*name;
-	name = malloc(4);
-	name[0] = 0x6e;
-	name[1] = 0x61;
-	name[2] = 0x6d;
-	name[3] = 0x65;
-	write(FD, name, 4);
-
-	char	*comment;
-	comment = malloc(7);
-	comment[0] = 0x63; 
-	comment[1] = 0x6f;
-	comment[2] = 0x6d;
-	comment[3] = 0x6d;
-	comment[4] = 0x65;
-	comment[5] = 0x6e;
-	comment[6] = 0x74;
-	lseek(FD, 0x8c, SEEK_SET);
-	write(FD, comment, 7);
-
+	write_header(champ);
 	if (close(FD) == -1)
 		ft_perror("Error: close failed");
 	return (0);

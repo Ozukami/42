@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/29 03:21:32 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/06/14 00:48:00 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/14 05:51:13 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@
 # define L_INST		(champ->l_instruction)
 # define L_LABEL	(champ->l_label)
 
+# define PROG_SIZE	(champ->header->prog_size)
+
 typedef struct s_instruction	t_instruction;
 typedef struct s_label_list		t_label_list;
 typedef struct s_state			t_state;
@@ -66,7 +68,7 @@ struct				s_state
 
 struct				s_champ
 {
-	char			*name;
+	char			*name; // path
 	int				fd;
 	t_header		*header;
 	t_state			*automaton;
