@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/29 00:34:46 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/06/13 23:05:50 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/14 02:02:24 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -377,24 +377,19 @@ char		*set_name(char *str)
 	i = ft_strlen(str);
 	name = NULL;
 	while (str[--i])
-	{
 		if (str[i] == '.')
 			name = ft_strsub(str, 0, i);
-	}
 	if (name)
 		return (ft_strjoinf_l(name, ".cor"));
 	else
-	{
 		name = ft_strdup(".cor");
-		return (name);
-	}
+	return (name);
 }
 
 int		main(int ac, char **av)
 {
 	t_champ		*champ;
 	int			i;
-	char		*exe_name;
 
 	if (ac < 2)
 		ft_perror("usage: ./asm champ.s");
@@ -405,14 +400,39 @@ int		main(int ac, char **av)
 	if ((FD = open(av[i], O_RDONLY)) == -1)
 		ft_perror("Error: open failed");
 	parse_file(champ);
-	if ((lseek(FD, 0, SEEK_SET) < 0))
-		ft_perror("Error: lseek failed");
-	exe_name = set_name(av[i]);
-	if (!(fopen(exe_name, "w+")))
-		ft_perror("Error: open failed");
+	NAME = set_name(av[i]);
 	if (close(FD) == -1)
 		ft_perror("Error: close failed");
-	while (1)
-		;
+	if ((FD = open(NAME, O_CREAT | O_WRONLY | O_TRUNC,
+					S_IRUSR | S_IWUSR)) == -1)
+		ft_perror("Error: open failed");
+
+	int		*magic;
+	magic = ft_memalloc(sizeof(int));
+	magic[0] = 0xf383ea00;
+	write(FD, magic, 4);
+
+	char	*name;
+	name = malloc(4);
+	name[0] = 0x6e;
+	name[1] = 0x61;
+	name[2] = 0x6d;
+	name[3] = 0x65;
+	write(FD, name, 4);
+
+	char	*comment;
+	comment = malloc(7);
+	comment[0] = 0x63; 
+	comment[1] = 0x6f;
+	comment[2] = 0x6d;
+	comment[3] = 0x6d;
+	comment[4] = 0x65;
+	comment[5] = 0x6e;
+	comment[6] = 0x74;
+	lseek(FD, 0x8c, SEEK_SET);
+	write(FD, comment, 7);
+
+	if (close(FD) == -1)
+		ft_perror("Error: close failed");
 	return (0);
 }

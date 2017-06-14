@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/29 03:21:32 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/06/13 23:01:27 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/14 00:48:00 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # define TRANSITION	(state->transitions)
 # define T_NEXT		(state->next)
 
+# define NAME		(champ->name)
 # define FD			(champ->fd)
 # define HEADER		(champ->header)
 # define AUTOMATON	(champ->automaton)
@@ -65,6 +66,7 @@ struct				s_state
 
 struct				s_champ
 {
+	char			*name;
 	int				fd;
 	t_header		*header;
 	t_state			*automaton;
