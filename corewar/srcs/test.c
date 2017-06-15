@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/29 00:34:46 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/06/14 06:03:01 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/15 05:32:01 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,19 @@ t_op	g_op_tab[17] =
 	{0, 0, {0}, 0, 0, 0, 0, 0, 0}
 };
 
-int		get_label(char *str, t_instruction *instruction)
+void	add_label(t_champ *champ, char *str, int id)
+{
+	t_label_list	*label;
+
+	if (!(label = ft_memalloc(sizeof(t_label_list))))
+		ft_perror("Error: malloc failed");
+	label->label = ft_strdup(str);
+	label->next = L_LABEL;
+	label->id = id;
+	L_LABEL = label;
+}
+
+int		get_label(char *str, t_instruction *instruction, t_champ *champ)
 {
 	int			i;
 
@@ -54,7 +66,8 @@ int		get_label(char *str, t_instruction *instruction)
 			return (0);
 		if (str[i] == LABEL_CHAR)
 		{
-			instruction->label = ft_strsub(str, 0, i);
+			I_LABEL = ft_strsub(str, 0, i);
+			add_label(champ, I_LABEL, I_ID);
 			return (i);
 		}
 	}
@@ -92,6 +105,7 @@ int		get_op(char *str, t_instruction *instruction, t_champ *champ)
 {
 	instruction->op = check_op(AUTOMATON, str, 0);
 	PROG_SIZE += 1 + (g_op_tab[I_OP - 1]).ocp;
+	I_WEIGHT += 1 + (g_op_tab[I_OP - 1]).ocp;
 	return (ft_strlen(g_op_tab[I_OP - 1].op));
 }
 
@@ -99,7 +113,7 @@ int		get_op(char *str, t_instruction *instruction, t_champ *champ)
 ** T_REG 1 or 2 digits after 'r'
 */
 
-int		check_reg(t_champ *champ, char *str)
+int		check_reg(t_champ *champ, char *str, t_instruction *instruction)
 {
 	int		i;
 
@@ -110,10 +124,11 @@ int		check_reg(t_champ *champ, char *str)
 	if (i < 2)
 		ft_perror("Error: syntax error 4");
 	PROG_SIZE += 1;
+	I_WEIGHT++;
 	return (1);
 }
 
-void	add_label(t_champ *champ, char *str)
+void	add_labcheck(t_champ *champ, char *str)
 {
 	t_label_list	*label;
 	int				i;
@@ -122,8 +137,14 @@ void	add_label(t_champ *champ, char *str)
 		ft_perror("Error: malloc failed");
 	i = (str[0] == DIRECT_CHAR) ? 2 : 1;
 	label->label = ft_strsub(str, i, ft_strlen(str) - i);
-	label->next = L_LABEL;
-	L_LABEL = label;
+	label->next = L_LABCHECK;
+	L_LABCHECK = label;
+}
+
+void	update_weight(t_instruction *instruction, t_champ *champ, int add)
+{
+	PROG_SIZE += add;
+	I_WEIGHT += add;
 }
 
 /*
@@ -151,17 +172,17 @@ int		check_ind_dir(t_instruction *instruction, t_champ *champ, char *str)
 		while (str[++i])
 			if (!ft_strchr(LABEL_CHARS, str[i]))
 				ft_perror("Error: syntax error 5");
-		add_label(champ, str);
+		add_labcheck(champ, str);
 	}
 	else
 		while (str[i])
 			if (!ft_isdigit(str[i++]))
 				ft_perror("Error: syntax error 6");
 	if (str[0] == DIRECT_CHAR)
-		PROG_SIZE += (g_op_tab[I_OP - 1]).label_size;
+		update_weight(instruction, champ, (g_op_tab[I_OP - 1]).label_size);
 	else
-		PROG_SIZE += 2;
-	return ((str[0] == DIRECT_CHAR) ? 2 : 4);
+		update_weight(instruction, champ, 2);
+	return ((str[0] == DIRECT_CHAR) ? T_DIR : T_IND);
 }
 
 /*
@@ -169,11 +190,12 @@ int		check_ind_dir(t_instruction *instruction, t_champ *champ, char *str)
 ** and stock it into instruction
 */
 
-int		get_args(t_champ *champ, char *str, t_instruction *instruction)
+void	get_args(t_champ *champ, char *str, t_instruction *instruction)
 {
 	int		i;
 	int		arg;
 
+	I_OCP = 0;
 	I_ARGS = ft_strsplitf(str, SEPARATOR_CHAR);
 	if (tab_size(I_ARGS) != g_op_tab[I_OP - 1].nb_arg)
 		ft_perror("Error: syntax error 7");
@@ -182,13 +204,29 @@ int		get_args(t_champ *champ, char *str, t_instruction *instruction)
 	{
 		I_ARGS[i] = str_epur(I_ARGS[i]);
 		if (I_ARGS[i][0] == 'r')
-			arg = check_reg(champ, I_ARGS[i]);
+			arg = check_reg(champ, I_ARGS[i], instruction);
 		else
 			arg = check_ind_dir(instruction, champ, I_ARGS[i]);
 		if (!arg || !(arg & g_op_tab[I_OP - 1].args[i]))
 			ft_perror("Error: syntax error 8");
+		printf("{arg = %d}	", arg);
+		I_OCP = I_OCP | arg;
+		I_OCP = I_OCP << 2;
+		/*
+		if (i == 0)
+			I_OCP = I_OCP | (arg << 6);
+		if (i == 1)
+			I_OCP = I_OCP | (arg >> 2);
+		if (i == 2)
+			I_OCP = I_OCP | (arg >> 2);
+			*/
 	}
-	return (1);
+	while (i < 3)
+	{
+		I_OCP = I_OCP << 2;
+		i++;
+	}
+	printf("[%d]\n", I_OCP);
 }
 
 char	*check_com_arg(char *str)
@@ -217,16 +255,16 @@ t_instruction	*get_instruction(char *line, t_champ *champ)
 {
 	t_instruction	*instruction;
 	int				i;
+	static int		id = 0;
 
 	if (!(instruction = ft_memalloc(sizeof(t_instruction))))
 		ft_perror("Error: malloc failed");
-	instruction->label = NULL;
-	instruction->next = NULL;
-	if ((i = get_label(line, instruction)) > 0)
+	I_ID = id++;
+	if ((i = get_label(line, instruction, champ)) > 0)
 		line = str_epur(ft_strsubf(line, i + 1, ft_strlen(line) - i));
 	if (!line || line[0] == COMMENT_CHAR || line[0] == ';')
 	{
-		if (line[0])
+		if (line && line[0])
 			ft_strdel(&line);
 		return (instruction);
 	}
@@ -234,8 +272,7 @@ t_instruction	*get_instruction(char *line, t_champ *champ)
 		ft_perror("Error: syntax error 9");
 	line = str_epur(ft_strsubf(line, i, ft_strlen(line) - i));
 	line = str_epur(check_com_arg(line));
-	if ((i = get_args(champ, line, instruction)) < 1)
-		ft_perror("Error: syntax error 10");
+	get_args(champ, line, instruction);
 	return (instruction);
 }
 
@@ -308,6 +345,9 @@ void	build_instruction_list(t_champ *champ)
 	while (get_next_line(FD, &line))
 	{
 		line = str_epur(line);
+		if (line && (ft_strequ(ft_strsub(line, 0, 8), ".comment")
+				|| ft_strequ(ft_strsub(line, 0, 5), ".name")))
+			break ;
 		if (line && line[0] && line[0] != COMMENT_CHAR)
 		{
 			current->next = get_instruction(line, champ);
@@ -324,7 +364,7 @@ void	check_label(t_champ *champ)
 	t_label_list	*curr_label;
 	t_instruction	*curr_instruction;
 
-	curr_label = L_LABEL;
+	curr_label = L_LABCHECK;
 	while (curr_label)
 	{
 		curr_instruction = L_INST;
@@ -371,7 +411,7 @@ t_champ	*init_champ(void)
 		ft_perror("Error: malloc failed");
 	AUTOMATON = init_automaton();
 	L_INST = NULL;
-	L_LABEL = NULL;
+	L_LABCHECK = NULL;
 	PROG_SIZE = 0;
 	return (champ);
 }
@@ -454,6 +494,59 @@ void	write_header(t_champ *champ)
 	write(FD, &c, 1);
 }
 
+int		get_ocp(t_instruction *instruction)
+{
+	int		ocp;
+
+
+	return (ocp);
+}
+
+void	write_champ(t_champ *champ)
+{
+	t_instruction	*current;
+	char			prog[PROG_SIZE + 1];
+	int				i;
+
+	i = 0;
+	current = L_INST;
+	while (current)
+	{
+		if (current->op)
+		{
+			prog[i++] = g_op_tab[current->op - 1].opcode;
+			if (g_op_tab[current->op - 1].ocp)
+				prog[i++] = get_ocp(current);
+		}
+		current = current->next;
+	}
+	lseek(FD, 0x890, SEEK_SET);
+	write(FD, prog, PROG_SIZE);
+}
+
+void	write_binary(t_champ *champ)
+{
+	write_header(champ);
+	write_champ(champ);
+	/*	DEBUG DISPLAY */
+	printf("L_INST\n");
+	while (L_INST)
+	{
+		printf("%d - %s (%d) %d\n", L_INST->id, L_INST->label, L_INST->weight,
+				L_INST->op);
+		L_INST = L_INST->next;
+	}
+	printf("\nL_LABEL\n");
+	while (L_LABEL)
+	{
+		printf("%d - %s\n", L_LABEL->id, L_LABEL->label);
+		L_LABEL = L_LABEL->next;
+	}
+	printf("\nPROG_SIZE = %d\n", PROG_SIZE);
+	ft_putstr("\033[32mWriting output program to ");
+	ft_putendl(NAME);
+}
+
 int		main(int ac, char **av)
 {
 	t_champ		*champ;
@@ -474,7 +567,7 @@ int		main(int ac, char **av)
 	if ((FD = open(NAME, O_CREAT | O_WRONLY | O_TRUNC,
 					S_IRUSR | S_IWUSR)) == -1)
 		ft_perror("Error: open failed");
-	write_header(champ);
+	write_binary(champ);
 	if (close(FD) == -1)
 		ft_perror("Error: close failed");
 	return (0);

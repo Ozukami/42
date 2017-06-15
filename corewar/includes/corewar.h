@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/29 03:21:32 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/06/14 05:51:13 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/15 05:26:49 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,13 @@
 # define INITIAL	1
 # define FINAL		2
 
+# define I_LABEL	(instruction->label)
 # define I_ARGS		(instruction->args)
 # define I_OP		(instruction->op)
+# define I_OCP		(instruction->ocp)
+# define I_ID		(instruction->id)
+# define I_WEIGHT	(instruction->weight)
+# define I_NEXT		(instruction->next)
 
 # define ID			(state->id)
 # define STATUS		(state->status)
@@ -35,6 +40,7 @@
 # define AUTOMATON	(champ->automaton)
 # define OP_TAB		(champ->op_tab)
 # define L_INST		(champ->l_instruction)
+# define L_LABCHECK	(champ->l_label_check)
 # define L_LABEL	(champ->l_label)
 
 # define PROG_SIZE	(champ->header->prog_size)
@@ -48,12 +54,16 @@ struct				s_instruction
 {
 	char			*label;
 	int				op;
+	int				ocp;
 	char			**args;
+	int				id;
+	int				weight;
 	t_instruction	*next;
 };
 
 struct				s_label_list
 {
+	int				id;
 	char			*label;
 	t_label_list	*next;
 };
@@ -73,6 +83,7 @@ struct				s_champ
 	t_header		*header;
 	t_state			*automaton;
 	t_instruction	*l_instruction;
+	t_label_list	*l_label_check;
 	t_label_list	*l_label;
 	t_op			*op_tab;
 };
