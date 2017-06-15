@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/29 00:34:46 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/06/15 05:32:01 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/16 01:01:11 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -494,19 +494,12 @@ void	write_header(t_champ *champ)
 	write(FD, &c, 1);
 }
 
-int		get_ocp(t_instruction *instruction)
-{
-	int		ocp;
-
-
-	return (ocp);
-}
-
 void	write_champ(t_champ *champ)
 {
 	t_instruction	*current;
 	char			prog[PROG_SIZE + 1];
 	int				i;
+	int				j;
 
 	i = 0;
 	current = L_INST;
@@ -516,7 +509,28 @@ void	write_champ(t_champ *champ)
 		{
 			prog[i++] = g_op_tab[current->op - 1].opcode;
 			if (g_op_tab[current->op - 1].ocp)
-				prog[i++] = get_ocp(current);
+				prog[i++] = current->ocp;
+			/*
+			j = -1;
+			while (++j <= g_op_tab[current->op - 1].nb_arg)
+			{
+				if (current->args[j])
+				{
+					if (current->args[j][0] == 'r')
+						prog[i++] = 0x1; //value qpres le r
+					else if (current->args[j][0] == '%')
+					{
+						if (is_digit(current->args[j][1]))
+							prog[i++] = ;
+						else
+						{
+							while (L_INST)
+
+						}
+					}
+				}
+			}
+			*/
 		}
 		current = current->next;
 	}
@@ -528,7 +542,7 @@ void	write_binary(t_champ *champ)
 {
 	write_header(champ);
 	write_champ(champ);
-	/*	DEBUG DISPLAY */
+	/*	DEBUG DISPLAY 
 	printf("L_INST\n");
 	while (L_INST)
 	{
@@ -543,6 +557,7 @@ void	write_binary(t_champ *champ)
 		L_LABEL = L_LABEL->next;
 	}
 	printf("\nPROG_SIZE = %d\n", PROG_SIZE);
+	*/
 	ft_putstr("\033[32mWriting output program to ");
 	ft_putendl(NAME);
 }
