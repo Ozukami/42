@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/29 03:21:32 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/06/16 07:04:39 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/17 00:30:44 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ int					get_op(char *str, t_instruction *instruction,
 void				get_args(t_champ *champ, char *str,
 		t_instruction *instruction);
 t_instruction		*get_instruction(char *line, t_champ *champ);
+void				build_instruction_list(t_champ *champ);
 
 int					check_op(t_state *state, char *str, int i);
 int					check_reg(t_champ *champ, char *str,

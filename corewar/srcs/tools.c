@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/16 06:58:53 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/16 07:02:02 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/17 00:09:34 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,13 @@ char	*set_name(char *str)
 	i = ft_strlen(str);
 	name = NULL;
 	while (str[--i])
+	{
 		if (str[i] == '.')
+		{
 			name = ft_strsub(str, 0, i);
+			break ;
+		}
+	}
 	if (name)
 		return (ft_strjoinf_l(name, ".cor"));
 	else

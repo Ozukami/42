@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/05/29 00:34:46 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/06/16 07:00:32 by apoisson         ###   ########.fr       */
+/*   Created: 2017/06/17 00:00:11 by apoisson          #+#    #+#             */
+/*   Updated: 2017/06/17 00:34:22 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,29 +39,6 @@ t_op	g_op_tab[17] =
 	{"aff", 1, {T_REG}, 16, 2, "aff", 1, 0, 0},
 	{0, 0, {0}, 0, 0, 0, 0, 0, 0}
 };
-
-void	build_instruction_list(t_champ *champ)
-{
-	char			*line;
-	t_instruction	*current;
-
-	current = L_INST;
-	while (get_next_line(FD, &line))
-	{
-		line = str_epur(line);
-		if (line && (ft_strequf_l(ft_strsub(line, 0, 8), ".comment")
-				|| ft_strequf_l(ft_strsub(line, 0, 5), ".name")))
-			break ;
-		if (line && line[0] && line[0] != COMMENT_CHAR)
-		{
-			current->next = get_instruction(line, champ);
-			current = current->next;
-		}
-		else
-			ft_strdel(&line);
-	}
-	ft_strdel(&line);
-}
 
 void	parse_file(t_champ *champ)
 {
@@ -108,21 +85,15 @@ void	write_binary(t_champ *champ)
 	ft_putstr("\033[0m");
 }
 
-int		main(int ac, char **av)
+int		process(char *file)
 {
 	t_champ		*champ;
-	int			i;
 
-	if (ac < 2)
-		ft_perror("usage: ./asm champ.s");
 	champ = init_champ();
-	i = 0;
-	while (i < ac - 1)
-		i++;
-	if ((FD = open(av[i], O_RDONLY)) == -1)
+	if ((FD = open(file, O_RDONLY)) == -1)
 		ft_perror("Error: open failed");
 	parse_file(champ);
-	NAME = set_name(av[i]);
+	NAME = set_name(file);
 	if (close(FD) == -1)
 		ft_perror("Error: close failed");
 	if ((FD = open(NAME, O_CREAT | O_WRONLY | O_TRUNC,
@@ -131,5 +102,22 @@ int		main(int ac, char **av)
 	write_binary(champ);
 	if (close(FD) == -1)
 		ft_perror("Error: close failed");
+	return (0);
+}
+
+int		main(int ac, char **av)
+{
+	int			i;
+	int			pid;
+
+	if (ac < 2)
+		ft_perror("usage: ./asm champ.s");
+	i = 0;
+	while (++i < ac)
+	{
+		if (!(pid = fork()))
+			return (process(av[i]));
+		wait(NULL);
+	}
 	return (0);
 }

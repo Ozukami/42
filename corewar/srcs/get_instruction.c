@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/16 07:01:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/16 08:47:43 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/17 00:35:52 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,4 +102,27 @@ t_instruction	*get_instruction(char *line, t_champ *champ)
 	line = str_epur(check_com_arg(line));
 	get_args(champ, line, instruction);
 	return (instruction);
+}
+
+void			build_instruction_list(t_champ *champ)
+{
+	char			*line;
+	t_instruction	*current;
+
+	current = L_INST;
+	while (get_next_line(FD, &line))
+	{
+		line = str_epur(line);
+		if (line && (ft_strequf_l(ft_strsub(line, 0, 8), ".comment")
+				|| ft_strequf_l(ft_strsub(line, 0, 5), ".name")))
+			break ;
+		if (line && line[0] && line[0] != COMMENT_CHAR)
+		{
+			current->next = get_instruction(line, champ);
+			current = current->next;
+		}
+		else
+			ft_strdel(&line);
+	}
+	ft_strdel(&line);
 }

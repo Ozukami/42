@@ -4,10 +4,12 @@ rm -rf *.cor ;
 for file in ./*	
 do
 	./asm $file ;
-	hexdump .cor > comp1 ; 
+	corfile1=$(basename "$file" .s) ;
+	corfile1+=".cor" ;
+	hexdump $corfile1 > comp1 ; 
 	./example_asm $file ; 
-	corfile=$(basename "$file" .s) ;
-	corfile+=".cor" ;
-	hexdump $corfile > comp2 ; 
+	corfile2=$(basename "$file" .s) ;
+	corfile2+=".cor" ;
+	hexdump $corfile2 > comp2 ; 
 	diff comp1 comp2
 done
