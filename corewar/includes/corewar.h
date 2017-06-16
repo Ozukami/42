@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/29 03:21:32 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/06/16 06:25:50 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/16 07:04:39 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ struct				s_state
 
 struct				s_champ
 {
-	char			*name; // path
+	char			*name;
 	int				fd;
 	t_header		*header;
 	t_state			*automaton;
@@ -93,17 +93,50 @@ struct				s_champ
 t_state				*init_automaton(void);
 void				init_op_tab(t_champ *champ);
 
-void	write_value(char *prog, int value, int size);
-void	write_label(char *prog, t_champ *champ,
-		t_instruction *instruction, char *arg);
-void	write_args(t_instruction *current, char *prog, int *i, t_champ *champ);
-void	write_champ(t_champ *champ);
-void	write_prog_name(t_champ *champ);
-void	write_comment(t_champ *champ);
-void	write_prog_size(t_champ *champ);
-void	write_header(t_champ *champ);
+void				write_value(char *prog, int value, int size);
+void				write_label(char *prog, t_champ *champ,
+					t_instruction *instruction, char *arg);
+void				write_args(t_instruction *current, char *prog,
+		int *i, t_champ *champ);
+void				write_champ(t_champ *champ);
+void				write_prog_name(t_champ *champ);
+void				write_comment(t_champ *champ);
+void				write_prog_size(t_champ *champ);
+void				write_header(t_champ *champ);
 
-int		get_value(t_champ *champ, int id_label, t_instruction *instruction);
-int		get_id_label(t_champ *champ, char *arg);
+int					get_value(t_champ *champ, int id_label,
+		t_instruction *instruction);
+int					get_id_label(t_champ *champ, char *arg);
+
+int					get_name(t_champ *champ, char **split, int verif);
+int					get_comment(t_champ *champ, char **split, int verif);
+int					check_header(t_champ *champ, char *line);
+
+int					get_label(char *str, t_instruction *instruction,
+		t_champ *champ);
+int					get_op(char *str, t_instruction *instruction,
+		t_champ *champ);
+void				get_args(t_champ *champ, char *str,
+		t_instruction *instruction);
+t_instruction		*get_instruction(char *line, t_champ *champ);
+
+int					check_op(t_state *state, char *str, int i);
+int					check_reg(t_champ *champ, char *str,
+		t_instruction *instruction);
+int					check_ind_dir(t_instruction *instruction,
+		t_champ *champ, char *str);
+char				*check_com_arg(char *str);
+void				check_label(t_champ *champ);
+
+void				add_label(t_champ *champ, char *str, int id);
+void				add_labcheck(t_champ *champ, char *str);
+
+void				update_weight(t_instruction *instruction,
+		t_champ *champ, int add);
+int					get_i_next(char *str, char c);
+int					get_value(t_champ *champ, int id_label,
+		t_instruction *instruction);
+int					get_id_label(t_champ *champ, char *arg);
+char				*set_name(char *str);
 
 #endif
