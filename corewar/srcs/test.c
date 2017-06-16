@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/29 00:34:46 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/06/16 01:01:11 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/06/16 05:51:38 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,24 +209,11 @@ void	get_args(t_champ *champ, char *str, t_instruction *instruction)
 			arg = check_ind_dir(instruction, champ, I_ARGS[i]);
 		if (!arg || !(arg & g_op_tab[I_OP - 1].args[i]))
 			ft_perror("Error: syntax error 8");
-		printf("{arg = %d}	", arg);
 		I_OCP = I_OCP | arg;
 		I_OCP = I_OCP << 2;
-		/*
-		if (i == 0)
-			I_OCP = I_OCP | (arg << 6);
-		if (i == 1)
-			I_OCP = I_OCP | (arg >> 2);
-		if (i == 2)
-			I_OCP = I_OCP | (arg >> 2);
-			*/
 	}
-	while (i < 3)
-	{
+	while (i++ < 3)
 		I_OCP = I_OCP << 2;
-		i++;
-	}
-	printf("[%d]\n", I_OCP);
 }
 
 char	*check_com_arg(char *str)
@@ -345,8 +332,8 @@ void	build_instruction_list(t_champ *champ)
 	while (get_next_line(FD, &line))
 	{
 		line = str_epur(line);
-		if (line && (ft_strequ(ft_strsub(line, 0, 8), ".comment")
-				|| ft_strequ(ft_strsub(line, 0, 5), ".name")))
+		if (line && (ft_strequf_l(ft_strsub(line, 0, 8), ".comment")
+				|| ft_strequf_l(ft_strsub(line, 0, 5), ".name")))
 			break ;
 		if (line && line[0] && line[0] != COMMENT_CHAR)
 		{
@@ -492,15 +479,127 @@ void	write_header(t_champ *champ)
 	lseek(FD, 0x88F, SEEK_SET);
 	c = 0x0;
 	write(FD, &c, 1);
+	free(magic);
+}
+
+void	write_value(char *prog, int value, int size)
+{
+	size = (size) ? size : 2;
+	if (size == 4)
+	{
+		prog[3] = value & 0xff;
+		prog[2] = (value >> 8) & 0xff;
+		prog[1] = (value >> 16) & 0xff;
+		prog[0] = (value >> 24) & 0xff;
+	}
+	else
+	{
+		prog[1] = value & 0xff;
+		prog[0] = (value >> 8) & 0xff;
+	}
+}
+
+int		get_value(t_champ *champ, int id_label, t_instruction *instruction)
+{
+	int				value;
+	t_instruction	*current_inst;
+	int				check;
+
+	current_inst = L_INST;
+	check = 0;
+	value = 0;
+	while (current_inst)
+	{
+		if (id_label == current_inst->id)
+			check += 1;
+		else if (instruction->id == current_inst->id)
+			check += 2;
+		if (check == 3)
+			return (value);
+		if (check == 1)
+			value -= current_inst->weight;
+		else if (check == 2)
+			value += current_inst->weight;
+		current_inst = current_inst->next;
+	}
+	return (value);
+}
+
+int		get_id_label(t_champ *champ, char *arg)
+{
+	int				id_label;
+	t_label_list	*current_lab_list;
+
+	id_label = 0;
+	current_lab_list = L_LABEL;
+	while (current_lab_list)
+	{
+		if (ft_strequ(current_lab_list->label, arg))
+		{
+			id_label = current_lab_list->id;
+			return (id_label);
+		}
+		current_lab_list = current_lab_list->next;
+	}
+	return (id_label);
+}
+
+void	write_label(char *prog, t_champ *champ,
+		t_instruction *instruction, char *arg)
+{
+	int				value;
+	int				id_label;
+
+	id_label = get_id_label(champ, arg);
+	value = get_value(champ, id_label, instruction);
+	if (g_op_tab[instruction->op - 1].label_size == 4)
+	{
+		prog[3] = value & 0xff;
+		prog[2] = (value >> 8) & 0xff;
+		prog[1] = (value >> 16) & 0xff;
+		prog[0] = (value >> 24) & 0xff;
+	}
+	else
+	{
+		prog[1] = value & 0xff;
+		prog[0] = (value >> 8) & 0xff;
+	}
+	ft_strdel(&arg);
+}
+
+void	write_args(t_instruction *current, char *prog, int *i, t_champ *champ)
+{
+	int				j;
+	int				dir;
+
+	j = -1;
+	while (++j < g_op_tab[current->op - 1].nb_arg)
+	{
+		if (current->args[j][0] == 'r')
+			prog[(*i)++] = ft_atoi((current->args[j]) + 1);
+		else
+		{
+			dir = (current->args[j][0] == DIRECT_CHAR) ? 1 : 0;
+			if (current->args[j][dir] == LABEL_CHAR)
+				write_label(&(prog[*i]), champ, current,
+						ft_strsub(current->args[j], 1 + dir,
+							ft_strlen(current->args[j]) - 1 - dir));
+			else
+				write_value(&(prog[*i]), ft_atoi(current->args[j] + dir),
+						g_op_tab[current->op - 1].label_size * dir);
+			*i += (dir) ? g_op_tab[current->op - 1].label_size : 2;
+		}
+	}
 }
 
 void	write_champ(t_champ *champ)
 {
 	t_instruction	*current;
-	char			prog[PROG_SIZE + 1];
+	char			*prog;
 	int				i;
-	int				j;
 
+	if (!(prog = ft_memalloc(PROG_SIZE + 1)))
+		ft_perror("Error: malloc failed");
 	i = 0;
 	current = L_INST;
 	while (current)
@@ -510,54 +609,19 @@ void	write_champ(t_champ *champ)
 			prog[i++] = g_op_tab[current->op - 1].opcode;
 			if (g_op_tab[current->op - 1].ocp)
 				prog[i++] = current->ocp;
-			/*
-			j = -1;
-			while (++j <= g_op_tab[current->op - 1].nb_arg)
-			{
-				if (current->args[j])
-				{
-					if (current->args[j][0] == 'r')
-						prog[i++] = 0x1; //value qpres le r
-					else if (current->args[j][0] == '%')
-					{
-						if (is_digit(current->args[j][1]))
-							prog[i++] = ;
-						else
-						{
-							while (L_INST)
-
-						}
-					}
-				}
-			}
-			*/
+			write_args(current, prog, &i, champ);
 		}
 		current = current->next;
 	}
 	lseek(FD, 0x890, SEEK_SET);
 	write(FD, prog, PROG_SIZE);
+	ft_strdel(&prog);
 }
 
 void	write_binary(t_champ *champ)
 {
 	write_header(champ);
 	write_champ(champ);
-	/*	DEBUG DISPLAY 
-	printf("L_INST\n");
-	while (L_INST)
-	{
-		printf("%d - %s (%d) %d\n", L_INST->id, L_INST->label, L_INST->weight,
-				L_INST->op);
-		L_INST = L_INST->next;
-	}
-	printf("\nL_LABEL\n");
-	while (L_LABEL)
-	{
-		printf("%d - %s\n", L_LABEL->id, L_LABEL->label);
-		L_LABEL = L_LABEL->next;
-	}
-	printf("\nPROG_SIZE = %d\n", PROG_SIZE);
-	*/
 	ft_putstr("\033[32mWriting output program to ");
 	ft_putendl(NAME);
 }
@@ -585,5 +649,6 @@ int		main(int ac, char **av)
 	write_binary(champ);
 	if (close(FD) == -1)
 		ft_perror("Error: close failed");
+	while (1);
 	return (0);
 }
