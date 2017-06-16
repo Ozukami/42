@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/29 00:34:46 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/06/16 05:51:38 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/16 06:25:41 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -420,85 +420,6 @@ char		*set_name(char *str)
 	return (name);
 }
 
-void	write_prog_name(t_champ *champ)
-{
-	char	*name;
-	int		i;
-
-	if (!(name = ft_memalloc(ft_strlen(HEADER->prog_name))))
-		ft_perror("Error: malloc failed");
-	i = -1;
-	while ((HEADER->prog_name)[++i])
-		name[i] = (HEADER->prog_name)[i];
-	write(FD, name, ft_strlen(HEADER->prog_name));
-	ft_strdel(&name);
-}
-
-void	write_comment(t_champ *champ)
-{
-	char	*comment;
-	int		i;
-
-	if (!(comment = ft_memalloc(ft_strlen(HEADER->comment))))
-		ft_perror("Error: malloc failed");
-	i = -1;
-	while ((HEADER->comment)[++i])
-		comment[i] = (HEADER->comment)[i];
-	lseek(FD, 0x8c, SEEK_SET);
-	write(FD, comment, ft_strlen(HEADER->comment));
-	ft_strdel(&comment);
-}
-
-void	write_prog_size(t_champ *champ)
-{
-	char	*prog_size;
-
-	if (!(prog_size = ft_memalloc(4)))
-		ft_perror("Error: malloc failed");
-	prog_size[3] = PROG_SIZE & 0xff;
-	prog_size[2] = (PROG_SIZE >> 8) & 0xff;
-	prog_size[1] = (PROG_SIZE >> 16) & 0xff;
-	prog_size[0] = (PROG_SIZE >> 24) & 0xff;
-	lseek(FD, 0x88, SEEK_SET);
-	write(FD, prog_size, 4);
-	ft_strdel(&prog_size);
-}
-
-void	write_header(t_champ *champ)
-{
-	int		*magic;
-	char	c;
-
-	if (!(magic = ft_memalloc(sizeof(int))))
-		ft_perror("Error: malloc failed");
-	magic[0] = 0xf383ea00;
-	write(FD, magic, 4);
-	write_prog_name(champ);
-	write_comment(champ);
-	write_prog_size(champ);
-	lseek(FD, 0x88F, SEEK_SET);
-	c = 0x0;
-	write(FD, &c, 1);
-	free(magic);
-}
-
-void	write_value(char *prog, int value, int size)
-{
-	size = (size) ? size : 2;
-	if (size == 4)
-	{
-		prog[3] = value & 0xff;
-		prog[2] = (value >> 8) & 0xff;
-		prog[1] = (value >> 16) & 0xff;
-		prog[0] = (value >> 24) & 0xff;
-	}
-	else
-	{
-		prog[1] = value & 0xff;
-		prog[0] = (value >> 8) & 0xff;
-	}
-}
-
 int		get_value(t_champ *champ, int id_label, t_instruction *instruction)
 {
 	int				value;
@@ -544,86 +465,13 @@ int		get_id_label(t_champ *champ, char *arg)
 	return (id_label);
 }
 
-void	write_label(char *prog, t_champ *champ,
-		t_instruction *instruction, char *arg)
-{
-	int				value;
-	int				id_label;
-
-	id_label = get_id_label(champ, arg);
-	value = get_value(champ, id_label, instruction);
-	if (g_op_tab[instruction->op - 1].label_size == 4)
-	{
-		prog[3] = value & 0xff;
-		prog[2] = (value >> 8) & 0xff;
-		prog[1] = (value >> 16) & 0xff;
-		prog[0] = (value >> 24) & 0xff;
-	}
-	else
-	{
-		prog[1] = value & 0xff;
-		prog[0] = (value >> 8) & 0xff;
-	}
-	ft_strdel(&arg);
-}
-
-void	write_args(t_instruction *current, char *prog, int *i, t_champ *champ)
-{
-	int				j;
-	int				dir;
-
-	j = -1;
-	while (++j < g_op_tab[current->op - 1].nb_arg)
-	{
-		if (current->args[j][0] == 'r')
-			prog[(*i)++] = ft_atoi((current->args[j]) + 1);
-		else
-		{
-			dir = (current->args[j][0] == DIRECT_CHAR) ? 1 : 0;
-			if (current->args[j][dir] == LABEL_CHAR)
-				write_label(&(prog[*i]), champ, current,
-						ft_strsub(current->args[j], 1 + dir,
-							ft_strlen(current->args[j]) - 1 - dir));
-			else
-				write_value(&(prog[*i]), ft_atoi(current->args[j] + dir),
-						g_op_tab[current->op - 1].label_size * dir);
-			*i += (dir) ? g_op_tab[current->op - 1].label_size : 2;
-		}
-	}
-}
-
-void	write_champ(t_champ *champ)
-{
-	t_instruction	*current;
-	char			*prog;
-	int				i;
-
-	if (!(prog = ft_memalloc(PROG_SIZE + 1)))
-		ft_perror("Error: malloc failed");
-	i = 0;
-	current = L_INST;
-	while (current)
-	{
-		if (current->op)
-		{
-			prog[i++] = g_op_tab[current->op - 1].opcode;
-			if (g_op_tab[current->op - 1].ocp)
-				prog[i++] = current->ocp;
-			write_args(current, prog, &i, champ);
-		}
-		current = current->next;
-	}
-	lseek(FD, 0x890, SEEK_SET);
-	write(FD, prog, PROG_SIZE);
-	ft_strdel(&prog);
-}
-
 void	write_binary(t_champ *champ)
 {
 	write_header(champ);
 	write_champ(champ);
 	ft_putstr("\033[32mWriting output program to ");
 	ft_putendl(NAME);
+	ft_putstr("\033[0m");
 }
 
 int		main(int ac, char **av)
@@ -649,6 +497,5 @@ int		main(int ac, char **av)
 	write_binary(champ);
 	if (close(FD) == -1)
 		ft_perror("Error: close failed");
-	while (1);
 	return (0);
 }

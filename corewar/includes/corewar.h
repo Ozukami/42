@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/29 03:21:32 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/06/15 05:26:49 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/16 06:25:50 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@
 # define L_LABEL	(champ->l_label)
 
 # define PROG_SIZE	(champ->header->prog_size)
+
+extern t_op						g_op_tab[17];
 
 typedef struct s_instruction	t_instruction;
 typedef struct s_label_list		t_label_list;
@@ -90,5 +92,18 @@ struct				s_champ
 
 t_state				*init_automaton(void);
 void				init_op_tab(t_champ *champ);
+
+void	write_value(char *prog, int value, int size);
+void	write_label(char *prog, t_champ *champ,
+		t_instruction *instruction, char *arg);
+void	write_args(t_instruction *current, char *prog, int *i, t_champ *champ);
+void	write_champ(t_champ *champ);
+void	write_prog_name(t_champ *champ);
+void	write_comment(t_champ *champ);
+void	write_prog_size(t_champ *champ);
+void	write_header(t_champ *champ);
+
+int		get_value(t_champ *champ, int id_label, t_instruction *instruction);
+int		get_id_label(t_champ *champ, char *arg);
 
 #endif
