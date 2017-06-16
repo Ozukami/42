@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/16 06:10:10 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/16 06:18:04 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/16 09:01:09 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,13 @@ void	write_label(char *prog, t_champ *champ,
 {
 	int				value;
 	int				id_label;
+	int				dir;
 
-	id_label = get_id_label(champ, arg);
+	dir = (arg[0] == DIRECT_CHAR) ? 1 : 0;
+	id_label = get_id_label(champ, ft_strsub(arg, dir + 1,
+				ft_strlen(arg) - dir - 1));
 	value = get_value(champ, id_label, instruction);
-	if (g_op_tab[instruction->op - 1].label_size == 4)
+	if (dir && g_op_tab[instruction->op - 1].label_size == 4)
 	{
 		prog[3] = value & 0xff;
 		prog[2] = (value >> 8) & 0xff;
@@ -68,8 +71,7 @@ void	write_args(t_instruction *current, char *prog, int *i, t_champ *champ)
 			dir = (current->args[j][0] == DIRECT_CHAR) ? 1 : 0;
 			if (current->args[j][dir] == LABEL_CHAR)
 				write_label(&(prog[*i]), champ, current,
-						ft_strsub(current->args[j], 1 + dir,
-							ft_strlen(current->args[j]) - 1 - dir));
+						current->args[j]);
 			else
 				write_value(&(prog[*i]), ft_atoi(current->args[j] + dir),
 						g_op_tab[current->op - 1].label_size * dir);
