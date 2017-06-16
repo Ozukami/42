@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/16 07:01:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/16 07:01:35 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/16 07:36:20 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,9 @@ void			get_args(t_champ *champ, char *str, t_instruction *instruction)
 		I_OCP = I_OCP << 2;
 	}
 	while (i++ < 3)
+	{
 		I_OCP = I_OCP << 2;
+	}
 }
 
 t_instruction	*get_instruction(char *line, t_champ *champ)

@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/16 06:38:13 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/16 06:57:06 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/16 07:36:24 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int		check_ind_dir(t_instruction *instruction, t_champ *champ, char *str)
 		update_weight(instruction, champ, (g_op_tab[I_OP - 1]).label_size);
 	else
 		update_weight(instruction, champ, 2);
-	return ((str[0] == DIRECT_CHAR) ? T_DIR : T_IND);
+	return ((str[0] == DIRECT_CHAR) ? T_DIR : T_IND - 1);
 }
 
 char	*check_com_arg(char *str)
