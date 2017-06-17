@@ -1,8 +1,9 @@
 .comment"comment"
-.name"name"
+.name"na
+me"
 
 label:						#lol
-	sti r1,%:loop,%600000		#lol
+	sti r1,%:loop,%1		#lol
 	and %:loop,r2,r2		##XDQHIU
 	fork %:loop				;mdrliom
 	ld %1,r3#lolefwf

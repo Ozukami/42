@@ -1,3 +1,5 @@
 *.cor
 .*
 asm
+a.out
+vm
