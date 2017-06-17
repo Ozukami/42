@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/17 00:00:11 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/17 00:34:22 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/17 08:34:45 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ void	parse_file(t_champ *champ)
 
 	r = 0;
 	while (r != 4 && get_next_line(FD, &line))
-		r += check_header(champ, str_epur(line));
+		r += check_header(champ, line);
+	while (1);
 	while (get_next_line(FD, &line))
 	{
 		if ((line = str_epur(line)) && line[0] != COMMENT_CHAR
@@ -90,6 +91,7 @@ int		process(char *file)
 	t_champ		*champ;
 
 	champ = init_champ();
+	printf("%zu\n", sizeof(t_champ));
 	if ((FD = open(file, O_RDONLY)) == -1)
 		ft_perror("Error: open failed");
 	parse_file(champ);

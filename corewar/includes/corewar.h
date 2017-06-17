@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/29 03:21:32 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/06/17 00:30:44 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/17 06:31:24 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,8 @@ int					get_value(t_champ *champ, int id_label,
 		t_instruction *instruction);
 int					get_id_label(t_champ *champ, char *arg);
 
-int					get_name(t_champ *champ, char **split, int verif);
-int					get_comment(t_champ *champ, char **split, int verif);
+int					get_name(t_champ *champ, char **split, int verif, int i);
+int					get_comment(t_champ *champ, char **split, int verif, int i);
 int					check_header(t_champ *champ, char *line);
 
 int					get_label(char *str, t_instruction *instruction,

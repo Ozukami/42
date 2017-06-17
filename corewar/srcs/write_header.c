@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/16 06:08:55 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/16 06:09:08 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/17 08:23:10 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	write_prog_name(t_champ *champ)
 	char	*name;
 	int		i;
 
-	if (!(name = ft_memalloc(ft_strlen(HEADER->prog_name))))
+	if (!(name = ft_memalloc(ft_strlen(HEADER->prog_name) + 1)))
 		ft_perror("Error: malloc failed");
 	i = -1;
 	while ((HEADER->prog_name)[++i])
@@ -32,7 +32,7 @@ void	write_comment(t_champ *champ)
 	char	*comment;
 	int		i;
 
-	if (!(comment = ft_memalloc(ft_strlen(HEADER->comment))))
+	if (!(comment = ft_memalloc(ft_strlen(HEADER->comment) + 1)))
 		ft_perror("Error: malloc failed");
 	i = -1;
 	while ((HEADER->comment)[++i])

@@ -1,5 +1,6 @@
-.comment"comment"
-.name"name"
+.comment "comment"
+.name "name
+"
 
 label:						#lol
 	sti r1,%:loop,%600000		#lol
