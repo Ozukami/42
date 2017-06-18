@@ -3,3 +3,5 @@
 asm
 a.out
 vm
+ncurses
+corewar

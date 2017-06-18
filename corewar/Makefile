@@ -29,12 +29,12 @@ $(ASM): libft.a $(addprefix srcs/, $(SRCASM))
 
 $(VM): libft.a $(addprefix srcs/, $(SRCVM))
 	@printf "\033[0;36m> Compiling corewar\033[0m"
-	@gcc $(FLAGS) $(addprefix srcs/, $(SRCVM)) -L. lft -I includes/ -o $(VM)
+	@gcc $(FLAGS) $(addprefix srcs/, $(SRCVM)) -L. -lft -I includes/ -o $(VM)
 	@printf "\033[0;32m OK\n\033[0m"
 
 $(NC): libft.a $(addprefix srcs/, $(SRCNC))
 	@printf "\033[0;36m> Compiling ncurses testing program\033[0m"
-	@gcc $(FLAGS) $(addprefix srcs/, $(SRCNC)) -L. lft -lncurses -I includes/ -o $(NC)
+	@gcc $(FLAGS) $(addprefix srcs/, $(SRCNC)) -L. -lft -lncurses -I includes/ -o $(NC)
 	@printf "\033[0;32m OK\n\033[0m"
 
 libft.a:
