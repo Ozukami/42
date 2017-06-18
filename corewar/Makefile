@@ -11,15 +11,30 @@
 # **************************************************************************** #
 
 ASM = asm
-MV = corewar
+VM = corewar
+NC = ncurses
 FLAGS = -Wall -Wextra
-SRCASM = *.c
+SRCASM = add.c automaton.c check.c get_instruction.c main.c \
+parse_header.c tools.c write_champ.c write_header.c
+SRCVM = 
+SRCNC = test_ncurses.c
+CHAMPDIR =
 
 all: $(ASM)
 
 $(ASM): libft.a $(addprefix srcs/, $(SRCASM))
-	@printf "\033[0;36m> Compiling corewar-asm\033[0m"
-	@gcc $(FLAGS) -I includes/ -L. -lft $(addprefix srcs/, $(SRCASM)) -o $(ASM)
+	@printf "\033[0;36m> Compiling asm\033[0m"
+	@gcc $(FLAGS) $(addprefix srcs/, $(SRCASM)) -L. -lft -I includes/ -o $(ASM)
+	@printf "\033[0;32m OK\n\033[0m"
+
+$(VM): libft.a $(addprefix srcs/, $(SRCVM))
+	@printf "\033[0;36m> Compiling corewar\033[0m"
+	@gcc $(FLAGS) $(addprefix srcs/, $(SRCVM)) -L. lft -I includes/ -o $(VM)
+	@printf "\033[0;32m OK\n\033[0m"
+
+$(NC): libft.a $(addprefix srcs/, $(SRCNC))
+	@printf "\033[0;36m> Compiling ncurses testing program\033[0m"
+	@gcc $(FLAGS) $(addprefix srcs/, $(SRCNC)) -L. lft -lncurses -I includes/ -o $(NC)
 	@printf "\033[0;32m OK\n\033[0m"
 
 libft.a:
@@ -27,15 +42,25 @@ libft.a:
 	@mv libft/libft.a .
 	@make clean -C libft/
 
-run: $(ASM)
+run-asm: $(ASM)
 ifeq ($(ARGS),)
-	./$(ASM) < test_champ.s
+	./$(ASM) test_champ.s
 else
-	./$(ASM) < $(ARGS)
+	./$(ASM) $(ARGS)
+endif
+
+run-corewar: $(VM)
+ifeq ($(ARGS),)
+	./$(VM) test_champ.s
+else
+	./$(VM) $(ARGS)
 endif
 
 clean:
 	@rm -f libft.a
+
+clean-cor:
+	@rm -f *.cor
 
 fclean: clean
 	@rm -f $(ASM)

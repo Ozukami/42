@@ -12,6 +12,7 @@
 
 #include "corewar.h"
 #include "sys/types.h"
+#include "sys/wait.h"
 
 t_op	g_op_tab[17] =
 {
