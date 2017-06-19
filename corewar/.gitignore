@@ -1,4 +1,5 @@
 *.cor
+comp*
 .*
 asm
 a.out
