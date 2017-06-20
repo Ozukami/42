@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "corewar.h"
+#include "asm.h"
 #include "sys/types.h"
 
 void	add_label(t_champ *champ, char *str, int id)

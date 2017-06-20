@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "corewar.h"
+#include "asm.h"
 #include "sys/types.h"
 
 void	write_prog_name(t_champ *champ)

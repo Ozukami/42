@@ -1,4 +1,4 @@
-.name "zork"
+.name "zork3"
 .comment "zork"
 
 

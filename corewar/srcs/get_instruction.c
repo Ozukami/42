@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "corewar.h"
+#include "asm.h"
 #include "sys/types.h"
 
 int				get_label(char *str, t_instruction *instruction, t_champ *champ)

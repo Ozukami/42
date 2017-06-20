@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "corewar.h"
+#include "asm.h"
 #include "sys/types.h"
 
 int		check_op(t_state *state, char *str, int i)
