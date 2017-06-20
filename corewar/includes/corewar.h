@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/20 02:47:48 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/20 04:00:28 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/20 04:10:37 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,16 @@
 # define A_CYCLE			(vm->arena->nb_cycle)
 
 # define P_LPROC			(player->l_proc)
-# define P_NAME				(player->name)
 # define P_ID				(player->id)
 # define P_PROC				(player->nb_proc)
 # define P_LIVE				(player->nb_live)
 # define P_REG				(player->reg)
 # define P_NEXT				(player->next)
+
+# define C_NAME				(player->champ->name)
+# define C_COM				(player->champ->comment)
+# define C_PROG				(player->champ->prog)
+# define C_PSIZE			(player->champ->prog_size)
 
 # define PR_PC				(proc->pc)
 # define PR_CARRY			(proc->carry)
@@ -48,6 +52,7 @@ typedef struct s_vm			t_vm;
 typedef struct s_ncurses	t_ncurses;
 typedef struct s_arena		t_arena;
 typedef struct s_player		t_player;
+typedef struct s_champ		t_champ;
 typedef struct s_proc		t_proc;
 
 struct						s_proc
@@ -58,10 +63,18 @@ struct						s_proc
 	t_proc					*next;
 };
 
+struct						s_champ
+{
+	char					*name;
+	char					*comment;
+	char					*prog;
+	int						prog_size;
+};
+
 struct						s_player
 {
 	t_proc					*l_proc;
-	char					*name;
+	t_champ					*champ;
 	int						id;
 	int						nb_proc;
 	int						nb_live;
