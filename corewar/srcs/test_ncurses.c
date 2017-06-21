@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 05:38:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/21 05:53:34 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/22 01:49:06 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,19 +219,17 @@ t_player		*get_player(int nb_args, char **args)
 	return (l_player);
 }
 
-void		verif_nb_player(t_player *l_player)
+void		verif_nb_player(t_vm *vm)
 {
 	t_player	*current;
-	int			nb;
 
-	nb = 0;
-	current = l_player;
+	current = A_LPLAYER;
 	while (current)
 	{
-		nb++;
+		A_NBPLAYER++;
 		current = current->next;
 	}
-	if (nb > MAX_PLAYERS)
+	if (A_NBPLAYER > MAX_PLAYERS)
 		ft_perror("Error: too many players");
 }
 
@@ -244,9 +242,10 @@ void		init_arena(t_vm *vm, int nb_args, char **args)
 	ARENA = arena;
 	A_PROC = 0;
 	A_CYCLE = 0;
+	A_NBPLAYER = 0;
 	A_MEMORY = ft_memalloc(MEM_SIZE);
 	A_LPLAYER = get_player(nb_args, args);
-	verif_nb_player(A_LPLAYER);
+	verif_nb_player(vm);
 }
 
 /*
@@ -256,9 +255,35 @@ void		init_arena(t_vm *vm, int nb_args, char **args)
 ** at this position
 */
 
+void		init_memory(t_vm *vm)
+{
+	t_player	*current;
+	int			i;
+	int			j;
+
+	current = A_LPLAYER;
+	j = -1;
+	while (current)
+	{
+		i = -1;
+		while (++i < current->champ->prog_size)
+		{
+			printf("%02x ", current->champ->prog[i]);
+			A_MEMORY[++j] = current->champ->prog[i];
+		}
+		j += MEM_SIZE / A_NBPLAYER - current->champ->prog_size;
+		A_NBPLAYER++;
+		current = current->next;
+	}
+	j = -1;
+	while (++j < MEM_SIZE)
+	   printf("%02x ", A_MEMORY[j]);	
+	printf("\n\n%d\n", j);
+}
+
 void		load_champ(t_vm *vm)
 {
-
+	init_memory(vm);
 }
 
 /*

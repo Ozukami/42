@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/20 02:47:48 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/21 04:45:17 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/22 00:49:13 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ extern int					errno;
 # define A_MEMORY			(vm->arena->memory)
 # define A_PROC				(vm->arena->nb_proc)
 # define A_CYCLE			(vm->arena->nb_cycle)
+# define A_NBPLAYER			(vm->arena->nb_player)
 
 # define P_LPROC			(player->l_proc)
 # define P_CHAMP			(player->champ)
@@ -96,6 +97,7 @@ struct						s_arena
 	unsigned char			*memory;
 	int						nb_proc;
 	int						nb_cycle;
+	int						nb_player;
 };
 
 struct						s_ncurses
