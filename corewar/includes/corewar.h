@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/20 02:47:48 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/21 02:59:47 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/21 04:45:17 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/uio.h>
+# include <errno.h>
+
+extern int					errno;
 
 # define NCURSES			(vm->ncurses)
 # define ARENA				(vm->arena)
