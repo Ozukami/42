@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 05:38:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/21 05:39:12 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/21 05:53:34 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,19 @@ t_champ			*read_champ(int fd)
 	return (champ);
 }
 
+t_proc			*new_proc(void)
+{
+	t_proc		*proc;
+
+	if (!(proc = ft_memalloc(sizeof(t_proc))))
+		ft_perror(strerror(errno));
+	PR_PC = 0;
+	PR_CARRY = 0;
+	PR_WAIT = 0;
+	PR_NEXT = NULL;
+	return (proc);
+}
+
 t_player		*read_file(int fd, int id)
 {
 	t_player	*player;
@@ -140,7 +153,7 @@ t_player		*read_file(int fd, int id)
 
 	if (!(player = ft_memalloc(sizeof(t_player))))
 		ft_perror(strerror(errno));
-	P_LPROC = NULL;
+	P_LPROC = new_proc();
 	P_CHAMP = read_champ(fd);
 	P_ID = (id != -1) ? id : static_id--;
 	P_PROC = 1;
@@ -236,6 +249,29 @@ void		init_arena(t_vm *vm, int nb_args, char **args)
 	verif_nb_player(A_LPLAYER);
 }
 
+/*
+** load champ of each players in the memory of the vm
+** at the good position
+** and set the PC of the first proc of each players
+** at this position
+*/
+
+void		load_champ(t_vm *vm)
+{
+
+}
+
+/*
+** run the vm with the champs
+** use the implementation of op
+** display with ncurses
+*/
+
+void		process(t_vm *vm)
+{
+
+}
+
 int			main(int ac, char **av)
 {
 	t_vm	*vm;
@@ -245,6 +281,7 @@ int			main(int ac, char **av)
 	if (!(vm = ft_memalloc(sizeof(t_vm))))
 		ft_perror(strerror(errno));
 	init_arena(vm, ac, av);
-	//process(vm);
+	load_champ(vm);
+	process(vm);
 	return (1);
 }
