@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 05:38:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/22 03:44:06 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/22 06:23:26 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ void	init_mem(t_vm *vm)
 
 void	ft_usage(void)
 {
-	ft_putendl("usage: ./corewar [-a] [-d N -s N -v N | -ncurses --stealth]\
- <champ.cor> <...>");
+	ft_putendl("usage: ./corewar [-a] [-d N -s N -v N | -nc --stealth] \
+<[-n N] champ.cor> <...>");
 	ft_putendl("#############################");
 	ft_putendl("	-a			: Prints output from 'aff'");
 	ft_putendl("#### TEXT OUTPUT MODE #######");
@@ -53,7 +53,7 @@ can be added together to enable several");
 	ft_putendl("				- 8 : Show deaths");
 	ft_putendl("				- 16 : Show PC movements (Except for jumps)");
 	ft_putendl("#### NCURSES OUTPUT MODE ####");
-	ft_putendl("	 -ncurses	: Ncurses output mode");
+	ft_putendl("	 -nc		: Ncurses output mode");
 	ft_putendl("	--stealth	: Hides the real contents of the memory");
 	ft_putendl("#############################");
 	exit(0);
@@ -196,7 +196,7 @@ t_player		*get_player(int nb_args, char **args)
 	if (!(l_player = ft_memalloc(sizeof(t_player))))
 		ft_perror(strerror(errno));
 	tmp = NULL;
-	i = 0;
+	i = -1;
 	while (++i < nb_args)
 	{
 		id = -1;
@@ -292,24 +292,10 @@ void		process(t_vm *vm)
 	(void)vm;
 }
 
-int			main(int ac, char **av)
+void		ncurses_process(t_vm *vm)
 {
-	t_vm	*vm;
-
-	if (ac < 2)
-		ft_usage();
-	if (!(vm = ft_memalloc(sizeof(t_vm))))
-		ft_perror(strerror(errno));
 	if (!(NCURSES = ft_memalloc(sizeof(t_ncurses))))
 		ft_perror(strerror(errno));
-
-	// options apres les fichiers ?
-	//get_options(); // [-a] [-d N -s N -v N -n N | -ncurses]
-
-	init_arena(vm, ac, av);
-	load_champ(vm);
-	//process(vm);
-
 	initscr();
 	noecho();
 	keypad(stdscr, TRUE);
@@ -324,5 +310,90 @@ int			main(int ac, char **av)
 		refresh();
 	}
 	endwin();
+}
+
+void		set_opt(int *opt, char *n)
+{
+	int		opt_n;
+
+	opt_n = ft_atoi(n);
+	if (opt_n > -1)
+		*opt = opt_n;
+}
+
+char		**get_options(t_vm *vm, int ac, char **av)
+{
+	char	**args;
+	int		i;
+	int		j;
+
+	if (!(args = ft_memalloc(sizeof(char *) * (ac + 1))))
+		ft_perror(strerror(errno));
+	i = 0;
+	j = 0;
+	while (++i < ac)
+	{
+		if (ft_strequ(av[i], "-d"))
+			(++i < ac) ? set_opt(&(vm->opt_d), av[i]) : ft_perror("Error");
+		else if (ft_strequ(av[i], "-s"))
+			(++i < ac) ? set_opt(&(vm->opt_s), av[i]) : ft_perror("Error");
+		else if (ft_strequ(av[i], "-v"))
+			(++i < ac) ? set_opt(&(vm->opt_v), av[i]) : ft_perror("Error");
+		else if (ft_strequ(av[i], "-a"))
+			OPT_A = 1;
+		else if (ft_strequ(av[i], "-nc"))
+			OPT_NC = 1;
+		else
+			args[j++] = ft_strdup(av[i]);
+	}
+	args[j] = 0;
+	return (args);
+}
+
+t_vm		*init_vm(void)
+{
+	t_vm	*vm;
+
+	if (!(vm = ft_memalloc(sizeof(t_vm))))
+		ft_perror(strerror(errno));
+	NCURSES = NULL;
+	ARENA = NULL;
+	OPT_NC = 0;
+	OPT_A = 0;
+	OPT_D = -1;
+	OPT_S = -1;
+	OPT_V = -1;
+	return (vm);
+}
+
+int			main(int ac, char **av)
+{
+	t_vm	*vm;
+	char	**args;
+
+	if (ac < 2)
+		ft_usage();
+	vm = init_vm();
+	args = get_options(vm, ac, av); // [-a] [-d N -s N -v N -n N | -ncurses]
+
+	printf("ARGS:\n");
+	int	i = -1;
+	while (args[++i])
+		printf("	%s\n", args[i]);
+	printf("-nc = %d\n", OPT_NC);
+	printf("-a = %d\n", OPT_A);
+	printf("-d = %d\n", OPT_D);
+	printf("-s = %d\n", OPT_S);
+	printf("-v = %d\n", OPT_V);
+
+	if (!(args[0]))
+		ft_perror("Error: bad usage");
+
+	init_arena(vm, tab_size(args), args); // faudra penser a free args
+	load_champ(vm);
+	//process(vm);
+
+	if (OPT_NC > 0)
+		ncurses_process(vm);
 	return (1);
 }
