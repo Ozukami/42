@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 05:38:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/22 01:49:06 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/06/22 03:44:06 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,52 +15,47 @@
 #include <stdlib.h>
 #include <string.h>
 
-void	init_mem(WINDOW *memory)
+void	init_mem(t_vm *vm)
 {
-	int		line;
-	int		col;
-	char	*str;
+	char	*line;
+	int		i;
+	int		x;
+	int		y;
 
-	str = strdup(" 00");
-	line = 1;
-	while (line < 65)
+	if (!(line = ft_memalloc(MEM_SIZE)))
+		ft_perror(strerror(errno));
+	i = -1;
+	while (++i < MEM_SIZE)
 	{
-		col = 1;
-		while (col < 191)
-		{
-			mvwprintw(memory, line, col, str);
-			col += 3;
-		}
-		line++;
+		x = i % 64;
+		y = i / 64;
+		mvwprintw(W_MEMORY, y + 1, x + 2 + (x * 3),
+				"%02x ", A_MEMORY[i]);
 	}
-}
-
-void	win(void)
-{
-	WINDOW *memory;
-	WINDOW *info;
-
-	initscr();
-	noecho();
-	keypad(stdscr, TRUE);
-	curs_set(0);
-	while (1)
-	{
-		memory = subwin(stdscr, 64 + 2, (64 * 2) + 63 + 4, 0, 0);
-		init_mem(memory);
-		info = subwin(stdscr, 64 + 2, 56, 0, (64 * 2) + 63 + 4);
-		box(memory, ACS_VLINE, ACS_HLINE);
-		box(info, ACS_VLINE, ACS_HLINE);
-		refresh();
-	}
-	endwin();
-	free(memory);
-	free(info);
 }
 
 void	ft_usage(void)
 {
-	// print usage
+	ft_putendl("usage: ./corewar [-a] [-d N -s N -v N | -ncurses --stealth]\
+ <champ.cor> <...>");
+	ft_putendl("#############################");
+	ft_putendl("	-a			: Prints output from 'aff'");
+	ft_putendl("#### TEXT OUTPUT MODE #######");
+	ft_putendl("	-d N		: Dumps memory after N cycles then exits");
+	ft_putendl("	-s N		: Run N cycles, dumps memory, pauses,\
+then repeats");
+	ft_putendl("	-v N		: Verbosity levels,\
+can be added together to enable several");
+	ft_putendl("				- 0 : Show only essentials");
+	ft_putendl("				- 1 : Show lives");
+	ft_putendl("				- 2 : Show cycles");
+	ft_putendl("				- 4 : Show operations");
+	ft_putendl("				- 8 : Show deaths");
+	ft_putendl("				- 16 : Show PC movements (Except for jumps)");
+	ft_putendl("#### NCURSES OUTPUT MODE ####");
+	ft_putendl("	 -ncurses	: Ncurses output mode");
+	ft_putendl("	--stealth	: Hides the real contents of the memory");
+	ft_putendl("#############################");
 	exit(0);
 }
 
@@ -261,24 +256,24 @@ void		init_memory(t_vm *vm)
 	int			i;
 	int			j;
 
+	// reverse list
 	current = A_LPLAYER;
 	j = -1;
 	while (current)
 	{
+		current->l_proc->pc = j + 1;
 		i = -1;
-		while (++i < current->champ->prog_size)
-		{
-			printf("%02x ", current->champ->prog[i]);
+		while (++i < (int)current->champ->prog_size)
 			A_MEMORY[++j] = current->champ->prog[i];
-		}
 		j += MEM_SIZE / A_NBPLAYER - current->champ->prog_size;
-		A_NBPLAYER++;
 		current = current->next;
 	}
+	/*
 	j = -1;
 	while (++j < MEM_SIZE)
 	   printf("%02x ", A_MEMORY[j]);	
 	printf("\n\n%d\n", j);
+	*/
 }
 
 void		load_champ(t_vm *vm)
@@ -294,7 +289,7 @@ void		load_champ(t_vm *vm)
 
 void		process(t_vm *vm)
 {
-
+	(void)vm;
 }
 
 int			main(int ac, char **av)
@@ -305,8 +300,29 @@ int			main(int ac, char **av)
 		ft_usage();
 	if (!(vm = ft_memalloc(sizeof(t_vm))))
 		ft_perror(strerror(errno));
+	if (!(NCURSES = ft_memalloc(sizeof(t_ncurses))))
+		ft_perror(strerror(errno));
+
+	// options apres les fichiers ?
+	//get_options(); // [-a] [-d N -s N -v N -n N | -ncurses]
+
 	init_arena(vm, ac, av);
 	load_champ(vm);
-	process(vm);
+	//process(vm);
+
+	initscr();
+	noecho();
+	keypad(stdscr, TRUE);
+	curs_set(0);
+	while (1)
+	{
+		W_MEMORY = subwin(stdscr, 64 + 2, (64 * 3) + 2, 0, 0);
+		W_INFO = subwin(stdscr, 64 + 2, 56, 0, (64 * 3) + 2);
+		init_mem(vm);
+		box(W_MEMORY, ACS_VLINE, ACS_HLINE);
+		box(W_INFO, ACS_VLINE, ACS_HLINE);
+		refresh();
+	}
+	endwin();
 	return (1);
 }
