@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 05:38:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/29 05:00:46 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/29 05:46:52 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -337,6 +337,47 @@ void		cycle_verif(t_vm *vm)
 		A_NBCHECK++;
 }
 
+void		update_nb_proc(t_vm *vm, int id_player)
+{
+	t_player	*curr;
+
+	curr = A_LPLAYER;
+	while (curr)
+	{
+		if (curr->id == id_player)
+			(curr->nb_proc)--;
+		curr = curr->next;
+	}
+}
+
+void		kill_proc(t_vm *vm, int id)
+{
+	t_proc	*curr;
+	t_proc	*tmp;
+
+	curr = A_LPROC;
+	if (curr->id == id)
+	{
+		tmp = curr;
+		A_LPROC = tmp->next;
+		update_nb_proc(vm, tmp->id_player);
+		free(tmp);
+		return ;
+	}
+	while (curr->next)
+	{
+		if (curr->next->id == id)
+		{
+			tmp = curr->next;
+			curr->next = tmp->next;
+			update_nb_proc(vm, tmp->id_player);
+			free(tmp);
+			return ;
+		}
+		curr = curr->next;
+	}
+}
+
 void		check_alive(t_vm *vm)
 {
 	t_player	*curr_player;
@@ -346,14 +387,14 @@ void		check_alive(t_vm *vm)
 	while (curr_proc)
 	{
 		if (!curr_proc->alive)
-			// TODO kill proc
+			kill_proc(vm, curr_proc->id);
 		curr_proc = curr_proc->next;
 	}
 	curr_player = A_LPLAYER;
 	while (curr_player)
 	{
 		if (curr_player->nb_proc == 0)
-			// TODO kill player
+			A_NBPLAYER--;
 		curr_player = curr_player->next;
 	}
 	if (A_NBPLAYER == 1)
