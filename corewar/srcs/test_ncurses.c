@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 05:38:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/29 02:24:59 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/29 05:00:46 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,19 +133,6 @@ t_champ			*read_champ(int fd)
 	return (champ);
 }
 
-t_proc			*new_proc(void)
-{
-	t_proc		*proc;
-
-	if (!(proc = ft_memalloc(sizeof(t_proc))))
-		ft_perror(strerror(errno));
-	PR_PC = 0;
-	PR_CARRY = 0;
-	PR_WAIT = 0;
-	PR_NEXT = NULL;
-	return (proc);
-}
-
 t_player		*read_file(int fd, int id)
 {
 	t_player	*player;
@@ -153,7 +140,6 @@ t_player		*read_file(int fd, int id)
 
 	if (!(player = ft_memalloc(sizeof(t_player))))
 		ft_perror(strerror(errno));
-	P_LPROC = new_proc();
 	P_CHAMP = read_champ(fd);
 	P_ID = (id != -1) ? id : static_id--;
 	P_PROC = 1;
@@ -233,6 +219,60 @@ void		verif_nb_player(t_vm *vm)
 		ft_perror("Error: too many players");
 }
 
+t_proc			*new_proc(int id_player)
+{
+	t_proc		*proc;
+	static int	id = 1;
+
+	if (!(proc = ft_memalloc(sizeof(t_proc))))
+		ft_perror(strerror(errno));
+	PR_ID = id++;
+	PR_IDP = id_player;
+	PR_ALIVE = 0;
+	PR_PC = 0;
+	PR_CARRY = 0;
+	PR_WAIT = 0;
+	PR_NEXT = NULL;
+	return (proc);
+}
+
+t_proc		*init_proc(t_vm *vm)
+{
+	t_proc		*proc;
+	t_proc		*curr_proc;
+	t_player	*curr_player;
+
+	curr_player = A_LPLAYER;
+	curr_proc = NULL;
+	while (curr_player)
+	{
+		proc = new_proc(curr_player->id);
+		proc->next = curr_proc;
+		curr_proc = proc;
+		curr_player = curr_player->next;
+	}
+	return (proc);
+}
+
+void		lp_rev(t_vm *vm)
+{
+	t_player	*curr;
+	t_player	*tmp1;
+	t_player	*tmp2;
+
+	curr = A_LPLAYER;
+	tmp1 = NULL;
+	tmp2 = NULL;
+	while (curr)
+	{
+		tmp1 = curr;
+		curr = curr->next;
+		tmp1->next = tmp2;
+		tmp2 = tmp1;
+	}
+	A_LPLAYER = tmp1;
+}
+
 void		init_arena(t_vm *vm, int nb_args, char **args)
 {
 	t_arena		*arena;
@@ -242,10 +282,13 @@ void		init_arena(t_vm *vm, int nb_args, char **args)
 	ARENA = arena;
 	A_PROC = 0;
 	A_CYCLE = 0;
+	A_CTD = CYCLE_TO_DIE;
 	A_NBPLAYER = 0;
 	A_MEMORY = ft_memalloc(MEM_SIZE);
 	A_LPLAYER = get_player(nb_args, args);
 	verif_nb_player(vm);
+	lp_rev(vm);
+	A_LPROC = init_proc(vm);
 }
 
 /*
@@ -255,35 +298,67 @@ void		init_arena(t_vm *vm, int nb_args, char **args)
 ** at this position
 */
 
-void		init_memory(t_vm *vm)
+void		load_champ(t_vm *vm)
 {
 	t_player	*current;
 	int			i;
 	int			j;
 
-	// reverse list
 	current = A_LPLAYER;
 	j = -1;
 	while (current)
 	{
-		current->l_proc->pc = j + 1;
 		i = -1;
 		while (++i < (int)current->champ->prog_size)
 			A_MEMORY[++j] = current->champ->prog[i];
 		j += MEM_SIZE / A_NBPLAYER - current->champ->prog_size;
 		current = current->next;
 	}
-	/*
-	j = -1;
-	while (++j < MEM_SIZE)
-	   printf("%02x ", A_MEMORY[j]);	
-	printf("\n\n%d\n", j);
-	*/
 }
 
-void		load_champ(t_vm *vm)
+void		cycle_verif(t_vm *vm)
 {
-	init_memory(vm);
+	t_player	*curr_player;
+	int			total_live;
+
+	curr_player = A_LPLAYER;
+	total_live = 0;
+	while (curr_player)
+	{
+		total_live += curr_player->nb_live;
+		curr_player = curr_player->next;
+	}
+	if (total_live >= NBR_LIVE || A_NBCHECK == MAX_CHECKS)
+	{
+	 	A_CTD -= CYCLE_DELTA;
+	 	A_NBCHECK = 0;
+	}
+	else
+		A_NBCHECK++;
+}
+
+void		check_alive(t_vm *vm)
+{
+	t_player	*curr_player;
+	t_proc		*curr_proc;
+
+	curr_proc = A_LPROC;
+	while (curr_proc)
+	{
+		if (!curr_proc->alive)
+			// TODO kill proc
+		curr_proc = curr_proc->next;
+	}
+	curr_player = A_LPLAYER;
+	while (curr_player)
+	{
+		if (curr_player->nb_proc == 0)
+			// TODO kill player
+		curr_player = curr_player->next;
+	}
+	if (A_NBPLAYER == 1)
+		// TODO winner is
+	cycle_verif(vm);
 }
 
 /*
@@ -294,7 +369,27 @@ void		load_champ(t_vm *vm)
 
 void		process(t_vm *vm)
 {
-	(void)vm;
+
+	printf("Starting process, cycle = %d\n\n", A_CYCLE);
+	while (A_CTD > 0)
+	{
+		printf("Current cycle = %d\n", ++A_CYCLE);
+		if (A_CYCLE % A_CTD == 0)
+			check_alive(vm);
+		/*
+		 *	pour chaque proc
+		 *		if cycle_to_wait = 0
+		 *			executer l'op de memory[PC]
+		 *			set cycle_to_wait
+		 *		else
+		 *			cycle_to_wait --
+		 */
+	}
+	printf("OK\n");
+	/*
+	 *	WINNER = last alive
+	 *	print WINNER
+	 */
 }
 
 void		ncurses_process(t_vm *vm)
@@ -377,7 +472,7 @@ int			main(int ac, char **av)
 
 	init_arena(vm, tab_size(args), args); // faudra penser a free args
 	load_champ(vm);
-	//process(vm);
+	process(vm);
 
 	if (OPT_NC > 0)
 		ncurses_process(vm);

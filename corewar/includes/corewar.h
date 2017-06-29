@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/20 02:47:48 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/29 02:17:25 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/29 04:33:26 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,14 @@ extern int					errno;
 # define W_BORDER			2
 
 # define A_LPLAYER			(vm->arena->l_player)
+# define A_LPROC			(vm->arena->l_proc)
 # define A_MEMORY			(vm->arena->memory)
 # define A_PROC				(vm->arena->nb_proc)
 # define A_CYCLE			(vm->arena->nb_cycle)
+# define A_CTD				(vm->arena->cycle_to_die)
 # define A_NBPLAYER			(vm->arena->nb_player)
+# define A_NBCHECK			(vm->arena->nb_check)
 
-# define P_LPROC			(player->l_proc)
 # define P_CHAMP			(player->champ)
 # define P_ID				(player->id)
 # define P_PROC				(player->nb_proc)
@@ -54,6 +56,9 @@ extern int					errno;
 # define C_PROG				(player->champ->prog)
 # define C_PSIZE			(player->champ->prog_size)
 
+# define PR_ID				(proc->id)
+# define PR_IDP				(proc->id_player)
+# define PR_ALIVE			(proc->alive)
 # define PR_PC				(proc->pc)
 # define PR_CARRY			(proc->carry)
 # define PR_WAIT			(proc->cycle_to_wait)
@@ -68,6 +73,9 @@ typedef struct s_proc		t_proc;
 
 struct						s_proc
 {
+	int						id;
+	int						id_player;
+	int						alive;
 	int						pc;
 	int						carry;
 	int						cycle_to_wait;
@@ -84,7 +92,6 @@ struct						s_champ
 
 struct						s_player
 {
-	t_proc					*l_proc;
 	t_champ					*champ;
 	int						id;
 	int						nb_proc;
@@ -96,10 +103,14 @@ struct						s_player
 struct						s_arena
 {
 	t_player				*l_player;
+	t_proc					*l_proc;
 	unsigned char			*memory;
 	int						nb_proc;
 	int						nb_cycle;
+	int						cycle_to_die;
 	int						nb_player;
+	int						nb_check;
+	int						last_alive; // id player
 };
 
 struct						s_ncurses
