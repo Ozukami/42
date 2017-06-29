@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 05:38:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/22 06:23:26 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/29 02:24:59 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,18 @@ void	init_mem(t_vm *vm)
 	int		x;
 	int		y;
 
+	start_color();
+
+	init_pair(1, COLOR_GREEN, COLOR_BLACK);
+	init_pair(2, COLOR_BLACK, COLOR_GREEN);
+	init_pair(3, COLOR_BLUE, COLOR_BLACK);
+	init_pair(4, COLOR_BLACK, COLOR_BLUE);
+	init_pair(5, COLOR_RED, COLOR_BLACK);
+	init_pair(6, COLOR_BLACK, COLOR_RED);
+	init_pair(7, COLOR_CYAN, COLOR_BLACK);
+	init_pair(8, COLOR_BLACK, COLOR_CYAN);
+	init_pair(9, COLOR_WHITE, COLOR_BLACK);
+
 	if (!(line = ft_memalloc(MEM_SIZE)))
 		ft_perror(strerror(errno));
 	i = -1;
@@ -29,29 +41,22 @@ void	init_mem(t_vm *vm)
 	{
 		x = i % 64;
 		y = i / 64;
+		if (i < 2048)
+			wattron(W_MEMORY, COLOR_PAIR(1));
+		else
+			wattron(W_MEMORY, COLOR_PAIR(3));
 		mvwprintw(W_MEMORY, y + 1, x + 2 + (x * 3),
-				"%02x ", A_MEMORY[i]);
+				"%02x", A_MEMORY[i]);
 	}
+	wattron(W_MEMORY, COLOR_PAIR(9));
 }
 
 void	ft_usage(void)
 {
-	ft_putendl("usage: ./corewar [-a] [-d N -s N -v N | -nc --stealth] \
+	ft_putendl("usage: ./corewar [-d N | -nc --stealth] \
 <[-n N] champ.cor> <...>");
-	ft_putendl("#############################");
-	ft_putendl("	-a			: Prints output from 'aff'");
 	ft_putendl("#### TEXT OUTPUT MODE #######");
 	ft_putendl("	-d N		: Dumps memory after N cycles then exits");
-	ft_putendl("	-s N		: Run N cycles, dumps memory, pauses,\
-then repeats");
-	ft_putendl("	-v N		: Verbosity levels,\
-can be added together to enable several");
-	ft_putendl("				- 0 : Show only essentials");
-	ft_putendl("				- 1 : Show lives");
-	ft_putendl("				- 2 : Show cycles");
-	ft_putendl("				- 4 : Show operations");
-	ft_putendl("				- 8 : Show deaths");
-	ft_putendl("				- 16 : Show PC movements (Except for jumps)");
 	ft_putendl("#### NCURSES OUTPUT MODE ####");
 	ft_putendl("	 -nc		: Ncurses output mode");
 	ft_putendl("	--stealth	: Hides the real contents of the memory");
@@ -300,15 +305,16 @@ void		ncurses_process(t_vm *vm)
 	noecho();
 	keypad(stdscr, TRUE);
 	curs_set(0);
-	while (1)
-	{
+	//while (1)
+	//{
 		W_MEMORY = subwin(stdscr, 64 + 2, (64 * 3) + 2, 0, 0);
 		W_INFO = subwin(stdscr, 64 + 2, 56, 0, (64 * 3) + 2);
 		init_mem(vm);
 		box(W_MEMORY, ACS_VLINE, ACS_HLINE);
 		box(W_INFO, ACS_VLINE, ACS_HLINE);
 		refresh();
-	}
+	//}
+	while (1);
 	endwin();
 }
 
@@ -335,12 +341,6 @@ char		**get_options(t_vm *vm, int ac, char **av)
 	{
 		if (ft_strequ(av[i], "-d"))
 			(++i < ac) ? set_opt(&(vm->opt_d), av[i]) : ft_perror("Error");
-		else if (ft_strequ(av[i], "-s"))
-			(++i < ac) ? set_opt(&(vm->opt_s), av[i]) : ft_perror("Error");
-		else if (ft_strequ(av[i], "-v"))
-			(++i < ac) ? set_opt(&(vm->opt_v), av[i]) : ft_perror("Error");
-		else if (ft_strequ(av[i], "-a"))
-			OPT_A = 1;
 		else if (ft_strequ(av[i], "-nc"))
 			OPT_NC = 1;
 		else
@@ -359,10 +359,7 @@ t_vm		*init_vm(void)
 	NCURSES = NULL;
 	ARENA = NULL;
 	OPT_NC = 0;
-	OPT_A = 0;
 	OPT_D = -1;
-	OPT_S = -1;
-	OPT_V = -1;
 	return (vm);
 }
 
@@ -374,20 +371,9 @@ int			main(int ac, char **av)
 	if (ac < 2)
 		ft_usage();
 	vm = init_vm();
-	args = get_options(vm, ac, av); // [-a] [-d N -s N -v N -n N | -ncurses]
-
-	printf("ARGS:\n");
-	int	i = -1;
-	while (args[++i])
-		printf("	%s\n", args[i]);
-	printf("-nc = %d\n", OPT_NC);
-	printf("-a = %d\n", OPT_A);
-	printf("-d = %d\n", OPT_D);
-	printf("-s = %d\n", OPT_S);
-	printf("-v = %d\n", OPT_V);
-
+	args = get_options(vm, ac, av);
 	if (!(args[0]))
-		ft_perror("Error: bad usage");
+		ft_usage();
 
 	init_arena(vm, tab_size(args), args); // faudra penser a free args
 	load_champ(vm);

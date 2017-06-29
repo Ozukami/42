@@ -6,18 +6,16 @@
 #    By: apoisson <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 11:29:15 by apoisson          #+#    #+#              #
-#    Updated: 2017/05/29 04:44:33 by qumaujea         ###   ########.fr        #
+#    Updated: 2017/06/29 02:23:07 by apoisson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 ASM = asm
 VM = corewar
-NC = ncurses
 FLAGS = -Wall -Wextra
 SRCASM = add.c automaton.c check.c get_instruction.c main.c \
 parse_header.c tools.c write_champ.c write_header.c
-SRCVM = 
-SRCNC = test_ncurses.c
+SRCVM = test_ncurses.c
 CHAMPDIR =
 
 all: $(ASM)
@@ -29,12 +27,7 @@ $(ASM): libft.a $(addprefix srcs/, $(SRCASM))
 
 $(VM): libft.a $(addprefix srcs/, $(SRCVM))
 	@printf "\033[0;36m> Compiling corewar\033[0m"
-	@gcc $(FLAGS) $(addprefix srcs/, $(SRCVM)) -L. -lft -I includes/ -o $(VM)
-	@printf "\033[0;32m OK\n\033[0m"
-
-$(NC): libft.a $(addprefix srcs/, $(SRCNC))
-	@printf "\033[0;36m> Compiling ncurses testing program\033[0m"
-	@gcc $(FLAGS) $(addprefix srcs/, $(SRCNC)) -L. -lft -lncurses -I includes/ -o $(NC)
+	@gcc $(FLAGS) $(addprefix srcs/, $(SRCVM)) -L. -lft -lncurses -I includes/ -o $(VM)
 	@printf "\033[0;32m OK\n\033[0m"
 
 libft.a:
@@ -44,14 +37,14 @@ libft.a:
 
 run-asm: $(ASM)
 ifeq ($(ARGS),)
-	./$(ASM) test_champ.s
+	./$(ASM) zork.s
 else
 	./$(ASM) $(ARGS)
 endif
 
 run-corewar: $(VM)
 ifeq ($(ARGS),)
-	./$(VM) test_champ.s
+	./$(VM) zork.cor
 else
 	./$(VM) $(ARGS)
 endif

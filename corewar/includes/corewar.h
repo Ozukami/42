@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/20 02:47:48 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/22 05:43:20 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/29 02:17:25 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,7 @@ extern int					errno;
 # define NCURSES			(vm->ncurses)
 # define ARENA				(vm->arena)
 # define OPT_NC				(vm->opt_ncurses)
-# define OPT_A				(vm->opt_a)
 # define OPT_D				(vm->opt_d)
-# define OPT_S				(vm->opt_s)
-# define OPT_V				(vm->opt_v)
 
 # define W_INFO				(vm->ncurses->w_info)
 # define W_MEMORY			(vm->ncurses->w_memory)
@@ -116,10 +113,7 @@ struct						s_vm
 	t_ncurses				*ncurses;
 	t_arena					*arena;
 	int						opt_ncurses;
-	int						opt_a;
 	int						opt_d;
-	int						opt_s;
-	int						opt_v;
 };
 
 #endif
