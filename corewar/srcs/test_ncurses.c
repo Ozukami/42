@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 05:38:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/29 05:46:52 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/29 23:46:25 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,33 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+t_op	g_op_tab[17] =
+{
+	{"live", 1, {T_DIR}, 1, 10, "alive", 0, 0, 4},
+	{"ld", 2, {T_DIR | T_IND, T_REG}, 2, 5, "load", 1, 1, 4},
+	{"st", 2, {T_REG, T_IND | T_REG}, 3, 5, "store", 1, 1, 0},
+	{"add", 3, {T_REG, T_REG, T_REG}, 4, 10, "addition", 1, 1, 0},
+	{"sub", 3, {T_REG, T_REG, T_REG}, 5, 10, "soustraction", 1, 1, 0},
+	{"and", 3, {T_REG | T_DIR | T_IND, T_REG | T_IND | T_DIR, T_REG}, 6, 6,
+		"et (and  r1, r2, r3   r1&r2 -> r3", 1, 1, 4},
+	{"or", 3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG}, 7, 6,
+		"ou  (or   r1, r2, r3   r1 | r2 -> r3", 1, 1, 4},
+	{"xor", 3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG}, 8, 6,
+		"ou (xor  r1, r2, r3   r1^r2 -> r3", 1, 1, 4},
+	{"zjmp", 1, {T_DIR}, 9, 20, "jump if zero", 0, 0, 2},
+	{"ldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG}, 10, 25,
+		"load index", 1, 0, 2},
+	{"sti", 3, {T_REG, T_REG | T_DIR | T_IND, T_DIR | T_REG}, 11, 25,
+		"store index", 1, 0, 2},
+	{"fork", 1, {T_DIR}, 12, 800, "fork", 0, 0, 2},
+	{"lld", 2, {T_DIR | T_IND, T_REG}, 13, 10, "long load", 1, 1, 4},
+	{"lldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG}, 14, 50,
+		"long load index", 1, 1, 2},
+	{"lfork", 1, {T_DIR}, 15, 1000, "long fork", 0, 0, 2},
+	{"aff", 1, {T_REG}, 16, 2, "aff", 1, 0, 0},
+	{0, 0, {0}, 0, 0, 0, 0, 0, 0}
+};
 
 void	init_mem(t_vm *vm)
 {
@@ -231,7 +258,7 @@ t_proc			*new_proc(int id_player)
 	PR_ALIVE = 0;
 	PR_PC = 0;
 	PR_CARRY = 0;
-	PR_WAIT = 0;
+	PR_WAIT = -1;
 	PR_NEXT = NULL;
 	return (proc);
 }
@@ -398,9 +425,111 @@ void		check_alive(t_vm *vm)
 		curr_player = curr_player->next;
 	}
 	if (A_NBPLAYER == 1)
-		// TODO winner is
+		printf("The winner is...\n");
 	cycle_verif(vm);
 }
+
+//------Les fonctions d'operation ASM-------
+void	op_live(t_vm *vm, t_proc *proc)
+{
+	(void)vm;
+	(void)proc;
+}
+
+void	op_ld(t_vm *vm, t_proc *proc)
+{
+	(void)vm;
+	(void)proc;
+}
+
+void	op_st(t_vm *vm, t_proc *proc)
+{
+	(void)vm;
+	(void)proc;
+}
+
+void	op_add(t_vm *vm, t_proc *proc)
+{
+	(void)vm;
+	(void)proc;
+}
+
+void	op_sub(t_vm *vm, t_proc *proc)
+{
+	(void)vm;
+	(void)proc;
+}
+
+void	op_and(t_vm *vm, t_proc *proc)
+{
+	(void)vm;
+	(void)proc;
+}
+
+void	op_or(t_vm *vm, t_proc *proc)
+{
+	(void)vm;
+	(void)proc;
+}
+
+void	op_xor(t_vm *vm, t_proc *proc)
+{
+	(void)vm;
+	(void)proc;
+}
+
+void	op_zjmp(t_vm *vm, t_proc *proc)
+{
+	(void)vm;
+	(void)proc;
+}
+
+void	op_ldi(t_vm *vm, t_proc *proc)
+{
+	(void)vm;
+	(void)proc;
+}
+
+void	op_sti(t_vm *vm, t_proc *proc)
+{
+	(void)vm;
+	(void)proc;
+}
+
+void	op_fork(t_vm *vm, t_proc *proc)
+{
+	(void)vm;
+	(void)proc;
+}
+
+void	op_lld(t_vm *vm, t_proc *proc)
+{
+	(void)vm;
+	(void)proc;
+}
+
+void	op_lldi(t_vm *vm, t_proc *proc)
+{
+	(void)vm;
+	(void)proc;
+}
+
+void	op_lfork(t_vm *vm, t_proc *proc)
+{
+	(void)vm;
+	(void)proc;
+}
+
+void	op_aff(t_vm *vm, t_proc *proc)
+{
+	(void)vm;
+	(void)proc;
+}
+
+//------Le tableau de pointeur sur fonctions (global)------
+void	(*op_tab[16])(t_vm *, t_proc *) = {op_live, op_ld, op_st,
+	op_add, op_sub, op_and, op_or, op_xor, op_zjmp, op_ldi, op_sti,
+	op_fork, op_lld, op_lldi, op_lfork, op_aff};
 
 /*
 ** run the vm with the champs
@@ -410,21 +539,30 @@ void		check_alive(t_vm *vm)
 
 void		process(t_vm *vm)
 {
+	t_proc		*curr;
 
 	printf("Starting process, cycle = %d\n\n", A_CYCLE);
 	while (A_CTD > 0)
 	{
-		printf("Current cycle = %d\n", ++A_CYCLE);
+		++A_CYCLE;
+		printf("Current cycle = %d\n", A_CYCLE);
 		if (A_CYCLE % A_CTD == 0)
 			check_alive(vm);
-		/*
-		 *	pour chaque proc
-		 *		if cycle_to_wait = 0
-		 *			executer l'op de memory[PC]
-		 *			set cycle_to_wait
-		 *		else
-		 *			cycle_to_wait --
-		 */
+		curr = A_LPROC;
+		while (curr)
+		{
+			if (curr->cycle_to_wait == -1)
+				curr->cycle_to_wait = (g_op_tab[A_MEMORY[curr->pc] - 1]).cycles;
+			else if (curr->cycle_to_wait == 0)
+			{
+				(op_tab[A_MEMORY[curr->pc] - 1])(vm, curr);
+				printf("Exec OP\n");
+				//exec_op(vm, curr);
+			}
+			else
+				(curr->cycle_to_wait)--;
+			curr = curr->next;
+		}
 	}
 	printf("OK\n");
 	/*

@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/20 02:47:48 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/29 04:33:26 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/06/29 23:15:19 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ extern int					errno;
 # define PR_CARRY			(proc->carry)
 # define PR_WAIT			(proc->cycle_to_wait)
 # define PR_NEXT			(proc->next)
+
+extern t_op					g_op_tab[17];
 
 typedef struct s_vm			t_vm;
 typedef struct s_ncurses	t_ncurses;
