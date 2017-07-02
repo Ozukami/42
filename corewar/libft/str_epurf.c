@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   str_epur.c                                         :+:      :+:    :+:   */
+/*   str_epurf.c                                        :+:      :+:    :+:   */
 /*              	                                  +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-char		*str_epur(char *str)
+char		*str_epurf(char *str)
 {
 	char	*epur;
 	char	**split;
@@ -37,5 +37,6 @@ char		*str_epur(char *str)
 		epur = ft_strjoinf_l(epur, split[i]);
 	}
 	free_map(split);
+	ft_strdel(&str);
 	return (epur);
 }

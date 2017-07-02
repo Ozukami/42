@@ -48,10 +48,11 @@ void	parse_file(t_champ *champ)
 
 	r = 0;
 	while (r != 4 && get_next_line(FD, &line))
-		r += check_header(champ, str_epur(line));
+	//	r += check_header(champ, str_epur(line));
+		r += check_header(champ, line, str_epurf(line));
 	while (get_next_line(FD, &line))
 	{
-		if ((line = str_epur(line)) && line[0] != COMMENT_CHAR
+		if ((line = str_epurf(line)) && line[0] != COMMENT_CHAR
 				&& line[0] != ';')
 			break ;
 		ft_strdel(&line);
@@ -84,7 +85,7 @@ void	write_binary(t_champ *champ)
 	ft_putstr("\033[32mWriting output program to ");
 	ft_putendl(NAME);
 	ft_putstr("\033[0m");
-}
+
 
 int		process(char *file)
 {
