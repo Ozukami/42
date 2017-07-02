@@ -108,8 +108,8 @@ int					get_value(t_champ *champ, int id_label,
 		t_instruction *instruction);
 int					get_id_label(t_champ *champ, char *arg);
 
-int					get_name(t_champ *champ, char **split, int verif);
-int					get_comment(t_champ *champ, char **split, int verif);
+int					get_name(t_champ *champ, char *line, int verif);
+int					get_comment(t_champ *champ, char *line, int verif);
 int					check_header(t_champ *champ, char *line, char *line_epur);
 
 int					get_label(char *str, t_instruction *instruction,

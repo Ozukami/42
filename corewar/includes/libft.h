@@ -155,6 +155,7 @@ int					ft_absolute(int a);
 
 char				*ft_strsubf(char *s, unsigned int start, size_t len);
 char				*str_epur(char *str);
+char				*str_epurf(char *str);
 
 long				ft_atol(const char *s);
 void				ft_my_printf(char *format, ...);

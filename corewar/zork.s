@@ -1,5 +1,5 @@
-.name "zork3"
-.comment "zork"
+.name "zork3mon cul" #"
+.comment "zork" ;vihrv
 
 
 #fewofwefwe
