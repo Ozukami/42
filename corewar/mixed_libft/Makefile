@@ -105,6 +105,7 @@ $(OBJPF_P)%.o: $(SRCPF_P)%.c
 
 clean:
 	@rm -f $(OBJ)
+	@rm -f $(OBJTWO)
 	@rm -f $(OBJPF)
 	@rmdir $(OBJ_P) 2> /dev/null || echo "" > /dev/null
 	@rmdir $(OBJPF_P) 2> /dev/null || echo "" > /dev/null
