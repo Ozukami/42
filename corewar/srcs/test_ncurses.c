@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 05:38:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/15 10:49:28 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/15 11:42:50 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -484,18 +484,49 @@ void	move_pc(t_vm *vm, t_proc *proc, int ocp)
 // 0 < nb_octet < 5
 int		get_value(t_vm *vm, int nb_octet, int pc)
 {
-	int		value;
-	int		i;
+	unsigned int	value;
+	int				i;
 
 	value = A_MEMORY[pc];
 	i = 1;
 	while (i < nb_octet)
 	{
-		value = value << 2;
+		value = value << 8;
 		value += A_MEMORY[pc + i++];
 	}
-	printf("%svalue = %d%s\n", GREEN, value, DEFAULT);
+	printf("%s[get_value : %d]%s\n", GREEN, value, DEFAULT);
 	return (value);
+}
+
+void		get_args(t_vm *vm, t_proc *proc, int ocp, int args[4])
+{
+	int		label_size;
+	int		size;
+	int		i;
+
+	// T_REG | T_DIR | T_IND
+	label_size = (g_op_tab[A_MEMORY[PR_PC] - 1]).label_size;
+	size = 2;
+	i = 0;
+	while (i <= 6)
+	{
+		if ((ocp << i) & 0b01000000)
+		{
+			args[i / 2] = get_value(vm, 1, PR_PC + size);
+			size++;
+		}
+		else if ((ocp << i) & 0b10000000)
+		{
+			args[i / 2] = get_value(vm, label_size, PR_PC + size);
+			size += label_size;
+		}
+		else if ((ocp << i) & 0b11000000)
+		{
+			args[i / 2] = get_value(vm, 2, PR_PC + size);
+			size += 2;
+		}
+		i += 2;
+	}
 }
 
 t_player	*get_player_from_id(t_vm *vm, int id)
@@ -521,16 +552,28 @@ void	write_in_mem(t_vm *vm, int value, int pc)
 }
 
 //------Les fonctions d'operation ASM-------
+
+/*
+** Op live
+** pas d'OCP, 1 param sur 4 octets
+** fait vivre le proc
+** ajoute 1 vie au joueur dont l'id est en param
+*/
+
 void	op_live(t_vm *vm, t_proc *proc)
 {
-	int		value;
+	int			value;
+	t_player	*player;
 
 	printf("op_live\n");
 	PR_ALIVE = 1;
 	value = get_value(vm, 4, PR_PC + 1);
-	if (value == PR_IDP)
-		(get_player_from_id(vm, PR_IDP))->nb_live++;
-	printf("%sP(%d) LIVE !%s\n", GREEN, PR_IDP, DEFAULT);
+	if ((player = get_player_from_id(vm, value)))
+	{
+		player->nb_live++;
+		printf("%s%s->nb_live++%s\n", GREEN, C_NAME, DEFAULT);
+	}
+	printf("%sP(%d) IS ALIVE !%s\n", GREEN, PR_IDP, DEFAULT);
 	move_pc(vm, proc, 0);
 }
 
@@ -554,57 +597,73 @@ void	op_st(t_vm *vm, t_proc *proc)
 
 void	op_add(t_vm *vm, t_proc *proc)
 {
+	int		args[4];
 	int		ocp;
 
-	ocp = A_MEMORY[proc->pc + 1];
 	printf("op_add\n");
+	ocp = A_MEMORY[proc->pc + 1];
+	get_args(vm, proc, ocp, args);
+	PR_REG[args[2]] = args[0] + args[1];
+	if (PR_REG[args[2]] == 0)
+		PR_CARRY = 1;
 	move_pc(vm, proc, ocp);
 }
 
 void	op_sub(t_vm *vm, t_proc *proc)
 {
+	int		args[4];
 	int		ocp;
 
-	ocp = A_MEMORY[proc->pc + 1];
 	printf("op_sub\n");
+	ocp = A_MEMORY[proc->pc + 1];
+	get_args(vm, proc, ocp, args);
+	PR_REG[args[2]] = args[0] - args[1];
+	if (PR_REG[args[2]] == 0)
+		PR_CARRY = 1;
 	move_pc(vm, proc, ocp);
 }
 
 void	op_and(t_vm *vm, t_proc *proc)
 {
+	int		args[4];
 	int		ocp;
-	int		reg;
-	int		a;
-	int		b;
 
-	ocp = A_MEMORY[proc->pc + 1];
-	reg = A_MEMORY[proc->pc + 7]; //!\\ pas tout le temps 7
-	a = get_value(vm, 1, proc->pc + 2);
-	b = get_value(vm, 4, proc->pc + 3);
-	PR_REG[reg] = a & b;
 	printf("op_and\n");
-	if (PR_REG[reg] == 0)
+	ocp = A_MEMORY[proc->pc + 1];
+	get_args(vm, proc, ocp, args);
+	printf("%d, %d, %d\n", args[0], args[1], args[2]);
+	PR_REG[args[2]] = args[0] & args[1];
+	if (PR_REG[args[2]] == 0)
 		PR_CARRY = 1;
 	move_pc(vm, proc, ocp);
 	printf("%sCarry = %d%s\n", RED, PR_CARRY, DEFAULT);
-	exit(0);
 }
 
 void	op_or(t_vm *vm, t_proc *proc)
 {
+	int		args[4];
 	int		ocp;
 
-	ocp = A_MEMORY[proc->pc + 1];
 	printf("op_or\n");
+	ocp = A_MEMORY[proc->pc + 1];
+	get_args(vm, proc, ocp, args);
+	PR_REG[args[2]] = args[0] | args[1];
+	if (PR_REG[args[2]] == 0)
+		PR_CARRY = 1;
 	move_pc(vm, proc, ocp);
 }
 
 void	op_xor(t_vm *vm, t_proc *proc)
 {
+	int		args[4];
 	int		ocp;
 
-	ocp = A_MEMORY[proc->pc + 1];
 	printf("op_xor\n");
+	ocp = A_MEMORY[proc->pc + 1];
+	get_args(vm, proc, ocp, args);
+	PR_REG[args[2]] = args[0] ^ args[1];
+	if (PR_REG[args[2]] == 0)
+		PR_CARRY = 1;
 	move_pc(vm, proc, ocp);
 }
 
@@ -613,6 +672,7 @@ void	op_zjmp(t_vm *vm, t_proc *proc)
 
 	printf("op_zjmp\n");
 	move_pc(vm, proc, 0);
+	exit(0);
 }
 
 void	op_ldi(t_vm *vm, t_proc *proc)
