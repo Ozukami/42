@@ -65,7 +65,7 @@ void			get_args(t_champ *champ, char *str, t_instruction *instruction)
 	i = -1;
 	while (I_ARGS[++i])
 	{
-		I_ARGS[i] = str_epur(I_ARGS[i]);
+		I_ARGS[i] = str_epurf(I_ARGS[i]);
 		if (I_ARGS[i][0] == 'r')
 			arg = check_reg(champ, I_ARGS[i], instruction);
 		else
@@ -89,7 +89,7 @@ t_instruction	*get_instruction(char *line, t_champ *champ)
 		ft_perror("Error: malloc failed");
 	I_ID = id++;
 	if ((i = get_label(line, instruction, champ)) > 0)
-		line = str_epur(ft_strsubf(line, i + 1, ft_strlen(line) - i));
+		line = str_epurf(ft_strsubf(line, i + 1, ft_strlen(line) - i));
 	if (!line || line[0] == COMMENT_CHAR || line[0] == ';')
 	{
 		if (line && line[0])
@@ -98,8 +98,8 @@ t_instruction	*get_instruction(char *line, t_champ *champ)
 	}
 	if ((i = get_op(line, instruction, champ)) < 1)
 		ft_perror("Error: syntax error 9");
-	line = str_epur(ft_strsubf(line, i, ft_strlen(line) - i));
-	line = str_epur(check_com_arg(line));
+	line = str_epurf(ft_strsubf(line, i, ft_strlen(line) - i));
+	line = str_epurf(check_com_arg(line));
 	get_args(champ, line, instruction);
 	return (instruction);
 }
@@ -112,7 +112,7 @@ void			build_instruction_list(t_champ *champ)
 	current = L_INST;
 	while (get_next_line(FD, &line))
 	{
-		line = str_epur(line);
+		line = str_epurf(line);
 		if (line && (ft_strequf_l(ft_strsub(line, 0, 8), ".comment")
 				|| ft_strequf_l(ft_strsub(line, 0, 5), ".name")))
 			break ;

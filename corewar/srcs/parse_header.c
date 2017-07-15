@@ -13,62 +13,84 @@
 #include "asm.h"
 #include "sys/types.h"
 
-int		get_name(t_champ *champ, char **split, int verif)
+int		get_name(t_champ *champ, char *line, int verif)
 {
-	if (!split[1])
-	{
-		(HEADER->prog_name)[0] = '\0';
-		free_map(split);
-		return (1);
-	}
-	if (split[2])
-		ft_perror("Error: lexical error 1");
+	char	**split;
+	char	*name;
+
 	if (verif == 2)
 		ft_perror("Error: too many .name");
-	if (ft_strlen(split[1]) > PROG_NAME_LENGTH)
-		ft_perror("Error: name is too large");
-	ft_strcpy(HEADER->prog_name, split[1]);
+	split = ft_strsplit(line, '\"');
+	name = ft_strdup(split[1]);
+	if (ft_strlen(name) <= PROG_NAME_LENGTH)
+		ft_strcpy(HEADER->prog_name, name);
+	else
+		ft_perror("Error: Name is too large");
 	free_map(split);
+	printf("NAME %s\n", name);
+	ft_strdel(&name);
 	return (1);
 }
 
-int		get_comment(t_champ *champ, char **split, int verif)
+int		get_comment(t_champ *champ, char *line, int verif)
 {
-	if (!split[1])
-	{
-		(HEADER->comment)[0] = '\0';
-		free_map(split);
-		return (3);
-	}
-	if (split[2])
-		ft_perror("Error: lexical error ici");
+	char	**split;
+	char	*comment;
+
 	if (verif == 6)
 		ft_perror("Error: too many .comment");
-	if (ft_strlen(split[1]) > COMMENT_LENGTH)
+	split = ft_strsplit(line, '\"');
+	comment = ft_strdup(split[1]);
+	if (ft_strlen(comment) <= COMMENT_LENGTH)
+		ft_strcpy(HEADER->comment, comment);
+	else
 		ft_perror("Error: comment is too large");
-	ft_strcpy(HEADER->comment, split[1]);
 	free_map(split);
+	printf("COMMENT %s\n", comment);
+	ft_strdel(&comment);
 	return (3);
 }
 
-int		check_header(t_champ *champ, char *line)
+void	check_error(char **split, char *line)
+{
+	int		i;
+	int		check;
+
+	if (!ft_strequ(str_epur(split[0]), COMMENT_CMD_STRING) &&
+			!ft_strequ(str_epur(split[0]), NAME_CMD_STRING))
+		ft_perror("1Error: Name or Comment not well formated");
+	if (split[2])
+		if (!(str_epur(split[2])) || ((str_epur(split[2]))[0] != COMMENT_CHAR
+				&& (str_epur(split[2]))[0] != ';'))
+			ft_perror("Error: Name or Comment not well formated");	
+	i = -1;
+	check = 0;
+	while (line[++i] != COMMENT_CHAR && line[i] != ';' && line[i] != '\0')
+		if (line[i] == '\"')
+			check++;
+	if (check > 2)
+		ft_perror("Error: Name or Comment not well formated");	
+	free_map(split);
+}
+
+int		check_header(t_champ *champ, char *line, char *line_epur)
 {
 	static int	verif = 0;
+	char		**split;
 
-	if (!line)
+	if (!line || !line_epur)
 		return (0);
-	if (line[0] == COMMENT_CHAR || line[0] == ';')
+	if (line_epur[0] == COMMENT_CHAR || line_epur[0] == ';')
 		return (0);
-	if (line[0] == '.')
-	{
-		if (ft_strequf_l(ft_strsub(line, 0, 8), COMMENT_CMD_STRING))
-			return (get_comment(champ, ft_strsplitf(line, '\"'), verif += 3));
-		else if (ft_strequf_l(ft_strsub(line, 0, 5), NAME_CMD_STRING))
-			return (get_name(champ, ft_strsplitf(line, '\"'), verif += 1));
-		else
-			ft_perror("Error: lexical error 2");
-	}
-	else if (verif != 4)
+	split = ft_strsplit(line_epur, '\"');
+	check_error(split, line);
+	if (ft_strequf_l(ft_strsub(line_epur, 0, 8), COMMENT_CMD_STRING))
+		return (get_comment(champ, line, verif += 3));
+	else if (ft_strequf_l(ft_strsub(line_epur, 0, 5), NAME_CMD_STRING))
+		return (get_name(champ, line, verif += 1));
+	else
+		ft_perror("Error: lexical error 2");
+	if (verif != 4)
 		ft_perror("Error: lexical error 3");
 	return (0);
 }

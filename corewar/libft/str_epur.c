@@ -2,7 +2,7 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   str_epur.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
+/*              	                                  +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/09 08:18:35 by apoisson          #+#    #+#             */
@@ -37,6 +37,5 @@ char		*str_epur(char *str)
 		epur = ft_strjoinf_l(epur, split[i]);
 	}
 	free_map(split);
-	ft_strdel(&str);
 	return (epur);
 }

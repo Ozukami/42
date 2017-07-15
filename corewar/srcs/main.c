@@ -48,10 +48,11 @@ void	parse_file(t_champ *champ)
 
 	r = 0;
 	while (r != 4 && get_next_line(FD, &line))
-		r += check_header(champ, str_epur(line));
+	//	r += check_header(champ, str_epur(line));
+		r += check_header(champ, line, str_epur(line));
 	while (get_next_line(FD, &line))
 	{
-		if ((line = str_epur(line)) && line[0] != COMMENT_CHAR
+		if ((line = str_epurf(line)) && line[0] != COMMENT_CHAR
 				&& line[0] != ';')
 			break ;
 		ft_strdel(&line);
@@ -120,5 +121,6 @@ int		main(int ac, char **av)
 			return (process(av[i]));
 		wait(NULL);
 	}
+	while (1);
 	return (0);
 }
