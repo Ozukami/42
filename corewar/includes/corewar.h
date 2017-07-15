@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/20 02:47:48 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/15 06:38:31 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/15 08:59:41 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,16 @@
 # include <errno.h>
 
 extern int					errno;
+
+# define DEFAULT			"\033[0m"
+# define BLACK				"\033[30m"
+# define RED				"\033[31m"
+# define GREEN				"\033[32m"
+# define YELLOW				"\033[33m"
+# define BLUE				"\033[34m"
+# define PURPLE				"\033[35m"
+# define CYAN				"\033[36m"
+# define WHITE				"\033[37m"
 
 # define NCURSES			(vm->ncurses)
 # define ARENA				(vm->arena)

@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 05:38:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/15 08:54:59 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/15 09:31:41 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -303,6 +303,8 @@ void		lp_rev(t_vm *vm)
 void		init_arena(t_vm *vm, int nb_args, char **args)
 {
 	t_arena		*arena;
+	t_proc		*curr_proc;
+	int			i;
 
 	if (!(arena = ft_memalloc(sizeof(t_arena))))
 		ft_perror(strerror(errno));
@@ -316,6 +318,13 @@ void		init_arena(t_vm *vm, int nb_args, char **args)
 	verif_nb_player(vm);
 	lp_rev(vm);
 	A_LPROC = init_proc(vm);
+	curr_proc = A_LPROC;
+	i = 0;
+	while (curr_proc)
+	{
+		curr_proc->pc = (i++ * (MEM_SIZE / A_NBPLAYER));
+		curr_proc = curr_proc->next;
+	}
 }
 
 /*
@@ -463,8 +472,9 @@ void	move_pc(t_vm *vm, t_proc *proc, int ocp)
 	int		size;
 
 	size = get_inst_length(ocp, A_MEMORY[proc->pc] - 1);
-	printf("	ocp = %d [%x]\n	inst size = %d\n", ocp, ocp, size);
+	printf("%s	ocp = %d [%x]\n	inst size = %d%s\n\n", PURPLE, ocp, ocp, size, DEFAULT);
 	proc->pc += size;
+	proc->cycle_to_wait = -1;
 }
 
 //------Les fonctions d'operation ASM-------
@@ -639,26 +649,35 @@ void		process(t_vm *vm)
 	printf("Starting process, cycle = %d\n\n", A_CYCLE);
 	while (A_CTD > 0)
 	{
+		if (A_CYCLE > 1000)
+			exit(0);
 		++A_CYCLE;
-		//printf("Current cycle = %d\n", A_CYCLE);
+		printf("Current cycle = %d\n", A_CYCLE);
 		if (A_CYCLE % A_CTD == 0)
 			check_alive(vm);
 		curr = A_LPROC;
 		while (curr)
 		{
+			printf("PLAYER %d\n", curr->id_player);
+			printf("PC = %d\n", curr->pc);
 			if (curr->cycle_to_wait == -1)
+			{
 				curr->cycle_to_wait = (g_op_tab[A_MEMORY[curr->pc] - 1]).cycles;
+				printf("%s[Loading OP] (cycle %d)%s\n", GREEN, A_CYCLE, RED);
+				printf("	{%d Cycle to Wait}%s\n", curr->cycle_to_wait, DEFAULT);
+			}
 			else if (curr->cycle_to_wait == 0)
 			{
 				// pour le moment
 				if (A_MEMORY[curr->pc] < 1 || A_MEMORY[curr->pc] >> 16)
 					exit(0);
-				printf("\n[Exec OP]\n");
+				printf("%s[Exec OP] (cycle %d)%s\n", YELLOW, A_CYCLE, CYAN);
 				(op_tab[A_MEMORY[curr->pc] - 1])(vm, curr);
 				//exec_op(vm, curr);
 			}
 			else
 				(curr->cycle_to_wait)--;
+			printf("END PLAYER %d\n", curr->id_player);
 			curr = curr->next;
 		}
 	}
