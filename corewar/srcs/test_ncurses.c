@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 05:38:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/15 12:24:18 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/15 12:42:46 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -718,8 +718,15 @@ void	op_sti(t_vm *vm, t_proc *proc)
 
 void	op_fork(t_vm *vm, t_proc *proc)
 {
+	int		value;
+	t_proc	*clone;
 
 	printf("op_fork\n");
+	value = get_value(vm, 2, PR_PC + 1);
+	clone = new_proc(PR_IDP);
+	clone->pc = PR_PC + (value % IDX_MOD);
+	// copie du reg pere dans le reg fils ?
+	// ajout a A_LPROC (ordre ??)
 	move_pc(vm, proc, 0);
 }
 
@@ -751,8 +758,14 @@ void	op_lldi(t_vm *vm, t_proc *proc)
 
 void	op_lfork(t_vm *vm, t_proc *proc)
 {
+	int		value;
 
 	printf("op_lfork\n");
+	value = get_value(vm, 2, PR_PC + 1);
+	clone = new_proc(PR_IDP);
+	clone->pc = PR_PC + value;
+	// copie du reg pere dans le reg fils ?
+	// ajout a A_LPROC (ordre ??)
 	move_pc(vm, proc, 0);
 }
 
