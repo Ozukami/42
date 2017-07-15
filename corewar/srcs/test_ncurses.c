@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 05:38:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/29 23:46:25 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/15 08:54:59 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,8 +171,6 @@ t_player		*read_file(int fd, int id)
 	P_ID = (id != -1) ? id : static_id--;
 	P_PROC = 1;
 	P_LIVE = 0;
-	if (!(P_REG = ft_memalloc(sizeof(int) * REG_NUMBER)))
-		ft_perror(strerror(errno));
 	P_NEXT = NULL;
 	return (player);
 }
@@ -260,6 +258,8 @@ t_proc			*new_proc(int id_player)
 	PR_CARRY = 0;
 	PR_WAIT = -1;
 	PR_NEXT = NULL;
+	if (!(PR_REG = ft_memalloc(sizeof(int) * REG_NUMBER)))
+		ft_perror(strerror(errno));
 	return (proc);
 }
 
@@ -429,101 +429,196 @@ void		check_alive(t_vm *vm)
 	cycle_verif(vm);
 }
 
+/*
+** Returns the number of bytes of the current instruction
+*/
+
+int		get_inst_length(int ocp, int op)
+{
+	int		label_size;
+	int		size;
+	int		i;
+
+	if (!ocp)
+		return ((g_op_tab[op]).label_size + 1);
+	// T_REG | T_DIR | T_IND
+	label_size = (g_op_tab[op]).label_size;
+	size = 2;
+	i = 0;
+	while (i <= 6)
+	{
+		if ((ocp << i) & 0b01000000)
+			size++;
+		else if ((ocp << i) & 0b10000000)
+			size += label_size;
+		else if ((ocp << i) & 0b11000000)
+			size += 2;
+		i += 2;
+	}
+	return (size);
+}
+
+void	move_pc(t_vm *vm, t_proc *proc, int ocp)
+{
+	int		size;
+
+	size = get_inst_length(ocp, A_MEMORY[proc->pc] - 1);
+	printf("	ocp = %d [%x]\n	inst size = %d\n", ocp, ocp, size);
+	proc->pc += size;
+}
+
 //------Les fonctions d'operation ASM-------
 void	op_live(t_vm *vm, t_proc *proc)
 {
 	(void)vm;
-	(void)proc;
+
+	printf("op_live\n");
+	move_pc(vm, proc, 0);
 }
 
 void	op_ld(t_vm *vm, t_proc *proc)
 {
 	(void)vm;
-	(void)proc;
+	int		ocp;
+
+	ocp = A_MEMORY[proc->pc + 1];
+	printf("op_ld\n");
+	move_pc(vm, proc, ocp);
 }
 
 void	op_st(t_vm *vm, t_proc *proc)
 {
 	(void)vm;
-	(void)proc;
+	int		ocp;
+
+	ocp = A_MEMORY[proc->pc + 1];
+	printf("op_st\n");
+	move_pc(vm, proc, ocp);
 }
 
 void	op_add(t_vm *vm, t_proc *proc)
 {
 	(void)vm;
-	(void)proc;
+	int		ocp;
+
+	ocp = A_MEMORY[proc->pc + 1];
+	printf("op_add\n");
+	move_pc(vm, proc, ocp);
 }
 
 void	op_sub(t_vm *vm, t_proc *proc)
 {
 	(void)vm;
-	(void)proc;
+	int		ocp;
+
+	ocp = A_MEMORY[proc->pc + 1];
+	printf("op_sub\n");
+	move_pc(vm, proc, ocp);
 }
 
 void	op_and(t_vm *vm, t_proc *proc)
 {
 	(void)vm;
-	(void)proc;
+	int		ocp;
+
+	ocp = A_MEMORY[proc->pc + 1];
+	printf("op_and\n");
+	move_pc(vm, proc, ocp);
 }
 
 void	op_or(t_vm *vm, t_proc *proc)
 {
 	(void)vm;
-	(void)proc;
+	int		ocp;
+
+	ocp = A_MEMORY[proc->pc + 1];
+	printf("op_or\n");
+	move_pc(vm, proc, ocp);
 }
 
 void	op_xor(t_vm *vm, t_proc *proc)
 {
 	(void)vm;
-	(void)proc;
+	int		ocp;
+
+	ocp = A_MEMORY[proc->pc + 1];
+	printf("op_xor\n");
+	move_pc(vm, proc, ocp);
 }
 
 void	op_zjmp(t_vm *vm, t_proc *proc)
 {
 	(void)vm;
-	(void)proc;
+
+	printf("op_zjmp\n");
+	move_pc(vm, proc, 0);
 }
 
 void	op_ldi(t_vm *vm, t_proc *proc)
 {
 	(void)vm;
-	(void)proc;
+	int		ocp;
+
+	ocp = A_MEMORY[proc->pc + 1];
+	printf("op_ldi\n");
+	move_pc(vm, proc, ocp);
 }
 
 void	op_sti(t_vm *vm, t_proc *proc)
 {
 	(void)vm;
-	(void)proc;
+	int		ocp;
+
+	ocp = A_MEMORY[proc->pc + 1];
+	printf("op_sti\n");
+	move_pc(vm, proc, ocp);
+	// Move pc en fonction du nb d'octet de l'op (depend de l'OCP)
 }
 
 void	op_fork(t_vm *vm, t_proc *proc)
 {
 	(void)vm;
-	(void)proc;
+
+	printf("op_fork\n");
+	move_pc(vm, proc, 0);
 }
 
 void	op_lld(t_vm *vm, t_proc *proc)
 {
 	(void)vm;
-	(void)proc;
+	int		ocp;
+
+	ocp = A_MEMORY[proc->pc + 1];
+	printf("op_lld\n");
+	move_pc(vm, proc, ocp);
 }
 
 void	op_lldi(t_vm *vm, t_proc *proc)
 {
 	(void)vm;
-	(void)proc;
+	int		ocp;
+
+	ocp = A_MEMORY[proc->pc + 1];
+	printf("op_lldi\n");
+	move_pc(vm, proc, ocp);
 }
 
 void	op_lfork(t_vm *vm, t_proc *proc)
 {
 	(void)vm;
-	(void)proc;
+
+	printf("op_lfork\n");
+	move_pc(vm, proc, 0);
 }
 
 void	op_aff(t_vm *vm, t_proc *proc)
 {
 	(void)vm;
-	(void)proc;
+	int		ocp;
+
+	ocp = A_MEMORY[proc->pc + 1];
+	printf("op_aff\n");
+	move_pc(vm, proc, ocp);
 }
 
 //------Le tableau de pointeur sur fonctions (global)------
@@ -545,7 +640,7 @@ void		process(t_vm *vm)
 	while (A_CTD > 0)
 	{
 		++A_CYCLE;
-		printf("Current cycle = %d\n", A_CYCLE);
+		//printf("Current cycle = %d\n", A_CYCLE);
 		if (A_CYCLE % A_CTD == 0)
 			check_alive(vm);
 		curr = A_LPROC;
@@ -555,8 +650,11 @@ void		process(t_vm *vm)
 				curr->cycle_to_wait = (g_op_tab[A_MEMORY[curr->pc] - 1]).cycles;
 			else if (curr->cycle_to_wait == 0)
 			{
+				// pour le moment
+				if (A_MEMORY[curr->pc] < 1 || A_MEMORY[curr->pc] >> 16)
+					exit(0);
+				printf("\n[Exec OP]\n");
 				(op_tab[A_MEMORY[curr->pc] - 1])(vm, curr);
-				printf("Exec OP\n");
 				//exec_op(vm, curr);
 			}
 			else

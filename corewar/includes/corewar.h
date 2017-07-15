@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/20 02:47:48 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/29 23:15:19 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/15 06:38:31 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ extern int					errno;
 # define P_ID				(player->id)
 # define P_PROC				(player->nb_proc)
 # define P_LIVE				(player->nb_live)
-# define P_REG				(player->reg)
 # define P_NEXT				(player->next)
 
 # define C_NAME				(player->champ->name)
@@ -63,6 +62,7 @@ extern int					errno;
 # define PR_CARRY			(proc->carry)
 # define PR_WAIT			(proc->cycle_to_wait)
 # define PR_NEXT			(proc->next)
+# define PR_REG				(proc->reg)
 
 extern t_op					g_op_tab[17];
 
@@ -81,6 +81,7 @@ struct						s_proc
 	int						pc;
 	int						carry;
 	int						cycle_to_wait;
+	int						*reg;
 	t_proc					*next;
 };
 
@@ -98,7 +99,6 @@ struct						s_player
 	int						id;
 	int						nb_proc;
 	int						nb_live;
-	int						*reg;
 	t_player				*next;
 };
 
