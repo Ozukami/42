@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 05:38:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/15 12:52:11 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/15 13:07:59 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -726,7 +726,8 @@ void	op_fork(t_vm *vm, t_proc *proc)
 	clone = new_proc(PR_IDP);
 	clone->pc = PR_PC + (value % IDX_MOD);
 	// copie du reg pere dans le reg fils ?
-	// ajout a A_LPROC (ordre ??)
+	clone->next = proc;
+	A_LPROC = clone;
 	move_pc(vm, proc, 0);
 }
 
@@ -766,7 +767,8 @@ void	op_lfork(t_vm *vm, t_proc *proc)
 	clone = new_proc(PR_IDP);
 	clone->pc = PR_PC + value;
 	// copie du reg pere dans le reg fils ?
-	// ajout a A_LPROC (ordre ??)
+	clone->next = proc;
+	A_LPROC = clone;
 	move_pc(vm, proc, 0);
 }
 
@@ -800,8 +802,10 @@ void		process(t_vm *vm)
 	printf("Starting process, cycle = %d\n\n", A_CYCLE);
 	while (A_CTD > 0)
 	{
+		/*
 		if (A_CYCLE > 1)
 			exit(0);
+			*/
 		++A_CYCLE;
 		printf("Current cycle = %d\n", A_CYCLE);
 		if (A_CYCLE % A_CTD == 0)
