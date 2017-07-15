@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 05:38:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/15 11:42:50 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/15 11:59:46 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -669,10 +669,19 @@ void	op_xor(t_vm *vm, t_proc *proc)
 
 void	op_zjmp(t_vm *vm, t_proc *proc)
 {
+	int	value;
 
 	printf("op_zjmp\n");
-	move_pc(vm, proc, 0);
-	exit(0);
+	value = get_value(vm, 2, PR_PC + 1);
+	if (PR_CARRY == 1)
+	{
+		PR_PC += (short)value;
+		PR_WAIT = (g_op_tab[A_MEMORY[PR_PC] - 1]).cycles;
+		printf("%s[Loading OP] (cycle %d)%s\n", GREEN, A_CYCLE, RED);
+		printf("	{%d Cycle to Wait}%s\n", PR_WAIT, DEFAULT);
+	}
+	else
+		move_pc(vm, proc, 0);
 }
 
 void	op_ldi(t_vm *vm, t_proc *proc)
