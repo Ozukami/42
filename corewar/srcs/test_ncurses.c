@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 05:38:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/15 09:31:41 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/15 10:49:28 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,6 +260,7 @@ t_proc			*new_proc(int id_player)
 	PR_NEXT = NULL;
 	if (!(PR_REG = ft_memalloc(sizeof(int) * REG_NUMBER)))
 		ft_perror(strerror(errno));
+	PR_REG[1] = PR_IDP;
 	return (proc);
 }
 
@@ -391,6 +392,7 @@ void		kill_proc(t_vm *vm, int id)
 	t_proc	*curr;
 	t_proc	*tmp;
 
+	printf("%sKILL%s\n", RED, DEFAULT);
 	curr = A_LPROC;
 	if (curr->id == id)
 	{
@@ -424,6 +426,7 @@ void		check_alive(t_vm *vm)
 	{
 		if (!curr_proc->alive)
 			kill_proc(vm, curr_proc->id);
+		curr_proc->alive = 0;
 		curr_proc = curr_proc->next;
 	}
 	curr_player = A_LPLAYER;
@@ -472,23 +475,67 @@ void	move_pc(t_vm *vm, t_proc *proc, int ocp)
 	int		size;
 
 	size = get_inst_length(ocp, A_MEMORY[proc->pc] - 1);
-	printf("%s	ocp = %d [%x]\n	inst size = %d%s\n\n", PURPLE, ocp, ocp, size, DEFAULT);
+	printf("%s	ocp = %d [%x]\n	inst size = %d%s\n\n",
+			PURPLE, ocp, ocp, size, DEFAULT);
 	proc->pc += size;
 	proc->cycle_to_wait = -1;
+}
+
+// 0 < nb_octet < 5
+int		get_value(t_vm *vm, int nb_octet, int pc)
+{
+	int		value;
+	int		i;
+
+	value = A_MEMORY[pc];
+	i = 1;
+	while (i < nb_octet)
+	{
+		value = value << 2;
+		value += A_MEMORY[pc + i++];
+	}
+	printf("%svalue = %d%s\n", GREEN, value, DEFAULT);
+	return (value);
+}
+
+t_player	*get_player_from_id(t_vm *vm, int id)
+{
+	t_player	*curr;
+
+	curr = A_LPLAYER;
+	while (curr)
+	{
+		if (curr->id == id)
+			return (curr);
+		curr = curr->next;
+	}
+	return (NULL);
+}
+
+void	write_in_mem(t_vm *vm, int value, int pc)
+{
+	A_MEMORY[pc] = value >> 24;
+	A_MEMORY[pc + 1] = (value >> 16) & 0b11111111;
+	A_MEMORY[pc + 2] = (value >> 8) & 0b11111111;
+	A_MEMORY[pc + 3] = value & 0b11111111;
 }
 
 //------Les fonctions d'operation ASM-------
 void	op_live(t_vm *vm, t_proc *proc)
 {
-	(void)vm;
+	int		value;
 
 	printf("op_live\n");
+	PR_ALIVE = 1;
+	value = get_value(vm, 4, PR_PC + 1);
+	if (value == PR_IDP)
+		(get_player_from_id(vm, PR_IDP))->nb_live++;
+	printf("%sP(%d) LIVE !%s\n", GREEN, PR_IDP, DEFAULT);
 	move_pc(vm, proc, 0);
 }
 
 void	op_ld(t_vm *vm, t_proc *proc)
 {
-	(void)vm;
 	int		ocp;
 
 	ocp = A_MEMORY[proc->pc + 1];
@@ -498,7 +545,6 @@ void	op_ld(t_vm *vm, t_proc *proc)
 
 void	op_st(t_vm *vm, t_proc *proc)
 {
-	(void)vm;
 	int		ocp;
 
 	ocp = A_MEMORY[proc->pc + 1];
@@ -508,7 +554,6 @@ void	op_st(t_vm *vm, t_proc *proc)
 
 void	op_add(t_vm *vm, t_proc *proc)
 {
-	(void)vm;
 	int		ocp;
 
 	ocp = A_MEMORY[proc->pc + 1];
@@ -518,7 +563,6 @@ void	op_add(t_vm *vm, t_proc *proc)
 
 void	op_sub(t_vm *vm, t_proc *proc)
 {
-	(void)vm;
 	int		ocp;
 
 	ocp = A_MEMORY[proc->pc + 1];
@@ -528,17 +572,26 @@ void	op_sub(t_vm *vm, t_proc *proc)
 
 void	op_and(t_vm *vm, t_proc *proc)
 {
-	(void)vm;
 	int		ocp;
+	int		reg;
+	int		a;
+	int		b;
 
 	ocp = A_MEMORY[proc->pc + 1];
+	reg = A_MEMORY[proc->pc + 7]; //!\\ pas tout le temps 7
+	a = get_value(vm, 1, proc->pc + 2);
+	b = get_value(vm, 4, proc->pc + 3);
+	PR_REG[reg] = a & b;
 	printf("op_and\n");
+	if (PR_REG[reg] == 0)
+		PR_CARRY = 1;
 	move_pc(vm, proc, ocp);
+	printf("%sCarry = %d%s\n", RED, PR_CARRY, DEFAULT);
+	exit(0);
 }
 
 void	op_or(t_vm *vm, t_proc *proc)
 {
-	(void)vm;
 	int		ocp;
 
 	ocp = A_MEMORY[proc->pc + 1];
@@ -548,7 +601,6 @@ void	op_or(t_vm *vm, t_proc *proc)
 
 void	op_xor(t_vm *vm, t_proc *proc)
 {
-	(void)vm;
 	int		ocp;
 
 	ocp = A_MEMORY[proc->pc + 1];
@@ -558,7 +610,6 @@ void	op_xor(t_vm *vm, t_proc *proc)
 
 void	op_zjmp(t_vm *vm, t_proc *proc)
 {
-	(void)vm;
 
 	printf("op_zjmp\n");
 	move_pc(vm, proc, 0);
@@ -566,7 +617,6 @@ void	op_zjmp(t_vm *vm, t_proc *proc)
 
 void	op_ldi(t_vm *vm, t_proc *proc)
 {
-	(void)vm;
 	int		ocp;
 
 	ocp = A_MEMORY[proc->pc + 1];
@@ -576,18 +626,20 @@ void	op_ldi(t_vm *vm, t_proc *proc)
 
 void	op_sti(t_vm *vm, t_proc *proc)
 {
-	(void)vm;
 	int		ocp;
+	int		reg;
+	int		i;
 
 	ocp = A_MEMORY[proc->pc + 1];
+	reg = A_MEMORY[proc->pc + 2];
 	printf("op_sti\n");
+	i = get_value(vm, 2, proc->pc + 3) + get_value(vm, 2, proc->pc + 5);
+	write_in_mem(vm, PR_REG[reg], PR_PC + i);
 	move_pc(vm, proc, ocp);
-	// Move pc en fonction du nb d'octet de l'op (depend de l'OCP)
 }
 
 void	op_fork(t_vm *vm, t_proc *proc)
 {
-	(void)vm;
 
 	printf("op_fork\n");
 	move_pc(vm, proc, 0);
@@ -595,7 +647,6 @@ void	op_fork(t_vm *vm, t_proc *proc)
 
 void	op_lld(t_vm *vm, t_proc *proc)
 {
-	(void)vm;
 	int		ocp;
 
 	ocp = A_MEMORY[proc->pc + 1];
@@ -605,7 +656,6 @@ void	op_lld(t_vm *vm, t_proc *proc)
 
 void	op_lldi(t_vm *vm, t_proc *proc)
 {
-	(void)vm;
 	int		ocp;
 
 	ocp = A_MEMORY[proc->pc + 1];
@@ -615,7 +665,6 @@ void	op_lldi(t_vm *vm, t_proc *proc)
 
 void	op_lfork(t_vm *vm, t_proc *proc)
 {
-	(void)vm;
 
 	printf("op_lfork\n");
 	move_pc(vm, proc, 0);
@@ -623,7 +672,6 @@ void	op_lfork(t_vm *vm, t_proc *proc)
 
 void	op_aff(t_vm *vm, t_proc *proc)
 {
-	(void)vm;
 	int		ocp;
 
 	ocp = A_MEMORY[proc->pc + 1];
@@ -649,7 +697,7 @@ void		process(t_vm *vm)
 	printf("Starting process, cycle = %d\n\n", A_CYCLE);
 	while (A_CTD > 0)
 	{
-		if (A_CYCLE > 1000)
+		if (A_CYCLE > 3200)
 			exit(0);
 		++A_CYCLE;
 		printf("Current cycle = %d\n", A_CYCLE);
@@ -660,7 +708,10 @@ void		process(t_vm *vm)
 		{
 			printf("PLAYER %d\n", curr->id_player);
 			printf("PC = %d\n", curr->pc);
-			if (curr->cycle_to_wait == -1)
+			printf("%s[%d]%s\n", BLUE, A_MEMORY[curr->pc], DEFAULT);
+			if (A_MEMORY[curr->pc] == 0)
+				(curr->pc)++;
+			else if (curr->cycle_to_wait == -1)
 			{
 				curr->cycle_to_wait = (g_op_tab[A_MEMORY[curr->pc] - 1]).cycles;
 				printf("%s[Loading OP] (cycle %d)%s\n", GREEN, A_CYCLE, RED);
