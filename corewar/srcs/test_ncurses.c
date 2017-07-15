@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 05:38:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/15 11:59:46 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/15 12:24:18 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -474,10 +474,10 @@ void	move_pc(t_vm *vm, t_proc *proc, int ocp)
 {
 	int		size;
 
-	size = get_inst_length(ocp, A_MEMORY[proc->pc] - 1);
+	size = get_inst_length(ocp, A_MEMORY[PR_PC] - 1);
 	printf("%s	ocp = %d [%x]\n	inst size = %d%s\n\n",
 			PURPLE, ocp, ocp, size, DEFAULT);
-	proc->pc += size;
+	PR_PC += size;
 	proc->cycle_to_wait = -1;
 }
 
@@ -579,19 +579,27 @@ void	op_live(t_vm *vm, t_proc *proc)
 
 void	op_ld(t_vm *vm, t_proc *proc)
 {
+	int		args[4];
 	int		ocp;
 
-	ocp = A_MEMORY[proc->pc + 1];
 	printf("op_ld\n");
+	ocp = A_MEMORY[PR_PC + 1];
+	get_args(vm, proc, ocp, args);
+	PR_REG[args[1]] = args[0] % IDX_MOD;
+	if (PR_REG[args[1]] == 0)
+		PR_CARRY = 1;
 	move_pc(vm, proc, ocp);
 }
 
 void	op_st(t_vm *vm, t_proc *proc)
 {
+	int		args[4];
 	int		ocp;
 
-	ocp = A_MEMORY[proc->pc + 1];
 	printf("op_st\n");
+	ocp = A_MEMORY[PR_PC + 1];
+	get_args(vm, proc, ocp, args);
+	write_in_mem(vm, PR_REG[args[0]], PR_PC + (args[1] % IDX_MOD));
 	move_pc(vm, proc, ocp);
 }
 
@@ -601,7 +609,7 @@ void	op_add(t_vm *vm, t_proc *proc)
 	int		ocp;
 
 	printf("op_add\n");
-	ocp = A_MEMORY[proc->pc + 1];
+	ocp = A_MEMORY[PR_PC + 1];
 	get_args(vm, proc, ocp, args);
 	PR_REG[args[2]] = args[0] + args[1];
 	if (PR_REG[args[2]] == 0)
@@ -615,7 +623,7 @@ void	op_sub(t_vm *vm, t_proc *proc)
 	int		ocp;
 
 	printf("op_sub\n");
-	ocp = A_MEMORY[proc->pc + 1];
+	ocp = A_MEMORY[PR_PC + 1];
 	get_args(vm, proc, ocp, args);
 	PR_REG[args[2]] = args[0] - args[1];
 	if (PR_REG[args[2]] == 0)
@@ -629,7 +637,7 @@ void	op_and(t_vm *vm, t_proc *proc)
 	int		ocp;
 
 	printf("op_and\n");
-	ocp = A_MEMORY[proc->pc + 1];
+	ocp = A_MEMORY[PR_PC + 1];
 	get_args(vm, proc, ocp, args);
 	printf("%d, %d, %d\n", args[0], args[1], args[2]);
 	PR_REG[args[2]] = args[0] & args[1];
@@ -645,7 +653,7 @@ void	op_or(t_vm *vm, t_proc *proc)
 	int		ocp;
 
 	printf("op_or\n");
-	ocp = A_MEMORY[proc->pc + 1];
+	ocp = A_MEMORY[PR_PC + 1];
 	get_args(vm, proc, ocp, args);
 	PR_REG[args[2]] = args[0] | args[1];
 	if (PR_REG[args[2]] == 0)
@@ -659,7 +667,7 @@ void	op_xor(t_vm *vm, t_proc *proc)
 	int		ocp;
 
 	printf("op_xor\n");
-	ocp = A_MEMORY[proc->pc + 1];
+	ocp = A_MEMORY[PR_PC + 1];
 	get_args(vm, proc, ocp, args);
 	PR_REG[args[2]] = args[0] ^ args[1];
 	if (PR_REG[args[2]] == 0)
@@ -686,24 +694,25 @@ void	op_zjmp(t_vm *vm, t_proc *proc)
 
 void	op_ldi(t_vm *vm, t_proc *proc)
 {
+	int		args[4];
 	int		ocp;
 
-	ocp = A_MEMORY[proc->pc + 1];
 	printf("op_ldi\n");
+	ocp = A_MEMORY[PR_PC + 1];
+	get_args(vm, proc, ocp, args);
+	PR_REG[args[2]] = get_value(vm, REG_SIZE, (args[0] + args[1]) % IDX_MOD);
 	move_pc(vm, proc, ocp);
 }
 
 void	op_sti(t_vm *vm, t_proc *proc)
 {
+	int		args[4];
 	int		ocp;
-	int		reg;
-	int		i;
 
-	ocp = A_MEMORY[proc->pc + 1];
-	reg = A_MEMORY[proc->pc + 2];
 	printf("op_sti\n");
-	i = get_value(vm, 2, proc->pc + 3) + get_value(vm, 2, proc->pc + 5);
-	write_in_mem(vm, PR_REG[reg], PR_PC + i);
+	ocp = A_MEMORY[PR_PC + 1];
+	get_args(vm, proc, ocp, args);
+	write_in_mem(vm, PR_REG[args[0]], PR_PC + args[1] + args[2]);
 	move_pc(vm, proc, ocp);
 }
 
@@ -716,19 +725,27 @@ void	op_fork(t_vm *vm, t_proc *proc)
 
 void	op_lld(t_vm *vm, t_proc *proc)
 {
+	int		args[4];
 	int		ocp;
 
-	ocp = A_MEMORY[proc->pc + 1];
 	printf("op_lld\n");
+	ocp = A_MEMORY[PR_PC + 1];
+	get_args(vm, proc, ocp, args);
+	PR_REG[args[1]] = args[0];
+	if (PR_REG[args[1]] == 0)
+		PR_CARRY = 1;
 	move_pc(vm, proc, ocp);
 }
 
 void	op_lldi(t_vm *vm, t_proc *proc)
 {
+	int		args[4];
 	int		ocp;
 
-	ocp = A_MEMORY[proc->pc + 1];
 	printf("op_lldi\n");
+	ocp = A_MEMORY[PR_PC + 1];
+	get_args(vm, proc, ocp, args);
+	PR_REG[args[2]] = get_value(vm, REG_SIZE, args[0] + args[1]);
 	move_pc(vm, proc, ocp);
 }
 
@@ -741,10 +758,13 @@ void	op_lfork(t_vm *vm, t_proc *proc)
 
 void	op_aff(t_vm *vm, t_proc *proc)
 {
+	int		value;
 	int		ocp;
 
-	ocp = A_MEMORY[proc->pc + 1];
 	printf("op_aff\n");
+	ocp = A_MEMORY[PR_PC + 1];
+	value = get_value(vm, 1, PR_PC + 2);
+	printf("%c\n", value % 256);
 	move_pc(vm, proc, ocp);
 }
 
