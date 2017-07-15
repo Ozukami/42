@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 05:38:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/15 12:42:46 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/15 12:52:11 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -320,10 +320,10 @@ void		init_arena(t_vm *vm, int nb_args, char **args)
 	lp_rev(vm);
 	A_LPROC = init_proc(vm);
 	curr_proc = A_LPROC;
-	i = 0;
+	i = A_NBPLAYER - 1;
 	while (curr_proc)
 	{
-		curr_proc->pc = (i++ * (MEM_SIZE / A_NBPLAYER));
+		curr_proc->pc = (i-- * (MEM_SIZE / A_NBPLAYER));
 		curr_proc = curr_proc->next;
 	}
 }
@@ -759,6 +759,7 @@ void	op_lldi(t_vm *vm, t_proc *proc)
 void	op_lfork(t_vm *vm, t_proc *proc)
 {
 	int		value;
+	t_proc	*clone;
 
 	printf("op_lfork\n");
 	value = get_value(vm, 2, PR_PC + 1);
@@ -799,7 +800,7 @@ void		process(t_vm *vm)
 	printf("Starting process, cycle = %d\n\n", A_CYCLE);
 	while (A_CTD > 0)
 	{
-		if (A_CYCLE > 3200)
+		if (A_CYCLE > 1)
 			exit(0);
 		++A_CYCLE;
 		printf("Current cycle = %d\n", A_CYCLE);
