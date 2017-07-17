@@ -823,7 +823,6 @@ void		process(t_vm *vm)
 {
 	t_proc		*curr;
 
-	printf("Starting process, cycle = %d\n\n", A_CYCLE);
 	while (A_CTD > 0)
 	{
 		if (OPT_D > -1 && A_CYCLE > OPT_D)
@@ -835,9 +834,8 @@ void		process(t_vm *vm)
 		curr = A_LPROC;
 		while (curr)
 		{
-			printf("PLAYER (%d)\n", curr->id_player);
-			printf("PC = %d\n", curr->pc);
-			printf("%s[%d]%s\n", BLUE, A_MEMORY[curr->pc], DEFAULT);
+			printf("PLAYER (%d) PC = %d\n", curr->id_player, curr->pc);
+			printf("%sMEM[PC] = %d%s\n", BLUE, A_MEMORY[curr->pc], DEFAULT);
 			if (A_MEMORY[curr->pc] <= 0 || A_MEMORY[curr->pc] > 16)
 				(curr->pc)++;
 			else if (curr->cycle_to_wait == -1)
@@ -859,10 +857,6 @@ void		process(t_vm *vm)
 			curr = curr->next;
 		}
 	}
-	/*
-	 *	WINNER = last alive
-	 *	print WINNER
-	 */
 }
 
 void		ncurses_process(t_vm *vm)
