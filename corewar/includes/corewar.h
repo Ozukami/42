@@ -53,6 +53,7 @@ extern int					errno;
 # define A_CTD				(vm->arena->cycle_to_die)
 # define A_NBPLAYER			(vm->arena->nb_player)
 # define A_NBCHECK			(vm->arena->nb_check)
+# define A_WINNER			(vm->arena->last_alive)
 
 # define P_CHAMP			(player->champ)
 # define P_ID				(player->id)

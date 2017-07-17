@@ -121,6 +121,5 @@ int		main(int ac, char **av)
 			return (process(av[i]));
 		wait(NULL);
 	}
-	while (1);
 	return (0);
 }

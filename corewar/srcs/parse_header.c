@@ -27,7 +27,6 @@ int		get_name(t_champ *champ, char *line, int verif)
 	else
 		ft_perror("Error: Name is too large");
 	free_map(split);
-	printf("NAME %s\n", name);
 	ft_strdel(&name);
 	return (1);
 }
@@ -46,7 +45,6 @@ int		get_comment(t_champ *champ, char *line, int verif)
 	else
 		ft_perror("Error: comment is too large");
 	free_map(split);
-	printf("COMMENT %s\n", comment);
 	ft_strdel(&comment);
 	return (3);
 }

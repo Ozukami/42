@@ -387,6 +387,11 @@ void		update_nb_proc(t_vm *vm, int id_player)
 	}
 }
 
+/*
+** BONUS : jouer un son quand on kill un process
+** genre le "FATALITY" de Mortal Kombat
+*/
+
 void		kill_proc(t_vm *vm, int id)
 {
 	t_proc	*curr;
@@ -571,6 +576,7 @@ void	op_live(t_vm *vm, t_proc *proc)
 	if ((player = get_player_from_id(vm, value)))
 	{
 		player->nb_live++;
+		A_WINNER = P_ID; // op_live actualise le winner a chaque execution
 		printf("%s%s->nb_live++%s\n", GREEN, C_NAME, DEFAULT);
 	}
 	printf("%sP(%d) IS ALIVE !%s\n", GREEN, PR_IDP, DEFAULT);
@@ -683,6 +689,7 @@ void	op_zjmp(t_vm *vm, t_proc *proc)
 	value = get_value(vm, 2, PR_PC + 1);
 	if (PR_CARRY == 1)
 	{
+		// IDX_MOD ??
 		PR_PC += (short)value;
 		PR_WAIT = (g_op_tab[A_MEMORY[PR_PC] - 1]).cycles;
 		printf("%s[Loading OP] (cycle %d)%s\n", GREEN, A_CYCLE, RED);
@@ -712,7 +719,7 @@ void	op_sti(t_vm *vm, t_proc *proc)
 	printf("op_sti\n");
 	ocp = A_MEMORY[PR_PC + 1];
 	get_args(vm, proc, ocp, args);
-	write_in_mem(vm, PR_REG[args[0]], PR_PC + args[1] + args[2]);
+	write_in_mem(vm, PR_REG[args[0]], (PR_PC + args[1] + args[2]) % IDX_MOD);
 	move_pc(vm, proc, ocp);
 }
 
@@ -789,6 +796,23 @@ void	(*op_tab[16])(t_vm *, t_proc *) = {op_live, op_ld, op_st,
 	op_add, op_sub, op_and, op_or, op_xor, op_zjmp, op_ldi, op_sti,
 	op_fork, op_lld, op_lldi, op_lfork, op_aff};
 
+void		dump_mem(t_vm *vm)
+{
+	int	i;
+
+	i = -1;
+	while (++i < MEM_SIZE)
+	{
+		printf("%02x", A_MEMORY[i]);
+		if (i % 64 == 0)
+			printf("\n");
+		else
+			printf(" ");
+	}
+	if (OPT_D > -1)
+		exit(0);
+}
+
 /*
 ** run the vm with the champs
 ** use the implementation of op
@@ -802,10 +826,8 @@ void		process(t_vm *vm)
 	printf("Starting process, cycle = %d\n\n", A_CYCLE);
 	while (A_CTD > 0)
 	{
-		/*
-		if (A_CYCLE > 1)
-			exit(0);
-			*/
+		if (OPT_D > -1 && A_CYCLE > OPT_D)
+			dump_mem(vm);
 		++A_CYCLE;
 		printf("Current cycle = %d\n", A_CYCLE);
 		if (A_CYCLE % A_CTD == 0)
@@ -813,33 +835,30 @@ void		process(t_vm *vm)
 		curr = A_LPROC;
 		while (curr)
 		{
-			printf("PLAYER %d\n", curr->id_player);
+			printf("PLAYER (%d)\n", curr->id_player);
 			printf("PC = %d\n", curr->pc);
 			printf("%s[%d]%s\n", BLUE, A_MEMORY[curr->pc], DEFAULT);
-			if (A_MEMORY[curr->pc] == 0)
+			if (A_MEMORY[curr->pc] <= 0 || A_MEMORY[curr->pc] > 16)
 				(curr->pc)++;
 			else if (curr->cycle_to_wait == -1)
 			{
 				curr->cycle_to_wait = (g_op_tab[A_MEMORY[curr->pc] - 1]).cycles;
-				printf("%s[Loading OP] (cycle %d)%s\n", GREEN, A_CYCLE, RED);
+				printf("%s[Loading OP (%d)] (cycle %d)%s\n", GREEN,
+						A_MEMORY[curr->pc], A_CYCLE, RED);
 				printf("	{%d Cycle to Wait}%s\n", curr->cycle_to_wait, DEFAULT);
 			}
 			else if (curr->cycle_to_wait == 0)
 			{
-				// pour le moment
-				if (A_MEMORY[curr->pc] < 1 || A_MEMORY[curr->pc] >> 16)
-					exit(0);
-				printf("%s[Exec OP] (cycle %d)%s\n", YELLOW, A_CYCLE, CYAN);
+				printf("%s[Exec OP (%d)] (cycle %d)%s\n", YELLOW,
+						A_MEMORY[curr->pc], A_CYCLE, CYAN);
 				(op_tab[A_MEMORY[curr->pc] - 1])(vm, curr);
-				//exec_op(vm, curr);
 			}
 			else
 				(curr->cycle_to_wait)--;
-			printf("END PLAYER %d\n", curr->id_player);
+			printf("END PLAYER (%d)\n", curr->id_player);
 			curr = curr->next;
 		}
 	}
-	printf("OK\n");
 	/*
 	 *	WINNER = last alive
 	 *	print WINNER
@@ -927,6 +946,8 @@ int			main(int ac, char **av)
 	init_arena(vm, tab_size(args), args); // faudra penser a free args
 	load_champ(vm);
 	process(vm);
+	printf("le joueur %d (%s) a gagne\n", A_WINNER,
+			get_player_from_id(vm, A_WINNER)->champ->name);
 
 	if (OPT_NC > 0)
 		ncurses_process(vm);
