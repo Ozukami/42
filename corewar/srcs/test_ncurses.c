@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 05:38:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/22 08:11:47 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/22 08:38:40 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -318,6 +318,7 @@ void		init_arena(t_vm *vm, int nb_args, char **args)
 	A_CYCLE = 0;
 	A_CTD = CYCLE_TO_DIE;
 	A_NBPLAYER = 0;
+	A_NBCHECK = 0;
 	A_MEMORY = ft_memalloc(MEM_SIZE);
 	A_LPLAYER = get_player(nb_args, args);
 	verif_nb_player(vm);
@@ -359,23 +360,11 @@ void		load_champ(t_vm *vm)
 
 void		cycle_verif(t_vm *vm)
 {
-	t_player	*curr_player;
-	int			total_live;
-
 	printf("	%sCYCLE_VERIF (%d)%s\n", RED, A_CTD, DEFAULT);
-	curr_player = A_LPLAYER;
-	total_live = 0;
-	while (curr_player)
-	{
-		total_live += curr_player->nb_live;
-		curr_player = curr_player->next;
-	}
-	//if (total_live >= NBR_LIVE || A_NBCHECK == MAX_CHECKS)
 	if (TOTAL_LIVE >= NBR_LIVE || A_NBCHECK == MAX_CHECKS)
 	{
 	 	A_CTD -= CYCLE_DELTA;
-	 	A_NBCHECK = 0;
-		//printf("%sA%s\n");
+	 	A_NBCHECK = 1;
 	}
 	else
 		A_NBCHECK++;
@@ -847,6 +836,7 @@ void	op_lfork(t_vm *vm, t_proc *proc)
 	value = get_value(vm, 2, (PR_PC + 1) % MEM_SIZE);
 	value %= MEM_SIZE;
 	clone = new_proc(PR_IDP);
+	clone->carry = proc->carry;
 	clone->pc = (PR_PC + value) % MEM_SIZE;
 	A_PROC++;
 	//printf("%sCLONE (%d)%s\n", GREEN, A_PROC, DEFAULT);
@@ -1031,6 +1021,20 @@ int			main(int ac, char **av)
 	args = get_options(vm, ac, av);
 	if (!(args[0]))
 		ft_usage();
+
+	/*
+	int	i = 1536;
+	int	rep = 0;
+
+	while (i > 330)
+	{
+		rep += i;
+		i -= 50;
+	}
+	printf("%d\n", rep);
+	printf("%d\n", rep + 9660);
+	exit(0);
+	*/
 
 	init_arena(vm, tab_size(args), args); // faudra penser a free args
 	load_champ(vm);
