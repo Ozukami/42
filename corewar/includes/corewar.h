@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/20 02:47:48 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/15 08:59:41 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/22 00:29:47 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ extern int					errno;
 # define ARENA				(vm->arena)
 # define OPT_NC				(vm->opt_ncurses)
 # define OPT_D				(vm->opt_d)
+# define TOTAL_LIVE			(vm->total_live)
 
 # define W_INFO				(vm->ncurses->w_info)
 # define W_MEMORY			(vm->ncurses->w_memory)
@@ -89,6 +90,7 @@ struct						s_proc
 	int						id;
 	int						id_player;
 	int						alive;
+	int						test;
 	int						pc;
 	int						carry;
 	int						cycle_to_wait;
@@ -138,6 +140,7 @@ struct						s_vm
 	t_arena					*arena;
 	int						opt_ncurses;
 	int						opt_d;
+	int						total_live;
 };
 
 #endif
