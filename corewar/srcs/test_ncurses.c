@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 05:38:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/23 02:49:03 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/23 03:00:43 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -602,6 +602,7 @@ void	op_ld(t_vm *vm, t_proc *proc)
 {
 	int		args[4];
 	int		ocp;
+	int		j;
 
 	printf("op_ld\n");
 	ocp = A_MEMORY[(PR_PC + 1) % MEM_SIZE];
@@ -610,7 +611,11 @@ void	op_ld(t_vm *vm, t_proc *proc)
 	get_args(vm, proc, ocp, args);
 	printf("%sargs[1] = %d%s\n", RED, args[1], DEFAULT);
 	printf("%sargs[0] = %d%s\n", RED, args[0], DEFAULT);
-	PR_REG[args[1]] = args[0];
+	j = (PR_PC + (args[0] % IDX_MOD)) % MEM_SIZE;
+	if (j < 0)
+		j += MEM_SIZE;
+	printf("%d\n", j);
+	PR_REG[args[1]] = get_value(vm, 4, j);
 	printf("%sreg_val = %d%s\n", RED, PR_REG[args[1]], DEFAULT);
 	if (PR_REG[args[1]] == 0)
 		PR_CARRY = 1;
@@ -931,11 +936,10 @@ void		dump_mem(t_vm *vm)
 	i = -1;
 	while (++i < MEM_SIZE)
 	{
-		printf("%02x", A_MEMORY[i]);
 		if (i != 0 && i % 64 == 0)
-			printf("\n");
+			printf("\n%02x ", A_MEMORY[i]);
 		else
-			printf(" ");
+			printf("%02x ", A_MEMORY[i]);
 	}
 	printf("\n");
 	if (OPT_D > -1)
