@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 05:38:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/23 03:00:43 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/23 05:14:28 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -611,17 +611,23 @@ void	op_ld(t_vm *vm, t_proc *proc)
 	get_args(vm, proc, ocp, args);
 	printf("%sargs[1] = %d%s\n", RED, args[1], DEFAULT);
 	printf("%sargs[0] = %d%s\n", RED, args[0], DEFAULT);
-	j = (PR_PC + (args[0] % IDX_MOD)) % MEM_SIZE;
-	if (j < 0)
-		j += MEM_SIZE;
-	printf("%d\n", j);
-	PR_REG[args[1]] = get_value(vm, 4, j);
+	if ((ocp & 0b11000000) == 0b11000000)
+	{
+		j = (PR_PC + (args[0] % IDX_MOD)) % MEM_SIZE;
+		if (j < 0)
+			j += MEM_SIZE;
+		printf("%d\n", j);
+		PR_REG[args[1]] = get_value(vm, 4, j);
+	}
+	else
+		PR_REG[args[1]] = args[0];
 	printf("%sreg_val = %d%s\n", RED, PR_REG[args[1]], DEFAULT);
 	if (PR_REG[args[1]] == 0)
 		PR_CARRY = 1;
 	else
 		PR_CARRY = 0;
 	move_pc(vm, proc, ocp);
+	printf("%sreg_val = %u%s\n", RED, (unsigned int)(PR_REG[args[1]]), DEFAULT);
 }
 
 void	op_st(t_vm *vm, t_proc *proc)
@@ -642,7 +648,10 @@ void	op_st(t_vm *vm, t_proc *proc)
 		j += MEM_SIZE;
 	printf("%sargs[0] = %d, reg_val = %d%s\n", RED, args[0],
 			PR_REG[args[0]], DEFAULT);
-	write_in_mem(vm, PR_REG[args[0]], j);
+	if (((ocp << 2) & 0b11000000) == 0b11000000)
+		write_in_mem(vm, PR_REG[args[0]], j);
+	else if ((ocp << 2) & 0b01000000)
+		PR_REG[args[1]] = PR_REG[args[0]];
 	printf("%s%d%s\n", CYAN, j, DEFAULT);
 	move_pc(vm, proc, ocp);
 }
@@ -697,9 +706,13 @@ void	op_and(t_vm *vm, t_proc *proc)
 	if (ocp < 64)
 		return ;
 	get_args(vm, proc, ocp, args);
-	if ((ocp & 0b01000000))
+	if (((ocp & 0b11000000)) == 0b11000000)
+		args[0] = get_value(vm, 4, (PR_PC + (args[0] % IDX_MOD)) % MEM_SIZE);
+	else if ((ocp & 0b01000000))
 		args[0] = PR_REG[args[0]];
-	if (((ocp << 2) & 0b01000000))
+	if ((((ocp << 2) & 0b11000000)) == 0b11000000)
+		args[1] = get_value(vm, 4, (PR_PC + (args[1] % IDX_MOD)) % MEM_SIZE);
+	else if (((ocp << 2) & 0b01000000))
 		args[1] = PR_REG[args[1]];
 	//printf("%d, %d, %d\n", args[0], args[1], args[2]);
 	PR_REG[args[2]] = args[0] & args[1];
@@ -721,9 +734,13 @@ void	op_or(t_vm *vm, t_proc *proc)
 	if (ocp < 64)
 		return ;
 	get_args(vm, proc, ocp, args);
-	if ((ocp & 0b01000000))
+	if (((ocp & 0b11000000)) == 0b11000000)
+		args[0] = get_value(vm, 4, (PR_PC + (args[0] % IDX_MOD)) % MEM_SIZE);
+	else if ((ocp & 0b01000000))
 		args[0] = PR_REG[args[0]];
-	if (((ocp << 2) & 0b01000000))
+	if ((((ocp << 2) & 0b11000000)) == 0b11000000)
+		args[1] = get_value(vm, 4, (PR_PC + (args[1] % IDX_MOD)) % MEM_SIZE);
+	else if (((ocp << 2) & 0b01000000))
 		args[1] = PR_REG[args[1]];
 	PR_REG[args[2]] = args[0] | args[1];
 	if (PR_REG[args[2]] == 0)
@@ -743,9 +760,13 @@ void	op_xor(t_vm *vm, t_proc *proc)
 	if (ocp < 64)
 		return ;
 	get_args(vm, proc, ocp, args);
-	if ((ocp & 0b01000000))
+	if (((ocp & 0b11000000)) == 0b11000000)
+		args[0] = get_value(vm, 4, (PR_PC + (args[0] % IDX_MOD)) % MEM_SIZE);
+	else if ((ocp & 0b01000000))
 		args[0] = PR_REG[args[0]];
-	if (((ocp << 2) & 0b01000000))
+	if ((((ocp << 2) & 0b11000000)) == 0b11000000)
+		args[1] = get_value(vm, 4, (PR_PC + (args[1] % IDX_MOD)) % MEM_SIZE);
+	else if (((ocp << 2) & 0b01000000))
 		args[1] = PR_REG[args[1]];
 	PR_REG[args[2]] = args[0] ^ args[1];
 	if (PR_REG[args[2]] == 0)
@@ -857,6 +878,7 @@ void	op_lld(t_vm *vm, t_proc *proc)
 {
 	int		args[4];
 	int		ocp;
+	int		j;
 
 	printf("op_lld\n");
 	ocp = A_MEMORY[(PR_PC + 1) % MEM_SIZE];
@@ -864,7 +886,20 @@ void	op_lld(t_vm *vm, t_proc *proc)
 	if (ocp < 64)
 		return ;
 	get_args(vm, proc, ocp, args);
-	PR_REG[args[1]] = args[0];
+	printf("%sargs[1] = %d%s\n", RED, args[1], DEFAULT);
+	printf("%sargs[0] = %d%s\n", RED, args[0], DEFAULT);
+	if ((ocp & 0b11000000) == 0b11000000)
+	{
+		j = (PR_PC + args[0]) % MEM_SIZE;
+		if (j < 0)
+			j += MEM_SIZE;
+		printf("%d\n", j);
+		PR_REG[args[1]] = get_value(vm, 2, j);
+	}
+	else
+		PR_REG[args[1]] = args[0];
+	printf("%sreg_val = %d%s\n", RED, PR_REG[args[1]], DEFAULT);
+	//PR_REG[args[1]] = args[0];
 	if (PR_REG[args[1]] == 0)
 		PR_CARRY = 1;
 	else
