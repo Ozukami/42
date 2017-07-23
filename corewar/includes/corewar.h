@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/20 02:47:48 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/23 05:14:29 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/23 05:43:48 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ extern int					errno;
 # define OPT_NC				(vm->opt_ncurses)
 # define OPT_D				(vm->opt_d)
 # define TOTAL_LIVE			(vm->total_live)
+# define COLOR				(vm->color_tab)
 
 # define W_INFO				(vm->ncurses->w_info)
 # define W_MEMORY			(vm->ncurses->w_memory)
@@ -60,6 +61,7 @@ extern int					errno;
 # define P_ID				(player->id)
 # define P_PROC				(player->nb_proc)
 # define P_LIVE				(player->nb_live)
+# define P_COLOR			(player->color)
 # define P_NEXT				(player->next)
 
 # define C_NAME				(player->champ->name)
@@ -112,6 +114,7 @@ struct						s_player
 	int						id;
 	int						nb_proc;
 	int						nb_live;
+	int						color;
 	t_player				*next;
 };
 
@@ -141,6 +144,7 @@ struct						s_vm
 	int						opt_ncurses;
 	int						opt_d;
 	int						total_live;
+	int						*color_tab;
 };
 
 #endif

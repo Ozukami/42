@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 05:38:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/23 05:14:28 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/23 05:51:22 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,7 @@ t_player		*read_file(int fd, int id)
 {
 	t_player	*player;
 	static int	static_id = -1;
+	static int	color = 1;
 
 	if (!(player = ft_memalloc(sizeof(t_player))))
 		ft_perror(strerror(errno));
@@ -171,6 +172,7 @@ t_player		*read_file(int fd, int id)
 	P_ID = (id != -1) ? id : static_id--;
 	P_PROC = 1;
 	P_LIVE = 0;
+	P_COLOR = color++;
 	P_NEXT = NULL;
 	return (player);
 }
@@ -352,7 +354,10 @@ void		load_champ(t_vm *vm)
 	{
 		i = -1;
 		while (++i < (int)current->champ->prog_size)
+		{
 			A_MEMORY[++j] = current->champ->prog[i];
+			COLOR[j] = current->color;
+		}
 		j += MEM_SIZE / A_NBPLAYER - current->champ->prog_size;
 		current = current->next;
 	}
@@ -562,12 +567,16 @@ t_player	*get_player_from_id(t_vm *vm, int id)
 	return (NULL);
 }
 
-void	write_in_mem(t_vm *vm, int value, int pc)
+void	write_in_mem(t_vm *vm, int value, int pc, int color)
 {
 	A_MEMORY[pc] = value >> 24;
+	COLOR[pc] = color;
 	A_MEMORY[(pc + 1) % MEM_SIZE] = (value >> 16) & 0b11111111;
+	COLOR[(pc + 1) % MEM_SIZE] = color;
 	A_MEMORY[(pc + 2) % MEM_SIZE] = (value >> 8) & 0b11111111;
+	COLOR[(pc + 2) % MEM_SIZE] = color;
 	A_MEMORY[(pc + 3) % MEM_SIZE] = value & 0b11111111;
+	COLOR[(pc + 3) % MEM_SIZE] = color;
 }
 
 //------Les fonctions d'operation ASM-------
@@ -649,7 +658,8 @@ void	op_st(t_vm *vm, t_proc *proc)
 	printf("%sargs[0] = %d, reg_val = %d%s\n", RED, args[0],
 			PR_REG[args[0]], DEFAULT);
 	if (((ocp << 2) & 0b11000000) == 0b11000000)
-		write_in_mem(vm, PR_REG[args[0]], j);
+		write_in_mem(vm, PR_REG[args[0]], j,
+				get_player_from_id(vm, proc->id_player)->color);
 	else if ((ocp << 2) & 0b01000000)
 		PR_REG[args[1]] = PR_REG[args[0]];
 	printf("%s%d%s\n", CYAN, j, DEFAULT);
@@ -838,7 +848,8 @@ void	op_sti(t_vm *vm, t_proc *proc)
 	if (j < 0)
 		j += MEM_SIZE;
 	printf("%sj = %d%s\n", CYAN, args[1], DEFAULT);
-	write_in_mem(vm, PR_REG[args[0]], j);
+	write_in_mem(vm, PR_REG[args[0]], j,
+				get_player_from_id(vm, proc->id_player)->color);
 	/*
 	write_in_mem(vm, PR_REG[args[0]],
 			((PR_PC + args[1] + args[2]) % IDX_MOD) % MEM_SIZE);
@@ -971,12 +982,23 @@ void		dump_mem(t_vm *vm)
 	i = -1;
 	while (++i < MEM_SIZE)
 	{
+		if (COLOR[i] == 1)
+			printf(GREEN);
+		else if (COLOR[i] == 2)
+			printf(BLUE);
+		else if (COLOR[i] == 3)
+			printf(RED);
+		else if (COLOR[i] == 4)
+			printf(CYAN);
+		else
+			printf(DEFAULT);
 		if (i != 0 && i % 64 == 0)
 			printf("\n%02x ", A_MEMORY[i]);
 		else
 			printf("%02x ", A_MEMORY[i]);
 	}
 	printf("\n");
+	printf(DEFAULT);
 	if (OPT_D > -1)
 		exit(0);
 }
@@ -1105,6 +1127,8 @@ t_vm		*init_vm(void)
 	OPT_NC = 0;
 	OPT_D = -1;
 	TOTAL_LIVE = 0;
+	if (!(COLOR = ft_memalloc(sizeof(int) * MEM_SIZE)))
+		ft_perror(strerror(errno));
 	return (vm);
 }
 
