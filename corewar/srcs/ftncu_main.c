@@ -6,7 +6,7 @@
 /*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/22 00:13:23 by lcharbon          #+#    #+#             */
-/*   Updated: 2017/07/24 00:18:54 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/24 01:09:46 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void			ftncu_init_pair(void)
 	init_pair(6, COLOR_CYAN, COLOR_BLACK);
 	init_color(COLOR_MAGENTA, 800, 800, 800);
 	init_pair(7, COLOR_BLACK, COLOR_MAGENTA);
+	init_pair(8, COLOR_BLACK, COLOR_BLACK);
+	init_pair(9, COLOR_WHITE, COLOR_BLACK);
 }
 
 static int		ftncu_mem_proc(t_gb *g, int i)
@@ -65,17 +67,18 @@ static void		ftncu_print_memory(t_gb *g, unsigned char *memory)
 	int		n;
 	int		a;
 
-	i = 0;
+	i = -1;
 	n = 3;
 	a = 1;
 	move(1, 1);
 	ftncu_init_pair();
-	attron(A_NORMAL);
-	while (i < MEM_SIZE)
+	while (++i < MEM_SIZE)
 	{
 		ftncu_act_attron(g, i);
 		ftncu_mem_proc(g, i);
-		printw("%.2X ", memory[i]);
+		printw("%.2X", memory[i]);
+		attron(COLOR_PAIR(8));
+		printw(" ");
 		if (n >= 192)
 		{
 			n = 0;
@@ -83,7 +86,6 @@ static void		ftncu_print_memory(t_gb *g, unsigned char *memory)
 			move(a, 1);
 		}
 		n += 3;
-		i++;
 	}
 	attron(A_NORMAL);
 }
