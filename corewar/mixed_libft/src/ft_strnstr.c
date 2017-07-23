@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strnstrb.c                                      :+:      :+:    :+:   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/25 15:00:48 by lcharbon          #+#    #+#             */
-/*   Updated: 2016/11/25 15:16:46 by lcharbon         ###   ########.fr       */
+/*   Created: 2016/11/04 12:48:37 by apoisson          #+#    #+#             */
+/*   Updated: 2016/11/04 12:54:46 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,23 @@
 char	*ft_strnstr(const char *big, const char *little, size_t len)
 {
 	size_t	i;
-	size_t	u;
-	char	*str1;
-	char	*str2;
+	size_t	j;
 
+	if (!little[0])
+		return ((char *)big);
 	i = 0;
-	u = 0;
-	str1 = (char*)big;
-	str2 = (char*)little;
-	if (*little == '\0')
-		return ((char*)big);
-	while (str2[u] != '\0')
-		u++;
-	while (str1[i] != '\0' && (i + u) <= len)
+	while (big[i] && i < len)
 	{
-		if (ft_strncmp(str1 + i, str2, u) == 0)
-			return (str1 + i);
+		j = 0;
+		if (little[j] == big[i])
+		{
+			while (little[j] && little[j] == big[i + j] && i + j < len)
+			{
+				j++;
+			}
+			if (!little[j])
+				return ((char *)&big[i]);
+		}
 		i++;
 	}
 	return (NULL);

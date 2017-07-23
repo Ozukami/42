@@ -6,7 +6,7 @@
 /*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/19 15:09:25 by lcharbon          #+#    #+#             */
-/*   Updated: 2017/06/10 05:26:56 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/24 00:46:34 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void		ftpf_width(t_data *data, char **str)
 {
 	char		*tmp;
 
-	if (data->data[1] > ft_strlen(*str))
+	if (data->data[1] > (int)ft_strlen(*str))
 	{
 		if (data->data[4] == 1 || data->data[3] == 0)
 			tmp = ft_strnewch(data->data[1] - ft_strlen(*str), ' ');

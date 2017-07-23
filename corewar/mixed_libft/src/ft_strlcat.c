@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/23 11:16:16 by lcharbon          #+#    #+#             */
-/*   Updated: 2016/11/24 16:32:30 by lcharbon         ###   ########.fr       */
+/*   Created: 2016/11/04 14:59:20 by apoisson          #+#    #+#             */
+/*   Updated: 2016/11/15 10:56:02 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,19 @@
 
 size_t	ft_strlcat(char *dst, const char *src, size_t size)
 {
-	unsigned long	i;
-	unsigned long	o;
-	unsigned char	*a;
-	unsigned char	*b;
+	size_t	i;
+	size_t	j;
 
-	a = (unsigned char*)src;
-	b = (unsigned char*)dst;
 	i = 0;
-	while (b[i] != '\0' && i < size)
+	while (dst[i] && i < size)
 		i++;
-	o = i;
-	while (a[i - o] != '\0' && i < size - 1)
+	j = i;
+	while (src[i - j] && i < size - 1)
 	{
-		b[i] = a[i - o];
+		dst[i] = src[i - j];
 		i++;
 	}
-	if (o < size)
-		b[i] = '\0';
-	return (o + ft_strlen(src));
+	if (j < size)
+		dst[i] = '\0';
+	return (j + ft_strlen(src));
 }

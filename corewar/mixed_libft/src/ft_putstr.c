@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/18 16:32:14 by lcharbon          #+#    #+#             */
-/*   Updated: 2017/03/14 18:50:39 by lcharbon         ###   ########.fr       */
+/*   Created: 2016/11/06 23:18:37 by apoisson          #+#    #+#             */
+/*   Updated: 2017/02/01 07:36:05 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,5 @@
 
 void	ft_putstr(char *s)
 {
-	write(1, s, ft_strlen(s));
+	ft_putstr_fd(s, 1);
 }

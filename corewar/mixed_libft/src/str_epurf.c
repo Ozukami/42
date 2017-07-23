@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   str_epur.c                                         :+:      :+:    :+:   */
-/*              	                              +:+ +:+         +:+     */
-/*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   str_epurf.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/06/09 08:18:35 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/12 04:10:46 by apoisson         ###   ########.fr       */
+/*   Created: 2017/07/24 01:00:01 by lcharbon          #+#    #+#             */
+/*   Updated: 2017/07/24 01:00:03 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char		*str_epur(char *str)
+char		*str_epurf(char *str)
 {
 	char	*epur;
 	char	**split;
@@ -37,5 +37,6 @@ char		*str_epur(char *str)
 		epur = ft_strjoinf_l(epur, split[i]);
 	}
 	free_map(split);
+	ft_strdel(&str);
 	return (epur);
 }

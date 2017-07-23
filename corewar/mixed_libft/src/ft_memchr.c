@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memchrb.c                                       :+:      :+:    :+:   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/23 07:35:34 by lcharbon          #+#    #+#             */
-/*   Updated: 2016/11/23 09:19:14 by lcharbon         ###   ########.fr       */
+/*   Created: 2016/11/07 03:02:53 by apoisson          #+#    #+#             */
+/*   Updated: 2016/11/15 07:34:05 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,13 @@
 
 void	*ft_memchr(const void *s, int c, size_t n)
 {
-	unsigned char	*a;
-	unsigned char	e;
-	unsigned long	i;
+	size_t	i;
 
-	a = (unsigned char*)s;
-	e = (unsigned char)c;
 	i = 0;
 	while (i < n)
 	{
-		if (a[i] == e)
-			return (&a[i]);
+		if (((unsigned char *)s)[i] == (unsigned char)c)
+			return (&(((char *)(s))[i]));
 		i++;
 	}
 	return (NULL);

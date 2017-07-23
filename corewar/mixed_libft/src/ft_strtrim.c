@@ -3,57 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/20 12:04:38 by lcharbon          #+#    #+#             */
-/*   Updated: 2016/11/25 13:28:21 by lcharbon         ###   ########.fr       */
+/*   Created: 2016/11/08 07:15:55 by apoisson          #+#    #+#             */
+/*   Updated: 2016/11/16 12:54:21 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int		ft_count_blank(char const *s)
+char	*ft_strtrim(char const *s)
 {
-	int		u;
+	char	*trim;
+	size_t	strtspc;
+	size_t	endspc;
+	size_t	i;
 
-	u = 0;
-	while (s[u] == ' ' || s[u] == '\n' || s[u] == '\t')
-		u++;
-	return (u);
-}
-
-static int		ft_count_blank_end(char const *s, int u, int o)
-{
-	if (u != o)
-		while (s[o - 1] == ' ' || s[o - 1] == '\n' || s[o - 1] == '\t')
-			o--;
-	return (o);
-}
-
-char			*ft_strtrim(char const *s)
-{
-	char	*ptr;
-	int		u;
-	int		o;
-	int		n;
-
-	if (s == NULL)
+	if (!s)
 		return (NULL);
-	u = ft_count_blank(s);
-	o = 0;
-	while (s[o] != '\0')
-		o++;
-	n = 0;
-	o = ft_count_blank_end(s, u, o);
-	o -= u;
-	if (!(ptr = (char *)malloc((o + 1) * sizeof(char))))
+	strtspc = 0;
+	while (s[strtspc] && ft_check_spaces(s[strtspc]))
+		strtspc++;
+	if (strtspc == ft_strlen(s))
+		return (ft_strdup("\0"));
+	endspc = 0;
+	while (ft_check_spaces(s[ft_strlen(s) - endspc - 1]))
+		endspc++;
+	if (!(trim = (char *)ft_memalloc(ft_strlen(s) - (strtspc + endspc) + 1)))
 		return (NULL);
-	while (n < o)
+	i = 0;
+	while (i + strtspc < ft_strlen(s) - endspc)
 	{
-		ptr[n] = s[u];
-		n++;
-		u++;
+		trim[i] = s[i + strtspc];
+		i++;
 	}
-	ptr[o] = '\0';
-	return (ptr);
+	trim[i] = '\0';
+	return (trim);
 }

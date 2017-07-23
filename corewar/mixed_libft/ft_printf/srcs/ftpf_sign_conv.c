@@ -6,7 +6,7 @@
 /*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/19 15:09:25 by lcharbon          #+#    #+#             */
-/*   Updated: 2017/06/10 05:23:28 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/24 00:47:41 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void			ftpf_prec(t_data *data, intmax_t arg, char **str)
 	char			*tmp;
 	char			*tmp2;
 
-	nb_len = ft_strlen(*str);
+	nb_len = (int)ft_strlen(*str);
 	if ((data->data[0] <= nb_len && arg > 0) || data->data[0] <= nb_len - 1)
 		return ;
 	if (arg >= 0)
@@ -27,7 +27,7 @@ static void			ftpf_prec(t_data *data, intmax_t arg, char **str)
 	{
 		tmp = ft_strnewch(data->data[0] - nb_len + 2, '0');
 		tmp2 = *str;
-		*str = ft_strsub(*str, 1, ft_strlen(*str) - 1);
+		*str = ft_strsub(*str, 1, (int)ft_strlen(*str) - 1);
 		ft_strdel(&tmp2);
 		tmp[0] = '-';
 	}
@@ -40,15 +40,15 @@ static void			ftpf_width_noless(t_data *data, intmax_t arg, char **str)
 	char			*tmp2;
 
 	if (data->data[3] == 0 || data->data[0] >= 0)
-		tmp = ft_strnewch(data->data[1] - ft_strlen(*str), ' ');
+		tmp = ft_strnewch(data->data[1] - (int)ft_strlen(*str), ' ');
 	else if (arg >= 0 && *str[0] != ' ' && *str[0] != '+')
-		tmp = ft_strnewch(data->data[1] - ft_strlen(*str), '0');
+		tmp = ft_strnewch(data->data[1] - (int)ft_strlen(*str), '0');
 	else
 	{
-		tmp = ft_strnewch(data->data[1] - ft_strlen(*str) + 1, '0');
+		tmp = ft_strnewch(data->data[1] - (int)ft_strlen(*str) + 1, '0');
 		tmp[0] = *str[0];
 		tmp2 = *str;
-		*str = ft_strsub(*str, 1, ft_strlen(*str) - 1);
+		*str = ft_strsub(*str, 1, (int)ft_strlen(*str) - 1);
 		ft_strdel(&tmp2);
 	}
 	*str = ft_strjoindel(tmp, *str, 3);
@@ -58,7 +58,7 @@ static void			ftpf_width_less(t_data *data, char **str)
 {
 	char			*tmp;
 
-	if (!(tmp = ft_strnewch(data->data[1] - ft_strlen(*str), ' ')))
+	if (!(tmp = ft_strnewch(data->data[1] - (int)ft_strlen(*str), ' ')))
 		return ;
 	*str = ft_strjoindel(*str, tmp, 3);
 }
@@ -89,12 +89,12 @@ int					ftpf_sign_conv(t_data *data, va_list ap, char c)
 		ft_memset(str, '\0', 5);
 	if (data->data[5] == 1 || data->data[6] == 1)
 		ftpf_flag(data, arg, &str);
-	if (data->data[1] > ft_strlen(str) && data->data[4] == 1)
+	if (data->data[1] > (int)ft_strlen(str) && data->data[4] == 1)
 		ftpf_width_less(data, &str);
-	if (data->data[1] > ft_strlen(str) && data->data[4] == 0)
+	if (data->data[1] > (int)ft_strlen(str) && data->data[4] == 0)
 		ftpf_width_noless(data, arg, &str);
 	ft_putstr_fd(str, data->fd);
-	ret = ft_strlen(str);
+	ret = (int)ft_strlen(str);
 	free(str);
 	return (ret);
 }

@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_int_bigger.c                                    :+:      :+:    :+:   */
+/*   ft_absolute.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/06/03 18:15:47 by lcharbon          #+#    #+#             */
-/*   Updated: 2017/06/03 18:38:29 by lcharbon         ###   ########.fr       */
+/*   Created: 2017/03/26 03:26:53 by apoisson          #+#    #+#             */
+/*   Updated: 2017/07/24 00:39:48 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int			ft_int_bigger(int n, int n2)
+int		ft_absolute(int a)
 {
-	if (n >= n2)
-		return (n);
-	return (n2);
+	if (a < 0)
+		return (-a);
+	return (a);
 }

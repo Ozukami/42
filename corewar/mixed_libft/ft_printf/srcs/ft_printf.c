@@ -6,7 +6,7 @@
 /*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/19 15:09:25 by lcharbon          #+#    #+#             */
-/*   Updated: 2017/06/10 11:18:56 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/24 00:41:46 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int				ft_printf(const char *format, ...)
 	data.n_char = 0;
 	data.fd = 1;
 	data.opfd = -1;
-	ft_test_memory();
 	va_start(ap, format);
 	while (*format)
 	{

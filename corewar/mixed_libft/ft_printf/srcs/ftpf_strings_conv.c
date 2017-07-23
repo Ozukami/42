@@ -6,7 +6,7 @@
 /*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/19 15:09:25 by lcharbon          #+#    #+#             */
-/*   Updated: 2017/06/08 02:34:58 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/24 00:49:52 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void				ftpf_width(t_data *data, char **str)
 	int					i;
 
 	i = 0;
-	if (data->data[1] > ft_strlen(*str))
+	if (data->data[1] > (int)ft_strlen(*str))
 	{
 		tmp = *str;
 		if (data->data[3] == 0 || data->data[4] == 1)
@@ -70,9 +70,9 @@ static void				ftpf_width(t_data *data, char **str)
 			ft_memset(*str, '0', i);
 		if (data->data[4] == 0)
 			ft_strncpy(*str + data->data[1] -
-			ft_strlen(tmp), tmp, ft_strlen(tmp));
+			(int)ft_strlen(tmp), tmp, (int)ft_strlen(tmp));
 		else
-			ft_strncpy(*str, tmp, ft_strlen(tmp));
+			ft_strncpy(*str, tmp, (int)ft_strlen(tmp));
 		free(tmp);
 	}
 }
@@ -83,12 +83,12 @@ int						ftpf_strings_conv(t_data *data, va_list ap)
 	int					ret;
 
 	tmp = ftpf_valist_strings(data, ap);
-	if ((data->data[0] >= 0 && data->data[0] < ft_strlen(tmp)))
+	if ((data->data[0] >= 0 && data->data[0] < (int)ft_strlen(tmp)))
 		ftpf_prec(data, tmp);
 	if (data->data[1] > 0)
 		ftpf_width(data, &tmp);
 	ft_putstr_fd(tmp, data->fd);
-	ret = ft_strlen(tmp);
+	ret = (int)ft_strlen(tmp);
 	free(tmp);
 	return (ret);
 }
