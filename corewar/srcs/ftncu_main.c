@@ -6,7 +6,7 @@
 /*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/22 00:13:23 by lcharbon          #+#    #+#             */
-/*   Updated: 2017/07/23 23:14:53 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/23 23:30:00 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void		ftncu_init_pair(void)
 	init_color(COLOR_CYAN, 500, 500, 500);
 	init_pair(5, COLOR_BLACK, COLOR_BLACK);
 	init_pair(6, COLOR_CYAN, COLOR_BLACK);
+	init_color(COLOR_MAGENTA, 800, 800, 800);
 	init_pair(7, COLOR_BLACK, COLOR_MAGENTA);
 }
 
@@ -35,10 +36,27 @@ static int	ftncu_mem_proc(t_gb *g, int i)
 	while (tmp)
 	{
 		if (tmp->pc == i)
+		{
+			attron(COLOR_PAIR(7));
 			return (1);
+		}
 		tmp = tmp->next;
 	}
 	return (0);
+}
+
+static void	ftncu_act_attron(t_gb *g, int i)
+{
+	if (g->v->color_tab[i] == 1)
+		attron(COLOR_PAIR(1));
+	if (g->v->color_tab[i] == 2)
+		attron(COLOR_PAIR(2));
+	if (g->v->color_tab[i] == 3)
+		attron(COLOR_PAIR(3));
+	if (g->v->color_tab[i] == 4)
+		attron(COLOR_PAIR(4));
+	if (g->v->color_tab[i] == 0)
+		attron(COLOR_PAIR(5));
 }
 
 static void	ftncu_print_memory(t_gb *g, unsigned char *memory)
@@ -52,15 +70,12 @@ static void	ftncu_print_memory(t_gb *g, unsigned char *memory)
 	a = 1;
 	move(1, 1);
 	ftncu_init_pair();
-	attron(COLOR_PAIR(5));
+	attron(A_NORMAL);
 	while (i < MEM_SIZE)
 	{
-		if (ftncu_mem_proc(g, i) == 1)
-			attron(COLOR_PAIR(7));
-		else if (memory[i] != 0)
-			attron(COLOR_PAIR(6));
+		ftncu_act_attron(g, i);
+		ftncu_mem_proc(g, i);
 		printw("%.2X ", memory[i]);
-		attron(COLOR_PAIR(5));
 		if (n >= 192)
 		{
 			n = 0;
@@ -70,7 +85,7 @@ static void	ftncu_print_memory(t_gb *g, unsigned char *memory)
 		n += 3;
 		i++;
 	}
-	attroff(COLOR_PAIR(5));
+	attron(A_NORMAL);
 }
 
 void		ftncu_main(t_vm *vm)
