@@ -6,7 +6,7 @@
 /*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/22 19:56:26 by lcharbon          #+#    #+#             */
-/*   Updated: 2017/07/23 20:13:28 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/24 00:19:07 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void		ftncu_print_players(t_gb *g)
 	}
 }
 
-void		ftncu_print_info(t_gb *g)
+void			ftncu_print_info(t_gb *g)
 {
 	attron(A_DIM);
 	attron(A_BOLD);

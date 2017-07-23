@@ -6,7 +6,7 @@
 /*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/22 00:13:23 by lcharbon          #+#    #+#             */
-/*   Updated: 2017/07/23 23:30:00 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/24 00:18:54 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "corewar.h"
 #include <fcntl.h>
 
-void		ftncu_init_pair(void)
+void			ftncu_init_pair(void)
 {
 	start_color();
 	init_pair(1, COLOR_GREEN, COLOR_BLACK);
@@ -28,7 +28,7 @@ void		ftncu_init_pair(void)
 	init_pair(7, COLOR_BLACK, COLOR_MAGENTA);
 }
 
-static int	ftncu_mem_proc(t_gb *g, int i)
+static int		ftncu_mem_proc(t_gb *g, int i)
 {
 	t_proc	*tmp;
 
@@ -45,7 +45,7 @@ static int	ftncu_mem_proc(t_gb *g, int i)
 	return (0);
 }
 
-static void	ftncu_act_attron(t_gb *g, int i)
+static void		ftncu_act_attron(t_gb *g, int i)
 {
 	if (g->v->color_tab[i] == 1)
 		attron(COLOR_PAIR(1));
@@ -59,7 +59,7 @@ static void	ftncu_act_attron(t_gb *g, int i)
 		attron(COLOR_PAIR(5));
 }
 
-static void	ftncu_print_memory(t_gb *g, unsigned char *memory)
+static void		ftncu_print_memory(t_gb *g, unsigned char *memory)
 {
 	int		i;
 	int		n;
@@ -88,11 +88,10 @@ static void	ftncu_print_memory(t_gb *g, unsigned char *memory)
 	attron(A_NORMAL);
 }
 
-void		ftncu_main(t_vm *vm)
+void			ftncu_main(t_vm *vm)
 {
 	t_gb		g;
 
-//	clear();
 	ft_memset(&g, 0, sizeof(g));
 	g.v = vm;
 	g.n_players = g.v->arena->nb_player;
@@ -100,6 +99,5 @@ void		ftncu_main(t_vm *vm)
 	ftncu_print_memory(&g, vm->arena->memory);
 	refresh();
 	move(LINES, COLS);
-//	while (42)
-		getch();
+	getch();
 }
