@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 05:38:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/23 07:48:26 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/23 23:18:18 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1049,6 +1049,8 @@ void		process(t_vm *vm)
 //			printf("%s[Cycle = %d]%s\n", YELLOW, A_CYCLE, DEFAULT);
 			break ;
 		}
+		if (OPT_NC > 0)
+			ftncu_main(vm);
 	}
 }
 
@@ -1134,6 +1136,11 @@ int			main(int ac, char **av)
 		ft_usage();
 	init_arena(vm, tab_size(args), args); // faudra penser a free args
 	load_champ(vm);
+	if (OPT_NC > 0)
+	{
+		initscr();
+		ftncu_main(vm);
+	}
 	process(vm);
 	printf("le joueur %d (%s) a gagne\n", A_WINNER,
 			get_player_from_id(vm, A_WINNER)->champ->name);

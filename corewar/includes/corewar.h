@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/20 02:47:48 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/23 05:43:48 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/23 23:14:01 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <ncurses.h>
 # include <curses.h>
+# include "ncurse.h"
 # include "op.h"
 # include "libft.h"
 # include <fcntl.h>

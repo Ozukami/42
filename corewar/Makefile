@@ -6,7 +6,7 @@
 #    By: apoisson <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 11:29:15 by apoisson          #+#    #+#              #
-#    Updated: 2017/06/29 02:23:07 by apoisson         ###   ########.fr        #
+#    Updated: 2017/07/23 23:14:44 by lcharbon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ VM = corewar
 FLAGS = -Wall -Wextra
 SRCASM = add.c automaton.c check.c get_instruction.c main.c \
 parse_header.c tools.c write_champ.c write_header.c
-SRCVM = test_ncurses.c
+SRCVM = test_ncurses.c ftncu_main.c ftncu_print_info.c
 CHAMPDIR =
 
 all: $(ASM)
