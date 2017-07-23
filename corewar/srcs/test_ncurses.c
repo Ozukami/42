@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 05:38:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/23 05:51:22 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/23 07:01:17 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -793,18 +793,11 @@ void	op_zjmp(t_vm *vm, t_proc *proc)
 	if (PR_CARRY == 1)
 	{
 		// IDX_MOD ??
-		/*
-		PR_PC = value % IDX_MOD;
+		PR_PC += ((short)value) % MEM_SIZE;
 		if (PR_PC < 0)
 			PR_PC += MEM_SIZE;
 		printf("%sZjmp at %d%s\n", YELLOW, PR_PC, DEFAULT);
-		*/
-		//PR_WAIT = (g_op_tab[A_MEMORY[PR_PC] - 1]).cycles;
-		PR_PC += ((short)value) % MEM_SIZE;
-		printf("%sZjmp at %d%s\n", YELLOW, PR_PC, DEFAULT);
 		PR_WAIT = 0;
-	//	printf("%s[Loading OP] (cycle %d)%s\n", GREEN, A_CYCLE, RED);
-	//	printf("	{%d Cycle to Wait}%s\n", PR_WAIT, DEFAULT);
 	}
 	else
 	{
@@ -824,7 +817,18 @@ void	op_ldi(t_vm *vm, t_proc *proc)
 	if (ocp < 64)
 		return ;
 	get_args(vm, proc, ocp, args);
-	PR_REG[args[2]] = get_value(vm, REG_SIZE, args[0] + args[1]);
+	if (((ocp & 0b11000000)) == 0b11000000)
+		args[0] = get_value(vm, 4, (PR_PC + (args[0] % IDX_MOD)) % MEM_SIZE);
+	else if ((ocp & 0b01000000))
+		args[0] = PR_REG[args[0]];
+	if ((((ocp << 2) & 0b11000000)) == 0b11000000)
+		args[1] = get_value(vm, 4, (PR_PC + (args[1] % IDX_MOD)) % MEM_SIZE);
+	else if (((ocp << 2) & 0b01000000))
+		args[1] = PR_REG[args[1]];
+	//printf("%d %d\n", args[0], args[1]);
+	// si bug, PR_PC que quand T_DIR
+	PR_REG[args[2]] = get_value(vm, REG_SIZE,
+			(PR_PC + args[0] + args[1]) % MEM_SIZE);
 	move_pc(vm, proc, ocp);
 }
 
@@ -839,21 +843,19 @@ void	op_sti(t_vm *vm, t_proc *proc)
 	if (ocp < 64)
 		return ;
 	get_args(vm, proc, ocp, args);
-	if (((ocp << 2) & 0b01000000))
+	if ((((ocp << 2) & 0b11000000)) == 0b11000000)
+		args[1] = get_value(vm, 4, (PR_PC + (args[1] % IDX_MOD)) % MEM_SIZE);
+	else if (((ocp << 2) & 0b01000000))
 		args[1] = PR_REG[args[1]];
 	if (((ocp << 4) & 0b01000000))
 		args[2] = PR_REG[args[2]];
 	printf("sti : %d <- %d + %d\n", args[0], args[1], args[2]);
-	j = (PR_PC + ((args[1] + args[2] + args[2])) % IDX_MOD) % MEM_SIZE;
+	j = (PR_PC + ((args[1] + args[2])) % IDX_MOD) % MEM_SIZE;
 	if (j < 0)
 		j += MEM_SIZE;
 	printf("%sj = %d%s\n", CYAN, args[1], DEFAULT);
 	write_in_mem(vm, PR_REG[args[0]], j,
 				get_player_from_id(vm, proc->id_player)->color);
-	/*
-	write_in_mem(vm, PR_REG[args[0]],
-			((PR_PC + args[1] + args[2]) % IDX_MOD) % MEM_SIZE);
-			*/
 	printf("%s%d%s\n", CYAN, j, DEFAULT);
 	move_pc(vm, proc, ocp);
 }
@@ -928,7 +930,16 @@ void	op_lldi(t_vm *vm, t_proc *proc)
 	if (ocp < 64)
 		return ;
 	get_args(vm, proc, ocp, args);
-	PR_REG[args[2]] = get_value(vm, REG_SIZE, args[0] + args[1]);
+	if (((ocp & 0b11000000)) == 0b11000000)
+		args[0] = get_value(vm, 4, (PR_PC + args[0]) % MEM_SIZE);
+	else if ((ocp & 0b01000000))
+		args[0] = PR_REG[args[0]];
+	if ((((ocp << 2) & 0b11000000)) == 0b11000000)
+		args[1] = get_value(vm, 4, (PR_PC + args[1]) % MEM_SIZE);
+	else if (((ocp << 2) & 0b01000000))
+		args[1] = PR_REG[args[1]];
+	PR_REG[args[2]] = get_value(vm, REG_SIZE,
+			(PR_PC + args[0] + args[1]) % MEM_SIZE);
 	if (PR_REG[args[1]] == 0)
 		PR_CARRY = 1;
 	else
@@ -940,17 +951,23 @@ void	op_lfork(t_vm *vm, t_proc *proc)
 {
 	int		value;
 	t_proc	*clone;
+	int		i;
 
 	printf("op_lfork\n");
 	value = get_value(vm, 2, (PR_PC + 1) % MEM_SIZE);
 	value %= MEM_SIZE;
 	clone = new_proc(PR_IDP);
 	clone->carry = proc->carry;
-	clone->pc = (PR_PC + value) % MEM_SIZE;
+	if (PR_PC + value < 0)
+		clone->pc = (PR_PC + MEM_SIZE + value) % MEM_SIZE;
+	else
+		clone->pc = (PR_PC + value) % MEM_SIZE;
 	A_PROC++;
-	//printf("%sCLONE (%d)%s\n", GREEN, A_PROC, DEFAULT);
-	// copie du reg pere dans le reg fils ?
-	clone->next = proc;
+	printf("%sCLONE (%d)%s\n", GREEN, A_PROC, DEFAULT);
+	i = 0;
+	while (++i < 17)
+		(clone->reg)[i] = PR_REG[i];
+	clone->next = A_LPROC;
 	A_LPROC = clone;
 	move_pc(vm, proc, 0);
 }
@@ -959,13 +976,15 @@ void	op_aff(t_vm *vm, t_proc *proc)
 {
 	int		value;
 	int		ocp;
+	char	aff;
 
 	printf("op_aff\n");
 	ocp = A_MEMORY[(PR_PC + 1) % MEM_SIZE];
 	if (ocp < 64)
 		return ;
 	value = get_value(vm, 1, (PR_PC + 2) % MEM_SIZE);
-	printf("%c\n", value % 256);
+	aff = PR_REG[value] % 256;
+	printf("aff: %c\n", aff);
 	move_pc(vm, proc, ocp);
 }
 
@@ -1058,7 +1077,7 @@ void		process(t_vm *vm)
 		{
 			printf("A_PROC = 0 (A_CTD = %d)\n", A_CTD);
 			printf("%s[Cycle = %d]%s\n", YELLOW, A_CYCLE, DEFAULT);
-			exit(0);
+			break ;
 		}
 	}
 }
