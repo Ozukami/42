@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/20 02:47:48 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/24 06:45:11 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/24 07:22:16 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ extern int					errno;
 # define PR_WAIT			(proc->cycle_to_wait)
 # define PR_NEXT			(proc->next)
 # define PR_REG				(proc->reg)
+# define PR_LOP				(proc->loaded_op)
 
 extern t_op					g_op_tab[17];
 
@@ -102,6 +103,7 @@ struct						s_proc
 	int						carry;
 	int						cycle_to_wait;
 	int						*reg;
+	int						loaded_op;
 	t_proc					*next;
 };
 

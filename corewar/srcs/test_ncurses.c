@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 05:38:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/24 06:47:15 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/24 07:42:03 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,6 +228,7 @@ t_proc			*new_proc(int id_player)
 	if (!(PR_REG = ft_memalloc(sizeof(int) * (REG_NUMBER + 2))))
 		ft_perror(strerror(errno));
 	PR_REG[1] = PR_IDP;
+	PR_LOP = -1;
 	return (proc);
 }
 
@@ -476,6 +477,7 @@ void	move_pc(t_vm *vm, t_proc *proc, int ocp)
 	PR_PC += size;
 	PR_PC %= MEM_SIZE;
 	PR_WAIT = 1;
+	PR_LOP = -1;
 }
 
 void	move_failed_op(t_vm *vm, t_proc *proc, int len)
@@ -564,7 +566,21 @@ t_player	*get_player_from_id(t_vm *vm, int id)
 
 void	write_in_mem(t_vm *vm, int value, int pc, int color)
 {
-	ft_printf("%d\n", pc);
+	/*
+	t_proc		*proc;
+
+	proc = A_LPROC;
+	while (proc)
+	{
+		printf("	id = %d\n", PR_ID);
+		printf("	p_id = %d\n", PR_IDP);
+		printf("	alive = %d\n", PR_ALIVE);
+		printf("	pc = %d\n", PR_PC);
+		printf("	carry = %d\n", PR_CARRY);
+		printf("	ctw = %d\n\n", PR_WAIT);
+		proc = proc->next;
+	}
+	*/
 	A_MEMORY[pc] = value >> 24;
 	COLOR[pc] = color;
 	A_MEMORY[(pc + 1) % MEM_SIZE] = (value >> 16) & 0b11111111;
@@ -575,6 +591,19 @@ void	write_in_mem(t_vm *vm, int value, int pc, int color)
 	COLOR[(pc + 2) % MEM_SIZE] = color;
 	A_MEMORY[(pc + 3) % MEM_SIZE] = value & 0b11111111;
 	COLOR[(pc + 3) % MEM_SIZE] = color;
+	/*
+	proc = A_LPROC;
+	while (proc)
+	{
+		printf("	id = %d\n", PR_ID);
+		printf("	p_id = %d\n", PR_IDP);
+		printf("	alive = %d\n", PR_ALIVE);
+		printf("	pc = %d\n", PR_PC);
+		printf("	carry = %d\n", PR_CARRY);
+		printf("	ctw = %d\n\n", PR_WAIT);
+		proc = proc->next;
+	}
+	*/
 }
 
 void		v_op(t_vm *vm, char *name, t_proc *proc, int ocp)
@@ -618,9 +647,12 @@ int		verif_ocp(t_vm *vm, t_proc *proc, int op, int ocp)
 		return (1);
 	ft_printf("	%sOP %d (%d) FAILED%s\n", RED, op, ocp, DEFAULT);
 	PR_WAIT = 1;
+	PR_LOP = -1;
+	/*
 	if (op == 4 || op == 5)
 		move_failed_op(vm, proc, 6);
 	else
+	*/
 		move_pc(vm, proc, ocp);
 	return (0);
 }
@@ -1047,18 +1079,16 @@ void		process(t_vm *vm)
 		curr = A_LPROC;
 		while (curr)
 		{
-			if (A_CYCLE >= 950 && curr->id == 1)
-				ft_printf("proc %d, wait = %d\n", curr->id, curr->cycle_to_wait);
-			if (A_MEMORY[curr->pc] <= 0 || A_MEMORY[curr->pc] > 16)
+			if ((curr->loaded_op == -1) &&
+					(A_MEMORY[curr->pc] <= 0 || A_MEMORY[curr->pc] > 16))
 				curr->pc = ((curr->pc) + 1) % MEM_SIZE;
-			else if (curr->cycle_to_wait ==
-					(g_op_tab[A_MEMORY[curr->pc] - 1]).cycles)
-				(op_tab[A_MEMORY[curr->pc] - 1])(vm, curr);
+			else if (curr->cycle_to_wait >=
+					(g_op_tab[curr->loaded_op - 1]).cycles)
+				(op_tab[curr->loaded_op - 1])(vm, curr);
 			else
 			{
-				if (curr->id == 1)
-					ft_printf("	%sLOADING %s%s\n", RED,
-							g_op_tab[A_MEMORY[curr->pc] - 1].op, DEFAULT);
+				if (curr->loaded_op == -1)
+					curr->loaded_op = A_MEMORY[curr->pc];
 				(curr->cycle_to_wait)++;
 			}
 			curr = curr->next;
