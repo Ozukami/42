@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/06/21 05:38:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/24 07:42:03 by apoisson         ###   ########.fr       */
+/*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
+/*   Updated: 2017/07/24 08:12:08 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,6 +229,8 @@ t_proc			*new_proc(int id_player)
 		ft_perror(strerror(errno));
 	PR_REG[1] = PR_IDP;
 	PR_LOP = -1;
+	if (!(PR_MEMOP = ft_memalloc(sizeof(unsigned char) * (11))))
+		ft_perror(strerror(errno));
 	return (proc);
 }
 
@@ -480,6 +482,27 @@ void	move_pc(t_vm *vm, t_proc *proc, int ocp)
 	PR_LOP = -1;
 }
 
+void	move_pc_fork(t_vm *vm, t_proc *proc, int ocp)
+{
+	int		size;
+	int		i;
+
+	i = -1;
+	size = get_inst_length(ocp, PR_MEMOP[0] - 1);
+	if (OPT_V & V_PC)
+	{
+		ft_printf("\033[2;3;36mADV %d (0x%04x -> ", size, PR_PC);
+		ft_printf("0x%04x)", PR_PC + size);
+		while (++i < size)
+			ft_printf(" %02x", A_MEMORY[i]);
+		ft_printf("%s\n", DEFAULT);
+	}
+	PR_PC += size;
+	PR_PC %= MEM_SIZE;
+	PR_WAIT = 1;
+	PR_LOP = -1;
+}
+
 void	move_failed_op(t_vm *vm, t_proc *proc, int len)
 {
 	int		i;
@@ -510,6 +533,24 @@ int		get_value(t_vm *vm, int nb_octet, int pc)
 	{
 		value = value << 8;
 		value += A_MEMORY[(pc + i++) % MEM_SIZE];
+	}
+//	ft_printf("%s[get_value : %d]%s\n", GREEN, value, DEFAULT);
+	if (nb_octet < 4)
+		value = (short)value;
+	return (value);
+}
+
+int		get_value_fork(t_vm *vm, int nb_octet, t_proc *proc, int pc)
+{
+	int				value;
+	int				i;
+
+	value = PR_MEMOP[pc];
+	i = 1;
+	while (i < nb_octet)
+	{
+		value = value << 8;
+		value += PR_MEMOP[(pc + i++) % MEM_SIZE];
 	}
 //	ft_printf("%s[get_value : %d]%s\n", GREEN, value, DEFAULT);
 	if (nb_octet < 4)
@@ -914,7 +955,7 @@ void	op_fork(t_vm *vm, t_proc *proc)
 	t_proc	*clone;
 
 	v_op(vm, "fork", proc, 0);
-	value = get_value(vm, 2, (PR_PC + 1) % MEM_SIZE);
+	value = get_value_fork(vm, 2, proc, 1);
 	value %= IDX_MOD;
 	value %= MEM_SIZE;
 	clone = new_proc(PR_IDP);
@@ -929,7 +970,7 @@ void	op_fork(t_vm *vm, t_proc *proc)
 		(clone->reg)[i] = PR_REG[i];
 	clone->next = A_LPROC;
 	A_LPROC = clone;
-	move_pc(vm, proc, 0);
+	move_pc_fork(vm, proc, 0);
 }
 
 void	op_lld(t_vm *vm, t_proc *proc)
@@ -1088,7 +1129,12 @@ void		process(t_vm *vm)
 			else
 			{
 				if (curr->loaded_op == -1)
+				{
+					int	i = -1;
 					curr->loaded_op = A_MEMORY[curr->pc];
+					while (++i < 11)
+						(curr->mem_op)[i] = A_MEMORY[(curr->pc + i) % MEM_SIZE];
+				}
 				(curr->cycle_to_wait)++;
 			}
 			curr = curr->next;
