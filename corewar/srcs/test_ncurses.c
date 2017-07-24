@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 05:38:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/24 05:50:15 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/24 06:47:15 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,7 +244,7 @@ t_proc		*init_proc(t_vm *vm)
 		proc = new_proc(curr_player->id);
 		A_WINNER = curr_player->id;
 		A_PROC++;
-//		printf("%sNEW (%d)%s\n", GREEN, A_PROC, DEFAULT);
+//		ft_printf("%sNEW (%d)%s\n", GREEN, A_PROC, DEFAULT);
 		proc->next = curr_proc;
 		curr_proc = proc;
 		curr_player = curr_player->next;
@@ -375,7 +375,7 @@ void		kill_proc(t_vm *vm, int id)
 	if (curr->id == id)
 	{
 		if (OPT_V & V_DEATH)
-			printf("%sProcess %d has died (CTD %d)%s\n",
+			ft_printf("%sProcess %d has died (CTD %d)%s\n",
 					RED, curr->id, A_CTD, DEFAULT);
 		tmp = curr;
 		A_LPROC = tmp->next;
@@ -388,7 +388,7 @@ void		kill_proc(t_vm *vm, int id)
 		if (curr->next->id == id)
 		{
 			if (OPT_V & V_DEATH)
-				printf("%sKILL proc %d (CTD %d)%s\n", RED, curr->id,
+				ft_printf("%sKILL proc %d (CTD %d)%s\n", RED, curr->id,
 						A_CTD, DEFAULT);
 			tmp = curr->next;
 			curr->next = tmp->next;
@@ -406,13 +406,13 @@ void		check_alive(t_vm *vm)
 	t_proc		*curr_proc;
 
 	if (OPT_V & V_CHECK)
-		printf("%sCHECK (CTD %d)%s\n", RED, A_CTD, DEFAULT);
+		ft_printf("%sCHECK (CTD %d)%s\n", RED, A_CTD, DEFAULT);
 	curr_proc = A_LPROC;
 	while (curr_proc)
 	{
 		if (!curr_proc->alive)
 		{
-			printf("	Kill proc at pc %d\n", curr_proc->pc);
+			ft_printf("	Kill proc at pc %d\n", curr_proc->pc);
 			kill_proc(vm, curr_proc->id);
 		}
 		curr_proc->alive = 0;
@@ -467,13 +467,31 @@ void	move_pc(t_vm *vm, t_proc *proc, int ocp)
 	size = get_inst_length(ocp, A_MEMORY[PR_PC] - 1);
 	if (OPT_V & V_PC)
 	{
-		printf("\033[2;3;36mADV %d (0x%04x -> ", size, PR_PC);
-		printf("0x%04x)", PR_PC + size);
+		ft_printf("\033[2;3;36mADV %d (0x%04x -> ", size, PR_PC);
+		ft_printf("0x%04x)", PR_PC + size);
 		while (++i < size)
-			printf(" %02x", A_MEMORY[PR_PC + i]);
-		printf("%s\n", DEFAULT);
+			ft_printf(" %02x", A_MEMORY[PR_PC + i]);
+		ft_printf("%s\n", DEFAULT);
 	}
 	PR_PC += size;
+	PR_PC %= MEM_SIZE;
+	PR_WAIT = 1;
+}
+
+void	move_failed_op(t_vm *vm, t_proc *proc, int len)
+{
+	int		i;
+
+	i = -1;
+	if (OPT_V & V_PC)
+	{
+		ft_printf("\033[2;3;36mADV %d (0x%04x -> ", len, PR_PC);
+		ft_printf("0x%04x)", PR_PC + len);
+		while (++i < len)
+			ft_printf(" %02x", A_MEMORY[PR_PC + i]);
+		ft_printf("%s\n", DEFAULT);
+	}
+	PR_PC += len;
 	PR_PC %= MEM_SIZE;
 	proc->cycle_to_wait = 0;
 }
@@ -491,7 +509,7 @@ int		get_value(t_vm *vm, int nb_octet, int pc)
 		value = value << 8;
 		value += A_MEMORY[(pc + i++) % MEM_SIZE];
 	}
-//	printf("%s[get_value : %d]%s\n", GREEN, value, DEFAULT);
+//	ft_printf("%s[get_value : %d]%s\n", GREEN, value, DEFAULT);
 	if (nb_octet < 4)
 		value = (short)value;
 	return (value);
@@ -510,19 +528,19 @@ void		get_args(t_vm *vm, t_proc *proc, int ocp, int args[4])
 	{
 		if (((ocp << i) & 0b11000000) == 0b11000000)
 		{
-//			printf("T_IND (11)\n");
+//			ft_printf("T_IND (11)\n");
 			args[i / 2] = get_value(vm, 2, (PR_PC + size) % MEM_SIZE);
 			size += 2;
 		}
 		else if (((ocp << i) & 0b01000000))
 		{
-//			printf("T_REG (01)\n");
+//			ft_printf("T_REG (01)\n");
 			args[i / 2] = get_value(vm, 1, (PR_PC + size) % MEM_SIZE);
 			size++;
 		}
 		else if ((ocp << i) & 0b10000000)
 		{
-//			printf("T_DIR (10)\n");
+//			ft_printf("T_DIR (10)\n");
 			args[i / 2] = get_value(vm, label_size, (PR_PC + size) % MEM_SIZE);
 			size += label_size;
 		}
@@ -546,11 +564,14 @@ t_player	*get_player_from_id(t_vm *vm, int id)
 
 void	write_in_mem(t_vm *vm, int value, int pc, int color)
 {
+	ft_printf("%d\n", pc);
 	A_MEMORY[pc] = value >> 24;
 	COLOR[pc] = color;
 	A_MEMORY[(pc + 1) % MEM_SIZE] = (value >> 16) & 0b11111111;
 	COLOR[(pc + 1) % MEM_SIZE] = color;
+	ft_printf("%x\n", A_MEMORY[(pc + 2) % MEM_SIZE]);
 	A_MEMORY[(pc + 2) % MEM_SIZE] = (value >> 8) & 0b11111111;
+	ft_printf("%x\n", A_MEMORY[(pc + 2) % MEM_SIZE]);
 	COLOR[(pc + 2) % MEM_SIZE] = color;
 	A_MEMORY[(pc + 3) % MEM_SIZE] = value & 0b11111111;
 	COLOR[(pc + 3) % MEM_SIZE] = color;
@@ -564,19 +585,19 @@ void		v_op(t_vm *vm, char *name, t_proc *proc, int ocp)
 		return ;
 	color = get_player_from_id(vm, PR_IDP)->color;
 	if (color == 1)
-		printf(GREEN);
+		ft_printf(GREEN);
 	else if (color == 2)
-		printf(BLUE);
+		ft_printf(BLUE);
 	else if (color == 3)
-		printf(RED);
+		ft_printf(RED);
 	else if (color == 4)
-		printf(YELLOW);
-	printf("%s (proc %d)%s | ",
+		ft_printf(YELLOW);
+	ft_printf("%s (proc %d)%s | ",
 			get_player_from_id(vm, PR_IDP)->champ->name, PR_ID, WHITE);
-	printf("%s%s%s", CYAN, name, DEFAULT);
-	printf("%s (PC %d)%s\n", YELLOW, PR_PC, DEFAULT);
+	ft_printf("%s%s%s", CYAN, name, DEFAULT);
+	ft_printf("%s (PC %d)%s\n", YELLOW, PR_PC, DEFAULT);
 	if (ocp)
-		printf("%s	OCP = %d%s\n", PURPLE, ocp, DEFAULT);
+		ft_printf("%s	OCP = %d%s\n", PURPLE, ocp, DEFAULT);
 }
 
 int		verif_ocp(t_vm *vm, t_proc *proc, int op, int ocp)
@@ -595,8 +616,12 @@ int		verif_ocp(t_vm *vm, t_proc *proc, int op, int ocp)
 					ocp == 104 || ocp == 116 || ocp == 120))
 			|| (op == 14 && (ocp == 64)))
 		return (1);
-	PR_WAIT = 0;
-	move_pc(vm, proc, ocp);
+	ft_printf("	%sOP %d (%d) FAILED%s\n", RED, op, ocp, DEFAULT);
+	PR_WAIT = 1;
+	if (op == 4 || op == 5)
+		move_failed_op(vm, proc, 6);
+	else
+		move_pc(vm, proc, ocp);
 	return (0);
 }
 
@@ -624,7 +649,7 @@ void	op_live(t_vm *vm, t_proc *proc)
 		A_WINNER = P_ID;
 		P_LASTLIVE = A_CYCLE;
 		if (OPT_V & V_LIVE)
-			printf("%sPlayer %d %s is said to be alive%s\n",
+			ft_printf("%sPlayer %d %s is said to be alive%s\n",
 					GREEN, P_COLOR, C_NAME, DEFAULT);
 	}
 	move_pc(vm, proc, 0);
@@ -791,15 +816,15 @@ void	op_zjmp(t_vm *vm, t_proc *proc)
 		PR_PC += ((short)value) % MEM_SIZE;
 		if (PR_PC < 0)
 			PR_PC += MEM_SIZE;
-//		printf("%sZjmp at %d%s\n", YELLOW, PR_PC, DEFAULT);
-		PR_WAIT = 0;
+		ft_printf("%sZjmp at %d%s\n", YELLOW, PR_PC, DEFAULT);
+		PR_WAIT = 1;
 	}
 	else
 	{
-//		printf("%s	ZJMP FAILLED%s\n", RED, DEFAULT);
+		ft_printf("%s	ZJMP FAILLED%s\n", RED, DEFAULT);
 		move_pc(vm, proc, 0);
 	}
-	printf("	PC after zjmp = %d\n", PR_PC);
+	ft_printf("	PC after zjmp = %d\n", PR_PC);
 }
 
 void	op_ldi(t_vm *vm, t_proc *proc)
@@ -961,7 +986,7 @@ void	op_aff(t_vm *vm, t_proc *proc)
 	v_op(vm, "aff", proc, ocp);
 	value = get_value(vm, 1, (PR_PC + 2) % MEM_SIZE);
 	aff = PR_REG[value] % 256;
-	printf("aff: %c\n", aff);
+	ft_printf("aff: %c\n", aff);
 	move_pc(vm, proc, ocp);
 }
 
@@ -979,22 +1004,22 @@ void		dump_mem(t_vm *vm)
 	while (++i < MEM_SIZE)
 	{
 		if (COLOR[i] == 1)
-			printf(GREEN);
+			ft_printf(GREEN);
 		else if (COLOR[i] == 2)
-			printf(BLUE);
+			ft_printf(BLUE);
 		else if (COLOR[i] == 3)
-			printf(RED);
+			ft_printf(RED);
 		else if (COLOR[i] == 4)
-			printf(CYAN);
+			ft_printf(CYAN);
 		else
-			printf(DEFAULT);
+			ft_printf(DEFAULT);
 		if (i != 0 && i % 64 == 0)
-			printf("\n%02x ", A_MEMORY[i]);
+			ft_printf("\n%02x ", A_MEMORY[i]);
 		else
-			printf("%02x ", A_MEMORY[i]);
+			ft_printf("%02x ", A_MEMORY[i]);
 	}
-	printf("\n");
-	printf(DEFAULT);
+	ft_printf("\n");
+	ft_printf(DEFAULT);
 	if (OPT_D > -1)
 		exit(0);
 }
@@ -1013,28 +1038,29 @@ void		process(t_vm *vm)
 	cycle = 0;
 	while (A_CTD > 0)
 	{
-		if (OPT_D > -1 && A_CYCLE > OPT_D)
+		if (OPT_D > -1 && A_CYCLE > (OPT_D - 1))
 			dump_mem(vm);
 		++A_CYCLE;
 		if (OPT_V & V_CYCLE)
-			printf("%sIt is now cycle %d%s\n", GREY, A_CYCLE, DEFAULT);
+			ft_printf("%sIt is now cycle %d%s\n", GREY, A_CYCLE, DEFAULT);
 		cycle++;
 		curr = A_LPROC;
 		while (curr)
 		{
-			if (A_CYCLE == 111131)
-				printf("LA PC = %d, mem = %d\n", curr->pc, A_MEMORY[curr->pc]);
+			if (A_CYCLE >= 950 && curr->id == 1)
+				ft_printf("proc %d, wait = %d\n", curr->id, curr->cycle_to_wait);
 			if (A_MEMORY[curr->pc] <= 0 || A_MEMORY[curr->pc] > 16)
 				curr->pc = ((curr->pc) + 1) % MEM_SIZE;
 			else if (curr->cycle_to_wait ==
 					(g_op_tab[A_MEMORY[curr->pc] - 1]).cycles)
-			{
-				// Si l'op fail, avancer de 2 au lieu de 1
 				(op_tab[A_MEMORY[curr->pc] - 1])(vm, curr);
+			else
+			{
+				if (curr->id == 1)
+					ft_printf("	%sLOADING %s%s\n", RED,
+							g_op_tab[A_MEMORY[curr->pc] - 1].op, DEFAULT);
 				(curr->cycle_to_wait)++;
 			}
-			else
-				(curr->cycle_to_wait)++;
 			curr = curr->next;
 		}
 		if (cycle == A_CTD)
@@ -1119,10 +1145,10 @@ int			main(int ac, char **av)
 	}
 	process(vm);
 	if (A_CTD <= 0)
-		printf("%sCycle to die is now %d\n%sIt is now cycle %d%s\n",
+		ft_printf("%sCycle to die is now %d\n%sIt is now cycle %d%s\n",
 				RED, A_CTD, GREY, ++A_CYCLE, DEFAULT);
 	if (!OPT_NC)
-		printf("le joueur %d (%s) a gagne\n", A_WINNER,
+		ft_printf("le joueur %d (%s) a gagne\n", A_WINNER,
 				get_player_from_id(vm, A_WINNER)->champ->name);
 	return (1);
 }
