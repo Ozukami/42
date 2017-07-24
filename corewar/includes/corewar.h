@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/20 02:47:48 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/24 01:06:57 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/24 03:10:02 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,14 @@ extern int					errno;
 # define PURPLE				"\033[35m"
 # define CYAN				"\033[36m"
 # define WHITE				"\033[37m"
+# define GREY				"\033[2;37m"
 
 # define V_LIVE				1
 # define V_CYCLE			2
 # define V_OP				4
 # define V_DEATH			8
 # define V_PC				16
+# define V_CHECK			32
 
 # define NCURSES			(vm->ncurses)
 # define ARENA				(vm->arena)
@@ -69,6 +71,7 @@ extern int					errno;
 # define P_ID				(player->id)
 # define P_PROC				(player->nb_proc)
 # define P_LIVE				(player->nb_live)
+# define P_LASTLIVE			(player->last_live)
 # define P_COLOR			(player->color)
 # define P_NEXT				(player->next)
 
@@ -122,6 +125,7 @@ struct						s_player
 	int						id;
 	int						nb_proc;
 	int						nb_live;
+	int						last_live;
 	int						color;
 	t_player				*next;
 };

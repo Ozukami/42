@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 05:38:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/24 01:39:23 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/24 03:09:40 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -365,7 +365,16 @@ void		load_champ(t_vm *vm)
 
 void		cycle_verif(t_vm *vm)
 {
-	//printf("	%sCYCLE_VERIF (%d)%s\n", RED, A_CTD, DEFAULT);
+	t_player	*player;
+
+	player = A_LPLAYER;
+	while (player)
+	{
+		P_LIVE = 0;
+		player = player->next;
+	}
+	if (OPT_V & V_CHECK)
+		printf("%sCHECK (CTD %d)%s\n", RED, A_CTD, DEFAULT);
 	if (TOTAL_LIVE >= NBR_LIVE || A_NBCHECK == MAX_CHECKS)
 	{
 	 	A_CTD -= CYCLE_DELTA;
@@ -400,13 +409,12 @@ void		kill_proc(t_vm *vm, int id)
 	t_proc	*tmp;
 
 	A_PROC--;
-//	printf("%s[Cycle = %d]%s\n", YELLOW, A_CYCLE, DEFAULT);
 	curr = A_LPROC;
 	if (curr->id == id)
 	{
 		if (OPT_V & V_DEATH)
-			printf("%sKILL (%d/%d) [ctd %d]%s\n", RED, curr->id,
-					A_PROC, A_CTD, DEFAULT);
+			printf("%sKILL proc %d (CTD %d)%s\n", RED, curr->id,
+					A_CTD, DEFAULT);
 		tmp = curr;
 		A_LPROC = tmp->next;
 		update_nb_proc(vm, tmp->id_player);
@@ -418,8 +426,8 @@ void		kill_proc(t_vm *vm, int id)
 		if (curr->next->id == id)
 		{
 			if (OPT_V & V_DEATH)
-				printf("%sKILL (%d/%d) [ctd %d]%s\n", RED, curr->id,
-						A_PROC, A_CTD, DEFAULT);
+				printf("%sKILL proc %d (CTD %d)%s\n", RED, curr->id,
+						A_CTD, DEFAULT);
 			tmp = curr->next;
 			curr->next = tmp->next;
 			update_nb_proc(vm, tmp->id_player);
@@ -485,10 +493,18 @@ int		get_inst_length(int ocp, int op)
 void	move_pc(t_vm *vm, t_proc *proc, int ocp)
 {
 	int		size;
+	int		i;
 
+	i = -1;
 	size = get_inst_length(ocp, A_MEMORY[PR_PC] - 1);
-//	printf("%s	ocp = %d [%x]\n	inst size = %d%s\n\n",
-//			PURPLE, ocp, ocp, size, DEFAULT);
+	if (OPT_V & V_PC)
+	{
+		printf("\033[2;3;36mADV %d (0x%04x -> ", size, PR_PC);
+		printf("0x%04x)", PR_PC + size);
+		while (++i < size)
+			printf(" %02x", A_MEMORY[PR_PC + i]);
+		printf("%s\n", DEFAULT);
+	}
 	PR_PC += size;
 	PR_PC %= MEM_SIZE;
 	proc->cycle_to_wait = 0;
@@ -588,12 +604,12 @@ void		v_op(t_vm *vm, char *name, t_proc *proc, int ocp)
 		printf(RED);
 	else if (color == 4)
 		printf(YELLOW);
-	printf("%s (proc %d) | %s",
-			get_player_from_id(vm, PR_IDP)->champ->name, PR_ID, DEFAULT);
+	printf("%s (proc %d)%s | ",
+			get_player_from_id(vm, PR_IDP)->champ->name, PR_ID, WHITE);
 	printf("%s%s%s", CYAN, name, DEFAULT);
 	printf("%s (PC %d)%s\n", YELLOW, PR_PC, DEFAULT);
 	if (ocp)
-		printf("%sOCP = %d%s\n", PURPLE, ocp, DEFAULT);
+		printf("%s	OCP = %d%s\n", PURPLE, ocp, DEFAULT);
 }
 
 //------Les fonctions d'operation ASM-------
@@ -618,6 +634,7 @@ void	op_live(t_vm *vm, t_proc *proc)
 	{
 		player->nb_live++;
 		A_WINNER = P_ID;
+		P_LASTLIVE = A_CYCLE;
 		if (OPT_V & V_LIVE)
 			printf("%sPlayer %d %s is said to be alive%s\n",
 					GREEN, P_COLOR, C_NAME, DEFAULT);
@@ -1059,7 +1076,7 @@ void		process(t_vm *vm)
 			dump_mem(vm);
 		++A_CYCLE;
 		if (OPT_V & V_CYCLE)
-			printf("It is now cycle %d\n", A_CYCLE);
+			printf("%sIt is now cycle %d%s\n", GREY, A_CYCLE, DEFAULT);
 		cycle++;
 		if (cycle == A_CTD)
 		{

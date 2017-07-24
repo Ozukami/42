@@ -6,7 +6,7 @@
 /*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/22 19:56:26 by lcharbon          #+#    #+#             */
-/*   Updated: 2017/07/24 01:10:07 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/24 03:10:27 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ static void		ftncu_print_players(t_gb *g)
 		printw("%s", player->champ->name);
 		attroff(COLOR_PAIR(np + 1));
 		move(10 * (np + 1) - (5 * np) + 2, 210);
-		printw("Last live : %13.0d %d", 0, 58786);
+		printw("Last live : %13.0d %d", 0, player->last_live);
 		move(10 * (np + 1) - (5 * np) + 3, 210);
-		printw("Lives in current period : %d", player->nb_live);
+		printw("Lives in current period : %d", player->nb_live); 
 		player = player->next;
 	}
 }
@@ -53,7 +53,7 @@ void			ftncu_print_info(t_gb *g)
 	move(g->n_players * 5 + 12, 205);
 	printw("CYCLE_DELTA : %5d", CYCLE_DELTA);
 	move(g->n_players * 5 + 14, 205);
-	printw("NBR_LIVE : %8d", g->v->total_live);
+	printw("NBR_LIVE : %8d", NBR_LIVE);
 	move(g->n_players * 5 + 16, 205);
 	printw("MAX_CHECKS : %6d", MAX_CHECKS);
 	ftncu_print_players(g);
