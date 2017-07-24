@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/20 02:47:48 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/24 03:10:02 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/24 03:13:48 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,19 +43,12 @@ extern int					errno;
 # define V_PC				16
 # define V_CHECK			32
 
-# define NCURSES			(vm->ncurses)
 # define ARENA				(vm->arena)
 # define OPT_NC				(vm->opt_ncurses)
 # define OPT_D				(vm->opt_d)
 # define OPT_V				(vm->opt_v)
 # define TOTAL_LIVE			(vm->total_live)
 # define COLOR				(vm->color_tab)
-
-# define W_INFO				(vm->ncurses->w_info)
-# define W_MEMORY			(vm->ncurses->w_memory)
-# define W_COL				64
-# define W_LINE				64
-# define W_BORDER			2
 
 # define A_LPLAYER			(vm->arena->l_player)
 # define A_LPROC			(vm->arena->l_proc)
@@ -143,15 +136,8 @@ struct						s_arena
 	int						last_alive; // id player
 };
 
-struct						s_ncurses
-{
-	WINDOW					*w_memory;
-	WINDOW					*w_info;
-};
-
 struct						s_vm
 {
-	t_ncurses				*ncurses;
 	t_arena					*arena;
 	int						opt_ncurses;
 	int						opt_d;

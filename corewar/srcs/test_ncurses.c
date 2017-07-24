@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/21 05:38:42 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/24 03:09:40 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/24 03:13:34 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,42 +41,6 @@ t_op	g_op_tab[17] =
 	{"aff", 1, {T_REG}, 16, 2, "aff", 1, 0, 0},
 	{0, 0, {0}, 0, 0, 0, 0, 0, 0}
 };
-
-void	init_mem(t_vm *vm)
-{
-	char	*line;
-	int		i;
-	int		x;
-	int		y;
-
-	start_color();
-
-	init_pair(1, COLOR_GREEN, COLOR_BLACK);
-	init_pair(2, COLOR_BLACK, COLOR_GREEN);
-	init_pair(3, COLOR_BLUE, COLOR_BLACK);
-	init_pair(4, COLOR_BLACK, COLOR_BLUE);
-	init_pair(5, COLOR_RED, COLOR_BLACK);
-	init_pair(6, COLOR_BLACK, COLOR_RED);
-	init_pair(7, COLOR_CYAN, COLOR_BLACK);
-	init_pair(8, COLOR_BLACK, COLOR_CYAN);
-	init_pair(9, COLOR_WHITE, COLOR_BLACK);
-
-	if (!(line = ft_memalloc(MEM_SIZE)))
-		ft_perror(strerror(errno));
-	i = -1;
-	while (++i < MEM_SIZE)
-	{
-		x = i % 64;
-		y = i / 64;
-		if (i < 2048)
-			wattron(W_MEMORY, COLOR_PAIR(1));
-		else
-			wattron(W_MEMORY, COLOR_PAIR(3));
-		mvwprintw(W_MEMORY, y + 1, x + 2 + (x * 3),
-				"%02x", A_MEMORY[i]);
-	}
-	wattron(W_MEMORY, COLOR_PAIR(9));
-}
 
 void	ft_usage(void)
 {
@@ -473,7 +437,6 @@ int		get_inst_length(int ocp, int op)
 
 	if (!ocp)
 		return ((g_op_tab[op]).label_size + 1);
-	// T_REG | T_DIR | T_IND
 	label_size = (g_op_tab[op]).label_size;
 	size = 2;
 	i = 0;
@@ -535,7 +498,6 @@ void		get_args(t_vm *vm, t_proc *proc, int ocp, int args[4])
 	int		size;
 	int		i;
 
-	// T_REG | T_DIR | T_IND
 	label_size = (g_op_tab[A_MEMORY[PR_PC] - 1]).label_size;
 	size = 2;
 	i = 0;
@@ -1120,27 +1082,6 @@ void		process(t_vm *vm)
 	}
 }
 
-void		ncurses_process(t_vm *vm)
-{
-	if (!(NCURSES = ft_memalloc(sizeof(t_ncurses))))
-		ft_perror(strerror(errno));
-	initscr();
-	noecho();
-	keypad(stdscr, TRUE);
-	curs_set(0);
-	//while (1)
-	//{
-		W_MEMORY = subwin(stdscr, 64 + 2, (64 * 3) + 2, 0, 0);
-		W_INFO = subwin(stdscr, 64 + 2, 56, 0, (64 * 3) + 2);
-		init_mem(vm);
-		box(W_MEMORY, ACS_VLINE, ACS_HLINE);
-		box(W_INFO, ACS_VLINE, ACS_HLINE);
-		refresh();
-	//}
-	while (1);
-	endwin();
-}
-
 void		set_opt(int *opt, char *n)
 {
 	int		opt_n;
@@ -1181,7 +1122,6 @@ t_vm		*init_vm(void)
 
 	if (!(vm = ft_memalloc(sizeof(t_vm))))
 		ft_perror(strerror(errno));
-	NCURSES = NULL;
 	ARENA = NULL;
 	OPT_NC = 0;
 	OPT_D = -1;
