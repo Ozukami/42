@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/20 02:47:48 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/23 23:21:56 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/24 01:06:57 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,17 @@ extern int					errno;
 # define CYAN				"\033[36m"
 # define WHITE				"\033[37m"
 
+# define V_LIVE				1
+# define V_CYCLE			2
+# define V_OP				4
+# define V_DEATH			8
+# define V_PC				16
+
 # define NCURSES			(vm->ncurses)
 # define ARENA				(vm->arena)
 # define OPT_NC				(vm->opt_ncurses)
 # define OPT_D				(vm->opt_d)
+# define OPT_V				(vm->opt_v)
 # define TOTAL_LIVE			(vm->total_live)
 # define COLOR				(vm->color_tab)
 
@@ -144,6 +151,7 @@ struct						s_vm
 	t_arena					*arena;
 	int						opt_ncurses;
 	int						opt_d;
+	int						opt_v;
 	int						total_live;
 	int						*color_tab;
 };
