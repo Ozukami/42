@@ -6,7 +6,7 @@
 /*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/22 00:13:23 by lcharbon          #+#    #+#             */
-/*   Updated: 2017/07/24 01:09:46 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/25 17:00:19 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,16 @@
 void			ftncu_init_pair(void)
 {
 	start_color();
+	init_color(13, 500, 500, 500);
+	init_color(14, 800, 800, 800);
+	init_color(COLOR_GREEN, 0, 1000, 0);
 	init_pair(1, COLOR_GREEN, COLOR_BLACK);
 	init_pair(2, COLOR_BLUE, COLOR_BLACK);
 	init_pair(3, COLOR_RED, COLOR_BLACK);
 	init_pair(4, COLOR_YELLOW, COLOR_BLACK);
-	init_color(COLOR_CYAN, 500, 500, 500);
-	init_pair(5, COLOR_BLACK, COLOR_BLACK);
+	init_pair(5, 13, COLOR_BLACK);
 	init_pair(6, COLOR_CYAN, COLOR_BLACK);
-	init_color(COLOR_MAGENTA, 800, 800, 800);
-	init_pair(7, COLOR_BLACK, COLOR_MAGENTA);
-	init_pair(8, COLOR_BLACK, COLOR_BLACK);
+	init_pair(7, COLOR_BLACK, 14);
 	init_pair(9, COLOR_WHITE, COLOR_BLACK);
 }
 
@@ -97,9 +97,15 @@ void			ftncu_main(t_vm *vm)
 	ft_memset(&g, 0, sizeof(g));
 	g.v = vm;
 	g.n_players = g.v->arena->nb_player;
-	ftncu_print_info(&g);
-	ftncu_print_memory(&g, vm->arena->memory);
+	if (COLS > 242 && LINES > 50)
+		ftncu_print_info(&g);
+	if (COLS > 192 && LINES > 50)
+		ftncu_print_memory(&g, vm->arena->memory);
+	else
+	{
+		move(LINES / 2, COLS / 2);
+		printw("Window too small");
+	}
 	refresh();
-	move(LINES, COLS);
 	getch();
 }

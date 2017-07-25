@@ -6,7 +6,7 @@
 /*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/22 19:56:26 by lcharbon          #+#    #+#             */
-/*   Updated: 2017/07/24 03:10:27 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/25 17:00:13 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void		ftncu_print_players(t_gb *g)
 		move(10 * (np + 1) - (5 * np) + 2, 210);
 		printw("Last live : %13.0d %d", 0, player->last_live);
 		move(10 * (np + 1) - (5 * np) + 3, 210);
-		printw("Lives in current period : %d", player->nb_live); 
+		printw("Lives in current period : %d", player->nb_live);
 		player = player->next;
 	}
 }
