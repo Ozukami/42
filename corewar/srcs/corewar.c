@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/26 05:50:00 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/26 07:34:03 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,6 +217,7 @@ t_proc			*new_proc(int id_player)
 
 	if (!(proc = ft_memalloc(sizeof(t_proc))))
 		ft_perror(strerror(errno));
+	printf("%sNEW PROC (%d) %p%s\n", GREEN, id, proc, DEFAULT);
 	PR_ID = id++;
 	PR_IDP = id_player;
 	PR_ALIVE = 0;
@@ -378,23 +379,35 @@ void		kill_proc(t_vm *vm, int id)
 	if (curr->id == id)
 	{
 		if (OPT_V & V_DEATH)
-			ft_printf("%sProcess %d has died (CTD %d)%s\n",
-					RED, curr->id, A_CTD, DEFAULT);
+			ft_printf("%sProcess %d has died (CTD %d) %p%s\n",
+					RED, curr->id, A_CTD, curr, DEFAULT);
 		tmp = curr;
 		A_LPROC = tmp->next;
+		curr = A_LPROC;
+		if (curr)
+			printf("new head : %d\n", A_LPROC->id);
 		update_nb_proc(vm, tmp->id_player);
 		free(tmp);
 		return ;
 	}
+//	printf("ID to kill :%d\n", id);
+//	printf("Current = %d\n", curr->id);
 	while (curr->next)
 	{
+//		printf("1 Current = %d\n", curr->id);
+	//	printf("1 Next = %d\n", curr->next->id);
 		if (curr->next->id == id)
 		{
+//			printf("	2 Current = %d\n", curr->id);
+//			printf("	2 Next = %d\n", curr->next->id);
 			if (OPT_V & V_DEATH)
-				ft_printf("%sKILL proc %d (CTD %d)%s\n", RED, curr->id,
-						A_CTD, DEFAULT);
+				ft_printf("%sProcess %d has died (CTD %d) %p%s\n",
+						RED, curr->next->id, A_CTD, curr->next, DEFAULT);
+			printf("[%d - %d] =>", curr->id, curr->next->id);
 			tmp = curr->next;
 			curr->next = tmp->next;
+			if (curr->next)
+				printf("[%d - %d]\n", curr->id, curr->next->id);
 			update_nb_proc(vm, tmp->id_player);
 			free(tmp);
 			return ;
@@ -413,11 +426,10 @@ void		check_alive(t_vm *vm)
 	curr_proc = A_LPROC;
 	while (curr_proc)
 	{
+		if (curr_proc->id == 21)
+			printf("21 Alive Cycle %d\n", A_CYCLE);
 		if (!curr_proc->alive)
-		{
-			//ft_printf("	Kill proc at pc %d\n", curr_proc->pc);
 			kill_proc(vm, curr_proc->id);
-		}
 		curr_proc->alive = 0;
 		curr_proc = curr_proc->next;
 	}
@@ -618,6 +630,9 @@ t_player	*get_player_from_id(t_vm *vm, int id)
 
 void	write_in_mem(t_vm *vm, int value, int pc, int color)
 {
+	if (OPT_V & V_OP)
+		ft_printf("%s			| store %x to %d%s\n",
+				WHITE, value, pc, DEFAULT);
 	A_MEMORY[pc] = value >> 24;
 	COLOR[pc] = color;
 	A_MEMORY[(pc + 1) % MEM_SIZE] = (value >> 16) & 0b11111111;
@@ -869,12 +884,20 @@ void	op_zjmp(t_vm *vm, t_proc *proc)
 	{
 		// IDX_MOD ??
 		if (OPT_V & V_PC)
+		{
 			ft_printf("\033[2;3;36mADV %d (0x%04x -> ", ((short)value), PR_PC);
+		}
 		PR_PC += ((short)value) % MEM_SIZE;
 		if (PR_PC < 0)
 			PR_PC += MEM_SIZE;
 		if (OPT_V & V_PC)
+		{
 			ft_printf("0x%04x)%s\n", PR_PC, DEFAULT);
+			int	i = -1;
+			while (++i < 10)
+				ft_printf(" %02x", A_MEMORY[(PR_PC + i) % MEM_SIZE]);
+			printf("%s\n", DEFAULT);
+		}
 		PR_WAIT = 1;
 		PR_LOP = -1;
 	}
@@ -1214,5 +1237,16 @@ int			main(int ac, char **av)
 	if (!OPT_NC)
 		ft_printf("le joueur %d (%s) a gagne\n", A_WINNER,
 				get_player_from_id(vm, A_WINNER)->champ->name);
+	if (OPT_V & V_DEATH)
+	{
+		t_proc	*proc;
+
+		proc = A_LPROC;
+		while (proc)
+		{
+			kill_proc(vm, PR_ID);
+			proc = A_LPROC;
+		}
+	}
 	return (1);
 }
