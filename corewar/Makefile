@@ -6,16 +6,16 @@
 #    By: apoisson <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 11:29:15 by apoisson          #+#    #+#              #
-#    Updated: 2017/07/26 03:39:25 by apoisson         ###   ########.fr        #
+#    Updated: 2017/07/26 04:39:29 by apoisson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 ASM = asm
 VM = corewar
 FLAGS = -Wall -Wextra
-SRCASM = add.c automaton.c check.c get_instruction.c main.c \
+SRCASM = add.c automaton.c check.c get_instruction.c asm.c \
 parse_header.c tools.c write_champ.c write_header.c
-SRCVM = test_ncurses.c ftncu_main.c ftncu_print_info.c
+SRCVM = corewar.c ftncu_main.c ftncu_print_info.c
 CHAMPDIR =
 
 all: $(ASM)

@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/26 00:28:15 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/26 05:50:00 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -443,12 +443,10 @@ int		get_inst_length(int ocp, int op)
 
 	if (!ocp && (op == 0 || op == 8 || op == 11 || op == 14))
 		return ((g_op_tab[op]).label_size + 1);
-	else if (ocp < 64)
-		return (2);
-	label_size = (g_op_tab[op]).label_size;
+	label_size = (!(g_op_tab[op]).label_size) ? 4 : (g_op_tab[op]).label_size;
 	size = 2;
 	i = 0;
-	while (i <= 6)
+	while (i <= (g_op_tab[op].nb_arg * 2))
 	{
 		if (((ocp << i) & 0b11000000) == 0b11000000)
 			size += 2;
@@ -466,19 +464,28 @@ void	move_pc(t_vm *vm, t_proc *proc, int ocp)
 	int		size;
 	int		i;
 
+	size = get_inst_length(ocp, PR_MEMOP[0] - 1);
 	i = -1;
-	size = get_inst_length(ocp, A_MEMORY[PR_PC] - 1);
+	if (OPT_V & V_PC)
+	{
+		ft_printf("\033[2;3;36mMEM (0x%04x -> ", PR_PC);
+		ft_printf("0x%04x)", PR_PC + size);
+		while (++i < size)
+			ft_printf(" %02x", PR_MEMOP[i % MEM_SIZE]);
+		ft_printf("%s\n", DEFAULT);
+	}
+	i = -1;
 	if (OPT_V & V_PC)
 	{
 		ft_printf("\033[2;3;36mADV %d (0x%04x -> ", size, PR_PC);
 		ft_printf("0x%04x)", PR_PC + size);
 		while (++i < size)
-			ft_printf(" %02x", A_MEMORY[PR_PC + i]);
+			ft_printf(" %02x", A_MEMORY[(PR_PC + i) % MEM_SIZE]);
 		ft_printf("%s\n", DEFAULT);
 	}
 	PR_PC += size;
 	PR_PC %= MEM_SIZE;
-	PR_WAIT = 1;
+	PR_WAIT = 1; // PR_WAIT = 0 ?
 	PR_LOP = -1;
 }
 
@@ -494,7 +501,7 @@ void	move_pc_fork(t_vm *vm, t_proc *proc, int ocp)
 		ft_printf("\033[2;3;36mADV %d (0x%04x -> ", size, PR_PC);
 		ft_printf("0x%04x)", PR_PC + size);
 		while (++i < size)
-			ft_printf(" %02x", A_MEMORY[i]);
+			ft_printf(" %02x", A_MEMORY[(PR_PC + i) % MEM_SIZE]);
 		ft_printf("%s\n", DEFAULT);
 	}
 	PR_PC += size;
@@ -510,10 +517,19 @@ void	move_failed_op(t_vm *vm, t_proc *proc, int len)
 	i = -1;
 	if (OPT_V & V_PC)
 	{
+		ft_printf("\033[2;3;36mMEM (0x%04x -> ", PR_PC);
+		ft_printf("0x%04x)", PR_PC + len);
+		while (++i < len)
+			ft_printf(" %02x", PR_MEMOP[i % MEM_SIZE]);
+		ft_printf("%s\n", DEFAULT);
+	}
+	i = -1;
+	if (OPT_V & V_PC)
+	{
 		ft_printf("\033[2;3;36mADV %d (0x%04x -> ", len, PR_PC);
 		ft_printf("0x%04x)", PR_PC + len);
 		while (++i < len)
-			ft_printf(" %02x", A_MEMORY[PR_PC + i]);
+			ft_printf(" %02x", A_MEMORY[(PR_PC + i) % MEM_SIZE]);
 		ft_printf("%s\n", DEFAULT);
 	}
 	PR_PC += len;
@@ -522,25 +538,7 @@ void	move_failed_op(t_vm *vm, t_proc *proc, int len)
 }
 
 // 0 < nb_octet < 5
-int		get_value(t_vm *vm, int nb_octet, int pc)
-{
-	int				value;
-	int				i;
-
-	value = A_MEMORY[pc];
-	i = 1;
-	while (i < nb_octet)
-	{
-		value = value << 8;
-		value += A_MEMORY[(pc + i++) % MEM_SIZE];
-	}
-//	ft_printf("%s[get_value : %d]%s\n", GREEN, value, DEFAULT);
-	if (nb_octet < 4)
-		value = (short)value;
-	return (value);
-}
-
-int		get_value_fork(t_vm *vm, int nb_octet, t_proc *proc, int pc)
+int		get_value(int nb_octet, t_proc *proc, int pc)
 {
 	int				value;
 	int				i;
@@ -558,33 +556,46 @@ int		get_value_fork(t_vm *vm, int nb_octet, t_proc *proc, int pc)
 	return (value);
 }
 
-void		get_args(t_vm *vm, t_proc *proc, int ocp, int args[4])
+int		get_value_fork(int nb_octet, t_proc *proc, int pc)
+{
+	int				value;
+	int				i;
+
+	value = PR_MEMOP[pc];
+	i = 1;
+	while (i < nb_octet)
+	{
+		value = value << 8;
+		value += PR_MEMOP[(pc + i++) % MEM_SIZE];
+	}
+//	ft_printf("%s[get_value : %d]%s\n", GREEN, value, DEFAULT);
+	if (nb_octet < 4)
+		value = (short)value;
+	return (value);
+}
+
+void		get_args(t_proc *proc, int ocp, int args[4])
 {
 	int		label_size;
 	int		size;
 	int		i;
 
-	label_size = (g_op_tab[A_MEMORY[PR_PC] - 1]).label_size;
+	label_size = (!(g_op_tab[PR_MEMOP[0]]).label_size) ?
+		4 : (g_op_tab[PR_MEMOP[0]]).label_size;
 	size = 2;
 	i = 0;
 	while (i <= 6)
 	{
 		if (((ocp << i) & 0b11000000) == 0b11000000)
 		{
-//			ft_printf("T_IND (11)\n");
-			args[i / 2] = get_value(vm, 2, (PR_PC + size) % MEM_SIZE);
+			args[i / 2] = get_value(2, proc, size % MEM_SIZE);
 			size += 2;
 		}
 		else if (((ocp << i) & 0b01000000))
-		{
-//			ft_printf("T_REG (01)\n");
-			args[i / 2] = get_value(vm, 1, (PR_PC + size) % MEM_SIZE);
-			size++;
-		}
+			args[i / 2] = get_value(1, proc, size++ % MEM_SIZE);
 		else if ((ocp << i) & 0b10000000)
 		{
-//			ft_printf("T_DIR (10)\n");
-			args[i / 2] = get_value(vm, label_size, (PR_PC + size) % MEM_SIZE);
+			args[i / 2] = get_value(label_size, proc, size % MEM_SIZE);
 			size += label_size;
 		}
 		i += 2;
@@ -656,15 +667,16 @@ int		verif_ocp(t_vm *vm, t_proc *proc, int op, int ocp)
 					ocp == 104 || ocp == 116 || ocp == 120))
 			|| (op == 14 && (ocp == 64)))
 		return (1);
-	ft_printf("	%sOP %d (%d) FAILED%s\n", RED, op, ocp, DEFAULT);
-	PR_WAIT = 1;
+	if (OPT_V & V_OP)
+		ft_printf("	%sOP %d (%d) FAILED%s\n", RED, op, ocp, DEFAULT);
+	PR_WAIT = 1; // WAIT = 0 ?
 	PR_LOP = -1;
 	/*
 	if (op == 4 || op == 5)
 		move_failed_op(vm, proc, 6);
 	else
 	*/
-		move_pc(vm, proc, ocp);
+	move_pc(vm, proc, ocp);
 	return (0);
 }
 
@@ -685,7 +697,7 @@ void	op_live(t_vm *vm, t_proc *proc)
 	v_op(vm, "live", proc, 0);
 	PR_ALIVE = 1;
 	TOTAL_LIVE++;
-	value = get_value(vm, 4, (PR_PC + 1) % MEM_SIZE);
+	value = get_value(4, proc, (PR_PC + 1) % MEM_SIZE);
 	if ((player = get_player_from_id(vm, value)))
 	{
 		player->nb_live++;
@@ -708,13 +720,13 @@ void	op_ld(t_vm *vm, t_proc *proc)
 	if (!verif_ocp(vm, proc, 2, ocp))
 		return ;
 	v_op(vm, "ld", proc, ocp);
-	get_args(vm, proc, ocp, args);
+	get_args(proc, ocp, args);
 	if ((ocp & 0b11000000) == 0b11000000)
 	{
 		j = (PR_PC + (args[0] % IDX_MOD)) % MEM_SIZE;
 		if (j < 0)
 			j += MEM_SIZE;
-		PR_REG[args[1]] = get_value(vm, 4, j);
+		PR_REG[args[1]] = get_value(4, proc, j);
 	}
 	else
 		PR_REG[args[1]] = args[0];
@@ -732,7 +744,7 @@ void	op_st(t_vm *vm, t_proc *proc)
 	if (!verif_ocp(vm, proc, 3, ocp))
 		return ;
 	v_op(vm, "st", proc, ocp);
-	get_args(vm, proc, ocp, args);
+	get_args(proc, ocp, args);
 	j = (PR_PC + (args[1] % IDX_MOD)) % MEM_SIZE;
 	if (j < 0)
 		j += MEM_SIZE;
@@ -753,7 +765,7 @@ void	op_add(t_vm *vm, t_proc *proc)
 	if (!verif_ocp(vm, proc, 4, ocp))
 		return ;
 	v_op(vm, "add", proc, ocp);
-	get_args(vm, proc, ocp, args);
+	get_args(proc, ocp, args);
 	args[0] = PR_REG[args[0]];
 	args[1] = PR_REG[args[1]];
 	PR_REG[args[2]] = args[0] + args[1];
@@ -770,7 +782,7 @@ void	op_sub(t_vm *vm, t_proc *proc)
 	if (!verif_ocp(vm, proc, 5, ocp))
 		return ;
 	v_op(vm, "sub", proc, ocp);
-	get_args(vm, proc, ocp, args);
+	get_args(proc, ocp, args);
 	args[0] = PR_REG[args[0]];
 	args[1] = PR_REG[args[1]];
 	PR_REG[args[2]] = args[0] - args[1];
@@ -787,13 +799,13 @@ void	op_and(t_vm *vm, t_proc *proc)
 	if (!verif_ocp(vm, proc, 6, ocp))
 		return ;
 	v_op(vm, "and", proc, ocp);
-	get_args(vm, proc, ocp, args);
+	get_args(proc, ocp, args);
 	if (((ocp & 0b11000000)) == 0b11000000)
-		args[0] = get_value(vm, 4, (PR_PC + (args[0] % IDX_MOD)) % MEM_SIZE);
+		args[0] = get_value(4, proc, (PR_PC + (args[0] % IDX_MOD)) % MEM_SIZE);
 	else if ((ocp & 0b01000000))
 		args[0] = PR_REG[args[0]];
 	if ((((ocp << 2) & 0b11000000)) == 0b11000000)
-		args[1] = get_value(vm, 4, (PR_PC + (args[1] % IDX_MOD)) % MEM_SIZE);
+		args[1] = get_value(4, proc, (PR_PC + (args[1] % IDX_MOD)) % MEM_SIZE);
 	else if (((ocp << 2) & 0b01000000))
 		args[1] = PR_REG[args[1]];
 	PR_REG[args[2]] = args[0] & args[1];
@@ -810,13 +822,13 @@ void	op_or(t_vm *vm, t_proc *proc)
 	if (!verif_ocp(vm, proc, 7, ocp))
 		return ;
 	v_op(vm, "or", proc, ocp);
-	get_args(vm, proc, ocp, args);
+	get_args(proc, ocp, args);
 	if (((ocp & 0b11000000)) == 0b11000000)
-		args[0] = get_value(vm, 4, (PR_PC + (args[0] % IDX_MOD)) % MEM_SIZE);
+		args[0] = get_value(4, proc, (PR_PC + (args[0] % IDX_MOD)) % MEM_SIZE);
 	else if ((ocp & 0b01000000))
 		args[0] = PR_REG[args[0]];
 	if ((((ocp << 2) & 0b11000000)) == 0b11000000)
-		args[1] = get_value(vm, 4, (PR_PC + (args[1] % IDX_MOD)) % MEM_SIZE);
+		args[1] = get_value(4, proc, (PR_PC + (args[1] % IDX_MOD)) % MEM_SIZE);
 	else if (((ocp << 2) & 0b01000000))
 		args[1] = PR_REG[args[1]];
 	PR_REG[args[2]] = args[0] | args[1];
@@ -833,13 +845,13 @@ void	op_xor(t_vm *vm, t_proc *proc)
 	if (!verif_ocp(vm, proc, 8, ocp))
 		return ;
 	v_op(vm, "xor", proc, ocp);
-	get_args(vm, proc, ocp, args);
+	get_args(proc, ocp, args);
 	if (((ocp & 0b11000000)) == 0b11000000)
-		args[0] = get_value(vm, 4, (PR_PC + (args[0] % IDX_MOD)) % MEM_SIZE);
+		args[0] = get_value(4, proc, (PR_PC + (args[0] % IDX_MOD)) % MEM_SIZE);
 	else if ((ocp & 0b01000000))
 		args[0] = PR_REG[args[0]];
 	if ((((ocp << 2) & 0b11000000)) == 0b11000000)
-		args[1] = get_value(vm, 4, (PR_PC + (args[1] % IDX_MOD)) % MEM_SIZE);
+		args[1] = get_value(4, proc, (PR_PC + (args[1] % IDX_MOD)) % MEM_SIZE);
 	else if (((ocp << 2) & 0b01000000))
 		args[1] = PR_REG[args[1]];
 	PR_REG[args[2]] = args[0] ^ args[1];
@@ -852,22 +864,26 @@ void	op_zjmp(t_vm *vm, t_proc *proc)
 	int	value;
 
 	v_op(vm, "zjmp", proc, 0);
-	value = get_value(vm, 2, (PR_PC + 1) % MEM_SIZE);
+	value = get_value(2, proc, 1);
 	if (PR_CARRY == 1)
 	{
 		// IDX_MOD ??
+		if (OPT_V & V_PC)
+			ft_printf("\033[2;3;36mADV %d (0x%04x -> ", ((short)value), PR_PC);
 		PR_PC += ((short)value) % MEM_SIZE;
 		if (PR_PC < 0)
 			PR_PC += MEM_SIZE;
-		//ft_printf("%sZjmp at %d%s\n", YELLOW, PR_PC, DEFAULT);
+		if (OPT_V & V_PC)
+			ft_printf("0x%04x)%s\n", PR_PC, DEFAULT);
 		PR_WAIT = 1;
+		PR_LOP = -1;
 	}
 	else
 	{
-		//ft_printf("%s	ZJMP FAILLED%s\n", RED, DEFAULT);
+		if (OPT_V & V_OP)
+			ft_printf("%s	ZJMP FAILLED%s\n", RED, DEFAULT);
 		move_pc(vm, proc, 0);
 	}
-	//ft_printf("	PC after zjmp = %d\n", PR_PC);
 }
 
 void	op_ldi(t_vm *vm, t_proc *proc)
@@ -879,16 +895,16 @@ void	op_ldi(t_vm *vm, t_proc *proc)
 	if (!verif_ocp(vm, proc, 10, ocp))
 		return ;
 	v_op(vm, "ldi", proc, ocp);
-	get_args(vm, proc, ocp, args);
+	get_args(proc, ocp, args);
 	if (((ocp & 0b11000000)) == 0b11000000)
-		args[0] = get_value(vm, 4, (PR_PC + (args[0] % IDX_MOD)) % MEM_SIZE);
+		args[0] = get_value(4, proc, (PR_PC + (args[0] % IDX_MOD)) % MEM_SIZE);
 	else if ((ocp & 0b01000000))
 		args[0] = PR_REG[args[0]];
 	if ((((ocp << 2) & 0b11000000)) == 0b11000000)
-		args[1] = get_value(vm, 4, (PR_PC + (args[1] % IDX_MOD)) % MEM_SIZE);
+		args[1] = get_value(4, proc, (PR_PC + (args[1] % IDX_MOD)) % MEM_SIZE);
 	else if (((ocp << 2) & 0b01000000))
 		args[1] = PR_REG[args[1]];
-	PR_REG[args[2]] = get_value(vm, REG_SIZE,
+	PR_REG[args[2]] = get_value(REG_SIZE, proc,
 			(PR_PC + args[0] + args[1]) % MEM_SIZE);
 	move_pc(vm, proc, ocp);
 }
@@ -903,9 +919,9 @@ void	op_sti(t_vm *vm, t_proc *proc)
 	if (!verif_ocp(vm, proc, 11, ocp))
 		return ;
 	v_op(vm, "sti", proc, ocp);
-	get_args(vm, proc, ocp, args);
+	get_args(proc, ocp, args);
 	if ((((ocp << 2) & 0b11000000)) == 0b11000000)
-		args[1] = get_value(vm, 4, (PR_PC + (args[1] % IDX_MOD)) % MEM_SIZE);
+		args[1] = get_value(4, proc, (PR_PC + (args[1] % IDX_MOD)) % MEM_SIZE);
 	else if (((ocp << 2) & 0b01000000))
 		args[1] = PR_REG[args[1]];
 	if (((ocp << 4) & 0b01000000))
@@ -925,11 +941,12 @@ void	op_fork(t_vm *vm, t_proc *proc)
 	t_proc	*clone;
 
 	v_op(vm, "fork", proc, 0);
-	value = get_value_fork(vm, 2, proc, 1);
+	value = get_value_fork(2, proc, 1);
 	value %= IDX_MOD;
 	value %= MEM_SIZE;
 	clone = new_proc(PR_IDP);
 	clone->carry = proc->carry;
+	clone->alive = proc->alive;
 	if (PR_PC + value < 0)
 		clone->pc = (PR_PC + MEM_SIZE + value) % MEM_SIZE;
 	else
@@ -953,13 +970,13 @@ void	op_lld(t_vm *vm, t_proc *proc)
 	if (!verif_ocp(vm, proc, 13, ocp))
 		return ;
 	v_op(vm, "lld", proc, ocp);
-	get_args(vm, proc, ocp, args);
+	get_args(proc, ocp, args);
 	if ((ocp & 0b11000000) == 0b11000000)
 	{
 		j = (PR_PC + args[0]) % MEM_SIZE;
 		if (j < 0)
 			j += MEM_SIZE;
-		PR_REG[args[1]] = get_value(vm, 2, j);
+		PR_REG[args[1]] = get_value(2, proc, j);
 	}
 	else
 		PR_REG[args[1]] = args[0];
@@ -976,16 +993,16 @@ void	op_lldi(t_vm *vm, t_proc *proc)
 	if (!verif_ocp(vm, proc, 14, ocp))
 		return ;
 	v_op(vm, "lldi", proc, ocp);
-	get_args(vm, proc, ocp, args);
+	get_args(proc, ocp, args);
 	if (((ocp & 0b11000000)) == 0b11000000)
-		args[0] = get_value(vm, 4, (PR_PC + args[0]) % MEM_SIZE);
+		args[0] = get_value(4, proc, (PR_PC + args[0]) % MEM_SIZE);
 	else if ((ocp & 0b01000000))
 		args[0] = PR_REG[args[0]];
 	if ((((ocp << 2) & 0b11000000)) == 0b11000000)
-		args[1] = get_value(vm, 4, (PR_PC + args[1]) % MEM_SIZE);
+		args[1] = get_value(4, proc, (PR_PC + args[1]) % MEM_SIZE);
 	else if (((ocp << 2) & 0b01000000))
 		args[1] = PR_REG[args[1]];
-	PR_REG[args[2]] = get_value(vm, REG_SIZE,
+	PR_REG[args[2]] = get_value(REG_SIZE, proc,
 			(PR_PC + args[0] + args[1]) % MEM_SIZE);
 	PR_CARRY = (PR_REG[args[1]] == 0) ? 1 : 0;
 	move_pc(vm, proc, ocp);
@@ -998,10 +1015,11 @@ void	op_lfork(t_vm *vm, t_proc *proc)
 	int		i;
 
 	v_op(vm, "lfork", proc, 0);
-	value = get_value(vm, 2, (PR_PC + 1) % MEM_SIZE);
+	value = get_value(2, proc, (PR_PC + 1) % MEM_SIZE);
 	value %= MEM_SIZE;
 	clone = new_proc(PR_IDP);
 	clone->carry = proc->carry;
+	clone->alive = proc->alive;
 	if (PR_PC + value < 0)
 		clone->pc = (PR_PC + MEM_SIZE + value) % MEM_SIZE;
 	else
@@ -1027,7 +1045,7 @@ void	op_aff(t_vm *vm, t_proc *proc)
 	if (!verif_ocp(vm, proc, 16, ocp))
 		return ;
 	v_op(vm, "aff", proc, ocp);
-	value = get_value(vm, 1, (PR_PC + 2) % MEM_SIZE);
+	value = get_value(1, proc, (PR_PC + 2) % MEM_SIZE);
 	aff = PR_REG[value] % 256;
 	ft_printf("aff: %c\n", aff);
 	move_pc(vm, proc, ocp);
@@ -1094,9 +1112,9 @@ void		process(t_vm *vm)
 					(A_MEMORY[curr->pc] <= 0 || A_MEMORY[curr->pc] > 16))
 				curr->pc = ((curr->pc) + 1) % MEM_SIZE;
 			else if (curr->cycle_to_wait >=
-					(g_op_tab[curr->loaded_op - 1]).cycles)
+					(g_op_tab[curr->loaded_op - 1]).cycles) // EXEC OP
 				(op_tab[curr->loaded_op - 1])(vm, curr);
-			else
+			else // LOAD OP
 			{
 				if (curr->loaded_op == -1)
 				{
