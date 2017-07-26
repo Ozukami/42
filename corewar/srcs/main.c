@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/17 00:00:11 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/18 01:01:22 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/26 03:37:01 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	parse_file(t_champ *champ)
 
 	r = 0;
 	while (r != 4 && get_next_line(FD, &line))
-	//	r += check_header(champ, str_epur(line));
 		r += check_header(champ, line, str_epur(line));
 	while (get_next_line(FD, &line))
 	{

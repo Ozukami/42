@@ -6,12 +6,24 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/16 06:30:33 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/16 06:30:47 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/26 03:36:25 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 #include "sys/types.h"
+
+int		check_empty(char **split, char *line)
+{
+	int		i;
+
+	if (split[1])
+		return (1);
+	i = ft_strlen(line);
+	if (line[i - 2] != '\"' || line[i - 1] != '\"')
+		ft_perror("Error: Name or Comment not well formated");
+	return (0);
+}
 
 int		get_name(t_champ *champ, char *line, int verif)
 {
@@ -21,7 +33,8 @@ int		get_name(t_champ *champ, char *line, int verif)
 	if (verif == 2)
 		ft_perror("Error: too many .name");
 	split = ft_strsplit(line, '\"');
-	name = ft_strdup(split[1]);
+	name = ((!check_empty(split, line)) ?
+			ft_strnew(1) : ft_strdup(split[1]));
 	if (ft_strlen(name) <= PROG_NAME_LENGTH)
 		ft_strcpy(HEADER->prog_name, name);
 	else
@@ -39,7 +52,8 @@ int		get_comment(t_champ *champ, char *line, int verif)
 	if (verif == 6)
 		ft_perror("Error: too many .comment");
 	split = ft_strsplit(line, '\"');
-	comment = ft_strdup(split[1]);
+	comment = ((!check_empty(split, line)) ?
+			ft_strnew(1) : ft_strdup(split[1]));
 	if (ft_strlen(comment) <= COMMENT_LENGTH)
 		ft_strcpy(HEADER->comment, comment);
 	else
@@ -56,18 +70,19 @@ void	check_error(char **split, char *line)
 
 	if (!ft_strequ(str_epur(split[0]), COMMENT_CMD_STRING) &&
 			!ft_strequ(str_epur(split[0]), NAME_CMD_STRING))
-		ft_perror("1Error: Name or Comment not well formated");
-	if (split[2])
+		ft_perror("Error: Name or Comment not well formated");
+	i = check_empty(split, line);
+	if (i && split[2])
 		if (!(str_epur(split[2])) || ((str_epur(split[2]))[0] != COMMENT_CHAR
 				&& (str_epur(split[2]))[0] != ';'))
-			ft_perror("Error: Name or Comment not well formated");	
+			ft_perror("Error: Name or Comment not well formated");
 	i = -1;
 	check = 0;
 	while (line[++i] != COMMENT_CHAR && line[i] != ';' && line[i] != '\0')
 		if (line[i] == '\"')
 			check++;
 	if (check > 2)
-		ft_perror("Error: Name or Comment not well formated");	
+		ft_perror("Error: Name or Comment not well formated");
 	free_map(split);
 }
 

@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/20 02:47:48 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/24 07:49:49 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/26 00:39:29 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # include <sys/uio.h>
 # include <errno.h>
 # include "ft_printf.h"
+
+# include <sys/time.h>
 
 extern int					errno;
 

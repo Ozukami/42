@@ -6,7 +6,7 @@
 #    By: apoisson <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 11:29:15 by apoisson          #+#    #+#              #
-#    Updated: 2017/07/23 23:14:44 by lcharbon         ###   ########.fr        #
+#    Updated: 2017/07/26 03:39:25 by apoisson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,9 @@ $(VM): libft.a $(addprefix srcs/, $(SRCVM))
 	@printf "\033[0;36m> Compiling corewar\033[0m"
 	@gcc $(FLAGS) $(addprefix srcs/, $(SRCVM)) -L. -lft -lncurses -I includes/ -o $(VM)
 	@printf "\033[0;32m OK\n\033[0m"
+
+champ_builder: champ_builder.c
+	@gcc $(FLAGS) $^ -L. -lft -I includes/ -o champ_builder
 
 libft.a:
 	@make -C libft/
