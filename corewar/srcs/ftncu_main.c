@@ -6,12 +6,13 @@
 /*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/22 00:13:23 by lcharbon          #+#    #+#             */
-/*   Updated: 2017/07/26 00:44:11 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/27 03:30:36 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ncurse.h"
 #include "corewar.h"
+#include <time.h>
 #include <fcntl.h>
 
 void			ftncu_init_pair(void)
@@ -90,13 +91,20 @@ static void		ftncu_print_memory(t_gb *g, unsigned char *memory)
 	attron(A_NORMAL);
 }
 
-void			ftncu_main(t_vm *vm)
+void				ftncu_main(t_vm *vm)
 {
-	t_gb		g;
+	t_gb			g;
+	static int		n;
 
 	ft_memset(&g, 0, sizeof(g));
+	g.t = 0;
 	g.v = vm;
-	g.n_players = g.v->arena->nb_player;
+	getch();
+	if (vm->arena->nb_proc < 1000)
+		usleep(100 * g.t);
+	if (n == 0)
+		n = g.v->arena->nb_player;
+	g.n_players = n;
 	if (COLS > 242 && LINES > 50)
 		ftncu_print_info(&g);
 	if (COLS > 192 && LINES > 50)

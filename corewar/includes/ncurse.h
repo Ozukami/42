@@ -6,7 +6,7 @@
 /*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/22 00:13:56 by lcharbon          #+#    #+#             */
-/*   Updated: 2017/07/23 23:15:02 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/27 03:24:20 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct			s_gb
 	int					nbr_live;
 	int					max_checks;
 	int					n_players;
+	int					t;
 }						t_gb;
 
 void					ftncu_print_info(t_gb *g);

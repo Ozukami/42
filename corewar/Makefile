@@ -6,13 +6,13 @@
 #    By: apoisson <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 11:29:15 by apoisson          #+#    #+#              #
-#    Updated: 2017/07/26 04:39:29 by apoisson         ###   ########.fr        #
+#    Updated: 2017/07/27 02:05:00 by lcharbon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 ASM = asm
 VM = corewar
-FLAGS = -Wall -Wextra
+FLAGS = -Wall -Wextra -g
 SRCASM = add.c automaton.c check.c get_instruction.c asm.c \
 parse_header.c tools.c write_champ.c write_header.c
 SRCVM = corewar.c ftncu_main.c ftncu_print_info.c
