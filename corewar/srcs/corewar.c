@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/26 07:34:03 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/27 02:07:47 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -420,18 +420,21 @@ void		check_alive(t_vm *vm)
 {
 	t_player	*curr_player;
 	t_proc		*curr_proc;
+	t_proc		*tmp;
 
 	if (OPT_V & V_CHECK)
 		ft_printf("%sCHECK (CTD %d)%s\n", RED, A_CTD, DEFAULT);
 	curr_proc = A_LPROC;
 	while (curr_proc)
 	{
+		tmp = curr_proc->next;
 		if (curr_proc->id == 21)
 			printf("21 Alive Cycle %d\n", A_CYCLE);
 		if (!curr_proc->alive)
 			kill_proc(vm, curr_proc->id);
-		curr_proc->alive = 0;
-		curr_proc = curr_proc->next;
+		else
+			curr_proc->alive = 0;
+		curr_proc = tmp;
 	}
 	curr_player = A_LPLAYER;
 	while (curr_player)
@@ -1134,9 +1137,9 @@ void		process(t_vm *vm)
 			if ((curr->loaded_op == -1) &&
 					(A_MEMORY[curr->pc] <= 0 || A_MEMORY[curr->pc] > 16))
 				curr->pc = ((curr->pc) + 1) % MEM_SIZE;
-			else if (curr->cycle_to_wait >=
-					(g_op_tab[curr->loaded_op - 1]).cycles) // EXEC OP
-				(op_tab[curr->loaded_op - 1])(vm, curr);
+//			else if (curr->cycle_to_wait >=
+//					(g_op_tab[curr->loaded_op - 1]).cycles) // EXEC OP
+//				(op_tab[curr->loaded_op - 1])(vm, curr);
 			else // LOAD OP
 			{
 				if (curr->loaded_op == -1)
@@ -1157,8 +1160,8 @@ void		process(t_vm *vm)
 		}
 		if (!A_PROC)
 			break ;
-		if (OPT_NC > 0)
-			ftncu_main(vm);
+//		if (OPT_NC > 0)
+//			ftncu_main(vm);
 	}
 }
 
@@ -1215,6 +1218,7 @@ t_vm		*init_vm(void)
 int			main(int ac, char **av)
 {
 	t_vm	*vm;
+		t_proc	*proc;
 	char	**args;
 
 	if (ac < 2)
@@ -1239,8 +1243,6 @@ int			main(int ac, char **av)
 				get_player_from_id(vm, A_WINNER)->champ->name);
 	if (OPT_V & V_DEATH)
 	{
-		t_proc	*proc;
-
 		proc = A_LPROC;
 		while (proc)
 		{
