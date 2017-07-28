@@ -6,7 +6,7 @@
 /*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/22 00:13:23 by lcharbon          #+#    #+#             */
-/*   Updated: 2017/07/27 03:30:36 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/28 07:45:03 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void				ftncu_main(t_vm *vm)
 	g.v = vm;
 	getch();
 	if (vm->arena->nb_proc < 1000)
-		usleep(100 * g.t);
+		usleep(500 * g.t);
 	if (n == 0)
 		n = g.v->arena->nb_player;
 	g.n_players = n;
