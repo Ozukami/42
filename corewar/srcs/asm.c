@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/17 00:00:11 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/26 03:37:01 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/29 03:53:33 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,18 @@ void	parse_file(t_champ *champ)
 {
 	int			r;
 	char		*line;
+	char		*tmp;
 
 	r = 0;
+	line = NULL;
 	while (r != 4 && get_next_line(FD, &line))
-		r += check_header(champ, line, str_epur(line));
+	{
+		tmp = str_epur(line);
+		r += check_header(champ, line, tmp);
+		if (tmp)
+			free(line);
+		free(tmp);
+	}
 	while (get_next_line(FD, &line))
 	{
 		if ((line = str_epurf(line)) && line[0] != COMMENT_CHAR
@@ -103,6 +111,8 @@ int		process(char *file)
 	write_binary(champ);
 	if (close(FD) == -1)
 		ft_perror("Error: close failed");
+	free(HEADER);
+	ftasm_free(champ);
 	return (0);
 }
 

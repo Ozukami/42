@@ -6,7 +6,7 @@
 /*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/22 00:13:23 by lcharbon          #+#    #+#             */
-/*   Updated: 2017/07/28 07:45:03 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/07/29 03:54:01 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <time.h>
 #include <fcntl.h>
 
-void			ftncu_init_pair(void)
+void				ftncu_init_pair(void)
 {
 	start_color();
 	init_color(13, 500, 500, 500);
@@ -31,7 +31,7 @@ void			ftncu_init_pair(void)
 	init_pair(9, COLOR_WHITE, COLOR_BLACK);
 }
 
-static int		ftncu_mem_proc(t_gb *g, int i)
+static int			ftncu_mem_proc(t_gb *g, int i)
 {
 	t_proc	*tmp;
 
@@ -48,7 +48,7 @@ static int		ftncu_mem_proc(t_gb *g, int i)
 	return (0);
 }
 
-static void		ftncu_act_attron(t_gb *g, int i)
+static void			ftncu_act_attron(t_gb *g, int i)
 {
 	if (g->v->color_tab[i] == 1)
 		attron(COLOR_PAIR(1));
@@ -62,7 +62,7 @@ static void		ftncu_act_attron(t_gb *g, int i)
 		attron(COLOR_PAIR(5));
 }
 
-static void		ftncu_print_memory(t_gb *g, unsigned char *memory)
+static void			ftncu_print_memory(t_gb *g, unsigned char *memory)
 {
 	int		i;
 	int		n;

@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/16 06:30:33 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/26 03:36:25 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/29 00:28:26 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,13 @@ void	check_error(char **split, char *line)
 {
 	int		i;
 	int		check;
+	char	*tmp;
 
-	if (!ft_strequ(str_epur(split[0]), COMMENT_CMD_STRING) &&
-			!ft_strequ(str_epur(split[0]), NAME_CMD_STRING))
+	tmp = str_epur(split[0]);
+	if (!ft_strequ(tmp, COMMENT_CMD_STRING) &&
+			!ft_strequ(tmp, NAME_CMD_STRING))
 		ft_perror("Error: Name or Comment not well formated");
+	free(tmp);
 	i = check_empty(split, line);
 	if (i && split[2])
 		if (!(str_epur(split[2])) || ((str_epur(split[2]))[0] != COMMENT_CHAR

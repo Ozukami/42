@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/16 06:10:10 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/16 09:01:09 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/29 03:54:30 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,12 @@ void	write_label(char *prog, t_champ *champ,
 	int				value;
 	int				id_label;
 	int				dir;
+	char			*tmp;
 
 	dir = (arg[0] == DIRECT_CHAR) ? 1 : 0;
-	id_label = get_id_label(champ, ft_strsub(arg, dir + 1,
-				ft_strlen(arg) - dir - 1));
+	tmp = ft_strsub(arg, dir + 1, ft_strlen(arg) - dir - 1);
+	id_label = get_id_label(champ, tmp);
+	free(tmp);
 	value = get_value(champ, id_label, instruction);
 	if (dir && g_op_tab[instruction->op - 1].label_size == 4)
 	{
@@ -53,7 +55,6 @@ void	write_label(char *prog, t_champ *champ,
 		prog[1] = value & 0xff;
 		prog[0] = (value >> 8) & 0xff;
 	}
-	ft_strdel(&arg);
 }
 
 void	write_args(t_instruction *current, char *prog, int *i, t_champ *champ)

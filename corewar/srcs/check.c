@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/16 06:38:13 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/18 00:16:11 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/29 00:19:43 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int		check_reg(t_champ *champ, char *str, t_instruction *instruction)
 
 	i = 0;
 	while (str[++i])
-		if (!ft_isdigit(str[i++]) || i > 2)
+		if ((str[i + 1] && !ft_isdigit(str[i++])) || i > 2)
 			ft_perror("Error: syntax error 3");
 	if (i < 2)
 		ft_perror("Error: syntax error 4");
