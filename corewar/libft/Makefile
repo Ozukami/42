@@ -6,7 +6,7 @@
 #    By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/21 11:21:25 by lcharbon          #+#    #+#              #
-#    Updated: 2017/07/24 00:55:50 by lcharbon         ###   ########.fr        #
+#    Updated: 2017/07/29 06:07:11 by lcharbon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,8 @@ SRC_N = str_epurf.c ft_strequf_l.c ft_strsplitf.c str_epur.c ft_strsplit_whitesp
 	  ft_straddchar.c ft_strtrim.c ft_lstdelone.c ft_strcat.c ft_strzero.c ft_lstiter.c \
 	  ft_strchr.c ft_tolower.c ft_lstmap.c ft_strclr.c ft_toupper.c ft_lstnew.c ft_strcmp.c \
 	  ft_ulltoa_base.c ft_max.c ft_strcpy.c get_next_line.c ft_memalloc.c ft_strdel.c \
-	  ft_abs.c ft_strnewch.c ft_strjoindel.c ft_strsubdel.c ft_putaddr.c ft_power.c
+	  ft_abs.c ft_strnewch.c ft_strjoindel.c ft_strsubdel.c ft_putaddr.c ft_power.c \
+	  ft_line_reader.c
 
 SRCPF_N = ft_printf.c ftpf_get_data.c ftpf_get.c ftpf_convert.c \
 		  ftpf_utils.c ftpf_sign_conv.c ftpf_unsign_conv.c \
