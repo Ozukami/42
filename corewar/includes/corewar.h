@@ -6,27 +6,23 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/20 02:47:48 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/29 09:33:55 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/29 23:35:12 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef COREWAR_H
 # define COREWAR_H
 
-# include <ncurses.h>
-# include <curses.h>
 # include "ncurse.h"
 # include "op.h"
 # include "libft.h"
-# include <fcntl.h>
-# include <sys/types.h>
-# include <sys/uio.h>
-# include <errno.h>
 # include "ft_printf.h"
+# include <ncurses.h>
+# include <curses.h>
+# include <fcntl.h>
+# include <errno.h>
 
 # include <sys/time.h>
-
-extern int					errno;
 
 # define DEFAULT			"\033[0m"
 # define BLACK				"\033[30m"
@@ -144,7 +140,7 @@ struct						s_arena
 	int						cycle_to_die;
 	int						nb_player;
 	int						nb_check;
-	int						last_alive; // id player
+	int						last_alive;
 };
 
 struct						s_vm

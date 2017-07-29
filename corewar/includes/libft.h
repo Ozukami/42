@@ -6,19 +6,20 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 10:49:10 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/29 06:07:47 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/29 23:27:59 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
+# include "get_next_line.h"
 # include <unistd.h>
+# include <stdio.h>
 # include <string.h>
 # include <stdlib.h>
 # include <limits.h>
 # include <stdint.h>
-# include "get_next_line.h"
 # include <stdarg.h>
 
 typedef struct		s_list
