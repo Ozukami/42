@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/29 06:18:34 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/29 06:34:53 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -805,6 +805,13 @@ void	op_st(t_vm *vm, t_proc *proc)
 		j += MEM_SIZE;
 	if (((ocp << 2) & 0b11000000) == 0b11000000)
 	{
+		if (args[1] < 1 || args[1] > 16)
+		{
+		printf("%sINVALID REG%s\n", RED, DEFAULT);
+		move_pc(vm, proc, ocp);
+			return ;
+			exit(0);
+		}
 		write_in_mem(vm, PR_REG[args[0]], j,
 				get_player_from_id(vm, proc->id_player)->color);
 	}
