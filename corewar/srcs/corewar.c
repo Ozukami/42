@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/29 04:02:51 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/29 05:06:30 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -405,7 +405,7 @@ void		kill_proc(t_vm *vm, int id)
 			if (OPT_V & V_DEATH)
 				ft_printf("%sProcess %d has died (CTD %d) %p%s\n",
 						RED, curr->next->id, A_CTD, curr->next, DEFAULT);
-			printf("[%d - %d] =>", curr->id, curr->next->id);
+			//printf("[%d - %d] =>", curr->id, curr->next->id);
 			tmp = curr->next;
 			curr->next = tmp->next;
 			/*
@@ -1011,7 +1011,8 @@ void	op_zjmp(t_vm *vm, t_proc *proc)
 		{
 			ft_printf("\033[2;3;36mADV %d (0x%04x -> ", ((short)value), PR_PC);
 		}
-		PR_PC += ((short)value) % MEM_SIZE;
+		PR_PC += ((short)value);
+		PR_PC %= MEM_SIZE;
 		if (PR_PC < 0)
 			PR_PC += MEM_SIZE;
 		if (OPT_V & V_PC)
@@ -1024,6 +1025,7 @@ void	op_zjmp(t_vm *vm, t_proc *proc)
 		}
 		PR_WAIT = 1;
 		PR_LOP = -1;
+		ft_printf("PC is now %d\n", PR_PC);
 	}
 	else
 	{
