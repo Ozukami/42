@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/29 06:55:47 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/29 07:33:55 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -486,15 +486,6 @@ void	move_pc(t_vm *vm, t_proc *proc, int ocp)
 	i = -1;
 	if (OPT_V & V_PC)
 	{
-		ft_printf("\033[2;3;36mMEM (0x%04x -> ", PR_PC);
-		ft_printf("0x%04x)", PR_PC + size);
-		while (++i < size)
-			ft_printf(" %02x", A_MEMORY[(PR_PC +i) % MEM_SIZE]);
-		ft_printf("%s\n", DEFAULT);
-	}
-	i = -1;
-	if (OPT_V & V_PC)
-	{
 		ft_printf("\033[2;3;36mADV %d (0x%04x -> ", size, PR_PC);
 		ft_printf("0x%04x)", PR_PC + size);
 		while (++i < size)
@@ -505,56 +496,8 @@ void	move_pc(t_vm *vm, t_proc *proc, int ocp)
 	PR_PC %= MEM_SIZE;
 	if (PR_PC < 0 || PR_PC > 4095)
 		exit (0);
-	PR_WAIT = 1; // PR_WAIT = 0 ?
-	PR_LOP = -1;
-}
-
-void	move_pc_fork(t_vm *vm, t_proc *proc, int ocp)
-{
-	int		size;
-	int		i;
-
-	i = -1;
-	size = get_inst_length(ocp, PR_LOP);
-	if (OPT_V & V_PC)
-	{
-		ft_printf("\033[2;3;36mADV %d (0x%04x -> ", size, PR_PC);
-		ft_printf("0x%04x)", PR_PC + size);
-		while (++i < size)
-			ft_printf(" %02x", A_MEMORY[(PR_PC + i) % MEM_SIZE]);
-		ft_printf("%s\n", DEFAULT);
-	}
-	PR_PC += size;
-	PR_PC %= MEM_SIZE;
 	PR_WAIT = 1;
 	PR_LOP = -1;
-}
-
-void	move_failed_op(t_vm *vm, t_proc *proc, int len)
-{
-	int		i;
-
-	i = -1;
-	if (OPT_V & V_PC)
-	{
-		ft_printf("\033[2;3;36mMEM (0x%04x -> ", PR_PC);
-		ft_printf("0x%04x)", PR_PC + len);
-		while (++i < len)
-			ft_printf(" %02x", A_MEMORY[(PR_PC + i) % MEM_SIZE]);
-		ft_printf("%s\n", DEFAULT);
-	}
-	i = -1;
-	if (OPT_V & V_PC)
-	{
-		ft_printf("\033[2;3;36mADV %d (0x%04x -> ", len, PR_PC);
-		ft_printf("0x%04x)", PR_PC + len);
-		while (++i < len)
-			ft_printf(" %02x", A_MEMORY[(PR_PC + i) % MEM_SIZE]);
-		ft_printf("%s\n", DEFAULT);
-	}
-	PR_PC += len;
-	PR_PC %= MEM_SIZE;
-	proc->cycle_to_wait = 0;
 }
 
 // 0 < nb_octet < 5
@@ -685,13 +628,9 @@ int		verif_ocp(t_vm *vm, t_proc *proc, int op, int ocp)
 			|| (op == 14 && (ocp == 64)))
 		return (1);
 	if (OPT_V & V_OP)
-		ft_printf("	%sPROC (%d) OP %d (%d) FAILED%s\n", RED, proc->id, op, ocp, DEFAULT);
-	PR_WAIT = 1; // WAIT = 0 ?
-	/*
-	if (op == 4 || op == 5)
-		move_failed_op(vm, proc, 6);
-	else
-	*/
+		ft_printf("	%sPROC (%d) OP %d (%d) FAILED%s\n",
+				RED, proc->id, op, ocp, DEFAULT);
+	PR_WAIT = 1;
 	move_pc(vm, proc, ocp);
 	return (0);
 }
