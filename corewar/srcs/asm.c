@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/17 00:00:11 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/29 06:00:32 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/29 06:14:10 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	parse_file(t_champ *champ)
 
 	r = 0;
 	line = NULL;
-	while (r != 4 && get_next_line(FD, &line))
+	while (r != 4 && ft_line_reader(FD, &line))
 	{
 		tmp = str_epur(line);
 		r += check_header(champ, line, tmp);
@@ -59,7 +59,7 @@ void	parse_file(t_champ *champ)
 			free(line);
 		free(tmp);
 	}
-	while (get_next_line(FD, &line))
+	while (ft_line_reader(FD, &line))
 	{
 		if ((line = str_epurf(line)) && line[0] != COMMENT_CHAR
 				&& line[0] != ';')

@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/16 07:01:04 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/29 03:08:02 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/29 06:16:22 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void			build_instruction_list(t_champ *champ)
 	t_instruction	*current;
 
 	current = L_INST;
-	while (get_next_line(FD, &line))
+	while (ft_line_reader(FD, &line))
 	{
 		line = str_epurf(line);
 		if (line && (ft_strequf_l(ft_strsub(line, 0, 8), ".comment")
@@ -121,8 +121,5 @@ void			build_instruction_list(t_champ *champ)
 			current->next = get_instruction(line, champ);
 			current = current->next;
 		}
-		else
-			ft_strdel(&line);
 	}
-	ft_strdel(&line);
 }

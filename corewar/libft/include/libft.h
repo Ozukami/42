@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/04 10:49:10 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/24 00:58:19 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/29 06:07:39 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ typedef struct		s_rect
 /*
 ** PART I
 */
+
+int					ft_line_reader(int fd, char **line);
 
 char				*ft_strnewch(size_t size, char c);
 char				*ft_strjoindel(char *s1, char *s2, int i);
