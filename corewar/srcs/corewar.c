@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/29 07:33:55 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/29 08:10:07 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -464,7 +464,7 @@ int		get_inst_length(int ocp, int op)
 	label_size = (!(g_op_tab[op]).label_size) ? 4 : (g_op_tab[op]).label_size;
 	size = 2;
 	i = 0;
-	while (i <= (g_op_tab[op].nb_arg * 2))
+	while (i < (g_op_tab[op].nb_arg * 2))
 	{
 		if (((ocp << i) & 0b11000000) == 0b11000000)
 			size += 2;
