@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/28 07:44:21 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/07/29 00:31:56 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1146,6 +1146,22 @@ void		dump_mem(t_vm *vm)
 		exit(0);
 }
 
+void	exec_proc(t_vm *vm, t_proc *proc)
+{
+	if ((PR_LOP == -1) &&
+			(A_MEMORY[PR_PC] <= 0 || A_MEMORY[PR_PC] > 16))
+		PR_PC = ((PR_PC) + 1) % MEM_SIZE;
+	else if (PR_LOP != -1 && PR_WAIT >=
+				(g_op_tab[PR_LOP - 1]).cycles) // EXEC OP
+			(op_tab[PR_LOP - 1])(vm, proc);
+	else
+	{
+		if (PR_LOP == -1)
+			PR_LOP = A_MEMORY[PR_PC];
+		PR_WAIT++;
+	}
+}
+
 /*
 ** run the vm with the champs
 ** use the implementation of op
@@ -1169,30 +1185,7 @@ void		process(t_vm *vm)
 		curr = A_LPROC;
 		while (curr)
 		{
-			if (OPT_V & V_OP)
-				printf("%s Proc id {%d} exec op %d in cycle to wait %d / %d, proc pc[%d]%s\n",
-						RED, curr->id, curr->loaded_op, curr->cycle_to_wait,
-					(g_op_tab[curr->loaded_op - 1]).cycles, curr->pc, DEFAULT);
-			if ((curr->loaded_op == -1) &&
-					(A_MEMORY[curr->pc] <= 0 || A_MEMORY[curr->pc] > 16))
-				curr->pc = ((curr->pc) + 1) % MEM_SIZE;
-			else if (curr->loaded_op != -1 && curr->cycle_to_wait >=
-						(g_op_tab[curr->loaded_op - 1]).cycles) // EXEC OP
-					(op_tab[curr->loaded_op - 1])(vm, curr);
-			else // LOAD OP
-			{
-				
-				if (curr->loaded_op == -1)
-				{
-					curr->loaded_op = A_MEMORY[curr->pc];
-					if (curr->loaded_op > 16 || curr->loaded_op < 0)
-					{
-						ft_printf("%d\n", curr->loaded_op);
-						exit(0);
-					}
-					}
-				(curr->cycle_to_wait)++;
-			}
+			exec_proc(vm, curr);
 			curr = curr->next;
 		}
 		if (cycle == A_CTD)
