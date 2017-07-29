@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/20 03:22:57 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/29 05:02:01 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/07/29 06:08:53 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ typedef struct s_label_list		t_label_list;
 typedef struct s_state			t_state;
 typedef struct s_champ			t_champ;
 
+extern t_state					*g_free_point;
+
 struct				s_instruction
 {
 	char			*label;
@@ -76,6 +78,8 @@ struct				s_state
 	int				status;
 	char			*transitions;
 	t_state			**next;
+	t_state			*nxt;
+	t_state			*f;
 };
 
 struct				s_champ
