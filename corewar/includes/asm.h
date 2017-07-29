@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/20 03:22:57 by apoisson          #+#    #+#             */
-/*   Updated: 2017/06/20 03:23:00 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/29 05:02:01 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,5 +139,6 @@ int					get_value(t_champ *champ, int id_label,
 		t_instruction *instruction);
 int					get_id_label(t_champ *champ, char *arg);
 char				*set_name(char *str);
+void				ftasm_free(t_champ *champ);
 
 #endif
