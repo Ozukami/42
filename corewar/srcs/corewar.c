@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/29 08:10:07 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/29 09:33:42 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,6 +220,7 @@ t_proc			*new_proc(int id_player)
 	PR_ID = id++;
 	PR_IDP = id_player;
 	PR_ALIVE = 0;
+	PR_LASTLIVE = 0;
 	proc->test = 1;
 	PR_PC = 0;
 	PR_CARRY = 0;
@@ -285,6 +286,7 @@ void		init_arena(t_vm *vm, int nb_args, char **args)
 	ARENA = arena;
 	A_PROC = 0;
 	A_CYCLE = 0;
+	A_CURCYCLE = 0;
 	A_CTD = CYCLE_TO_DIE;
 	A_NBPLAYER = 0;
 	A_NBCHECK = 0;
@@ -302,6 +304,23 @@ void		init_arena(t_vm *vm, int nb_args, char **args)
 	}
 }
 
+void	introduce_contestant(t_vm *vm, t_player *player)
+{
+	if (OPT_NC)
+		return ;
+	if (P_COLOR == 1)
+		ft_printf(GREEN);
+	if (P_COLOR == 2)
+		ft_printf(BLUE);
+	if (P_COLOR == 3)
+		ft_printf(RED);
+	if (P_COLOR == 4)
+		ft_printf(YELLOW);
+	ft_printf("* Player %d, weighing %d bytes, \"%s\" (\"%s\") !\n",
+		P_COLOR, C_PSIZE, C_NAME, C_COM);
+	ft_printf(DEFAULT);
+}
+
 /*
 ** load champ of each players in the memory of the vm
 ** at the good position
@@ -315,10 +334,13 @@ void		load_champ(t_vm *vm)
 	int			i;
 	int			j;
 
+	if (!OPT_NC)
+		ft_printf("Introducing contestants...\n\n");
 	current = A_LPLAYER;
 	j = -1;
 	while (current)
 	{
+		introduce_contestant(vm, current);
 		i = -1;
 		while (++i < (int)current->champ->prog_size)
 		{
@@ -328,6 +350,8 @@ void		load_champ(t_vm *vm)
 		j += MEM_SIZE / A_NBPLAYER - current->champ->prog_size;
 		current = current->next;
 	}
+	if (!OPT_NC)
+		ft_putendl("");
 }
 
 void		cycle_verif(t_vm *vm)
@@ -340,13 +364,11 @@ void		cycle_verif(t_vm *vm)
 		P_LIVE = 0;
 		player = player->next;
 	}
-	if (TOTAL_LIVE >= NBR_LIVE || A_NBCHECK == MAX_CHECKS)
+	if (TOTAL_LIVE >= NBR_LIVE || ++A_NBCHECK == MAX_CHECKS)
 	{
 	 	A_CTD -= CYCLE_DELTA;
-	 	A_NBCHECK = 1;
+	 	A_NBCHECK = 0;
 	}
-	else
-		A_NBCHECK++;
 	TOTAL_LIVE = 0;
 }
 
@@ -486,11 +508,18 @@ void	move_pc(t_vm *vm, t_proc *proc, int ocp)
 	i = -1;
 	if (OPT_V & V_PC)
 	{
+		ft_printf("ADV %d (0x%04x -> ", size, PR_PC);
+		ft_printf("0x%04x)", PR_PC + size);
+		while (++i < size)
+			ft_printf(" %02x", A_MEMORY[(PR_PC + i) % MEM_SIZE]);
+		ft_printf(" \n");
+		/*
 		ft_printf("\033[2;3;36mADV %d (0x%04x -> ", size, PR_PC);
 		ft_printf("0x%04x)", PR_PC + size);
 		while (++i < size)
 			ft_printf(" %02x", A_MEMORY[(PR_PC + i) % MEM_SIZE]);
 		ft_printf("%s\n", DEFAULT);
+		*/
 	}
 	PR_PC += size;
 	PR_PC %= MEM_SIZE;
@@ -650,6 +679,7 @@ void	op_live(t_vm *vm, t_proc *proc)
 	t_player	*player;
 
 	v_op(vm, "live", proc, 0);
+	PR_LASTLIVE = A_CURCYCLE;
 	PR_ALIVE = 1;
 	TOTAL_LIVE++;
 	value = get_value(vm, 4, proc, (PR_PC + 1) % MEM_SIZE);
@@ -1192,7 +1222,8 @@ void		dump_mem(t_vm *vm)
 {
 	int	i;
 
-//	exit(0);
+	if (OPT_V)
+		ft_putendl("");
 	i = -1;
 	while (++i < MEM_SIZE)
 	{
@@ -1242,26 +1273,24 @@ void	exec_proc(t_vm *vm, t_proc *proc)
 void		process(t_vm *vm)
 {
 	t_proc		*curr;
-	int			cycle;
 
-	cycle = 0;
 	while (A_CTD > 0)
 	{
 		if (OPT_D > -1 && A_CYCLE > (OPT_D - 1))
 			dump_mem(vm);
-		++A_CYCLE;
+		A_CYCLE++;
+		A_CURCYCLE++;
 		if (OPT_V & V_CYCLE)
-			ft_printf("%sIt is now cycle %d%s\n", GREY, A_CYCLE, DEFAULT);
-		cycle++;
+			ft_printf("It is now cycle %d\n", A_CYCLE);
 		curr = A_LPROC;
 		while (curr)
 		{
 			exec_proc(vm, curr);
 			curr = curr->next;
 		}
-		if (cycle == A_CTD)
+		if (A_CURCYCLE >= A_CTD)
 		{
-			cycle = 0;
+			A_CURCYCLE = 0;
 			check_alive(vm);
 		}
 		if (!A_PROC)

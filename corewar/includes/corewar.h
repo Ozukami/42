@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/20 02:47:48 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/26 00:39:29 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/29 09:33:55 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ extern int					errno;
 # define A_MEMORY			(vm->arena->memory)
 # define A_PROC				(vm->arena->nb_proc)
 # define A_CYCLE			(vm->arena->nb_cycle)
+# define A_CURCYCLE			(vm->arena->curr_cycle)
 # define A_CTD				(vm->arena->cycle_to_die)
 # define A_NBPLAYER			(vm->arena->nb_player)
 # define A_NBCHECK			(vm->arena->nb_check)
@@ -78,6 +79,7 @@ extern int					errno;
 
 # define PR_ID				(proc->id)
 # define PR_IDP				(proc->id_player)
+# define PR_LASTLIVE		(proc->last_live)
 # define PR_ALIVE			(proc->alive)
 # define PR_PC				(proc->pc)
 # define PR_CARRY			(proc->carry)
@@ -100,6 +102,7 @@ struct						s_proc
 {
 	int						id;
 	int						id_player;
+	int						last_live;
 	int						alive;
 	int						test;
 	int						pc;
@@ -137,6 +140,7 @@ struct						s_arena
 	unsigned char			*memory;
 	int						nb_proc;
 	int						nb_cycle;
+	int						curr_cycle;
 	int						cycle_to_die;
 	int						nb_player;
 	int						nb_check;
