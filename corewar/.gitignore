@@ -1,9 +1,7 @@
 *.cor
-comp*
 .*
-asm
 a.out
-vm
-ncurses
+asm
 corewar
-champ_builder
+builder
+*.dSYM

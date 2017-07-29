@@ -6,7 +6,7 @@
 #    By: apoisson <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 11:29:15 by apoisson          #+#    #+#              #
-#    Updated: 2017/07/27 02:05:00 by lcharbon         ###   ########.fr        #
+#    Updated: 2017/07/29 02:21:06 by apoisson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,8 +30,8 @@ $(VM): libft.a $(addprefix srcs/, $(SRCVM))
 	@gcc $(FLAGS) $(addprefix srcs/, $(SRCVM)) -L. -lft -lncurses -I includes/ -o $(VM)
 	@printf "\033[0;32m OK\n\033[0m"
 
-champ_builder: champ_builder.c
-	@gcc $(FLAGS) $^ -L. -lft -I includes/ -o champ_builder
+builder: builder.c
+	@gcc $(FLAGS) $^ -L. -lft -I includes/ -o builder
 
 libft.a:
 	@make -C libft/
