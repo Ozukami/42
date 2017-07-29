@@ -6,13 +6,15 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/17 00:00:11 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/29 03:53:33 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/29 06:00:32 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 #include "sys/types.h"
 #include "sys/wait.h"
+
+t_state	*g_free_point = NULL;
 
 t_op	g_op_tab[17] =
 {

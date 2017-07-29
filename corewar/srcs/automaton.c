@@ -6,11 +6,29 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/09 06:08:07 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/29 03:52:47 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/29 06:01:20 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
+
+static t_state	*ftasm_free_list_new(t_state *p, t_state *state)
+{
+	t_state		*new;
+	t_state		*tmp;
+
+	tmp = p;
+	if (!(new = (t_state*)malloc(sizeof(t_state))))
+		return (NULL);
+	new->f = state;
+	new->nxt = NULL;
+	if (p == NULL)
+		return (new);
+	while (tmp->nxt != NULL)
+		tmp = tmp->nxt;
+	tmp->nxt = new;
+	return (p);
+}
 
 t_state			*new_state(int id, int status, char *transitions)
 {
@@ -24,6 +42,7 @@ t_state			*new_state(int id, int status, char *transitions)
 	if (!(state->next = ft_memalloc(sizeof(t_state) *
 					(ft_strlen(transitions) + 1))))
 		ft_perror("Malloc failled !");
+	g_free_point = ftasm_free_list_new(g_free_point, state);
 	return (state);
 }
 

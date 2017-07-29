@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/29 05:06:30 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/29 05:10:20 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -565,6 +565,11 @@ int		get_value(t_vm *vm, int nb_octet, t_proc *proc, int pc)
 	int				i;
 
 	(void)proc;
+	if (pc < 0 || pc > 4096)
+	{
+		printf("%d\n", pc);
+		exit (0);
+	}
 	value = A_MEMORY[pc];
 	i = 1;
 	while (i < nb_octet)
@@ -1025,7 +1030,7 @@ void	op_zjmp(t_vm *vm, t_proc *proc)
 		}
 		PR_WAIT = 1;
 		PR_LOP = -1;
-		ft_printf("PC is now %d\n", PR_PC);
+	//	ft_printf("PC is now %d\n", PR_PC);
 	}
 	else
 	{
