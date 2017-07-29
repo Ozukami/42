@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/29 05:10:20 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/29 06:16:23 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -778,7 +778,6 @@ void	op_ld(t_vm *vm, t_proc *proc)
 	{
 		if (args[1] < 1 || args[1] > 16)
 		{
-			printf("%sINVALID REG%s\n", RED, DEFAULT);
 		printf("%sINVALID REG%s\n", RED, DEFAULT);
 		move_pc(vm, proc, ocp);
 			return ;
@@ -813,7 +812,6 @@ void	op_st(t_vm *vm, t_proc *proc)
 	{
 		if (args[1] < 1 || args[1] > 16)
 		{
-			printf("%sINVALID REG%s\n", RED, DEFAULT);
 		printf("%sINVALID REG%s\n", RED, DEFAULT);
 		move_pc(vm, proc, ocp);
 			return ;
@@ -836,7 +834,6 @@ void	op_add(t_vm *vm, t_proc *proc)
 	get_args(vm, proc, ocp, args);
 	if (args[0] < 1 || args[0] > 16 || args[1] < 1 || args[1] > 16)
 	{
-		printf("%sINVALID REG%s\n", RED, DEFAULT);
 		printf("%sINVALID REG%s\n", RED, DEFAULT);
 		move_pc(vm, proc, ocp);
 			return ;
@@ -862,7 +859,6 @@ void	op_sub(t_vm *vm, t_proc *proc)
 	if (args[0] < 1 || args[0] > 16 || args[1] < 1 || args[1] > 16)
 	{
 		printf("%sINVALID REG%s\n", RED, DEFAULT);
-		printf("%sINVALID REG%s\n", RED, DEFAULT);
 		move_pc(vm, proc, ocp);
 			return ;
 		exit(0);
@@ -878,19 +874,22 @@ void	op_and(t_vm *vm, t_proc *proc)
 {
 	int		args[4];
 	int		ocp;
+	int		j;
 
 	ocp = A_MEMORY[(PR_PC + 1) % MEM_SIZE];
 	if (!verif_ocp(vm, proc, 6, ocp))
 		return ;
 	v_op(vm, "and", proc, ocp);
 	get_args(vm, proc, ocp, args);
+	j = (PR_PC + (args[0] % IDX_MOD)) % MEM_SIZE;
+	if (j < 0)
+		j += MEM_SIZE;
 	if (((ocp & 0b11000000)) == 0b11000000)
-		args[0] = get_value(vm, 4, proc, (PR_PC + (args[0] % IDX_MOD)) % MEM_SIZE);
+		args[0] = get_value(vm, 4, proc, j);
 	else if ((ocp & 0b01000000))
 	{
 		if (args[0] < 1 || args[0] > 16)
 		{
-			printf("%sINVALID REG%s\n", RED, DEFAULT);
 		printf("%sINVALID REG%s\n", RED, DEFAULT);
 		move_pc(vm, proc, ocp);
 			return ;
@@ -898,13 +897,13 @@ void	op_and(t_vm *vm, t_proc *proc)
 		}
 		args[0] = PR_REG[args[0]];
 	}
+	j = (PR_PC + (args[1] % IDX_MOD)) % MEM_SIZE;
 	if ((((ocp << 2) & 0b11000000)) == 0b11000000)
-		args[1] = get_value(vm, 4, proc, (PR_PC + (args[1] % IDX_MOD)) % MEM_SIZE);
+		args[1] = get_value(vm, 4, proc, j);
 	else if (((ocp << 2) & 0b01000000))
 	{
 		if (args[2] < 1 || args[2] > 16)
 		{
-			printf("%sINVALID REG%s\n", RED, DEFAULT);
 		printf("%sINVALID REG%s\n", RED, DEFAULT);
 		move_pc(vm, proc, ocp);
 			return ;
@@ -921,33 +920,36 @@ void	op_or(t_vm *vm, t_proc *proc)
 {
 	int		args[4];
 	int		ocp;
+	int		j;
 
 	ocp = A_MEMORY[(PR_PC + 1) % MEM_SIZE];
 	if (!verif_ocp(vm, proc, 7, ocp))
 		return ;
 	v_op(vm, "or", proc, ocp);
 	get_args(vm, proc, ocp, args);
+	j = (PR_PC + (args[0] % IDX_MOD)) % MEM_SIZE;
+	if (j < 0)
+		j += MEM_SIZE;
 	if (((ocp & 0b11000000)) == 0b11000000)
-		args[0] = get_value(vm, 4, proc, (PR_PC + (args[0] % IDX_MOD)) % MEM_SIZE);
+		args[0] = get_value(vm, 4, proc, j);
 	else if ((ocp & 0b01000000))
 	{
 		if (args[0] < 1 || args[0] > 16)
 		{
 			printf("%sINVALID REG%s\n", RED, DEFAULT);
-		printf("%sINVALID REG%s\n", RED, DEFAULT);
 		move_pc(vm, proc, ocp);
 			return ;
 			exit(0);
 		}
 		args[0] = PR_REG[args[0]];
 	}
+	j = (PR_PC + (args[1] % IDX_MOD)) % MEM_SIZE;
 	if ((((ocp << 2) & 0b11000000)) == 0b11000000)
-		args[1] = get_value(vm, 4, proc, (PR_PC + (args[1] % IDX_MOD)) % MEM_SIZE);
+		args[1] = get_value(vm, 4, proc, j);
 	else if (((ocp << 2) & 0b01000000))
 	{
 		if (args[2] < 1 || args[2] > 16)
 		{
-			printf("%sINVALID REG%s\n", RED, DEFAULT);
 		printf("%sINVALID REG%s\n", RED, DEFAULT);
 		move_pc(vm, proc, ocp);
 			return ;
@@ -964,19 +966,22 @@ void	op_xor(t_vm *vm, t_proc *proc)
 {
 	int		args[4];
 	int		ocp;
+	int		j;
 
 	ocp = A_MEMORY[(PR_PC + 1) % MEM_SIZE];
 	if (!verif_ocp(vm, proc, 8, ocp))
 		return ;
 	v_op(vm, "xor", proc, ocp);
 	get_args(vm, proc, ocp, args);
+	j = (PR_PC + (args[0] % IDX_MOD)) % MEM_SIZE;
+	if (j < 0)
+		j += MEM_SIZE;
 	if (((ocp & 0b11000000)) == 0b11000000)
-		args[0] = get_value(vm, 4, proc, (PR_PC + (args[0] % IDX_MOD)) % MEM_SIZE);
+		args[0] = get_value(vm, 4, proc, j);
 	else if ((ocp & 0b01000000))
 	{
 		if (args[0] < 1 || args[0] > 16)
 		{
-			printf("%sINVALID REG%s\n", RED, DEFAULT);
 		printf("%sINVALID REG%s\n", RED, DEFAULT);
 		move_pc(vm, proc, ocp);
 			return ;
@@ -984,13 +989,15 @@ void	op_xor(t_vm *vm, t_proc *proc)
 		}
 		args[0] = PR_REG[args[0]];
 	}
+	j = (PR_PC + (args[1] % IDX_MOD)) % MEM_SIZE;
+	if (j < 0)
+		j += MEM_SIZE;
 	if ((((ocp << 2) & 0b11000000)) == 0b11000000)
-		args[1] = get_value(vm, 4, proc, (PR_PC + (args[1] % IDX_MOD)) % MEM_SIZE);
+		args[1] = get_value(vm, 4, proc, j);
 	else if (((ocp << 2) & 0b01000000))
 	{
 		if (args[1] < 1 || args[1] > 16)
 		{
-			printf("%sINVALID REG%s\n", RED, DEFAULT);
 		printf("%sINVALID REG%s\n", RED, DEFAULT);
 		move_pc(vm, proc, ocp);
 			return ;
@@ -1013,9 +1020,7 @@ void	op_zjmp(t_vm *vm, t_proc *proc)
 	{
 		// IDX_MOD ??
 		if (OPT_V & V_PC)
-		{
 			ft_printf("\033[2;3;36mADV %d (0x%04x -> ", ((short)value), PR_PC);
-		}
 		PR_PC += ((short)value);
 		PR_PC %= MEM_SIZE;
 		if (PR_PC < 0)
@@ -1030,33 +1035,35 @@ void	op_zjmp(t_vm *vm, t_proc *proc)
 		}
 		PR_WAIT = 1;
 		PR_LOP = -1;
+		return ;
 	//	ft_printf("PC is now %d\n", PR_PC);
 	}
 	else
-	{
 		if (OPT_V & V_OP)
 			ft_printf("%s	ZJMP FAILLED%s\n", RED, DEFAULT);
-		move_pc(vm, proc, 0);
-	}
+	move_pc(vm, proc, 0);
 }
 
 void	op_ldi(t_vm *vm, t_proc *proc)
 {
 	int		args[4];
 	int		ocp;
+	int		j;
 
 	ocp = A_MEMORY[(PR_PC + 1) % MEM_SIZE];
 	if (!verif_ocp(vm, proc, 10, ocp))
 		return ;
 	v_op(vm, "ldi", proc, ocp);
 	get_args(vm, proc, ocp, args);
+	j = (PR_PC + (args[0] % IDX_MOD)) % MEM_SIZE;
+	if (j < 0)
+		j += MEM_SIZE;
 	if (((ocp & 0b11000000)) == 0b11000000)
-		args[0] = get_value(vm, 4, proc, (PR_PC + (args[0] % IDX_MOD)) % MEM_SIZE);
+		args[0] = get_value(vm, 4, proc, j);
 	else if ((ocp & 0b01000000))
 	{
 		if (args[0] < 1 || args[0] > 16)
 		{
-			printf("%sINVALID REG%s\n", RED, DEFAULT);
 		printf("%sINVALID REG%s\n", RED, DEFAULT);
 		move_pc(vm, proc, ocp);
 			return ;
@@ -1064,13 +1071,15 @@ void	op_ldi(t_vm *vm, t_proc *proc)
 		}
 		args[0] = PR_REG[args[0]];
 	}
+	j = (PR_PC + (args[1] % IDX_MOD)) % MEM_SIZE;
+	if (j < 0)
+		j += MEM_SIZE;
 	if ((((ocp << 2) & 0b11000000)) == 0b11000000)
-		args[1] = get_value(vm, 4, proc, (PR_PC + (args[1] % IDX_MOD)) % MEM_SIZE);
+		args[1] = get_value(vm, 4, proc, j);
 	else if (((ocp << 2) & 0b01000000))
 	{
 		if (args[1] < 1 || args[1] > 16)
 		{
-			printf("%sINVALID REG%s\n", RED, DEFAULT);
 		printf("%sINVALID REG%s\n", RED, DEFAULT);
 		move_pc(vm, proc, ocp);
 			return ;
@@ -1094,13 +1103,15 @@ void	op_sti(t_vm *vm, t_proc *proc)
 		return ;
 	v_op(vm, "sti", proc, ocp);
 	get_args(vm, proc, ocp, args);
+	j = (PR_PC + (args[1] % IDX_MOD)) % MEM_SIZE;
+	if (j < 0)
+		j += MEM_SIZE;
 	if ((((ocp << 2) & 0b11000000)) == 0b11000000)
-		args[1] = get_value(vm, 4, proc, (PR_PC + (args[1] % IDX_MOD)) % MEM_SIZE);
+		args[1] = get_value(vm, 4, proc, j);
 	else if (((ocp << 2) & 0b01000000))
 	{
 		if (args[1] < 1 || args[1] > 16)
 		{
-			printf("%sINVALID REG%s\n", RED, DEFAULT);
 		printf("%sINVALID REG%s\n", RED, DEFAULT);
 		move_pc(vm, proc, ocp);
 			return ;
@@ -1112,7 +1123,6 @@ void	op_sti(t_vm *vm, t_proc *proc)
 	{
 		if (args[2] < 1 || args[2] > 16)
 		{
-			printf("%sINVALID REG%s\n", RED, DEFAULT);
 		printf("%sINVALID REG%s\n", RED, DEFAULT);
 		move_pc(vm, proc, ocp);
 			return ;
@@ -1182,7 +1192,6 @@ void	op_lld(t_vm *vm, t_proc *proc)
 	{
 		if (args[1] < 1 || args[1] > 16)
 		{
-			printf("%sINVALID REG%s\n", RED, DEFAULT);
 		printf("%sINVALID REG%s\n", RED, DEFAULT);
 		move_pc(vm, proc, ocp);
 			return ;
@@ -1210,7 +1219,6 @@ void	op_lldi(t_vm *vm, t_proc *proc)
 	{
 		if (args[0] < 1 || args[0] > 16)
 		{
-			printf("%sINVALID REG%s\n", RED, DEFAULT);
 		printf("%sINVALID REG%s\n", RED, DEFAULT);
 		move_pc(vm, proc, ocp);
 			return ;
