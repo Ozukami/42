@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/30 06:14:46 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/30 09:38:15 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/30 09:45:42 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,10 +167,7 @@ void		get_args(t_decomp *decomp, int ocp, int args[4], int pc)
 			size += 2;
 		}
 		else if (((ocp << i) & 0b01000000))
-		{
-			args[i / 2] = get_value(decomp, 1, pc + size);
-			size++;
-		}
+			args[i / 2] = get_value(decomp, 1, pc + size++);
 		else if ((ocp << i) & 0b10000000)
 		{
 			args[i / 2] = get_value(decomp, label_size, pc + size);
@@ -219,11 +216,8 @@ int			write_op(t_decomp *decomp, int i)
 	int		j;
 	char	*to_write;
 
-	ocp = get_ocp(decomp, i);
-	if (ocp != -1)
-		get_args(decomp, ocp, args, i);
-	else
-		args[0] = get_value(decomp, g_op_tab[PROG[i] - 1].label_size, i + 1);
+	((ocp = get_ocp(decomp, i)) != -1) ? (get_args(decomp, ocp, args, i)) :
+		(args[0] = get_value(decomp, g_op_tab[PROG[i] - 1].label_size, i + 1));
 	write(FD_S, g_op_tab[PROG[i] - 1].op, ft_strlen(g_op_tab[PROG[i] - 1].op));
 	write(FD_S, "\t", 1);
 	j = -1;
@@ -231,8 +225,7 @@ int			write_op(t_decomp *decomp, int i)
 	{
 		if ((ocp << (j * 2)) & 0b10000000)
 			write(FD_S, "%", 1);
-		else if ((ocp << (j * 2)) & 0b01000000
-				&& ((ocp << (j * 2)) != 0b11000000))
+		else if ((ocp << (j * 2)) & 64 && ((ocp << (j * 2)) != 192))
 			write(FD_S, "r", 1);
 		to_write = ft_itoa(args[j]);
 		write(FD_S, to_write, ft_strlen(to_write));
