@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/30 03:32:16 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/30 05:15:53 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,19 @@ void	ft_usage(void)
 	ft_putendl("usage: ./corewar [-d N | -nc --stealth] \
 <[-n N] champ.cor> <...>");
 	ft_putendl("#### TEXT OUTPUT MODE #######");
-	ft_putendl("	-d N		: Dumps memory after N cycles then exits");
+	ft_putendl(" -a  	: Prints output from \"aff\" (Default is to hide it)");
+	ft_putendl(" -d N	: Dumps memory after N cycles then exits");
+	ft_putendl(" -v N	: Verbosity levels, can be added together to enable several");
+	ft_putendl("		- 1 : Show lives");
+	ft_putendl("		- 2 : Show cycles");
+	ft_putendl("		- 4 : Show operations");
+	ft_putendl("		- 8 : Show deaths");
+	ft_putendl("		- 16 : Show PC movements ");
+	ft_putendl("		- 32 : Show CTD check");
 	ft_putendl("#### NCURSES OUTPUT MODE ####");
-	ft_putendl("	 -nc		: Ncurses output mode");
-	ft_putendl("	--stealth	: Hides the real contents of the memory");
+	ft_putendl(" -nc		: Ncurses output mode");
+	ft_putendl(" -s  		: Set visual actualisation speed");
+	ft_putendl(" --stealth	: Hides the real contents of the memory");
 	ft_putendl("#############################");
 	exit(0);
 }
@@ -403,36 +412,25 @@ void		kill_proc(t_vm *vm, int id)
 		tmp = curr;
 		A_LPROC = tmp->next;
 		curr = A_LPROC;
-		/*
-		if (curr)
-			printf("new head : %d\n", A_LPROC->id);
-			*/
 		update_nb_proc(vm, tmp->id_player);
 		free(tmp);
+		if (OPT_NC)
+			system("afplay fatality.aiff &");
 		return ;
 	}
-//	printf("ID to kill :%d\n", id);
-//	printf("Current = %d\n", curr->id);
 	while (curr->next)
 	{
-//		printf("1 Current = %d\n", curr->id);
-	//	printf("1 Next = %d\n", curr->next->id);
 		if (curr->next->id == id)
 		{
-//			printf("	2 Current = %d\n", curr->id);
-//			printf("	2 Next = %d\n", curr->next->id);
 			if (OPT_V & V_DEATH)
 				ft_printf("%sProcess %d has died (CTD %d) %p%s\n",
 						RED, curr->next->id, A_CTD, curr->next, DEFAULT);
-			//printf("[%d - %d] =>", curr->id, curr->next->id);
 			tmp = curr->next;
 			curr->next = tmp->next;
-			/*
-			if (curr->next)
-				printf("[%d - %d]\n", curr->id, curr->next->id);
-				*/
 			update_nb_proc(vm, tmp->id_player);
 			free(tmp);
+			if (OPT_NC)
+				system("afplay fatality.aiff &");
 			return ;
 		}
 		curr = curr->next;
