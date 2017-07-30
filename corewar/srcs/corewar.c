@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/30 05:27:35 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/07/30 06:24:21 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -397,13 +397,10 @@ void		update_nb_proc(t_vm *vm, int id_player)
 ** genre le "FATALITY" de Mortal Kombat
 */
 
-void		kill_proc(t_vm *vm, int id)
+int			kill_first(t_vm *vm, t_proc *curr, int id)
 {
-	t_proc	*curr;
 	t_proc	*tmp;
 
-	A_PROC--;
-	curr = A_LPROC;
 	if (curr->id == id)
 	{
 		if (OPT_V & V_DEATH)
@@ -416,8 +413,20 @@ void		kill_proc(t_vm *vm, int id)
 		free(tmp);
 		if (OPT_NC)
 			system("afplay ressources/fatality.aiff &");
-		return ;
+		return (1);
 	}
+	return (0);
+}
+
+void		kill_proc(t_vm *vm, int id)
+{
+	t_proc	*curr;
+	t_proc	*tmp;
+
+	A_PROC--;
+	curr = A_LPROC;
+	if (kill_first(vm, curr, id))
+		return ;
 	while (curr->next)
 	{
 		if (curr->next->id == id)
