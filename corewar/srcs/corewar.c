@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/30 06:24:21 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/07/30 07:40:23 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -529,8 +529,6 @@ void	move_pc(t_vm *vm, t_proc *proc, int ocp)
 	}
 	PR_PC += size;
 	PR_PC %= MEM_SIZE;
-	if (PR_PC < 0 || PR_PC > 4095)
-		exit (0);
 	PR_WAIT = 1;
 	PR_LOP = -1;
 }
