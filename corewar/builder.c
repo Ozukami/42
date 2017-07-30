@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/16 06:08:55 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/26 03:39:52 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/30 04:51:00 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # define HEADER						(champ->header)
 
 # define PROG_SIZE					(champ->header->prog_size)
+# define COMMENT					(champ->header->comment)
 
 # define PROG_NAME_LENGTH			(128)
 # define COMMENT_LENGTH				(2048)
@@ -110,7 +111,7 @@ void	write_champ(t_champ *champ, char *bin_str)
 {
 	int		i;
 	int		j;
-	char	val;
+	int		val;
 
 	lseek(FD, 0x890, SEEK_SET);
 	i = -1;
@@ -118,7 +119,7 @@ void	write_champ(t_champ *champ, char *bin_str)
 	while (++i < (int)PROG_SIZE)
 	{
 		if (bin_str[j] > 96)
-			val += bin_str[j++] - 87;
+			val = bin_str[j++] - 87;
 		else if (bin_str[j] > 57)
 			val = bin_str[j++] - 55;
 		else
@@ -131,7 +132,6 @@ void	write_champ(t_champ *champ, char *bin_str)
 		else
 			val += bin_str[j++] - 48;
 		j++;
-		printf("%#02x (%d)\n", val, val);
 		write(FD, &val, 1);
 	}
 }
@@ -170,9 +170,12 @@ void	process(char *name, char *bin_str)
 		if (bin_str[i] == ' ')
 			prog_size++;
 	champ = init_champ();
+	ft_strcpy(champ->header->prog_name, name);
 	NAME = ft_strjoin(name, ".cor");
-	(champ->header->comment)[0] = '\0';
-	(champ->header->prog_size) = prog_size;
+	if (ft_strlen(name) > PROG_NAME_LENGTH)
+		ft_perror("Name length is too big");
+	ft_strcpy(COMMENT, "This champ was build with builder");
+	PROG_SIZE = prog_size;
 	if ((FD = open(NAME, O_CREAT | O_WRONLY | O_TRUNC,
 					S_IRUSR | S_IWUSR)) == -1)
 		ft_perror("Error: open failed");
