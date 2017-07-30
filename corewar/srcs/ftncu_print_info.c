@@ -6,7 +6,7 @@
 /*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/22 19:56:26 by lcharbon          #+#    #+#             */
-/*   Updated: 2017/07/25 17:00:13 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/30 22:33:15 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void			ftncu_print_info(t_gb *g)
 	move(1, 205);
 	printw("**  %s  **", "PLAYING");
 	move(3, 205);
-	printw("Cycles/second limit : NONE");
+	printw("Slow percent : %5d", g->t);
 	move(7, 205);
 	printw("Cycle : %5d", g->v->arena->nb_cycle);
 	move(9, 205);
