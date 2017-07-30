@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/31 00:34:10 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/31 00:44:48 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1204,6 +1204,7 @@ void		free_player(t_player *player)
 	free(C_NAME);
 	free(C_COM);
 	free(C_PROG);
+	free(P_CHAMP);
 	free(player);
 }
 
@@ -1221,6 +1222,8 @@ void		free_corewar(t_vm *vm, char **args)
 	}
 	free(COLOR);
 	free(A_MEMORY);
+	free(ARENA);
+	free(vm);
 	free_map(args);
 }
 
