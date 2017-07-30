@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/30 03:29:48 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/30 03:32:16 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1142,9 +1142,9 @@ char		**get_options(t_vm *vm, int ac, char **av)
 	{
 		if (ft_strequ(av[i], "-a"))
 			OPT_A = 1;
-		if (ft_strequ(av[i], "-s"))
+		else if (ft_strequ(av[i], "-s"))
 			(++i < ac) ? set_opt(&(vm->opt_d), av[i]) : ft_perror("Error");
-		if (ft_strequ(av[i], "-d"))
+		else if (ft_strequ(av[i], "-d"))
 			(++i < ac) ? set_opt(&(vm->opt_d), av[i]) : ft_perror("Error");
 		else if (ft_strequ(av[i], "-v"))
 			(++i < ac) ? set_opt(&(vm->opt_v), av[i]) : ft_perror("Error");
