@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/30 05:23:20 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/07/30 05:27:35 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -415,7 +415,7 @@ void		kill_proc(t_vm *vm, int id)
 		update_nb_proc(vm, tmp->id_player);
 		free(tmp);
 		if (OPT_NC)
-			system("afplay fatality.aiff &");
+			system("afplay ressources/fatality.aiff &");
 		return ;
 	}
 	while (curr->next)
@@ -430,7 +430,7 @@ void		kill_proc(t_vm *vm, int id)
 			update_nb_proc(vm, tmp->id_player);
 			free(tmp);
 			if (OPT_NC)
-				system("afplay fatality.aiff &");
+				system("afplay ressources/fatality.aiff &");
 			return ;
 		}
 		curr = curr->next;
@@ -1030,7 +1030,7 @@ void	op_aff(t_vm *vm, t_proc *proc)
 	aff = PR_REG[value] % 256;
 	if (OPT_A && !OPT_NC)
 		ft_printf("aff: %c\n", aff);
-	system("afplay trolololo.aiff &");
+	system("afplay ressources/trolololo.aiff &");
 	move_pc(vm, proc, ocp);
 }
 
