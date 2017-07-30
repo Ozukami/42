@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/30 06:14:46 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/30 08:51:28 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/30 09:38:15 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,20 +97,14 @@ unsigned char	*get_champ_prog(int fd, unsigned int size)
 
 void			verif_file(int fd)
 {
-	unsigned char	*magic_number;
+	unsigned char	magic_number[4];
 
-	if (!(magic_number = ft_memalloc(4)))
-		ft_perror(strerror(errno));
 	if (read(fd, magic_number, 4) < 1)
 		ft_perror(strerror(errno));
 	if (magic_number[0] != 0x00 || magic_number[1] != 0xea
 			|| magic_number[2] != 0x83 || magic_number[3] != 0xf3)
 		ft_perror("Error: bad magic number");
 }
-
-/*
-** Returns the number of bytes of the current instruction
-*/
 
 int		get_inst_length(int ocp, int op)
 {
@@ -138,7 +132,6 @@ int		get_inst_length(int ocp, int op)
 	return (size - 1);
 }
 
-// 0 < nb_octet < 5
 int		get_value(t_decomp *decomp, int nb_octet, int pc)
 {
 	int				value;
@@ -258,6 +251,7 @@ void		write_s_header(t_decomp *decomp)
 	str = (char *)get_champ_name(FD_COR);
 	write(FD_S, ".name \"", 7);
 	write(FD_S, str, ft_strlen(str));
+	ft_strdel(&str);
 	str = (char *)get_champ_comment(FD_COR);
 	write(FD_S, "\"\n.comment \"", 12);
 	write(FD_S, str, ft_strlen(str));
@@ -271,8 +265,6 @@ void		process(t_decomp *decomp)
 
 	write_s_header(decomp);
 	PROGSIZE = get_champ_size(FD_COR);
-	if (!(PROG = ft_memalloc(sizeof(PROGSIZE))))
-		ft_perror(strerror(errno));
 	PROG = get_champ_prog(FD_COR, PROGSIZE);
 	i = -1;
 	while (++i < PROGSIZE)
@@ -308,6 +300,7 @@ char	*modif_extension(char *file, char *ext)
 int			main(int ac, char **av)
 {
 	t_decomp	*decomp;
+	char		*name;
 
 	if (ac < 2)
 	{
@@ -319,9 +312,10 @@ int			main(int ac, char **av)
 	if (!(FD_COR = open(av[1], O_RDONLY)))
 		ft_perror(strerror(errno));
 	verif_file(FD_COR);
-	if (!(FD_S = open(modif_extension(av[1], ".s"),
-					O_CREAT | O_WRONLY | O_TRUNC, S_IRUSR | S_IWUSR)))
+	name = modif_extension(av[1], ".s");
+	if (!(FD_S = open(name, O_CREAT | O_WRONLY | O_TRUNC, S_IRUSR | S_IWUSR)))
 		ft_perror(strerror(errno));
+	ft_strdel(&name);
 	process(decomp);
 	if (close(FD_COR) == -1 || close(FD_S) == -1)
 		ft_perror(strerror(errno));

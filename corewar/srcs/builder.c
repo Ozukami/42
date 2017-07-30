@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/30 05:20:11 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/30 05:32:50 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/30 09:23:27 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,8 @@ void	write_binary(t_champ *champ, char *bin_str)
 	ft_putstr("\033[0m");
 }
 
-void	process(char *name, char *bin_str)
+void	process(t_champ *champ, char *name, char *bin_str)
 {
-	t_champ			*champ;
 	int				i;
 	unsigned int	prog_size;
 
@@ -74,7 +73,6 @@ void	process(char *name, char *bin_str)
 	while (bin_str[++i])
 		if (bin_str[i] == ' ')
 			prog_size++;
-	champ = init_champ();
 	ft_strcpy(champ->header->prog_name, name);
 	NAME = ft_strjoin(name, ".cor");
 	if (ft_strlen(name) > PROG_NAME_LENGTH)
@@ -91,8 +89,14 @@ void	process(char *name, char *bin_str)
 
 int		main(int ac, char **av)
 {
+	t_champ			*champ;
+
 	if (ac < 3)
 		ft_perror("usage: ./asm <file name> <binary string to write>");
-	process(av[1], av[2]);
+	champ = init_champ();
+	process(champ, av[1], av[2]);
+	free(HEADER);
+	ft_strdel(&NAME);
+	free(champ);
 	return (0);
 }
