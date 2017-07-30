@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/30 10:04:51 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/30 10:20:28 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,10 +150,8 @@ t_player		*read_file(int fd, int id)
 
 void			verif_file(int fd)
 {
-	unsigned char	*magic_number;
+	unsigned char	magic_number[4];
 
-	if (!(magic_number = ft_memalloc(4)))
-		ft_perror(strerror(errno));
 	if (read(fd, magic_number, 4) < 1)
 		ft_perror(strerror(errno));
 	if (magic_number[0] != 0x00 || magic_number[1] != 0xea
@@ -182,8 +180,6 @@ t_player		*get_player(int nb_args, char **args)
 	int				i;
 	int				id;
 
-	if (!(l_player = ft_memalloc(sizeof(t_player))))
-		ft_perror(strerror(errno));
 	tmp = NULL;
 	i = -1;
 	while (++i < nb_args)
