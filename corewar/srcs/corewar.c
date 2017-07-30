@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/31 01:45:27 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/31 01:52:00 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1196,11 +1196,6 @@ void	display_end(t_vm *vm)
 				get_player_from_id(vm, A_WINNER)->champ->name);
 	else
 		ftncu_main(vm);
-//	else
-//	{
-//		move(LINES / 2, 205);
-//		printw("Winner is : %s", get_player_from_id(vm, A_WINNER)->champ->name);
-//	}
 	proc = A_LPROC;
 	while (proc)
 	{
