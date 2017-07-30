@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/30 09:05:01 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/30 10:04:51 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,7 +255,6 @@ t_proc		*init_proc(t_vm *vm)
 		proc = new_proc(curr_player->id);
 		A_WINNER = curr_player->id;
 		A_PROC++;
-//		ft_printf("%sNEW (%d)%s\n", GREEN, A_PROC, DEFAULT);
 		proc->next = curr_proc;
 		curr_proc = proc;
 		curr_player = curr_player->next;
@@ -514,18 +513,11 @@ void	move_pc(t_vm *vm, t_proc *proc, int ocp)
 	i = -1;
 	if (OPT_V & V_PC)
 	{
-		ft_printf("ADV %d (0x%04x -> ", size, PR_PC);
-		ft_printf("0x%04x)", PR_PC + size);
-		while (++i < size)
-			ft_printf(" %02x", A_MEMORY[(PR_PC + i) % MEM_SIZE]);
-		ft_printf(" \n");
-		/*
 		ft_printf("\033[2;3;36mADV %d (0x%04x -> ", size, PR_PC);
 		ft_printf("0x%04x)", PR_PC + size);
 		while (++i < size)
 			ft_printf(" %02x", A_MEMORY[(PR_PC + i) % MEM_SIZE]);
 		ft_printf("%s\n", DEFAULT);
-		*/
 	}
 	PR_PC += size;
 	PR_PC %= MEM_SIZE;
@@ -573,23 +565,15 @@ void		get_args(t_vm *vm, t_proc *proc, int ocp, int args[4])
 			size += 2;
 		}
 		else if (((ocp << i) & 0b01000000))
-		{
-			args[i / 2] = get_value(vm, 1, proc, (PR_PC + size) % MEM_SIZE);
-			size++;
-		}
+			args[i / 2] = get_value(vm, 1, proc, (PR_PC + size++) % MEM_SIZE);
 		else if ((ocp << i) & 0b10000000)
 		{
-			args[i / 2] = get_value(vm, label_size, proc, (PR_PC + size) % MEM_SIZE);
+			args[i / 2] = get_value(vm, label_size, proc,
+					(PR_PC + size) % MEM_SIZE);
 			size += label_size;
 		}
 		i += 2;
 	}
-	/*
-	i = -1;
-	while (++i < 4)
-		printf("%d -> ", args[i]);
-	printf("\n");
-	*/
 }
 
 t_player	*get_player_from_id(t_vm *vm, int id)
@@ -636,12 +620,14 @@ void		v_op(t_vm *vm, char *name, t_proc *proc, int ocp)
 		ft_printf(RED);
 	else if (color == 4)
 		ft_printf(YELLOW);
-	ft_printf("%s (proc %d)%s | ",
+	ft_printf("%s(proc %d)%s | ",
 			get_player_from_id(vm, PR_IDP)->champ->name, PR_ID, WHITE);
 	ft_printf("%s%s%s", CYAN, name, DEFAULT);
-	ft_printf("%s (PC %d)%s\n", YELLOW, PR_PC, DEFAULT);
 	if (ocp)
-		ft_printf("%s	OCP = %d%s\n", PURPLE, ocp, DEFAULT);
+		ft_printf("%s (OCP %d)%s", PURPLE, ocp, DEFAULT);
+	ft_printf("%s (PC %d)%s", YELLOW, PR_PC, DEFAULT);
+	if (PR_LOP == 1 || PR_LOP == 12 || PR_LOP == 15)
+		ft_printf("\n");
 }
 
 int		verif_ocp(t_vm *vm, t_proc *proc, int op, int ocp)
@@ -700,12 +686,20 @@ int		verif_args(t_vm *vm, t_proc *proc, int ocp, int *args)
 int		get_ocp_args(t_vm *vm, t_proc *proc, int *args, int op)
 {
 	int		ocp;
+	int		i;
 
 	ocp = A_MEMORY[(PR_PC + 1) % MEM_SIZE];
 	if (!verif_ocp(vm, proc, op, ocp))
 		return (-1);
 	v_op(vm, g_op_tab[op - 1].op, proc, ocp);
 	get_args(vm, proc, ocp, args);
+	if (OPT_V & V_OP)
+	{
+		i = -1;
+		while (++i < g_op_tab[op - 1].nb_arg)
+			printf(" [%d]", args[i]);
+		printf("\n");
+	}
 	return (ocp);
 }
 
@@ -875,6 +869,8 @@ void	op_zjmp(t_vm *vm, t_proc *proc)
 	value = get_value(vm, 2, proc, (PR_PC + 1) % MEM_SIZE);
 	if (PR_CARRY == 1)
 	{
+		if (OPT_V & V_OP)
+			ft_printf("%s	OK%s\n", GREEN, DEFAULT);
 		if (OPT_V & V_PC)
 			ft_printf("\033[2;3;36mADV %d (0x%04x -> ", ((short)value), PR_PC);
 		PR_PC += ((short)value);
@@ -1108,7 +1104,7 @@ void		process(t_vm *vm)
 		A_CYCLE++;
 		A_CURCYCLE++;
 		if (OPT_V & V_CYCLE)
-			ft_printf("It is now cycle %d\n", A_CYCLE);
+			ft_printf("%sIt is now cycle %d%s\n", GREY, A_CYCLE, DEFAULT);
 		curr = A_LPROC;
 		while (curr)
 		{
