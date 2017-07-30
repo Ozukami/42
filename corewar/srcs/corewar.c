@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/30 22:44:48 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/31 00:34:10 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ int				get_champ_size(int fd)
 	prog_size += buff[2] << 8;
 	prog_size += buff[1] << 16;
 	prog_size += buff[0] << 24;
+	free(buff);
 	return (prog_size);
 }
 
@@ -233,8 +234,6 @@ t_proc			*new_proc(int id_player)
 		ft_perror(strerror(errno));
 	PR_REG[1] = PR_IDP;
 	PR_LOP = -1;
-	if (!(PR_MEMOP = ft_memalloc(sizeof(unsigned char) * (11))))
-		ft_perror(strerror(errno));
 	return (proc);
 }
 
@@ -405,6 +404,7 @@ int			kill_first(t_vm *vm, t_proc *curr, int id)
 		A_LPROC = tmp->next;
 		curr = A_LPROC;
 		update_nb_proc(vm, tmp->id_player);
+			free(tmp->reg);
 		free(tmp);
 		if (OPT_NC)
 			system("afplay ressources/fatality.aiff &");
@@ -432,6 +432,7 @@ void		kill_proc(t_vm *vm, int id)
 			tmp = curr->next;
 			curr->next = tmp->next;
 			update_nb_proc(vm, tmp->id_player);
+			free(tmp->reg);
 			free(tmp);
 			if (OPT_NC)
 				system("afplay ressources/fatality.aiff &");
@@ -1190,15 +1191,37 @@ void	display_end(t_vm *vm)
 	if (!OPT_NC)
 		ft_printf("le joueur %d (%s) a gagne\n", A_WINNER,
 				get_player_from_id(vm, A_WINNER)->champ->name);
-	if (OPT_V & V_DEATH)
+	proc = A_LPROC;
+	while (proc)
 	{
+		kill_proc(vm, PR_ID);
 		proc = A_LPROC;
-		while (proc)
-		{
-			kill_proc(vm, PR_ID);
-			proc = A_LPROC;
-		}
 	}
+}
+
+void		free_player(t_player *player)
+{
+	free(C_NAME);
+	free(C_COM);
+	free(C_PROG);
+	free(player);
+}
+
+void		free_corewar(t_vm *vm, char **args)
+{
+	t_player	*player;
+	t_player	*tmp;
+
+	player = A_LPLAYER;
+	while (player)
+	{
+		tmp = player;
+		player = P_NEXT;
+		free_player(tmp);
+	}
+	free(COLOR);
+	free(A_MEMORY);
+	free_map(args);
 }
 
 int			main(int ac, char **av)
@@ -1224,5 +1247,6 @@ int			main(int ac, char **av)
 	}
 	process(vm);
 	display_end(vm);
+	free_corewar(vm, args);
 	return (1);
 }

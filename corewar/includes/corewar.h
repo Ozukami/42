@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/20 02:47:48 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/30 22:44:24 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/31 00:16:24 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@
 # define PR_NEXT			(proc->next)
 # define PR_REG				(proc->reg)
 # define PR_LOP				(proc->loaded_op)
-# define PR_MEMOP			(proc->mem_op)
 
 extern t_op					g_op_tab[17];
 
@@ -109,7 +108,6 @@ struct						s_proc
 	int						cycle_to_wait;
 	int						*reg;
 	int						loaded_op;
-	unsigned char			*mem_op;
 	t_proc					*next;
 };
 

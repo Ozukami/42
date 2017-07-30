@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/30 06:14:46 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/30 09:45:42 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/31 00:10:31 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int				get_champ_size(int fd)
 	prog_size += buff[2] << 8;
 	prog_size += buff[1] << 16;
 	prog_size += buff[0] << 24;
+	free(buff);
 	return (prog_size);
 }
 
@@ -312,5 +313,7 @@ int			main(int ac, char **av)
 	process(decomp);
 	if (close(FD_COR) == -1 || close(FD_S) == -1)
 		ft_perror(strerror(errno));
+	free(PROG);
+	free(decomp);
 	return (1);
 }
