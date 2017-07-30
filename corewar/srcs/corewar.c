@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/30 07:40:23 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/30 09:05:01 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1133,14 +1133,11 @@ void		set_opt(int *opt, char *n)
 		*opt = opt_n;
 }
 
-char		**get_options(t_vm *vm, int ac, char **av)
+void		get_options(t_vm *vm, int ac, char **av, char **args)
 {
-	char	**args;
 	int		i;
 	int		j;
 
-	if (!(args = ft_memalloc(sizeof(char *) * (ac + 1))))
-		ft_perror(strerror(errno));
 	i = 0;
 	j = 0;
 	while (++i < ac)
@@ -1155,11 +1152,12 @@ char		**get_options(t_vm *vm, int ac, char **av)
 			(++i < ac) ? set_opt(&(vm->opt_v), av[i]) : ft_perror("Error");
 		else if (ft_strequ(av[i], "-nc"))
 			OPT_NC = 1;
+		else if (ft_strequ(av[i], "--stealth"))
+			OPT_STEALTH = 1;
 		else
 			args[j++] = ft_strdup(av[i]);
 	}
 	args[j] = 0;
-	return (args);
 }
 
 t_vm		*init_vm(void)
@@ -1174,6 +1172,7 @@ t_vm		*init_vm(void)
 	OPT_V = 0;
 	OPT_A = 0;
 	OPT_S = 0;
+	OPT_STEALTH = 0;
 	TOTAL_LIVE = 0;
 	if (!(COLOR = ft_memalloc(sizeof(int) * MEM_SIZE)))
 		ft_perror(strerror(errno));
@@ -1218,7 +1217,9 @@ int			main(int ac, char **av)
 	if (ac < 2)
 		ft_usage();
 	vm = init_vm();
-	args = get_options(vm, ac, av);
+	if (!(args = ft_memalloc(sizeof(char *) * (ac + 1))))
+		ft_perror(strerror(errno));
+	get_options(vm, ac, av, args);
 	ftcor_args_error(vm);
 	if (!(args[0]))
 		ft_usage();

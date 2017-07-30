@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/20 02:47:48 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/30 02:45:45 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/30 08:58:14 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@
 # define OPT_V				(vm->opt_v)
 # define OPT_A				(vm->opt_a)
 # define OPT_S				(vm->opt_s)
+# define OPT_STEALTH		(vm->opt_stealth)
 # define TOTAL_LIVE			(vm->total_live)
 # define COLOR				(vm->color_tab)
 
@@ -153,6 +154,7 @@ struct						s_vm
 	int						opt_v;
 	int						opt_a;
 	int						opt_s;
+	int						opt_stealth;
 	int						total_live;
 	int						*color_tab;
 };

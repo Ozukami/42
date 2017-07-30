@@ -6,7 +6,7 @@
 #    By: apoisson <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 11:29:15 by apoisson          #+#    #+#              #
-#    Updated: 2017/07/30 05:37:15 by apoisson         ###   ########.fr        #
+#    Updated: 2017/07/30 09:09:39 by apoisson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ parse_header.c tools.c write_champ.c write_header.c \
 ftasm_free.c
 SRCVM = corewar.c ftncu_main.c ftncu_print_info.c
 SRCBUILDER = builder.c write_header.c
+SRCDECOMPILO = decompilo.c
 
 all: $(ASM)
 
@@ -34,6 +35,11 @@ $(VM): libft.a $(addprefix srcs/, $(SRCVM))
 builder: libft.a $(addprefix srcs/, $(SRCBUILDER))
 	@printf "\033[0;36m> Compiling builder\033[0m"
 	@gcc $(FLAGS) $^ -L. -lft -I includes/ -o builder
+	@printf "\033[0;32m OK\n\033[0m"
+
+decompilo: libft.a $(addprefix srcs/, $(SRCDECOMPILO))
+	@printf "\033[0;36m> Compiling decompilo\033[0m"
+	@gcc $(FLAGS) $^ -L. -lft -I includes/ -o decompilo
 	@printf "\033[0;32m OK\n\033[0m"
 
 libft.a:
