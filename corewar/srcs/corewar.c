@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/30 02:32:57 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/30 03:29:48 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -445,6 +445,7 @@ void		check_alive(t_vm *vm)
 	t_proc		*curr_proc;
 	t_proc		*tmp;
 
+	A_CURCYCLE = 0;
 	if (OPT_V & V_CHECK)
 		ft_printf("%sCHECK (CTD %d)%s\n", RED, A_CTD, DEFAULT);
 	curr_proc = A_LPROC;
@@ -652,7 +653,7 @@ int		verif_ocp(t_vm *vm, t_proc *proc, int op, int ocp)
 					ocp == 164 || ocp == 212 || ocp == 228))
 			|| (op == 11 && (ocp == 84 || ocp == 88 || ocp == 100 ||
 					ocp == 104 || ocp == 116 || ocp == 120))
-			|| (op == 14 && (ocp == 64)))
+			|| (op == 16 && (ocp == 64)))
 		return (1);
 	if (OPT_V & V_OP)
 		ft_printf("	%sPROC (%d) OP %d (%d) FAILED%s\n",
@@ -691,6 +692,18 @@ int		verif_args(t_vm *vm, t_proc *proc, int ocp, int *args)
 	return (1);
 }
 
+int		get_ocp_args(t_vm *vm, t_proc *proc, int *args, int op)
+{
+	int		ocp;
+
+	ocp = A_MEMORY[(PR_PC + 1) % MEM_SIZE];
+	if (!verif_ocp(vm, proc, op, ocp))
+		return (-1);
+	v_op(vm, g_op_tab[op - 1].op, proc, ocp);
+	get_args(vm, proc, ocp, args);
+	return (ocp);
+}
+
 //------Les fonctions d'operation ASM-------
 
 /*
@@ -727,11 +740,8 @@ void	op_ld(t_vm *vm, t_proc *proc)
 	int		args[4];
 	int		ocp;
 
-	ocp = A_MEMORY[(PR_PC + 1) % MEM_SIZE];
-	if (!verif_ocp(vm, proc, 2, ocp))
+	if ((ocp = get_ocp_args(vm, proc, args, 2)) == -1)
 		return ;
-	v_op(vm, "ld", proc, ocp);
-	get_args(vm, proc, ocp, args);
 	if ((ocp & 0b11000000) == 0b11000000)
 		PR_REG[args[1]] = get_value(vm, 4, proc, verif_value(PR_PC, args[0]));
 	else
@@ -749,11 +759,8 @@ void	op_st(t_vm *vm, t_proc *proc)
 	int		args[4];
 	int		ocp;
 
-	ocp = A_MEMORY[(PR_PC + 1) % MEM_SIZE];
-	if (!verif_ocp(vm, proc, 3, ocp))
+	if ((ocp = get_ocp_args(vm, proc, args, 3)) == -1)
 		return ;
-	v_op(vm, "st", proc, ocp);
-	get_args(vm, proc, ocp, args);
 	if (((ocp << 2) & 0b11000000) == 0b11000000)
 	{
 		if (!verif_reg(vm, proc, ocp, args[0]))
@@ -775,11 +782,8 @@ void	op_add(t_vm *vm, t_proc *proc)
 	int		args[4];
 	int		ocp;
 
-	ocp = A_MEMORY[(PR_PC + 1) % MEM_SIZE];
-	if (!verif_ocp(vm, proc, 4, ocp))
+	if ((ocp = get_ocp_args(vm, proc, args, 4)) == -1)
 		return ;
-	v_op(vm, "add", proc, ocp);
-	get_args(vm, proc, ocp, args);
 	if (!verif_reg(vm, proc, ocp, args[0])
 			|| !verif_reg(vm, proc, ocp, args[1]))
 		return ;
@@ -795,11 +799,8 @@ void	op_sub(t_vm *vm, t_proc *proc)
 	int		args[4];
 	int		ocp;
 
-	ocp = A_MEMORY[(PR_PC + 1) % MEM_SIZE];
-	if (!verif_ocp(vm, proc, 5, ocp))
+	if ((ocp = get_ocp_args(vm, proc, args, 5)) == -1)
 		return ;
-	v_op(vm, "sub", proc, ocp);
-	get_args(vm, proc, ocp, args);
 	if (!verif_reg(vm, proc, ocp, args[0])
 			|| !verif_reg(vm, proc, ocp, args[1]))
 		return ;
@@ -808,18 +809,6 @@ void	op_sub(t_vm *vm, t_proc *proc)
 	PR_REG[args[2]] = args[0] - args[1];
 	PR_CARRY = (PR_REG[args[2]] == 0) ? 1 : 0;
 	move_pc(vm, proc, ocp);
-}
-
-int		get_ocp_args(t_vm *vm, t_proc *proc, int *args, int op)
-{
-	int		ocp;
-
-	ocp = A_MEMORY[(PR_PC + 1) % MEM_SIZE];
-	if (!verif_ocp(vm, proc, op, ocp))
-		return (-1);
-	v_op(vm, g_op_tab[op - 1].op, proc, ocp);
-	get_args(vm, proc, ocp, args);
-	return (ocp);
 }
 
 void	op_and(t_vm *vm, t_proc *proc)
@@ -844,11 +833,8 @@ void	op_or(t_vm *vm, t_proc *proc)
 	int		args[4];
 	int		ocp;
 
-	ocp = A_MEMORY[(PR_PC + 1) % MEM_SIZE];
-	if (!verif_ocp(vm, proc, 7, ocp))
+	if ((ocp = get_ocp_args(vm, proc, args, 7)) == -1)
 		return ;
-	v_op(vm, "or", proc, ocp);
-	get_args(vm, proc, ocp, args);
 	if (!verif_args(vm, proc, ocp, &(args[0]))
 			|| !verif_args(vm, proc, ocp << 2, &(args[1])))
 		return ;
@@ -864,11 +850,8 @@ void	op_xor(t_vm *vm, t_proc *proc)
 	int		args[4];
 	int		ocp;
 
-	ocp = A_MEMORY[(PR_PC + 1) % MEM_SIZE];
-	if (!verif_ocp(vm, proc, 8, ocp))
+	if ((ocp = get_ocp_args(vm, proc, args, 8)) == -1)
 		return ;
-	v_op(vm, "xor", proc, ocp);
-	get_args(vm, proc, ocp, args);
 	if (!verif_args(vm, proc, ocp, &(args[0]))
 			|| !verif_args(vm, proc, ocp << 2, &(args[1])))
 		return ;
@@ -927,14 +910,11 @@ void	op_sti(t_vm *vm, t_proc *proc)
 	int		args[4];
 	int		ocp;
 
-	ocp = A_MEMORY[(PR_PC + 1) % MEM_SIZE];
-	if (!verif_ocp(vm, proc, 11, ocp))
+	if ((ocp = get_ocp_args(vm, proc, args, 11)) == -1)
 		return ;
-	v_op(vm, "sti", proc, ocp);
-	get_args(vm, proc, ocp, args);
-	if (!verif_reg(vm, proc, ocp, args[2]))
+	if (!verif_reg(vm, proc, ocp, args[0]))
 		return ;
-	if (!verif_args(vm, proc, ocp, &(args[1])))
+	if (!verif_args(vm, proc, ocp << 2, &(args[1])))
 		return ;
 	if (((ocp << 4) & 0b01000000))
 	{
@@ -978,13 +958,10 @@ void	op_lld(t_vm *vm, t_proc *proc)
 	int		args[4];
 	int		ocp;
 
-	ocp = A_MEMORY[(PR_PC + 1) % MEM_SIZE];
-	if (!verif_ocp(vm, proc, 13, ocp))
+	if ((ocp = get_ocp_args(vm, proc, args, 13)) == -1)
 		return ;
-	v_op(vm, "lld", proc, ocp);
-	get_args(vm, proc, ocp, args);
 	if ((ocp & 0b11000000) == 0b11000000)
-		args[0] = get_value(vm, 4, proc, verif_value(PR_PC, args[0]));
+		args[0] = get_value(vm, 2, proc, verif_value(PR_PC, args[0]));
 	if (!verif_reg(vm, proc, ocp, args[1]))
 		return ;
 	PR_REG[args[1]] = args[0];
@@ -997,11 +974,8 @@ void	op_lldi(t_vm *vm, t_proc *proc)
 	int		args[4];
 	int		ocp;
 
-	ocp = A_MEMORY[(PR_PC + 1) % MEM_SIZE];
-	if (!verif_ocp(vm, proc, 14, ocp))
+	if ((ocp = get_ocp_args(vm, proc, args, 14)) == -1)
 		return ;
-	v_op(vm, "lldi", proc, ocp);
-	get_args(vm, proc, ocp, args);
 	if (!verif_reg(vm, proc, ocp, args[2]))
 		return ;
 	if (!verif_args(vm, proc, ocp, &(args[0]))
@@ -1057,7 +1031,8 @@ void	op_aff(t_vm *vm, t_proc *proc)
 		return ;
 	}
 	aff = PR_REG[value] % 256;
-	ft_printf("aff: %c\n", aff);
+	if (OPT_A)
+		ft_printf("aff: %c\n", aff);
 	move_pc(vm, proc, ocp);
 }
 
@@ -1090,8 +1065,7 @@ void		dump_mem(t_vm *vm)
 		else
 			ft_printf("%02x ", A_MEMORY[i]);
 	}
-	ft_printf("\n");
-	ft_printf(DEFAULT);
+	ft_printf("%s\n", DEFAULT);
 	if (OPT_D > -1)
 		exit(0);
 }
@@ -1137,10 +1111,7 @@ void		process(t_vm *vm)
 			curr = curr->next;
 		}
 		if (A_CURCYCLE >= A_CTD)
-		{
-			A_CURCYCLE = 0;
 			check_alive(vm);
-		}
 		if (!A_PROC)
 			break ;
 		if (OPT_NC > 0)
@@ -1169,6 +1140,10 @@ char		**get_options(t_vm *vm, int ac, char **av)
 	j = 0;
 	while (++i < ac)
 	{
+		if (ft_strequ(av[i], "-a"))
+			OPT_A = 1;
+		if (ft_strequ(av[i], "-s"))
+			(++i < ac) ? set_opt(&(vm->opt_d), av[i]) : ft_perror("Error");
 		if (ft_strequ(av[i], "-d"))
 			(++i < ac) ? set_opt(&(vm->opt_d), av[i]) : ft_perror("Error");
 		else if (ft_strequ(av[i], "-v"))
@@ -1192,6 +1167,8 @@ t_vm		*init_vm(void)
 	OPT_NC = 0;
 	OPT_D = -1;
 	OPT_V = 0;
+	OPT_A = 0;
+	OPT_S = 0;
 	TOTAL_LIVE = 0;
 	if (!(COLOR = ft_memalloc(sizeof(int) * MEM_SIZE)))
 		ft_perror(strerror(errno));
@@ -1207,10 +1184,30 @@ void	ftcor_args_error(t_vm *vm)
 	}
 }
 
+void	display_end(t_vm *vm)
+{
+	t_proc	*proc;
+
+	if (A_CTD <= 0)
+		ft_printf("%sCycle to die is now %d\n%sIt is now cycle %d%s\n",
+				RED, A_CTD, GREY, ++A_CYCLE, DEFAULT);
+	if (!OPT_NC)
+		ft_printf("le joueur %d (%s) a gagne\n", A_WINNER,
+				get_player_from_id(vm, A_WINNER)->champ->name);
+	if (OPT_V & V_DEATH)
+	{
+		proc = A_LPROC;
+		while (proc)
+		{
+			kill_proc(vm, PR_ID);
+			proc = A_LPROC;
+		}
+	}
+}
+
 int			main(int ac, char **av)
 {
 	t_vm	*vm;
-	t_proc	*proc;
 	char	**args;
 
 	if (ac < 2)
@@ -1228,20 +1225,6 @@ int			main(int ac, char **av)
 		ftncu_main(vm);
 	}
 	process(vm);
-	if (A_CTD <= 0)
-		ft_printf("%sCycle to die is now %d\n%sIt is now cycle %d%s\n",
-				RED, A_CTD, GREY, ++A_CYCLE, DEFAULT);
-	if (!OPT_NC)
-		ft_printf("le joueur %d (%s) a gagne\n", A_WINNER,
-				get_player_from_id(vm, A_WINNER)->champ->name);
-	if (OPT_V & V_DEATH)
-	{
-		proc = A_LPROC;
-		while (proc)
-		{
-			kill_proc(vm, PR_ID);
-			proc = A_LPROC;
-		}
-	}
+	display_end(vm);
 	return (1);
 }
