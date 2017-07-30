@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/20 02:47:48 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/31 00:16:24 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/31 01:50:05 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,8 @@ struct						s_vm
 	int						opt_stealth;
 	int						total_live;
 	int						*color_tab;
+	int						end;
+	unsigned char			*winner;
 };
 
 #endif

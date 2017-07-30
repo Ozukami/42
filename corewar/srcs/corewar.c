@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/31 00:44:48 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/31 01:45:27 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1110,10 +1110,10 @@ void		process(t_vm *vm)
 		}
 		if (A_CURCYCLE >= A_CTD)
 			check_alive(vm);
-		if (!A_PROC)
-			break ;
 		if (OPT_NC > 0)
 			ftncu_main(vm);
+		if (!A_PROC)
+			break ;
 	}
 }
 
@@ -1167,6 +1167,7 @@ t_vm		*init_vm(void)
 	OPT_S = 0;
 	OPT_STEALTH = 0;
 	TOTAL_LIVE = 0;
+	vm->end = 0;
 	if (!(COLOR = ft_memalloc(sizeof(int) * MEM_SIZE)))
 		ft_perror(strerror(errno));
 	return (vm);
@@ -1185,12 +1186,21 @@ void	display_end(t_vm *vm)
 {
 	t_proc	*proc;
 
-	if (A_CTD <= 0)
+	vm->end = A_WINNER;
+	vm->winner = get_player_from_id(vm, A_WINNER)->champ->name;
+	if (!OPT_NC && A_CTD <= 0)
 		ft_printf("%sCycle to die is now %d\n%sIt is now cycle %d%s\n",
 				RED, A_CTD, GREY, ++A_CYCLE, DEFAULT);
 	if (!OPT_NC)
 		ft_printf("le joueur %d (%s) a gagne\n", A_WINNER,
 				get_player_from_id(vm, A_WINNER)->champ->name);
+	else
+		ftncu_main(vm);
+//	else
+//	{
+//		move(LINES / 2, 205);
+//		printw("Winner is : %s", get_player_from_id(vm, A_WINNER)->champ->name);
+//	}
 	proc = A_LPROC;
 	while (proc)
 	{

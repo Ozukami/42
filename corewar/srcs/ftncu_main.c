@@ -6,7 +6,7 @@
 /*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/22 00:13:23 by lcharbon          #+#    #+#             */
-/*   Updated: 2017/07/30 22:48:30 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/31 01:40:59 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,5 +114,4 @@ void				ftncu_main(t_vm *vm)
 		printw("Window too small");
 	}
 	refresh();
-	getch();
 }
