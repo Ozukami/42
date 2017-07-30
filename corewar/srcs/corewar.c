@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/30 05:15:53 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/07/30 05:23:20 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1016,8 +1016,7 @@ void	op_aff(t_vm *vm, t_proc *proc)
 	int		ocp;
 	char	aff;
 
-	if (OPT_NC)
-		return ;
+
 	ocp = A_MEMORY[(PR_PC + 1) % MEM_SIZE];
 	if (!verif_ocp(vm, proc, 16, ocp))
 		return ;
@@ -1029,8 +1028,9 @@ void	op_aff(t_vm *vm, t_proc *proc)
 		return ;
 	}
 	aff = PR_REG[value] % 256;
-	if (OPT_A)
+	if (OPT_A && !OPT_NC)
 		ft_printf("aff: %c\n", aff);
+	system("afplay trolololo.aiff &");
 	move_pc(vm, proc, ocp);
 }
 
