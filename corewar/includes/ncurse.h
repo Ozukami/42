@@ -6,7 +6,7 @@
 /*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/22 00:13:56 by lcharbon          #+#    #+#             */
-/*   Updated: 2017/07/27 03:24:20 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/30 22:48:02 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct			s_gb
 	int					t;
 }						t_gb;
 
+int						ftncu_normalize_time(int s);
 void					ftncu_print_info(t_gb *g);
 void					ftncu_init_pair(void);
 void					ftncu_main(t_vm *vm);

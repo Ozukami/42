@@ -6,11 +6,23 @@
 /*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/22 19:56:26 by lcharbon          #+#    #+#             */
-/*   Updated: 2017/07/30 22:33:15 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/30 22:47:53 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ncurse.h"
+
+int				ftncu_normalize_time(int s)
+{
+	if (s < 0)
+		return (0);
+	else if (s >= 0 && s <= 100)
+		return (s);
+	else
+		while (s >= 100)
+			s /= 10;
+	return (s);
+}
 
 static void		ftncu_print_players(t_gb *g)
 {
@@ -43,7 +55,7 @@ void			ftncu_print_info(t_gb *g)
 	move(1, 205);
 	printw("**  %s  **", "PLAYING");
 	move(3, 205);
-	printw("Slow percent : %5d", g->t);
+	printw("Slow percent : %5d%%", g->t);
 	move(7, 205);
 	printw("Cycle : %5d", g->v->arena->nb_cycle);
 	move(9, 205);

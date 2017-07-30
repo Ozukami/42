@@ -6,7 +6,7 @@
 /*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/22 00:13:23 by lcharbon          #+#    #+#             */
-/*   Updated: 2017/07/30 22:34:07 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/30 22:48:30 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,9 @@ void				ftncu_main(t_vm *vm)
 	static int		n;
 
 	ft_memset(&g, 0, sizeof(g));
-	g.t = 0;
+	g.t = ftncu_normalize_time(vm->opt_s);
 	g.v = vm;
-	getch();
-	if (vm->arena->nb_proc < 1000 && g.t > 0 && g.t < 100)
+	if (vm->arena->nb_proc < 1000 && g.t > 0)
 		usleep(100 * g.t);
 	if (n == 0)
 		n = g.v->arena->nb_player;
