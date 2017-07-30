@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/30 06:14:46 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/30 08:17:33 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/30 08:51:28 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,6 +236,11 @@ int			write_op(t_decomp *decomp, int i)
 	j = -1;
 	while (++j < g_op_tab[PROG[i] - 1].nb_arg)
 	{
+		if ((ocp << (j * 2)) & 0b10000000)
+			write(FD_S, "%", 1);
+		else if ((ocp << (j * 2)) & 0b01000000
+				&& ((ocp << (j * 2)) != 0b11000000))
+			write(FD_S, "r", 1);
 		to_write = ft_itoa(args[j]);
 		write(FD_S, to_write, ft_strlen(to_write));
 		ft_strdel(&to_write);
