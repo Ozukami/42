@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/31 03:11:11 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/07/31 07:17:11 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void		ft_usage(void)
 {
-	ft_putendl("usage: ./corewar [-d N | -nc --stealth] \
+	ft_putendl("usage: ./corewar [-a] [-d N -v N | -nc -s N --stealth] \
 <[-n N] champ.cor> <...>");
 	ft_putendl("#### TEXT OUTPUT MODE #######");
 	ft_putendl(" -a  	: Prints output from \"aff\" (Default is to hide it)");

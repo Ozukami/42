@@ -6,7 +6,7 @@
 /*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/22 00:13:23 by lcharbon          #+#    #+#             */
-/*   Updated: 2017/07/31 06:19:41 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/31 07:17:28 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ static void			ftncu_print_memory(t_gb *g, unsigned char *memory)
 		ftncu_act_attron(g, i);
 		ftncu_mem_proc(g, i);
 		printw("%.2X", ((g->v->opt_stealth) ? 255 : memory[i]));
-//		attroff(COLOR_PAIR(g->col));
 		printw(" ");
 		if (n >= 192)
 		{

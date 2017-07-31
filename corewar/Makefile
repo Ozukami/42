@@ -6,7 +6,7 @@
 #    By: apoisson <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 11:29:15 by apoisson          #+#    #+#              #
-#    Updated: 2017/07/31 04:25:33 by qumaujea         ###   ########.fr        #
+#    Updated: 2017/07/31 07:19:08 by apoisson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ parse_header.c tools.c write_champ.c write_header.c \
 ftasm_free.c
 #SRCVM = corewar.c ftncu_main.c ftncu_print_info.c
 SRCVM = *.c
-SRCBUILDER = builder.c write_header.c
+SRCBUILDER = builder.c asm/write_header.c
 SRCDECOMPILO = decompilo.c
 
 all: $(ASM)

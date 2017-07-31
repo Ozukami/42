@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/31 06:26:49 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/07/31 07:16:31 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,11 @@ void		get_options(t_vm *vm, int ac, char **av, char **args)
 		if (ft_strequ(av[i], "-a"))
 			OPT_A = 1;
 		else if (ft_strequ(av[i], "-s"))
-			(++i < ac) ? set_opt(&(vm->opt_s), av[i]) : ft_perror("Error");
+			(++i < ac) ? set_opt(&(vm->opt_s), av[i]) : ft_usage();
 		else if (ft_strequ(av[i], "-d"))
-			(++i < ac) ? set_opt(&(vm->opt_d), av[i]) : ft_perror("Error");
+			(++i < ac) ? set_opt(&(vm->opt_d), av[i]) : ft_usage();
 		else if (ft_strequ(av[i], "-v"))
-			(++i < ac) ? set_opt(&(vm->opt_v), av[i]) : ft_perror("Error");
+			(++i < ac) ? set_opt(&(vm->opt_v), av[i]) : ft_usage();
 		else if (ft_strequ(av[i], "-nc"))
 			OPT_NC = 1;
 		else if (ft_strequ(av[i], "--stealth"))
