@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/31 02:59:36 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/07/31 06:27:09 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 ** Returns the number of bytes of the current instruction
 */
 
-int		get_inst_length(int ocp, int op)
+int			get_inst_length(int ocp, int op)
 {
 	int		label_size;
 	int		size;
@@ -43,7 +43,7 @@ int		get_inst_length(int ocp, int op)
 	return (size);
 }
 
-int		get_value(t_vm *vm, int nb_octet, t_proc *proc, int pc)
+int			get_value(t_vm *vm, int nb_octet, t_proc *proc, int pc)
 {
 	int				value;
 	int				i;
@@ -117,7 +117,7 @@ void		v_op(t_vm *vm, char *name, t_proc *proc, int ocp)
 		ft_printf("\n");
 }
 
-int		get_ocp_args(t_vm *vm, t_proc *proc, int *args, int op)
+int			get_ocp_args(t_vm *vm, t_proc *proc, int *args, int op)
 {
 	int		ocp;
 	int		i;

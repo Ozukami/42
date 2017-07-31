@@ -6,14 +6,12 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/31 02:51:39 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/07/31 06:14:34 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "corewar.h"
 #include <stdio.h>
-
-//------Les fonctions d'operation ASM-------
 
 /*
 ** Op live

@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/31 03:05:35 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/07/31 06:26:49 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ t_vm		*init_vm(void)
 	return (vm);
 }
 
-void	ftcor_args_error(t_vm *vm)
+void		ftcor_args_error(t_vm *vm)
 {
 	if (OPT_NC == 1)
 	{

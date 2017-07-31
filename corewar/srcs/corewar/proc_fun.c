@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/31 06:07:45 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/31 06:26:27 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_proc			*new_proc(int id_player)
 	return (proc);
 }
 
-t_proc		*init_proc(t_vm *vm)
+t_proc			*init_proc(t_vm *vm)
 {
 	t_proc		*proc;
 	t_proc		*curr_proc;
@@ -57,7 +57,7 @@ t_proc		*init_proc(t_vm *vm)
 	return (proc);
 }
 
-void		update_nb_proc(t_vm *vm, int id_player)
+void			update_nb_proc(t_vm *vm, int id_player)
 {
 	t_player	*curr;
 
@@ -75,7 +75,7 @@ void		update_nb_proc(t_vm *vm, int id_player)
 ** genre le "FATALITY" de Mortal Kombat
 */
 
-int			kill_first(t_vm *vm, t_proc *curr, int id)
+int				kill_first(t_vm *vm, t_proc *curr, int id)
 {
 	t_proc	*tmp;
 
@@ -88,7 +88,7 @@ int			kill_first(t_vm *vm, t_proc *curr, int id)
 		A_LPROC = tmp->next;
 		curr = A_LPROC;
 		update_nb_proc(vm, tmp->id_player);
-			free(tmp->reg);
+		free(tmp->reg);
 		free(tmp);
 		if (OPT_NC)
 			system("afplay ressources/fatality.aiff &");
@@ -97,7 +97,7 @@ int			kill_first(t_vm *vm, t_proc *curr, int id)
 	return (0);
 }
 
-void		kill_proc(t_vm *vm, int id)
+void			kill_proc(t_vm *vm, int id)
 {
 	t_proc	*curr;
 	t_proc	*tmp;

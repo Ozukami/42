@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/31 05:12:30 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/07/31 06:24:33 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void		cycle_verif(t_vm *vm)
 	}
 	if (TOTAL_LIVE >= NBR_LIVE || ++A_NBCHECK == MAX_CHECKS)
 	{
-	 	A_CTD -= CYCLE_DELTA;
-	 	A_NBCHECK = 0;
+		A_CTD -= CYCLE_DELTA;
+		A_NBCHECK = 0;
 	}
 	TOTAL_LIVE = 0;
 }
@@ -60,7 +60,7 @@ void		check_alive(t_vm *vm)
 	cycle_verif(vm);
 }
 
-void	move_pc(t_vm *vm, t_proc *proc, int ocp)
+void		move_pc(t_vm *vm, t_proc *proc, int ocp)
 {
 	int		size;
 	int		i;
@@ -81,14 +81,13 @@ void	move_pc(t_vm *vm, t_proc *proc, int ocp)
 	PR_LOP = -1;
 }
 
-void	exec_proc(t_vm *vm, t_proc *proc)
+void		exec_proc(t_vm *vm, t_proc *proc)
 {
 	if ((PR_LOP == -1) &&
 			(A_MEMORY[PR_PC] <= 0 || A_MEMORY[PR_PC] > 16))
 		PR_PC = ((PR_PC) + 1) % MEM_SIZE;
-	else if (PR_LOP != -1 && PR_WAIT >=
-				(g_op_tab[PR_LOP - 1]).cycles) // EXEC OP
-			(g_fun_op[PR_LOP - 1])(vm, proc);
+	else if (PR_LOP != -1 && PR_WAIT >= (g_op_tab[PR_LOP - 1]).cycles)
+		(g_fun_op[PR_LOP - 1])(vm, proc);
 	else
 	{
 		if (PR_LOP == -1)

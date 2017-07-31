@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/31 03:02:07 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/07/31 06:25:26 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void		lp_rev(t_vm *vm)
 	A_LPLAYER = tmp1;
 }
 
-void	introduce_contestant(t_vm *vm, t_player *player)
+void		introduce_contestant(t_vm *vm, t_player *player)
 {
 	if (OPT_NC)
 		return ;
@@ -96,7 +96,7 @@ t_player	*get_player_from_id(t_vm *vm, int id)
 	return (NULL);
 }
 
-void	write_in_mem(t_vm *vm, int value, int pc, int color)
+void		write_in_mem(t_vm *vm, int value, int pc, int color)
 {
 	if (OPT_V & V_OP)
 		ft_printf("%s			| store %x to %d%s\n",

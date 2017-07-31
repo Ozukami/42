@@ -6,7 +6,7 @@
 /*   By: qumaujea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/31 02:52:36 by qumaujea          #+#    #+#             */
-/*   Updated: 2017/07/31 02:52:57 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/07/31 06:21:37 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,7 @@ void	op_zjmp(t_vm *vm, t_proc *proc)
 			ft_printf("\033[2;3;36mADV %d (0x%04x -> ", ((short)value), PR_PC);
 		PR_PC += ((short)value);
 		PR_PC %= MEM_SIZE;
-		if (PR_PC < 0)
-			PR_PC += MEM_SIZE;
+		PR_PC += (PR_PC < 0) ? MEM_SIZE : 0;
 		if (OPT_V & V_PC)
 			ft_printf("0x%04x)%s\n", PR_PC, DEFAULT);
 		PR_WAIT = 1;
@@ -86,8 +85,10 @@ void	op_zjmp(t_vm *vm, t_proc *proc)
 		return ;
 	}
 	else
+	{
 		if (OPT_V & V_OP)
 			ft_printf("%s	ZJMP FAILLED%s\n", RED, DEFAULT);
+	}
 	move_pc(vm, proc, 0);
 }
 

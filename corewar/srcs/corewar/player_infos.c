@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/31 02:40:05 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/07/31 06:22:15 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_player		*get_player(int nb_args, char **args)
 	return (l_player);
 }
 
-void		verif_nb_player(t_vm *vm)
+void			verif_nb_player(t_vm *vm)
 {
 	t_player	*current;
 

@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/31 04:33:34 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/07/31 06:15:11 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ void	op_aff(t_vm *vm, t_proc *proc)
 	int		value;
 	int		ocp;
 	char	aff;
-
 
 	ocp = A_MEMORY[(PR_PC + 1) % MEM_SIZE];
 	if (!verif_ocp(vm, proc, 16, ocp))
