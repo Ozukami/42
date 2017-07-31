@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/20 02:47:48 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/31 05:09:55 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/07/31 05:21:49 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ struct						s_proc
 	int						cycle_to_wait;
 	int						*reg;
 	int						loaded_op;
+	int						color;
 	t_proc					*next;
 };
 
