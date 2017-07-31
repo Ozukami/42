@@ -6,7 +6,7 @@
 /*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/22 19:56:26 by lcharbon          #+#    #+#             */
-/*   Updated: 2017/07/31 02:01:16 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/31 02:02:46 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,9 @@ void			ftncu_print_info(t_gb *g)
 	attron(A_NORMAL);
 	if (g->v->end)
 	{
+		mvprintw(LINES / 2, 205, "WINNER :", g->v->winner);
 		attron(COLOR_PAIR(g->v->end));
-		mvprintw(LINES / 2, 205, "WINNER : %s", g->v->winner);
+		mvprintw(LINES / 2, 213, " %s", g->v->winner);
+		attroff(COLOR_PAIR(g->v->end));
 	}
 }
