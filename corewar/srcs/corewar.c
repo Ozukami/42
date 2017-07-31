@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/31 01:52:00 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/31 01:59:01 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1186,7 +1186,7 @@ void	display_end(t_vm *vm)
 {
 	t_proc	*proc;
 
-	vm->end = A_WINNER;
+	vm->end = get_player_from_id(vm, A_WINNER)->color;
 	vm->winner = get_player_from_id(vm, A_WINNER)->champ->name;
 	if (!OPT_NC && A_CTD <= 0)
 		ft_printf("%sCycle to die is now %d\n%sIt is now cycle %d%s\n",

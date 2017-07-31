@@ -6,7 +6,7 @@
 /*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/22 19:56:26 by lcharbon          #+#    #+#             */
-/*   Updated: 2017/07/31 01:51:07 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/31 02:01:16 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,17 @@ void			ftncu_print_info(t_gb *g)
 	mvprintw(1, 205, "**  %s  **", "PLAYING");
 	mvprintw(3, 205, "Slow percent : %5d%%", g->t);
 	mvprintw(7, 205, "Cycle : %5d", g->v->arena->nb_cycle);
-	mvprintw(9 ,205, "Processes : %5d", g->v->arena->nb_proc);
-	mvprintw(g->n_players * 5 + 10, 205,"CYCLE_TO_DIE :%0.0d %-7d",
+	mvprintw(9, 205, "Processes : %5d", g->v->arena->nb_proc);
+	mvprintw(g->n_players * 5 + 10, 205, "CYCLE_TO_DIE :%0.0d %-7d",
 			0, g->v->arena->cycle_to_die);
-	mvprintw(g->n_players * 5 + 12, 205,"CYCLE_DELTA : %5d", CYCLE_DELTA);
-	mvprintw(g->n_players * 5 + 14, 205,"NBR_LIVE : %8d", NBR_LIVE);
-	mvprintw(g->n_players * 5 + 16, 205,"MAX_CHECKS : %6d", MAX_CHECKS);
+	mvprintw(g->n_players * 5 + 12, 205, "CYCLE_DELTA : %5d", CYCLE_DELTA);
+	mvprintw(g->n_players * 5 + 14, 205, "NBR_LIVE : %8d", NBR_LIVE);
+	mvprintw(g->n_players * 5 + 16, 205, "MAX_CHECKS : %6d", MAX_CHECKS);
 	ftncu_print_players(g);
 	attron(A_NORMAL);
 	if (g->v->end)
+	{
+		attron(COLOR_PAIR(g->v->end));
 		mvprintw(LINES / 2, 205, "WINNER : %s", g->v->winner);
+	}
 }
