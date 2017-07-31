@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/30 06:14:46 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/31 00:10:31 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/31 07:41:23 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,177 +38,6 @@ t_op	g_op_tab[17] =
 	{"aff", 1, {T_REG}, 16, 2, "aff", 1, 0, 0},
 	{0, 0, {0}, 0, 0, 0, 0, 0, 0}
 };
-
-unsigned char	*get_champ_name(int fd)
-{
-	unsigned char	*name;
-
-	if (!(name = ft_memalloc(PROG_NAME_LENGTH + 1)))
-		ft_perror(strerror(errno));
-	if (read(fd, name, PROG_NAME_LENGTH) < 1)
-		ft_perror(strerror(errno));
-	return (name);
-}
-
-int				get_champ_size(int fd)
-{
-	unsigned int	prog_size;
-	unsigned char	*buff;
-
-	if (!(buff = ft_memalloc(4)))
-		ft_perror(strerror(errno));
-	if (lseek(fd, 0x88, SEEK_SET) == -1)
-		ft_perror(strerror(errno));
-	if (read(fd, buff, 4) < 1)
-		ft_perror(strerror(errno));
-	prog_size = buff[3];
-	prog_size += buff[2] << 8;
-	prog_size += buff[1] << 16;
-	prog_size += buff[0] << 24;
-	free(buff);
-	return (prog_size);
-}
-
-unsigned char	*get_champ_comment(int fd)
-{
-	unsigned char	*comment;
-
-	if (!(comment = ft_memalloc(COMMENT_LENGTH + 1)))
-		ft_perror(strerror(errno));
-	if (read(fd, comment, COMMENT_LENGTH) < 1)
-		ft_perror(strerror(errno));
-	return (comment);
-}
-
-unsigned char	*get_champ_prog(int fd, unsigned int size)
-{
-	unsigned char	*prog;
-	unsigned int	r;
-
-	if (lseek(fd, 0x890, SEEK_SET) == -1)
-		ft_perror(strerror(errno));
-	if (!(prog = ft_memalloc(CHAMP_MAX_SIZE + 1)))
-		ft_perror(strerror(errno));
-	if ((r = read(fd, prog, CHAMP_MAX_SIZE)) < 1)
-		ft_perror(strerror(errno));
-	if (r != size)
-		ft_perror("Error: wrong champ size");
-	return (prog);
-}
-
-void			verif_file(int fd)
-{
-	unsigned char	magic_number[4];
-
-	if (read(fd, magic_number, 4) < 1)
-		ft_perror(strerror(errno));
-	if (magic_number[0] != 0x00 || magic_number[1] != 0xea
-			|| magic_number[2] != 0x83 || magic_number[3] != 0xf3)
-		ft_perror("Error: bad magic number");
-}
-
-int		get_inst_length(int ocp, int op)
-{
-	int		label_size;
-	int		size;
-	int		i;
-	int		r;
-
-	r = (g_op_tab[op].nb_arg * 2);
-	if (ocp == -1 && (op == 0 || op == 8 || op == 11 || op == 14))
-		return ((g_op_tab[op]).label_size);
-	label_size = (!(g_op_tab[op]).label_size) ? 4 : (g_op_tab[op]).label_size;
-	size = 2;
-	i = 0;
-	while (i < (g_op_tab[op].nb_arg * 2))
-	{
-		if (((ocp << i) & 0b11000000) == 0b11000000)
-			size += 2;
-		else if ((ocp << i) & 0b01000000)
-			size++;
-		else if ((ocp << i) & 0b10000000)
-			size += label_size;
-		i += 2;
-	}
-	return (size - 1);
-}
-
-int		get_value(t_decomp *decomp, int nb_octet, int pc)
-{
-	int				value;
-	int				i;
-
-	value = PROG[pc];
-	i = 1;
-	while (i < nb_octet)
-	{
-		value = value << 8;
-		value += PROG[pc + i++];
-	}
-	if (nb_octet < 4)
-		value = (short)value;
-	return (value);
-}
-
-void		get_args(t_decomp *decomp, int ocp, int args[4], int pc)
-{
-	int		label_size;
-	int		size;
-	int		i;
-
-	label_size = (!(g_op_tab[PROG[pc] - 1]).label_size) ?
-		4 : (g_op_tab[PROG[pc] - 1]).label_size;
-	size = 2;
-	i = 0;
-	while (i <= 6)
-	{
-		if (((ocp << i) & 0b11000000) == 0b11000000)
-		{
-			args[i / 2] = get_value(decomp, 2, pc + size);
-			size += 2;
-		}
-		else if (((ocp << i) & 0b01000000))
-			args[i / 2] = get_value(decomp, 1, pc + size++);
-		else if ((ocp << i) & 0b10000000)
-		{
-			args[i / 2] = get_value(decomp, label_size, pc + size);
-			size += label_size;
-		}
-		i += 2;
-	}
-}
-
-int		verif_ocp(int op, int ocp)
-{
-	if (((op == 2 || op == 13) && (ocp == 144 || ocp == 208))
-			|| (op == 3 && (ocp == 80 || ocp == 112))
-			|| ((op == 4 || op == 5) && (ocp == 84))
-			|| ((op == 6 || op == 7 || op == 8) &&
-					(ocp == 84 || ocp == 100 || ocp == 116 ||
-					ocp == 148 || ocp == 164 || ocp == 180 ||
-					ocp == 212 || ocp == 228 || ocp == 244))
-			|| ((op == 10 || op == 14) &&
-					(ocp == 84 || ocp == 100 || ocp == 148 ||
-					ocp == 164 || ocp == 212 || ocp == 228))
-			|| (op == 11 && (ocp == 84 || ocp == 88 || ocp == 100 ||
-					ocp == 104 || ocp == 116 || ocp == 120))
-			|| (op == 16 && (ocp == 64)))
-		return (1);
-	return (0);
-}
-
-int		get_ocp(t_decomp *decomp, int i)
-{
-	int		ocp;
-
-	if (PROG[i] == 1 || PROG[i] == 9 || PROG[i] == 12 || PROG[i] == 15)
-		return (-1);
-	else
-		ocp = PROG[i + 1];
-	if (!verif_ocp(PROG[i], ocp))
-		ft_perror("Champ error");
-	return (ocp);
-}
 
 int			write_op(t_decomp *decomp, int i)
 {
@@ -269,7 +98,7 @@ void		process(t_decomp *decomp)
 	}
 }
 
-char	*modif_extension(char *file, char *ext)
+char		*modif_extension(char *file, char *ext)
 {
 	char	*name;
 	int		i;

@@ -6,7 +6,7 @@
 #    By: apoisson <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 11:29:15 by apoisson          #+#    #+#              #
-#    Updated: 2017/07/31 07:19:08 by apoisson         ###   ########.fr        #
+#    Updated: 2017/07/31 07:37:19 by apoisson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,10 +16,11 @@ FLAGS = -Wall -Wextra -g
 SRCASM = add.c automaton.c check.c get_instruction.c asm.c \
 parse_header.c tools.c write_champ.c write_header.c \
 ftasm_free.c
-#SRCVM = corewar.c ftncu_main.c ftncu_print_info.c
-SRCVM = *.c
+SRCVM = champ_infos.c op_2.c set_env.c corewar.c op_3.c tools_cor.c\
+end_prog.c op_4.c tools_cor_2.c ftncu_main.c player_infos.c tools_op_cor.c\
+ftncu_print_info.c proc_fun.c op_1.c proc_fun_2.c
 SRCBUILDER = builder.c asm/write_header.c
-SRCDECOMPILO = decompilo.c
+SRCDECOMPILO = decompilo.c decomp_2.c corewar/champ_infos.c corewar/tools_cor_2.c
 
 all: $(ASM)
 
