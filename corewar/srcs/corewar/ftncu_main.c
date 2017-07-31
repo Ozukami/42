@@ -6,7 +6,7 @@
 /*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/22 00:13:23 by lcharbon          #+#    #+#             */
-/*   Updated: 2017/07/31 04:48:29 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/31 06:05:50 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void				ftncu_init_pair(void)
 	init_color(17, 800, 0, 0);
 	init_color(18, 800, 800, 0);
 	init_color(19, 1000, 1000, 1000);
+	init_color(20, 0, 0, 0);
 	init_pair(1, COLOR_GREEN, COLOR_BLACK);
 	init_pair(2, COLOR_BLUE, COLOR_BLACK);
 	init_pair(3, COLOR_RED, COLOR_BLACK);
@@ -33,10 +34,10 @@ void				ftncu_init_pair(void)
 	init_pair(6, COLOR_CYAN, COLOR_BLACK);
 	init_pair(7, COLOR_BLACK, 14);
 	init_pair(9, COLOR_WHITE, COLOR_BLACK);
-	init_pair(10, COLOR_BLACK, 15);
-	init_pair(11, COLOR_BLACK, 16);
-	init_pair(12, COLOR_BLACK, 17);
-	init_pair(13, COLOR_BLACK, 18);
+	init_pair(10, 20, 15);
+	init_pair(11, 20, 16);
+	init_pair(12, 20, 17);
+	init_pair(13, 20, 18);
 	init_pair(14, 19, COLOR_BLACK);
 }
 
@@ -49,7 +50,7 @@ static int			ftncu_mem_proc(t_gb *g, int i)
 	{
 		if (tmp->pc == i)
 		{
-			attron(COLOR_PAIR((tmp->color - 1) + 10));
+			attron(COLOR_PAIR((tmp->color) + 10));
 			return (1);
 		}
 		tmp = tmp->next;
@@ -87,7 +88,6 @@ static void			ftncu_print_memory(t_gb *g, unsigned char *memory)
 		ftncu_act_attron(g, i);
 		ftncu_mem_proc(g, i);
 		printw("%.2X", ((g->v->opt_stealth) ? 255 : memory[i]));
-		attron(COLOR_PAIR(8));
 		printw(" ");
 		if (n >= 192)
 		{
