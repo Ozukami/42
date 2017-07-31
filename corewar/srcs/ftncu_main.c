@@ -6,7 +6,7 @@
 /*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/22 00:13:23 by lcharbon          #+#    #+#             */
-/*   Updated: 2017/07/31 01:40:59 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/31 04:48:29 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,11 @@ void				ftncu_init_pair(void)
 	start_color();
 	init_color(13, 500, 500, 500);
 	init_color(14, 800, 800, 800);
-	init_color(COLOR_GREEN, 0, 1000, 0);
+	init_color(15, 0, 800, 0);
+	init_color(16, 0, 0, 800);
+	init_color(17, 800, 0, 0);
+	init_color(18, 800, 800, 0);
+	init_color(19, 1000, 1000, 1000);
 	init_pair(1, COLOR_GREEN, COLOR_BLACK);
 	init_pair(2, COLOR_BLUE, COLOR_BLACK);
 	init_pair(3, COLOR_RED, COLOR_BLACK);
@@ -29,6 +33,11 @@ void				ftncu_init_pair(void)
 	init_pair(6, COLOR_CYAN, COLOR_BLACK);
 	init_pair(7, COLOR_BLACK, 14);
 	init_pair(9, COLOR_WHITE, COLOR_BLACK);
+	init_pair(10, COLOR_BLACK, 15);
+	init_pair(11, COLOR_BLACK, 16);
+	init_pair(12, COLOR_BLACK, 17);
+	init_pair(13, COLOR_BLACK, 18);
+	init_pair(14, 19, COLOR_BLACK);
 }
 
 static int			ftncu_mem_proc(t_gb *g, int i)
@@ -40,7 +49,7 @@ static int			ftncu_mem_proc(t_gb *g, int i)
 	{
 		if (tmp->pc == i)
 		{
-			attron(COLOR_PAIR(7));
+			attron(COLOR_PAIR((tmp->color - 1) + 10));
 			return (1);
 		}
 		tmp = tmp->next;

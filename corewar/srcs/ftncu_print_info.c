@@ -6,7 +6,7 @@
 /*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/22 19:56:26 by lcharbon          #+#    #+#             */
-/*   Updated: 2017/07/31 02:02:46 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/31 04:47:02 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ static void		ftncu_print_players(t_gb *g)
 		attron(COLOR_PAIR(np + 1));
 		printw("%s", player->champ->name);
 		attroff(COLOR_PAIR(np + 1));
+		attron(COLOR_PAIR(14));
 		move(10 * (np + 1) - (5 * np) + 2, 210);
 		printw("Last live : %13.0d %d", 0, player->last_live);
 		move(10 * (np + 1) - (5 * np) + 3, 210);
@@ -49,9 +50,10 @@ static void		ftncu_print_players(t_gb *g)
 
 void			ftncu_print_info(t_gb *g)
 {
+	attron(A_NORMAL);
 	attron(A_DIM);
 	attron(A_BOLD);
-	attron(COLOR_PAIR(9));
+	attron(COLOR_PAIR(14));
 	mvprintw(1, 205, "**  %s  **", "PLAYING");
 	mvprintw(3, 205, "Slow percent : %5d%%", g->t);
 	mvprintw(7, 205, "Cycle : %5d", g->v->arena->nb_cycle);
