@@ -6,7 +6,7 @@
 #    By: apoisson <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/03 11:29:15 by apoisson          #+#    #+#              #
-#    Updated: 2017/07/30 09:09:39 by apoisson         ###   ########.fr        #
+#    Updated: 2017/07/31 04:25:33 by qumaujea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,20 +16,21 @@ FLAGS = -Wall -Wextra -g
 SRCASM = add.c automaton.c check.c get_instruction.c asm.c \
 parse_header.c tools.c write_champ.c write_header.c \
 ftasm_free.c
-SRCVM = corewar.c ftncu_main.c ftncu_print_info.c
+#SRCVM = corewar.c ftncu_main.c ftncu_print_info.c
+SRCVM = *.c
 SRCBUILDER = builder.c write_header.c
 SRCDECOMPILO = decompilo.c
 
 all: $(ASM)
 
-$(ASM): libft.a $(addprefix srcs/, $(SRCASM))
+$(ASM): libft.a $(addprefix srcs/asm/, $(SRCASM))
 	@printf "\033[0;36m> Compiling asm\033[0m"
-	@gcc $(FLAGS) $(addprefix srcs/, $(SRCASM)) -L. -lft -I includes/ -o $(ASM)
+	@gcc $(FLAGS) $(addprefix srcs/asm/, $(SRCASM)) -L. -lft -I includes/ -o $(ASM)
 	@printf "\033[0;32m OK\n\033[0m"
 
-$(VM): libft.a $(addprefix srcs/, $(SRCVM))
+$(VM): libft.a $(addprefix srcs/corewar/, $(SRCVM))
 	@printf "\033[0;36m> Compiling corewar\033[0m"
-	@gcc $(FLAGS) $(addprefix srcs/, $(SRCVM)) -L. -lft -lncurses -I includes/ -o $(VM)
+	@gcc $(FLAGS) $(addprefix srcs/corewar/, $(SRCVM)) -L. -lft -lncurses -I includes/ -o $(VM)
 	@printf "\033[0;32m OK\n\033[0m"
 
 builder: libft.a $(addprefix srcs/, $(SRCBUILDER))

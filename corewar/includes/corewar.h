@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/20 02:47:48 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/31 01:50:05 by apoisson         ###   ########.fr       */
+/*   Updated: 2017/07/31 05:09:55 by qumaujea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ typedef struct s_player		t_player;
 typedef struct s_champ		t_champ;
 typedef struct s_proc		t_proc;
 
+extern void					(*g_fun_op[16])(t_vm *, t_proc *);
+
 struct						s_proc
 {
 	int						id;
@@ -158,5 +160,81 @@ struct						s_vm
 	int						end;
 	unsigned char			*winner;
 };
+
+void					process(t_vm *vm);
+void					ft_usage(void);
+void					dump_mem(t_vm *vm);
+void					display_end(t_vm *vm);
+void					free_player(t_player *player);
+void					free_corewar(t_vm *vm, char **args);
+void					ftasm_free(t_champ *ch);
+void					ftncu_init_pair(void);
+void					ftncu_main(t_vm *vm);
+void					verif_nb_player(t_vm *vm);
+void					update_nb_proc(t_vm *vm, int id_player);
+void					kill_proc(t_vm *vm, int id);
+void					cycle_verif(t_vm *vm);
+void					update_nb_proc(t_vm *vm, int id_player);
+void					check_alive(t_vm *vm);
+void					move_pc(t_vm *vm, t_proc *proc, int ocp);
+void					exec_proc(t_vm *vm, t_proc *proc);
+void					init_arena(t_vm *vm, int nb_args, char **args);
+void					set_opt(int *opt, char *n);
+void					get_options(t_vm *vm, int ac, char **av, char **args);
+void					ftcor_args_error(t_vm *vm);
+void					lp_rev(t_vm *vm);
+void					introduce_contestant(t_vm *vm, t_player *player);
+void					load_champ(t_vm *vm);
+void					write_in_mem(t_vm *vm, int value, int pc, int color);
+void					get_args(t_vm *vm, t_proc *proc, int ocp, int args[4]);
+void					v_op(t_vm *vm, char *name, t_proc *proc, int ocp);
+
+t_vm					*init_vm(void);
+t_player				*get_player_from_id(t_vm *vm, int id);	
+t_proc					*new_proc(int id_player);
+
+int						get_champ_size(int fd);
+int						ftncu_normalize_time(int s);
+int						verif_ocp(t_vm *vm, t_proc *proc, int op, int ocp);
+int						verif_value(int pc, int value);
+int						verif_reg(t_vm *vm, t_proc *proc, int ocp, int args);
+int						verif_args(t_vm *vm, t_proc *proc, int ocp, int *args);
+int						get_ocp_args(t_vm *vm, t_proc *proc, int *args, int op);
+int						get_id(int nb_args, char **args, int *i);
+int						kill_first(t_vm *vm, t_proc *curr, int id);
+int						get_inst_length(int ocp, int op);
+int						get_value(t_vm *vm, int nb_octet, t_proc *proc, int pc);
+int						get_ocp_args(t_vm *vm, t_proc *proc, int *args, int op);
+
+unsigned char			*get_champ_name(int fd);
+unsigned char			*get_champ_comment(int fd);
+unsigned char			*get_champ_prog(int fd, unsigned int size);
+
+/*
+**	OPERATIONS
+*/
+
+void					op_live(t_vm *vm, t_proc *proc);
+void					op_ld(t_vm *vm, t_proc *proc);
+void					op_st(t_vm *vm, t_proc *proc);
+void					op_add(t_vm *vm, t_proc *proc);
+void					op_sub(t_vm *vm, t_proc *proc);
+void					op_and(t_vm *vm, t_proc *proc);
+void					op_or(t_vm *vm, t_proc *proc);
+void					op_xor(t_vm *vm, t_proc *proc);
+void					op_zjmp(t_vm *vm, t_proc *proc);
+void					op_ldi(t_vm *vm, t_proc *proc);
+void					op_sti(t_vm *vm, t_proc *proc);
+void					op_fork(t_vm *vm, t_proc *proc);
+void					op_lld(t_vm *vm, t_proc *proc);
+void					op_lldi(t_vm *vm, t_proc *proc);
+void					op_lfork(t_vm *vm, t_proc *proc);
+void					op_aff(t_vm *vm, t_proc *proc);
+
+t_player                *read_file(int fd, int id);
+t_champ					*read_champ(int fd);
+void					verif_file(int fd);
+t_proc					*init_proc(t_vm *vm);
+t_player				*get_player(int nb_args, char **args);
 
 #endif
