@@ -6,7 +6,7 @@
 /*   By: lcharbon <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/22 00:13:23 by lcharbon          #+#    #+#             */
-/*   Updated: 2017/07/31 06:05:50 by lcharbon         ###   ########.fr       */
+/*   Updated: 2017/07/31 06:19:41 by lcharbon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void				ftncu_init_pair(void)
 	init_pair(12, 20, 17);
 	init_pair(13, 20, 18);
 	init_pair(14, 19, COLOR_BLACK);
+	init_pair(15, 20, 20);
 }
 
 static int			ftncu_mem_proc(t_gb *g, int i)
@@ -51,6 +52,7 @@ static int			ftncu_mem_proc(t_gb *g, int i)
 		if (tmp->pc == i)
 		{
 			attron(COLOR_PAIR((tmp->color) + 10));
+			g->col = tmp->color + 10;
 			return (1);
 		}
 		tmp = tmp->next;
@@ -88,6 +90,7 @@ static void			ftncu_print_memory(t_gb *g, unsigned char *memory)
 		ftncu_act_attron(g, i);
 		ftncu_mem_proc(g, i);
 		printw("%.2X", ((g->v->opt_stealth) ? 255 : memory[i]));
+//		attroff(COLOR_PAIR(g->col));
 		printw(" ");
 		if (n >= 192)
 		{
