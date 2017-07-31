@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/31 02:45:20 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/07/31 06:07:45 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ t_proc		*init_proc(t_vm *vm)
 	while (curr_player)
 	{
 		proc = new_proc(curr_player->id);
+		proc->color = curr_player->color - 1;
 		A_WINNER = curr_player->id;
 		A_PROC++;
 		proc->next = curr_proc;

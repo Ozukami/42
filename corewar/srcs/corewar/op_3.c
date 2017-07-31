@@ -6,7 +6,7 @@
 /*   By: apoisson <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 08:09:50 by apoisson          #+#    #+#             */
-/*   Updated: 2017/07/31 02:55:28 by qumaujea         ###   ########.fr       */
+/*   Updated: 2017/07/31 06:09:31 by apoisson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	op_fork(t_vm *vm, t_proc *proc)
 	clone = new_proc(PR_IDP);
 	clone->carry = proc->carry;
 	clone->alive = proc->alive;
+	clone->color = proc->color;
 	if (PR_PC + value < 0)
 		clone->pc = (PR_PC + MEM_SIZE + value) % MEM_SIZE;
 	else
